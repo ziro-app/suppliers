@@ -1,0 +1,46 @@
+html {
+    font-size: 62.5%;
+    font-family: 'work sans', 'system-ui', 'sans-serif';
+    line-height: 1.4;
+    text-align: justify;
+}
+
+body {
+    margin: 0;
+    -ms-overflow-style: none;  /* IE 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+body::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
+h1 {
+    font-size: 1.8rem;
+}
+
+p {
+    font-size: 1.7rem;
+    margin: 0;
+}
+
+a {
+    font-size: 1.7rem;
+    text-decoration: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+a:active, a:focus {
+    outline: none;
+    -moz-outline-style: none;
+}
+
+ul, li {
+    font-size: 1.7rem;
+    padding: 0;
+    list-style: none;
+}
+
+label {
+    font-size: 1.6rem;
+}
