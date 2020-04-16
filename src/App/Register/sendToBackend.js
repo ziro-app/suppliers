@@ -1,24 +1,28 @@
 import { auth, db } from '../../Firebase/index'
 import { post } from 'axios'
+import { dateHourFormatterUTC3 } from '../utils'
 
 const sendToBackend = state => () => {
-	const { brand, branch, insta, fname, lname, cpf, whats, email, pass } = state
-	const branchTrim = branch ? branch.trim() : ''
-	const instaTrim = insta ? insta.replace('@', '').trim().toLowerCase() : ''
-	const fnameTrim = fname ? fname.trim() : ''
-	const lnameTrim = lname ? lname.trim() : ''
+	const { name, lastName, cnpj, birthdate, phone, street, number, complement,
+		neighborhood, cep, city, cityState, email, pass } = state
+	const phoneTrim = phone ? `55 ${phone.trim()}` : ''
+	const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
+	const fnameTrim = name ? name.trim() : ''
+	const lnameTrim = lastName ? lastName.trim() : ''
+	const today = new Date()
 	const url = process.env.SHEET_URL
 	const body = {
 		apiResource: 'values',
 		apiMethod: 'append',
-		spreadsheetId: process.env.SHEET_ID,
-		range: 'Base!A1',
+		range: 'Fabricantes!A1', // Only for tests
 		resource: {
+			spreadsheetId: '1x6T_309HUNijByr1B_2Ofi0oFG3USyTAWH66QV-6L-0', // Only for tests
 			values: [
-				[new Date(), cpf, fnameTrim, lnameTrim, whats, email, brand, branchTrim, instaTrim]
+				[dateHourFormatterUTC3(today), `${fnameTrim} ${lnameTrim}`, cnpj, birthdate, phoneTrim,
+					endereco, neighborhood, cep, city, cityState, email]
 			]
 		},
-		valueInputOption: 'raw'
+		valueInputOption: 'user_entered'
 	}
 	const config = {
 		headers: {
@@ -35,8 +39,19 @@ const sendToBackend = state => () => {
 					await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })
 					try {
 						await db.collection('suppliers').add({
-							cadastro: new Date(), uid: user.uid, brand, branch: branchTrim, insta: instaTrim,
-							fname: fnameTrim, lname: lnameTrim, cpf, whats, email
+							cadastro: today,
+							uid: user.uid,
+							fname: fnameTrim,
+							lname: lnameTrim,
+							cnpj,
+							nascimento: birthdate,
+							phone: phoneTrim,
+							endereco,
+							bairro: neighborhood,
+							cep,
+							cidade: city,
+							estado: cityState,
+							email
 						})
 						await db.collection('users').add({ email, app: 'suppliers' })
 						try {

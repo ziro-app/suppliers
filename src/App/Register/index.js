@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { get } from 'axios'
 import sendToBackend from './sendToBackend'
-import InitialLoader from '@bit/vitorbarbosa19.ziro.initial-loader'
-import Error from '@bit/vitorbarbosa19.ziro.error'
 import HeaderHome from '@bit/vitorbarbosa19.ziro.header-home'
 import Form from '@bit/vitorbarbosa19.ziro.form'
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input'
 import InputText from '@bit/vitorbarbosa19.ziro.input-text'
 import maskInput from '@ziro/mask-input'
+import capitalize from '@ziro/capitalize'
 import { containerWithPadding } from '@ziro/theme'
 import { welcome, marker } from './styles'
 
@@ -31,7 +30,7 @@ const Register = () => {
 	const [email, setEmail] = useState('')
 	const [pass, setPass] = useState('')
 	const [confirmPass, setConfirmPass] = useState('')
-	const state = { email, pass, confirmPass }
+	const state = { name, lastName, cnpj, birthdate, phone, street, number, complement, neighborhood, cep, city, cityState, email, pass }
 	const validations = [
 		{
 			name: 'name',
