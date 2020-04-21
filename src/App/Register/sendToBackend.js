@@ -1,6 +1,6 @@
 import { auth, db } from '../../Firebase/index'
 import { post } from 'axios'
-import { dateHourFormatterUTC3 } from '../utils'
+import dateHourFormatterUTC3 from '@ziro/format-date-utc3'
 
 const sendToBackend = state => () => {
 	const { name, lastName, cnpj, birthdate, phone, street, number, complement,

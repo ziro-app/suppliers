@@ -8,6 +8,7 @@ import ErrorBoundary from '@bit/vitorbarbosa19.ziro.error-boundary'
 import Router from './Router'
 
 export const App = () => {
+	/* Atributos utilizados em outras páginas a serem criados => name, zoopIp  */
 	const [loading, setLoading] = useState(true)
 	const [errorLoading, setErrorLoading] = useState(false)
 	const [uid, setUid] = useState(null)

@@ -12,6 +12,7 @@ import MyAccount from '@bit/vitorbarbosa19.ziro.my-account'
 import UpdateEmail from './UpdateEmail/index'
 import UpdatePass from './UpdatePass/index'
 import DeleteAccount from './DeleteAccount/index'
+import CreatePayment from './CreatePayment/index'
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found'
 
 const Router = ({ isLogged }) => {
@@ -24,18 +25,19 @@ const Router = ({ isLogged }) => {
         '/resetar-senha': <ResetPass />,
         '/confirmar-email': <ConfirmEmail />
     }
-	const privateRoutes = { // Menu can't be put inside the components because then it'll unmount on transition
-		'/': <Menu title='Minha Conta'><MyAccount /></Menu>,
-		'/login': <Menu title='Minha Conta'><MyAccount /></Menu>,
-		'/trocar-email': <UpdateEmail />,
-		'/trocar-senha': <UpdatePass />,
-		'/deletar-conta': <DeleteAccount />
-	}
-	return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback='/' />)
+    const privateRoutes = { // Menu can't be put inside the components because then it'll unmount on transition
+        '/': <Menu title='Minha Conta'><MyAccount /></Menu>,
+        '/login': <Menu title='Minha Conta'><MyAccount /></Menu>,
+        '/trocar-email': <UpdateEmail />,
+        '/trocar-senha': <UpdatePass />,
+        '/deletar-conta': <DeleteAccount />,
+        '/criar-cobranca': <Menu title='Criar Pagamento'><CreatePayment /></Menu>
+    }
+    return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback='/' />)
 }
 
 Router.propTypes = {
-	isLogged: PropTypes.bool.isRequired
+    isLogged: PropTypes.bool.isRequired
 }
 
 export default Router
