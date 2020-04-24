@@ -13,6 +13,7 @@ import UpdateEmail from './UpdateEmail/index'
 import UpdatePass from './UpdatePass/index'
 import DeleteAccount from './DeleteAccount/index'
 import CreatePayment from './CreatePayment/index'
+import Transactions from './Transactions/index'
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found'
 
 const Router = ({ isLogged }) => {
@@ -31,7 +32,8 @@ const Router = ({ isLogged }) => {
         '/trocar-email': <UpdateEmail />,
         '/trocar-senha': <UpdatePass />,
         '/deletar-conta': <DeleteAccount />,
-        '/criar-cobranca': <Menu title='Criar Pagamento'><CreatePayment /></Menu>
+        '/criar-cobranca': <Menu title='Criar Cobrança'><CreatePayment /></Menu>,
+        '/transacoes': <Menu title='Transações'><Transactions /></Menu>
     }
     return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback='/' />)
 }

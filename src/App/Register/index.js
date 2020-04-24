@@ -152,7 +152,7 @@ const Register = () => {
 							value={cnpj}
 							onChange={({ target: { value } }) => setCnpj(maskInput(value, '##.###.###/####-##', true))}
 							placeholder='00.111.222/0001-33'
-							inputmode='numeric'
+							inputMode='numeric'
 						/>
 					} />,
 					<FormInput name='birthdate' label='Nascimento' input={
@@ -160,7 +160,7 @@ const Register = () => {
 							value={birthdate}
 							onChange={({ target: { value } }) => setBirthdate(maskInput(value, '##/##/####', true))}
 							placeholder='01/10/1990'
-							inputmode='numeric'
+							inputMode='numeric'
 						/>
 					} />,
 					<FormInput name='phone' label='Telefone Pessoal' input={
@@ -168,7 +168,7 @@ const Register = () => {
 							value={phone}
 							onChange={({ target: { value } }) => setPhone(maskInput(value, '(##) #####-####', true))}
 							placeholder='(86) 99743-6822'
-							inputmode='tel'
+							inputMode='tel'
 						/>
 					} />,
 					<FormInput name='cep' label='CEP' input={
@@ -177,7 +177,7 @@ const Register = () => {
 							onChange={(e) => cepHandleChange(e)}
 							disabled={searchingCep}
 							placeholder='00000-111'
-							inputmode='numeric'
+							inputMode='numeric'
 						/>
 					} />,
 					<FormInput name='street' label='Rua' input={
@@ -192,7 +192,7 @@ const Register = () => {
 							value={number}
 							onChange={({ target: { value } }) => setNumber(maskInput(value.toUpperCase(), '######', true))}
 							placeholder='1283'
-							inputmode='numeric'
+							inputMode='numeric'
 						/>
 					} />,
 					<FormInput name='complement' label='Complemento' input={
@@ -228,8 +228,8 @@ const Register = () => {
 							value={email}
 							onChange={({ target: { value } }) => setEmail(value.toLowerCase())}
 							placeholder='Para acesso ao app'
-							inputmode='email'
-							autocomplete='email'
+							inputMode='email'
+							autoComplete='email'
 						/>
 					} />,
 					<FormInput name='pass' label='Senha' input={

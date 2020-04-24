@@ -39,7 +39,6 @@ const CreatePayment = () => {
 
     return (
         <Form
-            buttonName='Criar cobrança'
             validations={validations}
             sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
             inputs={[
