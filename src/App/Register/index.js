@@ -1,115 +1,170 @@
 import React, { useState } from 'react'
 import { get } from 'axios'
-import sendToBackend from './sendToBackend'
 import HeaderHome from '@bit/vitorbarbosa19.ziro.header-home'
 import Form from '@bit/vitorbarbosa19.ziro.form'
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input'
 import InputText from '@bit/vitorbarbosa19.ziro.input-text'
+import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown'
+import Button from '@bit/vitorbarbosa19.ziro.button'
+import ImageUpload from '@bit/vitorbarbosa19.ziro.image-upload'
 import maskInput from '@ziro/mask-input'
 import capitalize from '@ziro/capitalize'
 import { containerWithPadding } from '@ziro/theme'
-import { welcome, marker } from './styles'
+import GetCnpj from './GetCnpj/index'
+import { sendToBackend, uploadImage } from './sendToBackend'
+import { welcome, marker, button } from './styles'
 
 const Register = () => {
-	// form fields
-	const [name, setName] = useState('')
-	const [lastName, setLastName] = useState('')
+	const [step, setStep] = useState(4)
+	const [cnpjValid, setCnpjValid] = useState(false)
+	// mixed form field
 	const [cnpj, setCnpj] = useState('')
-	const [birthdate, setBirthdate] = useState('')
-	const [phone, setPhone] = useState('')
+	// form fields 0
+	const [typeOfRegistration, setTypeOfRegistration] = useState('Completo')
+	const typeOfRegistrationList = ['Completo', 'Simplificado']
+	// form fields 1
+	const [reason, setReason] = useState('')
+	const [fantasia, setFantasia] = useState('')
+	const [opening, setOpening] = useState('')
+	const [category, setCategory] = useState('')
+	const categoryList = ['Bijouterias', 'Calçados / Bolsas / Malas', 'Cosméticos / Produtos de beleza', 'Lavanderia / Tinturaria', 'Magazines', 'Roupas masc., fem., inf., geral', 'Uniformes', 'Vestuário', 'Joalheria']
+	// form fields 2
+	const [cep, setCep] = useState('')
 	const [street, setStreet] = useState('')
 	const [number, setNumber] = useState('')
 	const [complement, setComplement] = useState('')
 	const [neighborhood, setNeighborhood] = useState('')
-	const [cep, setCep] = useState('')
 	const [city, setCity] = useState('')
 	const [cityState, setCityState] = useState('')
-	const [searchingCep, isSearchingCep] = useState(false)
+	const [searchingCep, setSearchingCep] = useState(false)
 	const statesList = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
-
+	// form fields 3
+	const [name, setName] = useState('')
+	const [cpf, setCpf] = useState('')
 	const [email, setEmail] = useState('')
+	const [birthdate, setBirthdate] = useState('')
+	const [phone, setPhone] = useState('')
 	const [pass, setPass] = useState('')
 	const [confirmPass, setConfirmPass] = useState('')
-	const state = { name, lastName, cnpj, birthdate, phone, street, number, complement, neighborhood, cep, city, cityState, email, pass }
+	// form fields 4 - Upload de documentos
+	const [isSubmittingIdDoc, setIsSubmittingIdDoc] = useState(false)
+	const [isSubmittedIdDoc, setIsSubmittedIdDoc] = useState(false)
+	// form fields 5 - Dados bancários
+
+	const setState = {
+		setTypeOfRegistration, setCnpj, setCnpjValid, setReason, setFantasia, setOpening, setCategory,
+		setName, setCpf, setEmail, setBirthdate, setPhone, setStreet, setNumber, setComplement,
+		setNeighborhood, setCep, setCity, setCityState, setPass
+	}
+	const state = {
+		cnpjValid, typeOfRegistration, cnpj, reason, fantasia, opening, category, cep, street, number,
+		complement, neighborhood, city, cityState, name, cpf, email, birthdate, phone, pass,
+		...setState
+	}
 	const validations = [
 		{
-			name: 'name',
-			validation: value => !!value,
-			value: name,
-			message: 'Campo obrigatório'
-		}, {
-			name: 'lastName',
-			validation: value => !!value,
-			value: lastName,
-			message: 'Campo obrigatório'
+			name: 'typeOfRegistration',
+			validation: value => step <= 3 ? typeOfRegistrationList.includes(value) : true,
+			value: typeOfRegistration,
+			message: 'Valor inválido'
 		}, {
 			name: 'cnpj',
-			validation: value => /(^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$)/.test(value),
+			validation: value => step === 1 ? /(^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$)/.test(value) : true,
 			value: cnpj,
 			message: 'CNPJ inválido'
 		}, {
+			name: 'reason',
+			validation: value => step === 1 ? !!value : true,
+			value: reason,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'fantasia',
+			validation: value => step === 1 ? !!value : true,
+			value: fantasia,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'opening',
+			validation: value => step === 1 ? (value === '' || /^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(value)) : true,
+			value: opening,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'category',
+			validation: value => step === 1 ? categoryList.includes(value) : true,
+			value: category,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'name',
+			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? !!value : true,
+			value: name,
+			message: 'Nome obrigatório'
+		}, {
+			name: 'cpf',
+			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)/.test(value) : true,
+			value: cpf,
+			message: 'CPF inválido'
+		}, {
 			name: 'birthdate',
-			validation: value => /^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(value),
+			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? (value === '' || /^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(value)) : true,
 			value: birthdate,
 			message: 'Data inválida'
 		}, {
 			name: 'phone',
-			validation: value => /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(value),
+			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(value) : true,
 			value: phone,
 			message: 'Telefone inválido'
 		}, {
-			name: 'cep',
-			validation: value => /(^\d{5}\-\d{3}$)/.test(value),
-			value: cep,
-			message: 'CEP inválido'
-		}, {
-			name: 'street',
-			validation: value => !!value,
-			value: street,
-			message: 'Campo obrigatório'
-		}, {
-			name: 'number',
-			validation: value => !!value,
-			value: number,
-			message: 'Campo obrigatório'
-		}, {
-			name: 'neighborhood',
-			validation: value => !!value,
-			value: neighborhood,
-			message: 'Campo obrigatório'
-		}, {
-			name: 'city',
-			validation: value => /[a-zA-Z]+/g.test(value),
-			value: city,
-			message: 'Campo obrigatório'
-		}, {
-			name: 'cityState',
-			validation: value => /(^\D{2}$)/.test(value) & statesList.includes(value),
-			value: cityState,
-			message: 'Estado inválido'
-		}, {
 			name: 'email',
-			validation: value => /^\S+@\S+\.\S+$/g.test(value), // tests for pattern a@b.c
+			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? /^\S+@\S+\.\S+$/g.test(value) : true,
 			value: email,
-			message: 'Formato inválido'
+			message: 'Email inválido'
 		}, {
 			name: 'pass',
-			validation: value => !/^.{0,5}$/g.test(value), // tests for min length of 6 char
+			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? !/^.{0,5}$/g.test(value) : true, // tests for min length of 6 char
 			value: pass,
 			message: 'Mínimo 6 caracteres'
 		}, {
 			name: 'confirmPass',
-			validation: value => value === pass,
+			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? value === pass : true,
 			value: confirmPass,
 			message: 'Deve ser igual ao campo anterior'
-		}
+		}, {
+			name: 'cep',
+			validation: value => step === 2 ? /(^\d{5}\-\d{3}$)/.test(value) : true,
+			value: cep,
+			message: 'CEP inválido'
+		}, {
+			name: 'street',
+			validation: value => step === 2 ? !!value : true,
+			value: street,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'neighborhood',
+			validation: value => step === 2 ? !!value : true,
+			value: neighborhood,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'city',
+			validation: value => step === 2 ? !!value : true,
+			value: city,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'cityState',
+			validation: value => step === 2 ? /(^\D{2}$)/.test(value) & statesList.includes(value) : true,
+			value: cityState,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'idDoc',
+			validation: value => value === true,
+			value: isSubmittedIdDoc,
+			message: 'Envio de arqv. obrigatório'
+		},
 	]
 
 	const cepHandleChange = async (e) => {
 		const cep = maskInput(e.target.value, '#####-###', true)
 		setCep(cep)
 		if (cep.length === 9) {
-			isSearchingCep(true)
+			setSearchingCep(true)
 			try {
 				const { data } = await get(`https://viacep.com.br/ws/${cep}/json/`)
 				setStreet(data.logradouro.toUpperCase())
@@ -118,7 +173,7 @@ const Register = () => {
 				setCity(data.localidade.toUpperCase())
 				setCityState(data.uf.toUpperCase())
 			} finally {
-				isSearchingCep(false)
+				setSearchingCep(false)
 			}
 		}
 	}
@@ -129,127 +184,470 @@ const Register = () => {
 			<h1 style={welcome}>
 				Crie sua conta de <span style={marker}>Fabricante</span>,
 			</h1>
-			<Form
-				validations={validations}
-				sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
-				inputs={[
-					<FormInput name='name' label='Nome' input={
-						<InputText
-							value={name}
-							onChange={({ target: { value } }) => setName(capitalize(value))}
-							placeholder='Nome do fabricante'
-						/>
-					} />,
-					<FormInput name='lastName' label='Sobrenome' input={
-						<InputText
-							value={lastName}
-							onChange={({ target: { value } }) => setLastName(capitalize(value))}
-							placeholder='Sobrenome do fabricante'
-						/>
-					} />,
-					<FormInput name='cnpj' label='CNPJ' input={
-						<InputText
-							value={cnpj}
-							onChange={({ target: { value } }) => setCnpj(maskInput(value, '##.###.###/####-##', true))}
-							placeholder='00.111.222/0001-33'
-							inputMode='numeric'
-						/>
-					} />,
-					<FormInput name='birthdate' label='Nascimento' input={
-						<InputText
-							value={birthdate}
-							onChange={({ target: { value } }) => setBirthdate(maskInput(value, '##/##/####', true))}
-							placeholder='01/10/1990'
-							inputMode='numeric'
-						/>
-					} />,
-					<FormInput name='phone' label='Telefone Pessoal' input={
-						<InputText
-							value={phone}
-							onChange={({ target: { value } }) => setPhone(maskInput(value, '(##) #####-####', true))}
-							placeholder='(86) 99743-6822'
-							inputMode='tel'
-						/>
-					} />,
-					<FormInput name='cep' label='CEP' input={
-						<InputText
-							value={cep}
-							onChange={(e) => cepHandleChange(e)}
-							disabled={searchingCep}
-							placeholder='00000-111'
-							inputMode='numeric'
-						/>
-					} />,
-					<FormInput name='street' label='Rua' input={
-						<InputText
-							value={street}
-							onChange={({ target: { value } }) => setStreet(value.toUpperCase())}
-							placeholder='R HERMELINO CARDOSO'
-						/>
-					} />,
-					<FormInput name='number' label='Número' input={
-						<InputText
-							value={number}
-							onChange={({ target: { value } }) => setNumber(maskInput(value.toUpperCase(), '######', true))}
-							placeholder='1283'
-							inputMode='numeric'
-						/>
-					} />,
-					<FormInput name='complement' label='Complemento' input={
-						<InputText
-							value={complement}
-							onChange={({ target: { value } }) => setComplement(value.toUpperCase())}
-							placeholder='BLOCO K'
-						/>
-					} />,
-					<FormInput name='neighborhood' label='Bairro' input={
-						<InputText
-							value={neighborhood}
-							onChange={({ target: { value } }) => setNeighborhood(value.toUpperCase())}
-							placeholder='COHAB'
-						/>
-					} />,
-					<FormInput name='city' label='Cidade' input={
-						<InputText
-							value={city}
-							onChange={({ target: { value } }) => setCity(value.toUpperCase())}
-							placeholder='SÃO PAULO'
-						/>
-					} />,
-					<FormInput name='cityState' label='Estado' input={
-						<InputText
-							value={cityState}
-							onChange={({ target: { value } }) => setCityState(maskInput(value.toUpperCase(), '##', false))}
-							placeholder='SP'
-						/>
-					} />,
-					<FormInput name='email' label='Email' input={
-						<InputText
-							value={email}
-							onChange={({ target: { value } }) => setEmail(value.toLowerCase())}
-							placeholder='Para acesso ao app'
-							inputMode='email'
-							autoComplete='email'
-						/>
-					} />,
-					<FormInput name='pass' label='Senha' input={
-						<InputText
-							value={pass}
-							onChange={({ target: { value } }) => setPass(value)}
-							placeholder='Mínimo 6 caracteres'
-							type='password'
-						/>
-					} />,
-					<FormInput name='confirmPass' label='Confirme a senha' input={
-						<InputText
-							value={confirmPass}
-							onChange={({ target: { value } }) => setConfirmPass(value)}
-							placeholder='Igual ao campo anterior'
-							type='password'
+			{typeOfRegistration === '' && step === 0 &&
+				<Form
+					buttonName="Avançar"
+					validations={validations}
+					sendToBackend={() => setStep(step + 1)}
+					inputs={[
+						<FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
+							<Dropdown
+								value={typeOfRegistration}
+								onChange={({ target: { value } }) => {
+									setTypeOfRegistration(value)
+									if (value === '') setStep(0)
+									else setStep(1)
+								}}
+								onChangeKeyboard={element => {
+									if (element) {
+										setTypeOfRegistration(element.value)
+										if (value === '') setStep(0)
+										else setStep(1)
+									}
+								}}
+								list={typeOfRegistrationList}
+								placeholder="Completo"
+								readOnly={true}
+							/>
+						} />
+					]}
+				/>
+			}
+			{typeOfRegistration === 'Simplificado' && step === 1 &&
+				<>
+					<FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
+						<Dropdown
+							value={typeOfRegistration}
+							onChange={({ target: { value } }) => {
+								setTypeOfRegistration(value)
+								if (value === '') setStep(0)
+								else setStep(1)
+							}}
+							onChangeKeyboard={element => {
+								if (element) {
+									setTypeOfRegistration(element.value)
+									if (value === '') setStep(0)
+									else setStep(1)
+								}
+							}}
+							list={typeOfRegistrationList}
+							placeholder="Completo"
+							readOnly={true}
 						/>
 					} />
-				]}
-			/>
+					<GetCnpj cnpj={cnpj} setState={setState} suppliers={[]} setCnpjValid={setCnpjValid} />
+					<Form
+						validations={validations}
+						sendToBackend={() => setStep(step + 1)}
+						inputs={[
+							<FormInput name='name' label='Nome' input={
+								<InputText
+									value={name}
+									onChange={({ target: { value } }) => setName(capitalize(value))}
+									placeholder='Nome completo'
+								/>
+							} />,
+							<FormInput name='cpf' label='CPF' input={
+								<InputText
+									value={cpf}
+									onChange={({ target: { value } }) => setCpf(maskInput(value, '###.###.###-##', true))}
+									placeholder='000.000.000-00'
+								/>
+							} />,
+							<FormInput name='birthdate' label='Data de Nascimento' input={
+								<InputText
+									value={birthdate}
+									onChange={({ target: { value } }) => setBirthdate(maskInput(value, '##/##/####', true))}
+									placeholder='01/01/2000'
+									inputMode='numeric'
+								/>
+							} />,
+							<FormInput name='phone' label='Telefone' input={
+								<InputText
+									value={phone}
+									onChange={({ target: { value } }) => setPhone(maskInput(value, '(##) #####-####', true))}
+									placeholder='(11) 99999-9999'
+									inputMode='numeric'
+								/>
+							} />,
+							<FormInput name='email' label='Email' input={
+								<InputText
+									value={email}
+									onChange={({ target: { value } }) => setEmail(value)}
+									placeholder='ex@exemplo.com'
+									inputMode='email'
+									autoComplete='email'
+								/>
+							} />,
+							<FormInput name='pass' label='Senha' input={
+								<InputText
+									value={pass}
+									onChange={({ target: { value } }) => setPass(value)}
+									placeholder='Mínimo 6 caracteres'
+									type='password'
+								/>
+							} />,
+							<FormInput name='confirmPass' label='Confirme a senha' input={
+								<InputText
+									value={confirmPass}
+									onChange={({ target: { value } }) => setConfirmPass(value)}
+									placeholder='Igual ao campo anterior'
+									type='password'
+								/>
+							} />
+						]}
+					/>
+				</>
+			}
+			{typeOfRegistration === 'Completo' && step === 1 &&
+				<>
+					<FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
+						<Dropdown
+							value={typeOfRegistration}
+							onChange={({ target: { value } }) => {
+								setTypeOfRegistration(value)
+								if (value === '') setStep(0)
+								else setStep(1)
+							}}
+							onChangeKeyboard={element => {
+								if (element) {
+									setTypeOfRegistration(element.value)
+									if (value === '') setStep(0)
+									else setStep(1)
+								}
+							}}
+							list={typeOfRegistrationList}
+							placeholder="Completo"
+							readOnly={true}
+						/>
+					} />
+					<GetCnpj cnpj={cnpj} setState={setState} suppliers={[]} setCnpjValid={setCnpjValid} />
+					<Form
+						buttonName="Avançar"
+						validations={validations}
+						sendToBackend={() => setStep(step + 1)}
+						inputs={[
+							<FormInput name='reason' label='Razão Social' input={
+								<InputText
+									value={reason}
+									onChange={({ target: { value } }) => setReason(value.toUpperCase())}
+									placeholder='ALMEIDA MODAS LTDA'
+								/>
+							} />,
+							<FormInput name='fantasia' label='Nome Fantasia' input={
+								<InputText
+									value={fantasia}
+									onChange={({ target: { value } }) => setFantasia(value.toUpperCase())}
+									placeholder='ATELIE DE ROUPAS'
+								/>
+							} />,
+							<FormInput name='opening' label='Data de Abertura' input={
+								<InputText
+									value={opening}
+									onChange={({ target: { value } }) => setOpening(maskInput(value, '##/##/####', true))}
+									placeholder='01/01/2000'
+									inputMode='numeric'
+								/>
+							} />,
+							<FormInput name='category' label='Categoria' input={
+								<Dropdown
+									value={category}
+									onChange={({ target: { value } }) => setCategory(value)}
+									onChangeKeyboard={element =>
+										element ? setCategory(element.value) : null
+									}
+									list={categoryList}
+									placeholder="Bijouterias"
+								/>
+							} />
+						]}
+					/>
+				</>
+			}
+			{typeOfRegistration === 'Completo' && step === 2 &&
+				<>
+					<Form
+						buttonName="Avançar"
+						validations={validations}
+						sendToBackend={() => setStep(step + 1)}
+						inputs={[
+							<FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
+								<Dropdown
+									value={typeOfRegistration}
+									onChange={({ target: { value } }) => {
+										setTypeOfRegistration(value)
+										if (value === '') setStep(0)
+										else setStep(1)
+									}}
+									onChangeKeyboard={element => {
+										if (element) {
+											setTypeOfRegistration(element.value)
+											if (value === '') setStep(0)
+											else setStep(1)
+										}
+									}}
+									list={typeOfRegistrationList}
+									placeholder="Completo"
+									readOnly={true}
+								/>
+							} />,
+							<FormInput name='cep' label='CEP' input={
+								<InputText
+									value={cep}
+									disabled={searchingCep}
+									submitting={searchingCep}
+									onChange={(e) => cepHandleChange(e)}
+									placeholder='00000-111'
+									inputMode='numeric'
+								/>
+							} />,
+							<FormInput name='street' label='Rua' input={
+								<InputText
+									value={street}
+									onChange={({ target: { value } }) => setStreet(value.toUpperCase())}
+									placeholder='R HERMELINO CARDOSO'
+								/>
+							} />,
+							<FormInput name='number' label='Número' input={
+								<InputText
+									value={number}
+									onChange={({ target: { value } }) => setNumber(maskInput(value.toUpperCase(), '######', true))}
+									placeholder='1283'
+									inputMode='numeric'
+								/>
+							} />,
+							<FormInput name='complement' label='Complemento' input={
+								<InputText
+									value={complement}
+									onChange={({ target: { value } }) => setComplement(value.toUpperCase())}
+									placeholder='BLOCO K'
+								/>
+							} />,
+							<FormInput name='neighborhood' label='Bairro' input={
+								<InputText
+									value={neighborhood}
+									onChange={({ target: { value } }) => setNeighborhood(value.toUpperCase())}
+									placeholder='COHAB'
+								/>
+							} />,
+							<FormInput name='city' label='Cidade' input={
+								<InputText
+									value={city}
+									onChange={({ target: { value } }) => setCity(value.toUpperCase())}
+									placeholder='SÃO PAULO'
+								/>
+							} />,
+							<FormInput name='cityState' label='Estado' input={
+								<InputText
+									value={cityState}
+									onChange={({ target: { value } }) => setCityState(maskInput(value.toUpperCase(), '##', false))}
+									placeholder='SP'
+								/>
+							} />
+						]}
+					/>
+					<div style={button} >
+						<Button
+							type="button"
+							cta="Voltar"
+							template="regular"
+							click={() => setStep(step - 1)}
+						/>
+					</div>
+				</>
+			}
+			{typeOfRegistration === 'Completo' && step === 3 &&
+				<>
+					<Form
+						buttonName="Avançar"
+						validations={validations}
+						sendToBackend={() => setStep(step + 1)}
+						//sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+						inputs={[
+							<FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
+								<Dropdown
+									value={typeOfRegistration}
+									onChange={({ target: { value } }) => {
+										setTypeOfRegistration(value)
+										if (value === '') setStep(0)
+										else setStep(1)
+									}}
+									onChangeKeyboard={element => {
+										if (element) {
+											setTypeOfRegistration(element.value)
+											if (value === '') setStep(0)
+											else setStep(1)
+										}
+									}}
+									list={typeOfRegistrationList}
+									placeholder="Completo"
+									readOnly={true}
+								/>
+							} />,
+							<FormInput name='name' label='Nome' input={
+								<InputText
+									value={name}
+									onChange={({ target: { value } }) => setName(capitalize(value))}
+									placeholder='Nome completo'
+								/>
+							} />,
+							<FormInput name='cpf' label='CPF' input={
+								<InputText
+									value={cpf}
+									onChange={({ target: { value } }) => setCpf(maskInput(value, '###.###.###-##', true))}
+									placeholder='000.000.000-00'
+								/>
+							} />,
+							<FormInput name='birthdate' label='Data de Nascimento' input={
+								<InputText
+									value={birthdate}
+									onChange={({ target: { value } }) => setBirthdate(maskInput(value, '##/##/####', true))}
+									placeholder='01/01/2000'
+									inputMode='numeric'
+								/>
+							} />,
+							<FormInput name='phone' label='Telefone' input={
+								<InputText
+									value={phone}
+									onChange={({ target: { value } }) => setPhone(maskInput(value, '(##) #####-####', true))}
+									placeholder='(11) 99999-9999'
+									inputMode='numeric'
+								/>
+							} />,
+							<FormInput name='email' label='Email' input={
+								<InputText
+									value={email}
+									onChange={({ target: { value } }) => setEmail(value)}
+									placeholder='ex@exemplo.com'
+									inputMode='email'
+									autoComplete='email'
+								/>
+							} />,
+							<FormInput name='pass' label='Senha' input={
+								<InputText
+									value={pass}
+									onChange={({ target: { value } }) => setPass(value)}
+									placeholder='Mínimo 6 caracteres'
+									type='password'
+								/>
+							} />,
+							<FormInput name='confirmPass' label='Confirme a senha' input={
+								<InputText
+									value={confirmPass}
+									onChange={({ target: { value } }) => setConfirmPass(value)}
+									placeholder='Igual ao campo anterior'
+									type='password'
+								/>
+							} />
+						]}
+					/>
+					<div style={button} >
+						<Button
+							type="button"
+							cta="Voltar"
+							template="regular"
+							click={() => setStep(step - 1)}
+						/>
+					</div>
+				</>
+			}
+			{typeOfRegistration === 'Completo' && step === 4 &&
+				<Form
+					buttonName="Avançar"
+					validations={validations}
+					sendToBackend={() => setStep(step + 1)}
+					inputs={[
+						<FormInput name='idDoc' label='Documento de Identificação' input={
+							<ImageUpload
+								sendToBackend={uploadImage(setIsSubmittingIdDoc, setIsSubmittedIdDoc, 'identificacao')}
+								isDisabled={isSubmittingIdDoc}
+							/>
+						} />/*,
+						<FormInput name='atividade' label='Comprovante de Atividade' input={
+							<ImageUpload
+								sendToBackend={uploadImage((a) => null, 'atividade')}
+								isDisabled={false}
+							/>
+						} />,
+						<FormInput name='residencia' label='Comprovante de Residência' input={
+							<ImageUpload
+								sendToBackend={uploadImage((a) => null, 'residencia')}
+								isDisabled={false}
+							/>
+						} />,
+						<FormInput name='idCnpj' label='Identificação CNPJ' input={
+							<ImageUpload
+								sendToBackend={uploadImage((a) => null, 'cnpj')}
+								isDisabled={false}
+							/>
+						} />*/
+					]}
+				/>
+			}
+			{typeOfRegistration === 'Completo' && step === 5 &&
+				<Form
+					validations={validations}
+					sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+					inputs={[
+						<FormInput name='name' label='Nome' input={
+							<InputText
+								value={name}
+								onChange={({ target: { value } }) => setName(capitalize(value))}
+								placeholder='Nome completo'
+							/>
+						} />,
+						<FormInput name='cpf' label='CPF' input={
+							<InputText
+								value={cpf}
+								onChange={({ target: { value } }) => setCpf(maskInput(value, '###.###.###-##', true))}
+								placeholder='000.000.000-00'
+							/>
+						} />,
+						<FormInput name='birthdate' label='Data de Nascimento' input={
+							<InputText
+								value={birthdate}
+								onChange={({ target: { value } }) => setBirthdate(maskInput(value, '##/##/####', true))}
+								placeholder='01/01/2000'
+								inputMode='numeric'
+							/>
+						} />,
+						<FormInput name='phone' label='Telefone' input={
+							<InputText
+								value={phone}
+								onChange={({ target: { value } }) => setPhone(maskInput(value, '(##) #####-####', true))}
+								placeholder='(11) 99999-9999'
+								inputMode='numeric'
+							/>
+						} />,
+						<FormInput name='email' label='Email' input={
+							<InputText
+								value={email}
+								onChange={({ target: { value } }) => setEmail(value)}
+								placeholder='ex@exemplo.com'
+								inputMode='email'
+								autoComplete='email'
+							/>
+						} />,
+						<FormInput name='pass' label='Senha' input={
+							<InputText
+								value={pass}
+								onChange={({ target: { value } }) => setPass(value)}
+								placeholder='Mínimo 6 caracteres'
+								type='password'
+							/>
+						} />,
+						<FormInput name='confirmPass' label='Confirme a senha' input={
+							<InputText
+								value={confirmPass}
+								onChange={({ target: { value } }) => setConfirmPass(value)}
+								placeholder='Igual ao campo anterior'
+								type='password'
+							/>
+						} />
+					]}
+				/>
+			}
+			<p style={{ textAlign: "center", fontWeight: "bold", paddingTop: "20px", fontSize: "15px" }}>Página {step === 0 ? step + 1 : step} de {typeOfRegistration === 'Completo' ? 5 : 1}.</p>
 		</div>
 	)
 }

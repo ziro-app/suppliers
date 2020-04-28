@@ -58,6 +58,7 @@
     "@bit/vitorbarbosa19.ziro.update-email": "0.1.47",
     "@bit/vitorbarbosa19.ziro.update-pass": "0.1.43",
     "@bit/vitorbarbosa19.ziro.timeline": "0.1.28",
+    "@bit/vitorbarbosa19.ziro.image-upload": "0.0.10",
     "@ziro/format-date-utc3": "^1.0.0",
     "@ziro/currency-format": "1.0.0",
     "@ziro/capitalize": "^1.0.0",

@@ -9,8 +9,8 @@ module.exports = (env, { mode }) => {
 		module: {
 			rules: [
 				{
-					test: /\.js$/, 
-					exclude: /node_modules/, 
+					test: /\.js$/,
+					exclude: /node_modules/,
 					use: {
 						loader: 'babel-loader',
 						options: {
@@ -25,14 +25,19 @@ module.exports = (env, { mode }) => {
 				}
 			]
 		},
-		plugins: [ new HtmlWebpackPlugin({ template: './src/index.html' }) ]
+		plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })]
 	}
 	if (mode === 'development') {
 		const {
 			sheet_url,
 			sheet_token,
 			sheet_id,
-			continue_url
+			sheet_suppliers_id,
+			continue_url,
+			cnpj_url,
+			cnpj_token,
+			zoop_url,
+			zoop_token
 		} = require('./credentials')
 		config.devtool = 'cheap-module-eval-source-map'
 		config.devServer = { historyApiFallback: true }
@@ -42,7 +47,12 @@ module.exports = (env, { mode }) => {
 					SHEET_URL: JSON.stringify(sheet_url),
 					SHEET_TOKEN: JSON.stringify(sheet_token),
 					SHEET_ID: JSON.stringify(sheet_id),
-					CONTINUE_URL: JSON.stringify(continue_url)
+					CONTINUE_URL: JSON.stringify(continue_url),
+					CNPJ_URL: JSON.stringify(cnpj_url),
+					CNPJ_TOKEN: JSON.stringify(cnpj_token),
+					SHEET_SUPPLIERS_ID: JSON.stringify(sheet_suppliers_id),
+					ZOOP_URL: JSON.stringify(zoop_url),
+					ZOOP_TOKEN: JSON.stringify(zoop_token)
 				}
 			})
 		)
@@ -69,7 +79,12 @@ module.exports = (env, { mode }) => {
 					SHEET_URL: JSON.stringify(process.env.SHEET_URL),
 					SHEET_TOKEN: JSON.stringify(process.env.SHEET_TOKEN),
 					SHEET_ID: JSON.stringify(process.env.SHEET_ID),
-					CONTINUE_URL: JSON.stringify(process.env.CONTINUE_URL)
+					CONTINUE_URL: JSON.stringify(process.env.CONTINUE_URL),
+					CNPJ_URL: JSON.stringify(process.env.CNPJ_URL),
+					CNPJ_TOKEN: JSON.stringify(process.env.CNPJ_TOKEN),
+					SHEET_SUPPLIERS_ID: JSON.stringify(process.env.SHEET_SUPPLIERS_ID),
+					ZOOP_URL: JSON.stringify(process.env.ZOOP_URL),
+					ZOOP_TOKEN: JSON.stringify(process.env.ZOOP_TOKEN)
 				}
 			})
 		)
