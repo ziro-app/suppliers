@@ -1,4 +1,4 @@
-export const banksList = [
+const banksList = [
     "000 - Banco Bankpar S.A.",
     "001 - Banco do Brasil",
     "003 - Banco da Amazônia S.A.",
@@ -193,3 +193,5 @@ export const banksList = [
     "M23 - Banco Volvo(Brasil) S.A.",
     "M24 - Banco PSA Finance Brasil S.A."
 ]
+
+export default banksList;

@@ -11,16 +11,17 @@ import maskInput from '@ziro/mask-input'
 import capitalize from '@ziro/capitalize'
 import { containerWithPadding } from '@ziro/theme'
 import GetCnpj from './GetCnpj/index'
-import { sendToBackend, uploadImage } from './sendToBackend'
 import { welcome, marker, button } from './styles'
+import banksList from './banks'
+import { sendToBackend, uploadImage, simplifiedRegistration } from './sendToBackend'
 
 const Register = () => {
-	const [step, setStep] = useState(4)
+	const [step, setStep] = useState(0)
 	const [cnpjValid, setCnpjValid] = useState(false)
 	// mixed form field
 	const [cnpj, setCnpj] = useState('')
 	// form fields 0
-	const [typeOfRegistration, setTypeOfRegistration] = useState('Completo')
+	const [typeOfRegistration, setTypeOfRegistration] = useState('')
 	const typeOfRegistrationList = ['Completo', 'Simplificado']
 	// form fields 1
 	const [reason, setReason] = useState('')
@@ -50,16 +51,24 @@ const Register = () => {
 	const [isSubmittingIdDoc, setIsSubmittingIdDoc] = useState(false)
 	const [isSubmittedIdDoc, setIsSubmittedIdDoc] = useState(false)
 	// form fields 5 - Dados bancários
+	const [bankName, setBankName] = useState('')
+	const [bankNumber, setBankNumber] = useState('')
+	const [holderName, setHolderName] = useState('')
+	const [agency, setAgency] = useState('')
+	const [accountNumber, setAccountNumber] = useState('')
+	const [accountType, setAccountType] = useState('')
+	const accountTypeList = ['Conta Corrente', 'Conta Poupança']
 
 	const setState = {
 		setTypeOfRegistration, setCnpj, setCnpjValid, setReason, setFantasia, setOpening, setCategory,
 		setName, setCpf, setEmail, setBirthdate, setPhone, setStreet, setNumber, setComplement,
-		setNeighborhood, setCep, setCity, setCityState, setPass
+		setNeighborhood, setCep, setCity, setCityState, setPass, setBankNumber, setHolderName, setAccountNumber,
+		setAgency, setAccountType
 	}
 	const state = {
 		cnpjValid, typeOfRegistration, cnpj, reason, fantasia, opening, category, cep, street, number,
 		complement, neighborhood, city, cityState, name, cpf, email, birthdate, phone, pass,
-		...setState
+		bankNumber, holderName, accountNumber, agency, accountType, ...setState
 	}
 	const validations = [
 		{
@@ -74,57 +83,57 @@ const Register = () => {
 			message: 'CNPJ inválido'
 		}, {
 			name: 'reason',
-			validation: value => step === 1 ? !!value : true,
+			validation: value => (typeOfRegistration === 'Completo' && step === 1) ? !!value : true,
 			value: reason,
 			message: 'Campo obrigatório'
 		}, {
 			name: 'fantasia',
-			validation: value => step === 1 ? !!value : true,
+			validation: value => (typeOfRegistration === 'Completo' && step === 1) ? !!value : true,
 			value: fantasia,
 			message: 'Campo obrigatório'
 		}, {
 			name: 'opening',
-			validation: value => step === 1 ? (value === '' || /^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(value)) : true,
+			validation: value => (typeOfRegistration === 'Completo' && step === 1) ? (value === '' || /^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(value)) : true,
 			value: opening,
 			message: 'Campo obrigatório'
 		}, {
 			name: 'category',
-			validation: value => step === 1 ? categoryList.includes(value) : true,
+			validation: value => (typeOfRegistration === 'Completo' && step === 1) ? categoryList.includes(value) : true,
 			value: category,
 			message: 'Campo obrigatório'
 		}, {
 			name: 'name',
-			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? !!value : true,
+			validation: value => ((typeOfRegistration === 'Simplificado' && step === 1) || step === 3) ? !!value : true,
 			value: name,
 			message: 'Nome obrigatório'
 		}, {
 			name: 'cpf',
-			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)/.test(value) : true,
+			validation: value => ((typeOfRegistration === 'Simplificado' && step === 1) || step === 3) ? /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)/.test(value) : true,
 			value: cpf,
 			message: 'CPF inválido'
 		}, {
 			name: 'birthdate',
-			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? (value === '' || /^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(value)) : true,
+			validation: value => ((typeOfRegistration === 'Simplificado' && step === 1) || step === 3) ? (value === '' || /^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(value)) : true,
 			value: birthdate,
 			message: 'Data inválida'
 		}, {
 			name: 'phone',
-			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(value) : true,
+			validation: value => ((typeOfRegistration === 'Simplificado' && step === 1) || step === 3) ? /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(value) : true,
 			value: phone,
 			message: 'Telefone inválido'
 		}, {
 			name: 'email',
-			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? /^\S+@\S+\.\S+$/g.test(value) : true,
+			validation: value => ((typeOfRegistration === 'Simplificado' && step === 1) || step === 3) ? /^\S+@\S+\.\S+$/g.test(value) : true,
 			value: email,
 			message: 'Email inválido'
 		}, {
 			name: 'pass',
-			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? !/^.{0,5}$/g.test(value) : true, // tests for min length of 6 char
+			validation: value => ((typeOfRegistration === 'Simplificado' && step === 1) || step === 3) ? !/^.{0,5}$/g.test(value) : true, // tests for min length of 6 char
 			value: pass,
 			message: 'Mínimo 6 caracteres'
 		}, {
 			name: 'confirmPass',
-			validation: value => (typeOfRegistration === 'Simplificado' && step === 1) || step === 3 ? value === pass : true,
+			validation: value => ((typeOfRegistration === 'Simplificado' && step === 1) || step === 3) ? value === pass : true,
 			value: confirmPass,
 			message: 'Deve ser igual ao campo anterior'
 		}, {
@@ -154,10 +163,35 @@ const Register = () => {
 			message: 'Campo obrigatório'
 		}, {
 			name: 'idDoc',
-			validation: value => value === true,
+			validation: value => step === 4 ? value === true : true,
 			value: isSubmittedIdDoc,
 			message: 'Envio de arqv. obrigatório'
-		},
+		}, {
+			name: 'bankNumber',
+			validation: value => step === 5 ? banksList.filter(bank => value === bank.split(' - ')) : true,
+			value: bankNumber,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'holderName',
+			validation: value => step === 5 ? !!value : true,
+			value: holderName,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'agency',
+			validation: value => step === 5 ? !!value : true,
+			value: agency,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'accountNumber',
+			validation: value => step === 5 ? !!value : true,
+			value: accountNumber,
+			message: 'Campo obrigatório'
+		}, {
+			name: 'accountType',
+			validation: value => step === 5 ? ['savings', 'checking'].includes(value) : true,
+			value: accountType,
+			message: 'Campo obrigatório'
+		}
 	]
 
 	const cepHandleChange = async (e) => {
@@ -184,7 +218,7 @@ const Register = () => {
 			<h1 style={welcome}>
 				Crie sua conta de <span style={marker}>Fabricante</span>,
 			</h1>
-			{typeOfRegistration === '' && step === 0 &&
+			{step === 0 &&
 				<Form
 					buttonName="Avançar"
 					validations={validations}
@@ -201,7 +235,7 @@ const Register = () => {
 								onChangeKeyboard={element => {
 									if (element) {
 										setTypeOfRegistration(element.value)
-										if (value === '') setStep(0)
+										if (element.value === '') setStep(0)
 										else setStep(1)
 									}
 								}}
@@ -226,7 +260,7 @@ const Register = () => {
 							onChangeKeyboard={element => {
 								if (element) {
 									setTypeOfRegistration(element.value)
-									if (value === '') setStep(0)
+									if (element.value === '') setStep(0)
 									else setStep(1)
 								}
 							}}
@@ -238,7 +272,7 @@ const Register = () => {
 					<GetCnpj cnpj={cnpj} setState={setState} suppliers={[]} setCnpjValid={setCnpjValid} />
 					<Form
 						validations={validations}
-						sendToBackend={() => setStep(step + 1)}
+						sendToBackend={simplifiedRegistration ? simplifiedRegistration(state) : () => null}
 						inputs={[
 							<FormInput name='name' label='Nome' input={
 								<InputText
@@ -312,7 +346,7 @@ const Register = () => {
 							onChangeKeyboard={element => {
 								if (element) {
 									setTypeOfRegistration(element.value)
-									if (value === '') setStep(0)
+									if (element.value === '') setStep(0)
 									else setStep(1)
 								}
 							}}
@@ -382,7 +416,7 @@ const Register = () => {
 									onChangeKeyboard={element => {
 										if (element) {
 											setTypeOfRegistration(element.value)
-											if (value === '') setStep(0)
+											if (element.value === '') setStep(0)
 											else setStep(1)
 										}
 									}}
@@ -475,7 +509,7 @@ const Register = () => {
 									onChangeKeyboard={element => {
 										if (element) {
 											setTypeOfRegistration(element.value)
-											if (value === '') setStep(0)
+											if (element.value === '') setStep(0)
 											else setStep(1)
 										}
 									}}
@@ -562,25 +596,7 @@ const Register = () => {
 								sendToBackend={uploadImage(setIsSubmittingIdDoc, setIsSubmittedIdDoc, 'identificacao')}
 								isDisabled={isSubmittingIdDoc}
 							/>
-						} />/*,
-						<FormInput name='atividade' label='Comprovante de Atividade' input={
-							<ImageUpload
-								sendToBackend={uploadImage((a) => null, 'atividade')}
-								isDisabled={false}
-							/>
-						} />,
-						<FormInput name='residencia' label='Comprovante de Residência' input={
-							<ImageUpload
-								sendToBackend={uploadImage((a) => null, 'residencia')}
-								isDisabled={false}
-							/>
-						} />,
-						<FormInput name='idCnpj' label='Identificação CNPJ' input={
-							<ImageUpload
-								sendToBackend={uploadImage((a) => null, 'cnpj')}
-								isDisabled={false}
-							/>
-						} />*/
+						} />
 					]}
 				/>
 			}
@@ -589,59 +605,75 @@ const Register = () => {
 					validations={validations}
 					sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
 					inputs={[
-						<FormInput name='name' label='Nome' input={
-							<InputText
-								value={name}
-								onChange={({ target: { value } }) => setName(capitalize(value))}
-								placeholder='Nome completo'
+						<FormInput name='accountType' label='Tipo de Conta' input={
+							<Dropdown
+								value={accountType}
+								onChange={({ target: { value } }) => {
+									if (value === 'Conta Poupança') setAccountType('savings')
+									else if (value === 'Conta Corrente') setAccountType('checking')
+									else null
+								}}
+								onChangeKeyboard={element => {
+									if (element) {
+										if (element.value === 'Conta Poupança') setAccountType('savings')
+										else if (element.value === 'Conta Corrente') setAccountType('checking')
+										else null
+									}
+								}}
+								list={accountTypeList}
+								placeholder="Corrente"
+								readOnly={true}
 							/>
 						} />,
-						<FormInput name='cpf' label='CPF' input={
-							<InputText
-								value={cpf}
-								onChange={({ target: { value } }) => setCpf(maskInput(value, '###.###.###-##', true))}
-								placeholder='000.000.000-00'
+						<FormInput name='bankNumber' label='Banco' input={
+							<Dropdown
+								value={bankName}
+								onChange={({ target: { value } }) => {
+									setBankName(value)
+									if (value.indexOf(' - ')) {
+										value.split(' - ')[0] ? setBankNumber(value.split(' - ')[0]) : null
+									}
+								}}
+								onChangeKeyboard={element => {
+									if (element) {
+										setBankName(element.value)
+										if (element.value.indexOf(' - ')) {
+											element.value.split(' - ')[0] ? setBankNumber(element.value.split(' - ')[0]) : null
+										}
+									}
+								}}
+								list={banksList}
+								placeholder="Nubank"
 							/>
 						} />,
-						<FormInput name='birthdate' label='Data de Nascimento' input={
+						<FormInput name='holderName' label='Titular' input={
 							<InputText
-								value={birthdate}
-								onChange={({ target: { value } }) => setBirthdate(maskInput(value, '##/##/####', true))}
-								placeholder='01/01/2000'
-								inputMode='numeric'
+								value={holderName}
+								onChange={({ target: { value } }) => setHolderName(capitalize(value))}
+								placeholder='Nome do titular'
 							/>
 						} />,
-						<FormInput name='phone' label='Telefone' input={
+						<FormInput name='accountNumber' label='Número da Conta' input={
 							<InputText
-								value={phone}
-								onChange={({ target: { value } }) => setPhone(maskInput(value, '(##) #####-####', true))}
-								placeholder='(11) 99999-9999'
-								inputMode='numeric'
+								value={accountNumber}
+								onChange={({ target: { value } }) => setAccountNumber(value)}
+								placeholder='Ex.: 9472156-8'
+								inputmode='numeric'
 							/>
 						} />,
-						<FormInput name='email' label='Email' input={
+						<FormInput name='agency' label='Agência' input={
 							<InputText
-								value={email}
-								onChange={({ target: { value } }) => setEmail(value)}
-								placeholder='ex@exemplo.com'
-								inputMode='email'
-								autoComplete='email'
+								value={agency}
+								onChange={({ target: { value } }) => setAgency(value)}
+								placeholder='Ex.: 0001'
+								inputmode='numeric'
 							/>
 						} />,
-						<FormInput name='pass' label='Senha' input={
+						<FormInput name='cnpj' label='CNPJ' input={
 							<InputText
-								value={pass}
-								onChange={({ target: { value } }) => setPass(value)}
-								placeholder='Mínimo 6 caracteres'
-								type='password'
-							/>
-						} />,
-						<FormInput name='confirmPass' label='Confirme a senha' input={
-							<InputText
-								value={confirmPass}
-								onChange={({ target: { value } }) => setConfirmPass(value)}
-								placeholder='Igual ao campo anterior'
-								type='password'
+								value={cnpj}
+								onChange={() => { }}
+								disabled={true}
 							/>
 						} />
 					]}
