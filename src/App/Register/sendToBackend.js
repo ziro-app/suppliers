@@ -97,10 +97,11 @@ export const sendToBackend = state => () => {
 	})
 },
 	simplifiedRegistration = state => () => {
-		const { name, cpf, birthdate, phone, email, cnpj, cnpjValid } = state
+		const { name, email, cnpj, cnpjValid, pass, reason, fantasia,
+			opening, cep, street, number, complement, neighborhood, city, cityState } = state
 		const nomeCompleto = name ? name.trim() : ''
-		const telefone = phone ? '55 ' + phone.trim() : ''
 		const lowerEmail = email ? email.toLowerCase() : ''
+		const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
 		const url = process.env.SHEET_URL
 		const today = new Date()
 		const body = {
@@ -113,11 +114,20 @@ export const sendToBackend = state => () => {
 					[
 						dateHourFormatterUTC3(today),
 						nomeCompleto,
-						cpf,
-						birthdate,
-						telefone,
+						,
+						,
+						,
 						lowerEmail,
-						cnpj
+						cnpj,
+						reason,
+						fantasia,
+						opening,
+						,
+						cep,
+						endereco,
+						neighborhood,
+						city,
+						cityState
 					]
 				]
 			},
@@ -129,46 +139,31 @@ export const sendToBackend = state => () => {
 				'Authorization': process.env.SHEET_TOKEN
 			}
 		}
-		const zoopConfig = {
-			url: 'suppliers-create',
-			method: 'post',
-			params: {},
-			baseURL: `http://localhost:9000/.netlify/functions/`, //process.env.ZOOP_URL
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				'Authorization': process.env.ZOOP_TOKEN,
-				'Content-Type': 'application/json',
-				'Accept': 'application/json'
-			},
-			data: {
-				ein: cnpj,
-				owner: {
-					first_name: nomeCompleto.split(' ')[0],
-					last_name: nomeCompleto.split(' ').slice(1).join(' '),
-					email: lowerEmail,
-					phone_number: telefone,
-					taxpayer_id: cpf,
-					birthdate
-				}
-			}
-		}
-		console.log(zoopConfig)
 		return new Promise(async (resolve, reject) => {
 			try {
 				if (cnpjValid) {
 					try {
-						const { id } = await post(
-							`http://localhost:9003/.netlify/functions/suppliers-create`,
+						const { data: { id } } = await post(
+							process.env.ZOOP_URL,
 							{
 								ein: cnpj,
 								owner: {
 									first_name: nomeCompleto.split(' ')[0],
 									last_name: nomeCompleto.split(' ').slice(1).join(' '),
-									email: lowerEmail,
-									phone_number: telefone,
-									taxpayer_id: cpf,
-									birthdate
-								}
+									email: lowerEmail
+								},
+								business_name: reason,
+								business_address: {
+									line1: street,
+									line2: number,
+									line3: complement,
+									neighborhood,
+									city,
+									state: cityState,
+									postal_code: cep.replace('-', ''),
+									country: 'BR'
+								},
+								business_opening_date: opening.split('/').reverse().join('-')
 							},
 							{
 								headers: {
@@ -176,7 +171,6 @@ export const sendToBackend = state => () => {
 								},
 							}
 						);
-						//const { id } = await axios(zoopConfig)
 						try {
 							const { user } = await auth.createUserWithEmailAndPassword(lowerEmail, pass)
 							try {
@@ -187,11 +181,16 @@ export const sendToBackend = state => () => {
 										uid: user.uid,
 										zoopId: id,
 										nomeCompleto,
-										cpf,
-										nascimento: birthdate,
-										telefone,
 										email: lowerEmail,
-										cnpj
+										cnpj,
+										razao: reason,
+										fantasia,
+										abertura: opening,
+										cep,
+										endereco,
+										bairro: neighborhood,
+										cidade: city,
+										estado: cityState
 									})
 									await db.collection('users').add({ email, app: 'suppliers' })
 									await post(url, body, config)

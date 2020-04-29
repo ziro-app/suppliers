@@ -13,7 +13,7 @@ const Transfers = () => {
     const [payments, setPayments] = useState([]);
     const { zoopId } = useContext(userContext)
 
-    useEffect(() => fetch(setIsLoading, setErrorLoading, setPayments), []);
+    useEffect(() => fetch(setIsLoading, setErrorLoading, setPayments, zoopId), []);
 
     if (isLoading)
         return (

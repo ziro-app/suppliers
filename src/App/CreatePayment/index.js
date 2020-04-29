@@ -29,9 +29,9 @@ const CreatePayment = () => {
         },
         {
             name: 'maxInstallments',
-            validation: value => /^[1-6]$/g.test(value),
+            validation: value => parseInt(value) > 0 && parseInt(value) <= 10,
             value: maxInstallments,
-            message: 'Deve ser entre 1 e 6'
+            message: 'Deve ser entre 1 e 10'
         }
     ]
 
@@ -62,8 +62,8 @@ const CreatePayment = () => {
                     input={
                         <InputText
                             value={maxInstallments}
-                            onChange={({ target: { value } }) => setMaxInstallments(maskInput(value, '#', true))}
-                            placeholder='6'
+                            onChange={({ target: { value } }) => setMaxInstallments(maskInput(value, '##', true))}
+                            placeholder='10'
                         />
                     }
                 />

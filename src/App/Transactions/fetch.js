@@ -1,7 +1,7 @@
 import currencyFormat from '@ziro/currency-format';
 import { db } from '../../Firebase/index';
 
-const fetch = (setIsLoading, setErrorLoading, setPayments, zoopId = '13c09ab817014ae6843634493177afb2') => {
+const fetch = (setIsLoading, setErrorLoading, setPayments, zoopId) => {
     const run = async () => {
         db.collection('credit-card-payments')
             .where('sellerZoopId', '==', zoopId)

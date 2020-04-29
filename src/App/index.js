@@ -8,12 +8,12 @@ import ErrorBoundary from '@bit/vitorbarbosa19.ziro.error-boundary'
 import Router from './Router'
 
 export const App = () => {
-	/* Atributos utilizados em outras páginas a serem criados => name, zoopIp  */
 	const [loading, setLoading] = useState(true)
 	const [errorLoading, setErrorLoading] = useState(false)
 	const [uid, setUid] = useState(null)
-
+	const [zoopId, setZoopId] = useState(null)
 	const [name, setName] = useState(null)
+	const [cpf, setCpf] = useState(null)
 	const [cnpj, setCnpj] = useState(null)
 	const [birthdate, setBirthdate] = useState(null)
 	const [phone, setPhone] = useState(null)
@@ -23,6 +23,13 @@ export const App = () => {
 	const [city, setCity] = useState(null)
 	const [cityState, setCityState] = useState(null)
 	const [email, setEmail] = useState(null)
+	const [reason, setReason] = useState(null)
+	const [fantasy, setFantasy] = useState(null)
+	const [codBank, setCodBank] = useState(null)
+	const [holderName, setHolderName] = useState(null)
+	const [accountType, setAccountType] = useState(null)
+	const [accountNumber, setAccountNumber] = useState(null)
+	const [agency, setAgency] = useState(null)
 	const [userPos, setUserPos] = useState(null)
 	const url = process.env.SHEET_URL
 	const config = {
@@ -35,7 +42,7 @@ export const App = () => {
 		"apiResource": "values",
 		"apiMethod": "get",
 		"range": "Fabricantes",
-		"spreadsheetId": "1x6T_309HUNijByr1B_2Ofi0oFG3USyTAWH66QV-6L-0", // Only for tests
+		"spreadsheetId": process.env.SHEET_SUPPLIERS_ID
 	}
 
 	useEffect(() => {
@@ -46,9 +53,11 @@ export const App = () => {
 				// Adding event listener
 				unsubscribe = db.collection('suppliers').where('uid', '==', user.uid).onSnapshot(snapshot => {
 					if (!snapshot.empty) {
-						const { fname, lname, cnpj, nascimento, phone, endereco, bairro, cep,
-							cidade, estado, email } = snapshot.docs[0].data()
-						setName(`${fname} ${lname}`)
+						const { nomeCompleto, cpf, cnpj, nascimento, phone, endereco, bairro, cep,
+							cidade, estado, email, codBanco, titular, tipoConta, numConta, agencia,
+							fantasia, razao, zoopId } = snapshot.docs[0].data()
+						setName(nomeCompleto ? nomeCompleto : '')
+						setCpf(cpf ? cpf : '')
 						setCnpj(cnpj ? cnpj : '')
 						setBirthdate(nascimento ? nascimento : '')
 						setPhone(phone ? phone : '')
@@ -58,6 +67,14 @@ export const App = () => {
 						setCityState(estado ? estado : '')
 						setCity(cidade ? cidade : '')
 						setEmail(email ? email : '')
+						setCodBank(codBanco ? codBanco : '')
+						setHolderName(titular ? titular : '')
+						setAccountType(tipoConta ? tipoConta : '')
+						setAccountNumber(numConta ? numConta : '')
+						setAgency(agencia ? agencia : '')
+						setFantasy(fantasia ? fantasia : '')
+						setReason(razao ? razao : '')
+						setZoopId(zoopId ? zoopId : '')
 					}
 				})
 			}
@@ -65,6 +82,7 @@ export const App = () => {
 				unsubscribe()
 				setUid('')
 				setName('')
+				setCpf('')
 				setCnpj('')
 				setBirthdate('')
 				setPhone('')
@@ -74,7 +92,14 @@ export const App = () => {
 				setCity('')
 				setCityState('')
 				setEmail('')
-				setUserPos('')
+				setCodBank('')
+				setHolderName('')
+				setAccountType('')
+				setAccountNumber('')
+				setAgency('')
+				setFantasy('')
+				setReason('')
+				setZoopId('')
 			}
 		})
 	}, [])
@@ -85,9 +110,11 @@ export const App = () => {
 					const docRef = await db.collection('suppliers').where('uid', '==', uid).get()
 					if (!docRef.empty) {
 						docRef.forEach(async doc => {
-							const { fname, lname, cnpj, nascimento, phone, endereco, bairro, cep,
-								cidade, estado, email } = doc.data()
-							setName(`${fname} ${lname}`)
+							const { nomeCompleto, cpf, cnpj, nascimento, phone, endereco, bairro, cep,
+								cidade, estado, email, codBanco, titular, tipoConta, numConta, agencia,
+								fantasia, razao, zoopId } = doc.data()
+							setName(nomeCompleto ? nomeCompleto : '')
+							setCpf(cpf ? cpf : '')
 							setCnpj(cnpj ? cnpj : '')
 							setBirthdate(nascimento ? nascimento : '')
 							setPhone(phone ? phone : '')
@@ -97,10 +124,18 @@ export const App = () => {
 							setCityState(estado ? estado : '')
 							setCity(cidade ? cidade : '')
 							setEmail(email ? email : '')
+							setCodBank(codBanco ? codBanco : '')
+							setHolderName(titular ? titular : '')
+							setAccountType(tipoConta ? tipoConta : '')
+							setAccountNumber(numConta ? numConta : '')
+							setAgency(agencia ? agencia : '')
+							setFantasy(fantasia ? fantasia : '')
+							setReason(razao ? razao : '')
+							setZoopId(zoopId ? zoopId : '')
 							if (userPos === null || userPos === '') {
 								const { data: { values } } = await post(url, body, config)
 								values.map((user, index) => {
-									if (user[2] === cnpj) {
+									if (user[6] === cnpj) {
 										setUserPos(index + 1)
 									}
 								})
@@ -118,8 +153,9 @@ export const App = () => {
 		getUserData()
 	}, [uid])
 	const userData = {
-		uid, name, cnpj, birthdate, phone, address, neighborhood,
-		cep, city, cityState, email, userPos
+		uid, name, cpf, cnpj, birthdate, phone, address, neighborhood,
+		cep, city, cityState, email, userPos, codBank, holderName, accountType,
+		accountNumber, agency, fantasy, reason, zoopId
 	}
 	if (loading) return <InitialLoader />
 	if (errorLoading) return <Error />
