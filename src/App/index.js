@@ -53,14 +53,14 @@ export const App = () => {
 				// Adding event listener
 				unsubscribe = db.collection('suppliers').where('uid', '==', user.uid).onSnapshot(snapshot => {
 					if (!snapshot.empty) {
-						const { nomeCompleto, cpf, cnpj, nascimento, phone, endereco, bairro, cep,
+						const { nomeCompleto, cpf, cnpj, nascimento, telefone, endereco, bairro, cep,
 							cidade, estado, email, codBanco, titular, tipoConta, numConta, agencia,
 							fantasia, razao, zoopId } = snapshot.docs[0].data()
 						setName(nomeCompleto ? nomeCompleto : '')
 						setCpf(cpf ? cpf : '')
 						setCnpj(cnpj ? cnpj : '')
 						setBirthdate(nascimento ? nascimento : '')
-						setPhone(phone ? phone : '')
+						setPhone(telefone ? telefone : '')
 						setAddress(endereco ? endereco : '')
 						setNeighborhood(bairro ? bairro : '')
 						setCep(cep ? cep : '')
@@ -110,14 +110,14 @@ export const App = () => {
 					const docRef = await db.collection('suppliers').where('uid', '==', uid).get()
 					if (!docRef.empty) {
 						docRef.forEach(async doc => {
-							const { nomeCompleto, cpf, cnpj, nascimento, phone, endereco, bairro, cep,
+							const { nomeCompleto, cpf, cnpj, nascimento, telefone, endereco, bairro, cep,
 								cidade, estado, email, codBanco, titular, tipoConta, numConta, agencia,
 								fantasia, razao, zoopId } = doc.data()
 							setName(nomeCompleto ? nomeCompleto : '')
 							setCpf(cpf ? cpf : '')
 							setCnpj(cnpj ? cnpj : '')
 							setBirthdate(nascimento ? nascimento : '')
-							setPhone(phone ? phone : '')
+							setPhone(telefone ? telefone : '')
 							setAddress(endereco ? endereco : '')
 							setNeighborhood(bairro ? bairro : '')
 							setCep(cep ? cep : '')

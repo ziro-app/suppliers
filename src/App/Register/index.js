@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { get } from 'axios'
 import HeaderHome from '@bit/vitorbarbosa19.ziro.header-home'
 import Form from '@bit/vitorbarbosa19.ziro.form'
@@ -6,16 +6,34 @@ import FormInput from '@bit/vitorbarbosa19.ziro.form-input'
 import InputText from '@bit/vitorbarbosa19.ziro.input-text'
 import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown'
 import Button from '@bit/vitorbarbosa19.ziro.button'
-import ImageUpload from '@bit/vitorbarbosa19.ziro.image-upload'
+import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
+import Error from '@bit/vitorbarbosa19.ziro.error'
 import maskInput from '@ziro/mask-input'
 import capitalize from '@ziro/capitalize'
 import { containerWithPadding } from '@ziro/theme'
+import SingleImageUpload from './SingleImageUpload/index'
 import GetCnpj from './GetCnpj/index'
 import { welcome, marker, button } from './styles'
 import banksList from './banks'
-import { sendToBackend, uploadImage, simplifiedRegistration } from './sendToBackend'
+import fetch from './fetch'
+import { sendToBackend, simplifiedRegistration } from './sendToBackend'
+
+const categories = {
+	'Bijouterias': '09',
+	'Calçados / Bolsas / Malas': '10',
+	'Cosméticos / Produtos de beleza': '11',
+	'Lavanderia / Tinturaria': '12',
+	'Magazines': '13',
+	'Roupas masc., fem., inf., geral': '14',
+	'Uniformes': '15',
+	'Vestuário': '25',
+	'Joalheria': '32'
+}
 
 const Register = () => {
+	const [isError, setIsError] = useState(false)
+	const [isLoading, setIsLoading] = useState(true)
+	const [suppliers, setSuppliers] = useState([])
 	const [step, setStep] = useState(0)
 	const [cnpjValid, setCnpjValid] = useState(false)
 	// mixed form field
@@ -27,11 +45,9 @@ const Register = () => {
 	const [reason, setReason] = useState('')
 	const [fantasia, setFantasia] = useState('')
 	const [opening, setOpening] = useState('')
+	const [categoryName, setCategoryName] = useState('')
 	const [category, setCategory] = useState('')
-	const categoryList = ['5631  - Bijouterias', '5948 - Calçados / Bolsas / Malas',
-		'5977 - Cosméticos / Produtos de beleza', '7216 - Lavanderia / Tinturaria',
-		'5192 - Magazines', '5691 - Roupas masc., fem., inf., geral', '5137 - Uniformes',
-		'5651 - Vestuário', '5944 - Joalheria']
+	const categoryList = ['Bijouterias', 'Calçados / Bolsas / Malas', 'Cosméticos / Produtos de beleza', 'Lavanderia / Tinturaria', 'Magazines', 'Roupas masc., fem., inf., geral', 'Uniformes', 'Vestuário', 'Joalheria']
 	const [cep, setCep] = useState('')
 	const [street, setStreet] = useState('')
 	const [number, setNumber] = useState('')
@@ -50,8 +66,10 @@ const Register = () => {
 	const [pass, setPass] = useState('')
 	const [confirmPass, setConfirmPass] = useState('')
 	// form fields 3 - Upload de documentos
-	const [isSubmittingIdDoc, setIsSubmittingIdDoc] = useState(false)
-	const [isSubmittedIdDoc, setIsSubmittedIdDoc] = useState(false)
+	const [fileDoc, setFileDoc] = useState('')
+	const [fileAtv, setFileAtv] = useState('')
+	const [fileRes, setFileRes] = useState('')
+	const [fileCnpj, setFileCnpj] = useState('')
 	// form fields 4 - Dados bancários
 	const [bankName, setBankName] = useState('')
 	const [bankNumber, setBankNumber] = useState('')
@@ -66,12 +84,13 @@ const Register = () => {
 		setTypeOfRegistration, setCnpj, setCnpjValid, setReason, setFantasia, setOpening, setCategory,
 		setName, setCpf, setEmail, setBirthdate, setPhone, setStreet, setNumber, setComplement,
 		setNeighborhood, setCep, setCity, setCityState, setPass, setBankNumber, setHolderName, setAccountNumber,
-		setAgency, setAccountType
+		setAgency, setAccountType, setFileDoc, setFileAtv, setFileRes, setFileCnpj
 	}
 	const state = {
 		cnpjValid, typeOfRegistration, cnpj, reason, fantasia, opening, category, cep, street, number,
 		complement, neighborhood, city, cityState, name, cpf, email, birthdate, phone, pass,
-		bankNumber, holderName, accountNumber, agency, accountType, ...setState
+		bankNumber, holderName, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
+		fileCnpj, categoryName, accountTypeViewName, ...setState
 	}
 	const validations = [
 		{
@@ -102,7 +121,7 @@ const Register = () => {
 		}, {
 			name: 'category',
 			validation: value => (typeOfRegistration === 'Completo' && step === 1) ? categoryList.includes(value) : true,
-			value: category,
+			value: categoryName,
 			message: 'Campo obrigatório'
 		}, {
 			name: 'name',
@@ -166,9 +185,24 @@ const Register = () => {
 			message: 'Campo obrigatório'
 		}, {
 			name: 'idDoc',
-			validation: value => step === 3 ? value === true : true,
-			value: isSubmittedIdDoc,
-			message: 'Envio de arqv. obrigatório'
+			validation: value => step === 3 ? value !== '' : true,
+			value: fileDoc,
+			message: 'Documento obrigatório'
+		}, {
+			name: 'idAtv',
+			validation: value => step === 3 ? value !== '' : true,
+			value: fileAtv,
+			message: 'Documento obrigatório'
+		}, {
+			name: 'idRes',
+			validation: value => step === 3 ? value !== '' : true,
+			value: fileRes,
+			message: 'Documento obrigatório'
+		}, {
+			name: 'idCnpj',
+			validation: value => step === 3 ? value !== '' : true,
+			value: fileCnpj,
+			message: 'Documento obrigatório'
 		}, {
 			name: 'bankNumber',
 			validation: value => step === 4 ? banksList.filter(bank => value === bank.split(' - ')) : true,
@@ -214,6 +248,11 @@ const Register = () => {
 			}
 		}
 	}
+
+	useEffect(() => fetch(setIsLoading, setIsError, setSuppliers), [])
+
+	if (isLoading) return <div style={{ display: 'grid' }}><Spinner size='5rem' /></div>
+	if (isError) return <Error />
 
 	return (
 		<div style={containerWithPadding}>
@@ -272,7 +311,7 @@ const Register = () => {
 							readOnly={true}
 						/>
 					} />
-					<GetCnpj cnpj={cnpj} setState={setState} suppliers={[]} setCnpjValid={setCnpjValid} />
+					<GetCnpj cnpj={cnpj} setState={setState} suppliers={suppliers} setCnpjValid={setCnpjValid} />
 					<Form
 						validations={validations}
 						sendToBackend={simplifiedRegistration ? simplifiedRegistration(state) : () => null}
@@ -335,7 +374,7 @@ const Register = () => {
 							readOnly={true}
 						/>
 					} />
-					<GetCnpj cnpj={cnpj} setState={setState} suppliers={[]} setCnpjValid={setCnpjValid} />
+					<GetCnpj cnpj={cnpj} setState={setState} suppliers={suppliers} setCnpjValid={setCnpjValid} />
 					<Form
 						buttonName="Avançar"
 						validations={validations}
@@ -365,13 +404,21 @@ const Register = () => {
 							} />,
 							<FormInput name='category' label='Categoria' input={
 								<Dropdown
-									value={category}
-									onChange={({ target: { value } }) => setCategory(value)}
-									onChangeKeyboard={element =>
-										element ? setCategory(element.value) : null
+									value={categoryName}
+									onChange={({ target: { value } }) => {
+										setCategoryName(value)
+										setCategory(categories[value])
+									}}
+									onChangeKeyboard={element => {
+										if (element) {
+											setCategoryName(element.value)
+											setCategory(categories[element.value])
+										}
+									}
 									}
 									list={categoryList}
 									placeholder="Bijouterias"
+									readOnly={true}
 								/>
 							} />,
 							<FormInput name='cep' label='CEP' input={
@@ -532,10 +579,52 @@ const Register = () => {
 						validations={validations}
 						sendToBackend={() => setStep(step + 1)}
 						inputs={[
-							<FormInput name='idDoc' label='Documento de Identificação' input={
-								<ImageUpload
-									sendToBackend={uploadImage(setIsSubmittingIdDoc, setIsSubmittedIdDoc, 'identificacao')}
-									isDisabled={isSubmittingIdDoc}
+							<FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
+								<Dropdown
+									value={typeOfRegistration}
+									onChange={({ target: { value } }) => {
+										setTypeOfRegistration(value)
+										if (value === '') setStep(0)
+										else setStep(1)
+									}}
+									onChangeKeyboard={element => {
+										if (element) {
+											setTypeOfRegistration(element.value)
+											if (element.value === '') setStep(0)
+											else setStep(1)
+										}
+									}}
+									list={typeOfRegistrationList}
+									placeholder="Completo"
+									readOnly={true}
+								/>
+							} />,
+							<FormInput name='idDoc' label='Documento de Identificação (Ex: RG)' input={
+								<SingleImageUpload
+									setFile={setFileDoc}
+									persistFilename={fileDoc.name}
+									indexOfFile={0}
+								/>
+							} />,
+							<FormInput name='idAtv' label='Documento de Atividade (Ex: Alvará)' input={
+								<SingleImageUpload
+									setFile={setFileAtv}
+									persistFilename={fileAtv.name}
+									indexOfFile={1}
+								/>
+							} />,
+							<FormInput name='idRes' label='Comprovante de Residência (Ex: Conta de luz)' input={
+								<SingleImageUpload
+									setFile={setFileRes}
+									persistFilename={fileRes.name}
+									indexOfFile={2}
+								/>
+							} />,
+							<FormInput name='idCnpj' label='Documento de CNPJ' input={
+								<SingleImageUpload
+									setFile={setFileCnpj}
+									persistFilename={fileCnpj.name}
+									indexOfFile={3}
 								/>
 							} />
 						]}
@@ -556,6 +645,26 @@ const Register = () => {
 						validations={validations}
 						sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
 						inputs={[
+							<FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
+								<Dropdown
+									value={typeOfRegistration}
+									onChange={({ target: { value } }) => {
+										setTypeOfRegistration(value)
+										if (value === '') setStep(0)
+										else setStep(1)
+									}}
+									onChangeKeyboard={element => {
+										if (element) {
+											setTypeOfRegistration(element.value)
+											if (element.value === '') setStep(0)
+											else setStep(1)
+										}
+									}}
+									list={typeOfRegistrationList}
+									placeholder="Completo"
+									readOnly={true}
+								/>
+							} />,
 							<FormInput name='accountType' label='Tipo da Conta' input={
 								<Dropdown
 									value={accountTypeViewName}
@@ -606,20 +715,20 @@ const Register = () => {
 									placeholder='Nome do titular'
 								/>
 							} />,
-							<FormInput name='accountNumber' label='Número da Conta' input={
+							<FormInput name='accountNumber' label='Número da Conta com DV' input={
 								<InputText
 									value={accountNumber}
 									onChange={({ target: { value } }) => setAccountNumber(value)}
 									placeholder='Ex.: 9472156-8'
-									inputmode='numeric'
+									inputMode='numeric'
 								/>
 							} />,
-							<FormInput name='agency' label='Agência' input={
+							<FormInput name='agency' label='Agência sem DV' input={
 								<InputText
 									value={agency}
-									onChange={({ target: { value } }) => setAgency(value)}
+									onChange={({ target: { value } }) => setAgency(maskInput(value, '####', true))}
 									placeholder='Ex.: 0001'
-									inputmode='numeric'
+									inputMode='numeric'
 								/>
 							} />,
 							<FormInput name='cnpj' label='CNPJ' input={
