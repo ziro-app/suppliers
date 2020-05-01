@@ -9,11 +9,19 @@ import searchCnpj from './searchCnpj'
 const GetCnpj = ({ cnpj, setState, suppliers, setCnpjValid }) => {
     const { setCnpj, ...rest } = setState
     const state = { cnpj, suppliers, setCnpjValid, ...rest }
+    const validations = [
+        {
+            name: 'cnpj',
+            validation: value => /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/.test(value),
+            value: cnpj,
+            message: 'CNPJ inválido'
+        }
+    ]
     return (
         <Form
             buttonName='Validar CNPJ'
             buttonOnTop={true}
-            validations={[]}
+            validations={validations}
             sendToBackend={searchCnpj ? searchCnpj(state) : () => null}
             inputs={[
                 <FormInput name='cnpj' label='CNPJ' input={

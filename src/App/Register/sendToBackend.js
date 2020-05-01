@@ -18,11 +18,10 @@ const categories = {
 
 export const sendToBackend = state => () => {
 	const { cnpjValid, cnpj, reason, fantasia, opening, category, cep,
-		street, number, complement, neighborhood, city, cityState, name, cpf, email,
+		street, number, complement, neighborhood, city, cityState, fname, lname, cpf, email,
 		birthdate, phone, pass, bankNumber, holderName, accountNumber, agency, accountType,
 		fileDoc, fileAtv, fileRes, fileCnpj, categoryName, accountTypeViewName } = state
-	const nomeCompleto = name ? name.trim() : ''
-	const lowerEmail = email ? email.toLowerCase() : ''
+	const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
 	const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
 	const telefone = phone ? `55 ${phone.trim()}` : ''
 	const titular = holderName ? holderName.trim() : ''
@@ -40,7 +39,7 @@ export const sendToBackend = state => () => {
 					cpf,
 					birthdate,
 					telefone,
-					lowerEmail,
+					email,
 					cnpj,
 					reason,
 					fantasia,
@@ -72,9 +71,9 @@ export const sendToBackend = state => () => {
 						{
 							ein: cnpj,
 							owner: {
-								first_name: nomeCompleto.split(' ')[0],
-								last_name: nomeCompleto.split(' ').slice(1).join(' '),
-								email: lowerEmail,
+								first_name: fname ? fname.trim() : '',
+								last_name: lname ? lname.trim() : '',
+								email,
 								phone_number: telefone,
 								taxpayer_id: cpf,
 								birthdate: birthdate.split('/').reverse().join('-')
@@ -159,12 +158,12 @@ export const sendToBackend = state => () => {
 									i += 1
 								} catch (error) {
 									console.log(error)
-									throw `Erro no upload da imagem ${i + 1}`
+									throw { msg: `Erro no upload da imagem ${i + 1}`, customError: true }
 								}
 							}))
 
 							try {
-								const { user } = await auth.createUserWithEmailAndPassword(lowerEmail, pass)
+								const { user } = await auth.createUserWithEmailAndPassword(email, pass)
 								try {
 									await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })
 									try {
@@ -172,11 +171,12 @@ export const sendToBackend = state => () => {
 											cadastro: today,
 											uid: user.uid,
 											zoopId: id,
-											nomeCompleto,
+											nome: fname ? fname.trim() : '',
+											sobrenome: lname ? lname.trim() : '',
 											cpf,
 											nascimento: birthdate,
 											telefone: phone,
-											email: lowerEmail,
+											email,
 											cnpj,
 											razao: reason,
 											fantasia,
@@ -227,11 +227,11 @@ export const sendToBackend = state => () => {
 							}
 						} catch (error) {
 							console.log(error)
-							throw 'Erro no upload das imagens. Fale com seu assessor'
+							throw { msg: 'Erro no upload das imagens. Fale com seu assessor', customError: true }
 						}
 					} catch (error) {
 						console.log(error)
-						throw 'Erro ao criar conta bancária. Fale com seu assessor'
+						throw { msg: 'Erro ao criar conta bancária. Fale com seu assessor', customError: true }
 					}
 				} catch (error) {
 					console.log(error)
@@ -252,10 +252,9 @@ export const sendToBackend = state => () => {
 	})
 },
 	simplifiedRegistration = state => () => {
-		const { name, email, cnpj, cnpjValid, pass, reason, fantasia,
+		const { fname, lname, email, cnpj, cnpjValid, pass, reason, fantasia,
 			opening, cep, street, number, complement, neighborhood, city, cityState } = state
-		const nomeCompleto = name ? name.trim() : ''
-		const lowerEmail = email ? email.toLowerCase() : ''
+		const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
 		const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
 		const today = new Date()
 		const body = {
@@ -271,7 +270,7 @@ export const sendToBackend = state => () => {
 						,
 						,
 						,
-						lowerEmail,
+						email,
 						cnpj,
 						reason,
 						fantasia,
@@ -293,13 +292,13 @@ export const sendToBackend = state => () => {
 				if (cnpjValid) {
 					try {
 						const { data: { id } } = await post(
-							process.env.ZOOP_URL,
+							process.env.ZOOP_URL_SELLERS,
 							{
 								ein: cnpj,
 								owner: {
-									first_name: nomeCompleto.split(' ')[0],
-									last_name: nomeCompleto.split(' ').slice(1).join(' '),
-									email: lowerEmail
+									first_name: fname ? fname.trim() : '',
+									last_name: lname ? lname.trim() : '',
+									email
 								},
 								business_name: reason,
 								business_address: {
@@ -321,7 +320,7 @@ export const sendToBackend = state => () => {
 							}
 						);
 						try {
-							const { user } = await auth.createUserWithEmailAndPassword(lowerEmail, pass)
+							const { user } = await auth.createUserWithEmailAndPassword(email, pass)
 							try {
 								await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })
 								try {
@@ -329,8 +328,9 @@ export const sendToBackend = state => () => {
 										cadastro: today,
 										uid: user.uid,
 										zoopId: id,
-										nomeCompleto,
-										email: lowerEmail,
+										nome: fname ? fname.trim() : '',
+										sobrenome: lname ? lname.trim() : '',
+										email,
 										cnpj,
 										razao: reason,
 										fantasia,

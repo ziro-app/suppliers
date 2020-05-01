@@ -40,7 +40,7 @@ const Register = () => {
 	const [cnpj, setCnpj] = useState('')
 	// form fields 0
 	const [typeOfRegistration, setTypeOfRegistration] = useState('')
-	const typeOfRegistrationList = ['Completo', 'Simplificado']
+	const typeOfRegistrationList = ['Simplificado', 'Completo']
 	// form fields 1
 	const [reason, setReason] = useState('')
 	const [fantasia, setFantasia] = useState('')
@@ -58,7 +58,8 @@ const Register = () => {
 	const [searchingCep, setSearchingCep] = useState(false)
 	const statesList = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO']
 	// form fields 2
-	const [name, setName] = useState('')
+	const [fname, setFName] = useState('')
+	const [lname, setLName] = useState('')
 	const [cpf, setCpf] = useState('')
 	const [email, setEmail] = useState('')
 	const [birthdate, setBirthdate] = useState('')
@@ -82,13 +83,13 @@ const Register = () => {
 
 	const setState = {
 		setTypeOfRegistration, setCnpj, setCnpjValid, setReason, setFantasia, setOpening, setCategory,
-		setName, setCpf, setEmail, setBirthdate, setPhone, setStreet, setNumber, setComplement,
+		setFName, setLName, setCpf, setEmail, setBirthdate, setPhone, setStreet, setNumber, setComplement,
 		setNeighborhood, setCep, setCity, setCityState, setPass, setBankNumber, setHolderName, setAccountNumber,
 		setAgency, setAccountType, setFileDoc, setFileAtv, setFileRes, setFileCnpj
 	}
 	const state = {
 		cnpjValid, typeOfRegistration, cnpj, reason, fantasia, opening, category, cep, street, number,
-		complement, neighborhood, city, cityState, name, cpf, email, birthdate, phone, pass,
+		complement, neighborhood, city, cityState, fname, lname, cpf, email, birthdate, phone, pass,
 		bankNumber, holderName, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
 		fileCnpj, categoryName, accountTypeViewName, ...setState
 	}
@@ -124,10 +125,15 @@ const Register = () => {
 			value: categoryName,
 			message: 'Campo obrigatório'
 		}, {
-			name: 'name',
+			name: 'fname',
 			validation: value => ((typeOfRegistration === 'Simplificado' && step === 1) || step === 2) ? !!value : true,
-			value: name,
+			value: fname,
 			message: 'Nome obrigatório'
+		}, {
+			name: 'lname',
+			validation: value => ((typeOfRegistration === 'Simplificado' && step === 1) || step === 2) ? !!value : true,
+			value: lname,
+			message: 'Sobrenome obrigatório'
 		}, {
 			name: 'cpf',
 			validation: value => step === 2 ? /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)/.test(value) : true,
@@ -231,6 +237,43 @@ const Register = () => {
 		}
 	]
 
+	const clearFields = () => {
+		setTypeOfRegistration('')
+		setCnpj('')
+		setCnpjValid(false)
+		setReason('')
+		setFantasia('')
+		setOpening('')
+		setCategory('')
+		setFName('')
+		setLName('')
+		setCpf('')
+		setEmail('')
+		setBirthdate('')
+		setPhone('')
+		setStreet('')
+		setNumber('')
+		setComplement('')
+		setNeighborhood('')
+		setCep('')
+		setCity('')
+		setCityState('')
+		setPass('')
+		setConfirmPass('')
+		setBankNumber('')
+		setHolderName('')
+		setAccountNumber('')
+		setAgency('')
+		setAccountType('')
+		setFileDoc('')
+		setFileAtv('')
+		setFileRes('')
+		setFileCnpj('')
+		setCategoryName('')
+		setBankName('')
+		setAccountTypeViewName('')
+	}
+
 	const cepHandleChange = async (e) => {
 		const cep = maskInput(e.target.value, '#####-###', true)
 		setCep(cep)
@@ -251,7 +294,7 @@ const Register = () => {
 
 	useEffect(() => fetch(setIsLoading, setIsError, setSuppliers), [])
 
-	if (isLoading) return <div style={{ display: 'grid' }}><Spinner size='5rem' /></div>
+	if (isLoading) return <div style={{ display: 'grid', marginTop: '15px' }}><Spinner size='5rem' /></div>
 	if (isError) return <Error />
 
 	return (
@@ -270,12 +313,14 @@ const Register = () => {
 							<Dropdown
 								value={typeOfRegistration}
 								onChange={({ target: { value } }) => {
+									clearFields()
 									setTypeOfRegistration(value)
 									if (value === '') setStep(0)
 									else setStep(1)
 								}}
 								onChangeKeyboard={element => {
 									if (element) {
+										clearFields()
 										setTypeOfRegistration(element.value)
 										if (element.value === '') setStep(0)
 										else setStep(1)
@@ -295,12 +340,14 @@ const Register = () => {
 						<Dropdown
 							value={typeOfRegistration}
 							onChange={({ target: { value } }) => {
+								clearFields()
 								setTypeOfRegistration(value)
 								if (value === '') setStep(0)
 								else setStep(1)
 							}}
 							onChangeKeyboard={element => {
 								if (element) {
+									clearFields()
 									setTypeOfRegistration(element.value)
 									if (element.value === '') setStep(0)
 									else setStep(1)
@@ -316,17 +363,24 @@ const Register = () => {
 						validations={validations}
 						sendToBackend={simplifiedRegistration ? simplifiedRegistration(state) : () => null}
 						inputs={[
-							<FormInput name='name' label='Nome' input={
+							<FormInput name='fname' label='Nome' input={
 								<InputText
-									value={name}
-									onChange={({ target: { value } }) => setName(capitalize(value))}
-									placeholder='Nome completo'
+									value={fname}
+									onChange={({ target: { value } }) => setFName(capitalize(value))}
+									placeholder='Seu nome'
+								/>
+							} />,
+							<FormInput name='lname' label='Sobrenome' input={
+								<InputText
+									value={lname}
+									onChange={({ target: { value } }) => setLName(capitalize(value))}
+									placeholder='Seu sobrenome'
 								/>
 							} />,
 							<FormInput name='email' label='Email' input={
 								<InputText
 									value={email}
-									onChange={({ target: { value } }) => setEmail(value)}
+									onChange={({ target: { value } }) => setEmail(value.toLowerCase())}
 									placeholder='ex@exemplo.com'
 									inputMode='email'
 									autoComplete='email'
@@ -358,12 +412,14 @@ const Register = () => {
 						<Dropdown
 							value={typeOfRegistration}
 							onChange={({ target: { value } }) => {
+								clearFields()
 								setTypeOfRegistration(value)
 								if (value === '') setStep(0)
 								else setStep(1)
 							}}
 							onChangeKeyboard={element => {
 								if (element) {
+									clearFields()
 									setTypeOfRegistration(element.value)
 									if (element.value === '') setStep(0)
 									else setStep(1)
@@ -489,12 +545,14 @@ const Register = () => {
 								<Dropdown
 									value={typeOfRegistration}
 									onChange={({ target: { value } }) => {
+										clearFields()
 										setTypeOfRegistration(value)
 										if (value === '') setStep(0)
 										else setStep(1)
 									}}
 									onChangeKeyboard={element => {
 										if (element) {
+											clearFields()
 											setTypeOfRegistration(element.value)
 											if (element.value === '') setStep(0)
 											else setStep(1)
@@ -505,11 +563,18 @@ const Register = () => {
 									readOnly={true}
 								/>
 							} />,
-							<FormInput name='name' label='Nome' input={
+							<FormInput name='fname' label='Nome' input={
 								<InputText
-									value={name}
-									onChange={({ target: { value } }) => setName(capitalize(value))}
-									placeholder='Nome completo'
+									value={fname}
+									onChange={({ target: { value } }) => setFName(capitalize(value))}
+									placeholder='Seu nome'
+								/>
+							} />,
+							<FormInput name='lname' label='Sobrenome' input={
+								<InputText
+									value={lname}
+									onChange={({ target: { value } }) => setLName(capitalize(value))}
+									placeholder='Seu sobrenome'
 								/>
 							} />,
 							<FormInput name='cpf' label='CPF' input={
@@ -538,7 +603,7 @@ const Register = () => {
 							<FormInput name='email' label='Email' input={
 								<InputText
 									value={email}
-									onChange={({ target: { value } }) => setEmail(value)}
+									onChange={({ target: { value } }) => setEmail(value.toLowerCase())}
 									placeholder='ex@exemplo.com'
 									inputMode='email'
 									autoComplete='email'
@@ -566,7 +631,7 @@ const Register = () => {
 						<Button
 							type="button"
 							cta="Voltar"
-							template="regular"
+							template="light"
 							click={() => setStep(step - 1)}
 						/>
 					</div>
@@ -583,12 +648,14 @@ const Register = () => {
 								<Dropdown
 									value={typeOfRegistration}
 									onChange={({ target: { value } }) => {
+										clearFields()
 										setTypeOfRegistration(value)
 										if (value === '') setStep(0)
 										else setStep(1)
 									}}
 									onChangeKeyboard={element => {
 										if (element) {
+											clearFields()
 											setTypeOfRegistration(element.value)
 											if (element.value === '') setStep(0)
 											else setStep(1)
@@ -633,7 +700,7 @@ const Register = () => {
 						<Button
 							type="button"
 							cta="Voltar"
-							template="regular"
+							template="light"
 							click={() => setStep(step - 1)}
 						/>
 					</div>
@@ -649,12 +716,14 @@ const Register = () => {
 								<Dropdown
 									value={typeOfRegistration}
 									onChange={({ target: { value } }) => {
+										clearFields()
 										setTypeOfRegistration(value)
 										if (value === '') setStep(0)
 										else setStep(1)
 									}}
 									onChangeKeyboard={element => {
 										if (element) {
+											clearFields()
 											setTypeOfRegistration(element.value)
 											if (element.value === '') setStep(0)
 											else setStep(1)
@@ -744,13 +813,13 @@ const Register = () => {
 						<Button
 							type="button"
 							cta="Voltar"
-							template="regular"
+							template="light"
 							click={() => setStep(step - 1)}
 						/>
 					</div>
 				</>
 			}
-			<p style={{ textAlign: "center", fontWeight: "bold", paddingTop: "20px", fontSize: "15px" }}>Página {step === 0 ? step + 1 : step} de {typeOfRegistration === 'Completo' ? 4 : 1}.</p>
+			{typeOfRegistration && <p style={{ textAlign: "center", fontWeight: "bold", paddingTop: "20px", fontSize: "15px" }}>Página {step === 0 ? step + 1 : step} de {typeOfRegistration === 'Completo' ? 4 : 1}.</p>}
 		</div>
 	)
 }

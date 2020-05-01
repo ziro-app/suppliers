@@ -12,7 +12,8 @@ export const App = () => {
 	const [errorLoading, setErrorLoading] = useState(false)
 	const [uid, setUid] = useState(null)
 	const [zoopId, setZoopId] = useState(null)
-	const [name, setName] = useState(null)
+	const [fname, setFName] = useState(null)
+	const [lname, setLName] = useState(null)
 	const [cpf, setCpf] = useState(null)
 	const [cnpj, setCnpj] = useState(null)
 	const [birthdate, setBirthdate] = useState(null)
@@ -31,6 +32,7 @@ export const App = () => {
 	const [accountNumber, setAccountNumber] = useState(null)
 	const [agency, setAgency] = useState(null)
 	const [userPos, setUserPos] = useState(null)
+	const [docId, setDocId] = useState(null)
 	const url = process.env.SHEET_URL
 	const config = {
 		headers: {
@@ -53,10 +55,12 @@ export const App = () => {
 				// Adding event listener
 				unsubscribe = db.collection('suppliers').where('uid', '==', user.uid).onSnapshot(snapshot => {
 					if (!snapshot.empty) {
-						const { nomeCompleto, cpf, cnpj, nascimento, telefone, endereco, bairro, cep,
+						const { nome, sobrenome, cpf, cnpj, nascimento, telefone, endereco, bairro, cep,
 							cidade, estado, email, codBanco, titular, tipoConta, numConta, agencia,
 							fantasia, razao, zoopId } = snapshot.docs[0].data()
-						setName(nomeCompleto ? nomeCompleto : '')
+						setDocId(snapshot.docs[0].id)
+						setFName(nome ? nome : '')
+						setLName(sobrenome ? sobrenome : '')
 						setCpf(cpf ? cpf : '')
 						setCnpj(cnpj ? cnpj : '')
 						setBirthdate(nascimento ? nascimento : '')
@@ -81,7 +85,9 @@ export const App = () => {
 			else {
 				unsubscribe()
 				setUid('')
-				setName('')
+				setDocId('')
+				setFName('')
+				setLName('')
 				setCpf('')
 				setCnpj('')
 				setBirthdate('')
@@ -110,10 +116,12 @@ export const App = () => {
 					const docRef = await db.collection('suppliers').where('uid', '==', uid).get()
 					if (!docRef.empty) {
 						docRef.forEach(async doc => {
-							const { nomeCompleto, cpf, cnpj, nascimento, telefone, endereco, bairro, cep,
+							const { nome, sobrenome, cpf, cnpj, nascimento, telefone, endereco, bairro, cep,
 								cidade, estado, email, codBanco, titular, tipoConta, numConta, agencia,
 								fantasia, razao, zoopId } = doc.data()
-							setName(nomeCompleto ? nomeCompleto : '')
+							setDocId(doc.id)
+							setFName(nome ? nome : '')
+							setLName(sobrenome ? sobrenome : '')
 							setCpf(cpf ? cpf : '')
 							setCnpj(cnpj ? cnpj : '')
 							setBirthdate(nascimento ? nascimento : '')
@@ -153,9 +161,9 @@ export const App = () => {
 		getUserData()
 	}, [uid])
 	const userData = {
-		uid, name, cpf, cnpj, birthdate, phone, address, neighborhood,
+		uid, fname, lname, cpf, cnpj, birthdate, phone, address, neighborhood,
 		cep, city, cityState, email, userPos, codBank, holderName, accountType,
-		accountNumber, agency, fantasy, reason, zoopId
+		accountNumber, agency, fantasy, reason, zoopId, docId
 	}
 	if (loading) return <InitialLoader />
 	if (errorLoading) return <Error />
