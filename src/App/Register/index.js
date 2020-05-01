@@ -16,7 +16,8 @@ import GetCnpj from './GetCnpj/index'
 import { welcome, marker, button } from './styles'
 import banksList from './banks'
 import fetch from './fetch'
-import { sendToBackend, simplifiedRegistration } from './sendToBackend'
+import completeRegistration from './completeRegistration'
+import simplifiedRegistration from './simplifiedRegistration'
 
 const categories = {
 	'Bijouterias': '09',
@@ -90,7 +91,7 @@ const Register = () => {
 	const state = {
 		cnpjValid, typeOfRegistration, cnpj, reason, fantasia, opening, category, cep, street, number,
 		complement, neighborhood, city, cityState, fname, lname, cpf, email, birthdate, phone, pass,
-		bankNumber, holderName, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
+		bankName, bankNumber, holderName, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
 		fileCnpj, categoryName, accountTypeViewName, ...setState
 	}
 	const validations = [
@@ -327,7 +328,7 @@ const Register = () => {
 									}
 								}}
 								list={typeOfRegistrationList}
-								placeholder="Completo"
+								placeholder="Escolha Completo ou Simplificado"
 								readOnly={true}
 							/>
 						} />
@@ -354,7 +355,7 @@ const Register = () => {
 								}
 							}}
 							list={typeOfRegistrationList}
-							placeholder="Completo"
+							placeholder="Escolha Completo ou Simplificado"
 							readOnly={true}
 						/>
 					} />
@@ -426,7 +427,7 @@ const Register = () => {
 								}
 							}}
 							list={typeOfRegistrationList}
-							placeholder="Completo"
+							placeholder="Escolha Completo ou Simplificado"
 							readOnly={true}
 						/>
 					} />
@@ -559,7 +560,7 @@ const Register = () => {
 										}
 									}}
 									list={typeOfRegistrationList}
-									placeholder="Completo"
+									placeholder="Escolha Completo ou Simplificado"
 									readOnly={true}
 								/>
 							} />,
@@ -662,7 +663,7 @@ const Register = () => {
 										}
 									}}
 									list={typeOfRegistrationList}
-									placeholder="Completo"
+									placeholder="Escolha Completo ou Simplificado"
 									readOnly={true}
 								/>
 							} />,
@@ -710,7 +711,7 @@ const Register = () => {
 				<>
 					<Form
 						validations={validations}
-						sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+						sendToBackend={completeRegistration ? completeRegistration(state) : () => null}
 						inputs={[
 							<FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
 								<Dropdown
@@ -730,7 +731,7 @@ const Register = () => {
 										}
 									}}
 									list={typeOfRegistrationList}
-									placeholder="Completo"
+									placeholder="Escolha Completo ou Simplificado"
 									readOnly={true}
 								/>
 							} />,

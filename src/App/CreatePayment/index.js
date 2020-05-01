@@ -3,23 +3,16 @@ import currencyFormat from '@ziro/currency-format'
 import maskInput from '@ziro/mask-input'
 import sendToBackend from './sendToBackend'
 import capitalize from '@ziro/capitalize'
-import Error from '@bit/vitorbarbosa19.ziro.error'
-import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
 import Form from '@bit/vitorbarbosa19.ziro.form'
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input'
 import InputText from '@bit/vitorbarbosa19.ziro.input-text'
 import { userContext } from '../appContext'
 
 const CreatePayment = () => {
-    const { name, zoopId } = useContext(userContext)
-    const [isLoading, setIsLoading] = useState(true)
-    const [isError, setIsError] = useState(false)
-    const [seller, setSeller] = useState('')
-    const [sellers, setSellers] = useState([])
-    const [sellersAndIds, setSellersAndIds] = useState([])
+    const { fname, lname, zoopId, docId } = useContext(userContext)
     const [charge, setCharge] = useState('')
     const [maxInstallments, setMaxInstallments] = useState('')
-    const state = { seller: name, sellerId: zoopId, charge, maxInstallments, sellersAndIds, setSeller, setCharge, setMaxInstallments }
+    const state = { seller: capitalize(`${fname} ${lname}`), sellerId: zoopId, charge, maxInstallments, docId, setCharge, setMaxInstallments }
     const validations = [
         {
             name: 'charge',
@@ -34,8 +27,6 @@ const CreatePayment = () => {
             message: 'Deve ser entre 1 e 10'
         }
     ]
-
-    if (isError) return <Error />
 
     return (
         <Form
