@@ -1,17 +1,18 @@
 import currencyFormat from '@ziro/currency-format';
 import { db } from '../../Firebase/index';
 
-const fetch = (setIsLoading, setErrorLoading, setPayments, zoopId) => {
+const fetch = (setIsLoading, setErrorLoading, setPayments, docId) => {
     const run = async () => {
-        db.collection('credit-card-payments')
-            .where('sellerZoopId', '==', zoopId)
-            .orderBy('date', 'desc')
+        db.collection('suppliers')
+            .doc(docId)
+            .collection('payments')
             .onSnapshot(
                 snapshot => {
                     if (!snapshot.empty) {
                         const paymentDoc = [];
                         snapshot.forEach(doc => {
-                            const { seller, charge, status, date } = doc.data();
+                            const { cardHolder, cardNumber, charge, date, expectedDate, fees, installment,
+                                installments, maxInstallments, seller, sellerZoopId, status } = doc.data();
                             const chargeFormatted = currencyFormat(charge);
                             const dateFormatted = new Date(date.seconds * 1000)
                                 .toLocaleDateString('pt-br', {
@@ -19,11 +20,25 @@ const fetch = (setIsLoading, setErrorLoading, setPayments, zoopId) => {
                                     month: 'short',
                                 })
                                 .replace(' de ', '/');
+                            const expectedFormatted = new Date(expectedDate.seconds * 1000)
+                                .toLocaleDateString('pt-br', {
+                                    day: '2-digit',
+                                    month: 'short',
+                                })
+                                .replace(' de ', '/');
                             paymentDoc.push({
-                                seller,
+                                cardHolder,
+                                cardNumber,
                                 charge: chargeFormatted,
-                                status,
                                 date: dateFormatted,
+                                expectedDate: expectedFormatted,
+                                fees: fees ? fees : '',
+                                installment,
+                                installments,
+                                maxInstallments,
+                                seller,
+                                sellerZoopId,
+                                status
                             });
                         });
                         setPayments(paymentDoc);
