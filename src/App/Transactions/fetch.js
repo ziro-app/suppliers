@@ -1,5 +1,6 @@
 import currencyFormat from '@ziro/currency-format';
 import { db } from '../../Firebase/index';
+import matchStatusColor from './matchStatusColor'
 
 const fetch = (setIsLoading, setErrorLoading, setPayments, docId) => {
     const run = async () => {
@@ -17,13 +18,13 @@ const fetch = (setIsLoading, setErrorLoading, setPayments, docId) => {
                             const dateFormatted = new Date(date.seconds * 1000)
                                 .toLocaleDateString('pt-br', {
                                     day: '2-digit',
-                                    month: 'short',
+                                    month: '2-digit',
                                 })
                                 .replace(' de ', '/');
                             const expectedFormatted = new Date(expectedDate.seconds * 1000)
                                 .toLocaleDateString('pt-br', {
                                     day: '2-digit',
-                                    month: 'short',
+                                    month: '2-digit',
                                 })
                                 .replace(' de ', '/');
                             paymentDoc.push({
@@ -38,7 +39,8 @@ const fetch = (setIsLoading, setErrorLoading, setPayments, docId) => {
                                 maxInstallments,
                                 seller,
                                 sellerZoopId,
-                                status
+                                status,
+                                statusColor: matchStatusColor(status)
                             });
                         });
                         setPayments(paymentDoc);

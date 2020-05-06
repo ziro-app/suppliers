@@ -14,9 +14,14 @@ import UpdatePass from './UpdatePass/index'
 import DeleteAccount from './DeleteAccount/index'
 import CreatePayment from './CreatePayment/index'
 import Transactions from './Transactions/index'
+import FirebaseMigration from './FirebaseMigration/index'
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found'
+import { useRoute, useLocation } from 'wouter'
 
 const Router = ({ isLogged }) => {
+    const [match, params] = useRoute('/transacoes/:userId?/:requestId?')
+    const [location] = useLocation()
+
     const publicRoutes = {
         '/': <Login />,
         '/login': <Login />,
@@ -33,7 +38,8 @@ const Router = ({ isLogged }) => {
         '/trocar-senha': <UpdatePass />,
         '/deletar-conta': <DeleteAccount />,
         '/criar-cobranca': <Menu title='Criar Cobrança'><CreatePayment /></Menu>,
-        '/transacoes': <Menu title='Transações'><Transactions /></Menu>
+        '/transacoes': <Menu title='Vendas'><Transactions /></Menu>,
+        //'/migrations': <Menu title='Migrações'><FirebaseMigration /></Menu>
     }
     return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback='/' />)
 }
