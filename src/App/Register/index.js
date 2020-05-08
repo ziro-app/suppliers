@@ -21,9 +21,9 @@ import simplifiedRegistration from './simplifiedRegistration'
 
 const categories = {
 	'Bijouterias': '09',
-	'Calçados / Bolsas / Malas': '10',
-	'Cosméticos / Produtos de beleza': '11',
-	'Lavanderia / Tinturaria': '12',
+	'Calçados/Bolsas/Malas': '10',
+	'Cosméticos/Produtos de beleza': '11',
+	'Lavanderia/Tinturaria': '12',
 	'Magazines': '13',
 	'Roupas masc., fem., inf., geral': '14',
 	'Uniformes': '15',
@@ -48,7 +48,7 @@ const Register = () => {
 	const [opening, setOpening] = useState('')
 	const [categoryName, setCategoryName] = useState('')
 	const [category, setCategory] = useState('')
-	const categoryList = ['Bijouterias', 'Calçados / Bolsas / Malas', 'Cosméticos / Produtos de beleza', 'Lavanderia / Tinturaria', 'Magazines', 'Roupas masc., fem., inf., geral', 'Uniformes', 'Vestuário', 'Joalheria']
+	const categoryList = ['Bijouterias', 'Calçados/Bolsas/Malas', 'Cosméticos/Produtos de beleza', 'Lavanderia/Tinturaria', 'Magazines', 'Roupas masc., fem., inf., geral', 'Uniformes', 'Vestuário', 'Joalheria']
 	const [cep, setCep] = useState('')
 	const [street, setStreet] = useState('')
 	const [number, setNumber] = useState('')
@@ -96,6 +96,11 @@ const Register = () => {
 	}
 	const validations = [
 		{
+			name: 'cnpjValid',
+			validation: value => (step === 1 && typeOfRegistration === 'Simplificado') || (step === 4 && typeOfRegistration === 'Completo') ? value : true,
+			value: cnpjValid,
+			message: 'Cnpj precisa ser validado'
+		}, {
 			name: 'typeOfRegistration',
 			validation: value => step <= 2 ? typeOfRegistrationList.includes(value) : true,
 			value: typeOfRegistration,
@@ -402,7 +407,8 @@ const Register = () => {
 									placeholder='Igual ao campo anterior'
 									type='password'
 								/>
-							} />
+							} />,
+							<FormInput name='cnpjValid' label='' input={<></>} />
 						]}
 					/>
 				</>
@@ -801,7 +807,7 @@ const Register = () => {
 									inputMode='numeric'
 								/>
 							} />,
-							<FormInput name='cnpj' label='CNPJ' input={
+							<FormInput name='cnpjValid' label='CNPJ' input={
 								<InputText
 									value={cnpj}
 									onChange={() => { }}

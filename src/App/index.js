@@ -33,6 +33,7 @@ export const App = () => {
 	const [agency, setAgency] = useState(null)
 	const [userPos, setUserPos] = useState(null)
 	const [docId, setDocId] = useState(null)
+	const [typeRegister, setTypeRegister] = useState(null)
 	const url = process.env.SHEET_URL
 	const config = {
 		headers: {
@@ -57,7 +58,7 @@ export const App = () => {
 					if (!snapshot.empty) {
 						const { nome, sobrenome, cpf, cnpj, nascimento, telefone, endereco, bairro, cep,
 							cidade, estado, email, codBanco, titular, tipoConta, numConta, agencia,
-							fantasia, razao, zoopId } = snapshot.docs[0].data()
+							fantasia, razao, zoopId, tipoCadastro } = snapshot.docs[0].data()
 						setDocId(snapshot.docs[0].id)
 						setFName(nome ? nome : '')
 						setLName(sobrenome ? sobrenome : '')
@@ -79,6 +80,7 @@ export const App = () => {
 						setFantasy(fantasia ? fantasia : '')
 						setReason(razao ? razao : '')
 						setZoopId(zoopId ? zoopId : '')
+						setTypeRegister(tipoCadastro ? tipoCadastro : '')
 					}
 				})
 			}
@@ -106,6 +108,7 @@ export const App = () => {
 				setFantasy('')
 				setReason('')
 				setZoopId('')
+				setTypeRegister('')
 			}
 		})
 	}, [])
@@ -118,7 +121,7 @@ export const App = () => {
 						docRef.forEach(async doc => {
 							const { nome, sobrenome, cpf, cnpj, nascimento, telefone, endereco, bairro, cep,
 								cidade, estado, email, codBanco, titular, tipoConta, numConta, agencia,
-								fantasia, razao, zoopId } = doc.data()
+								fantasia, razao, zoopId, tipoCadastro } = doc.data()
 							setDocId(doc.id)
 							setFName(nome ? nome : '')
 							setLName(sobrenome ? sobrenome : '')
@@ -140,6 +143,7 @@ export const App = () => {
 							setFantasy(fantasia ? fantasia : '')
 							setReason(razao ? razao : '')
 							setZoopId(zoopId ? zoopId : '')
+							setTypeRegister(tipoCadastro ? tipoCadastro : '')
 							if (userPos === null || userPos === '') {
 								const { data: { values } } = await post(url, body, config)
 								values.map((user, index) => {
@@ -163,7 +167,7 @@ export const App = () => {
 	const userData = {
 		uid, fname, lname, cpf, cnpj, birthdate, phone, address, neighborhood,
 		cep, city, cityState, email, userPos, codBank, holderName, accountType,
-		accountNumber, agency, fantasy, reason, zoopId, docId
+		accountNumber, agency, fantasy, reason, zoopId, docId, typeRegister
 	}
 	if (loading) return <InitialLoader />
 	if (errorLoading) return <Error />

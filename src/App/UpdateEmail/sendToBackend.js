@@ -2,7 +2,7 @@ import { fbauth, auth, db } from '../../Firebase/index'
 import { post } from 'axios'
 
 const sendToBackend = state => () => {
-    const { row, pass, newEmail } = state
+    const { zoopId, row, pass, newEmail } = state
     const url = process.env.SHEET_URL
     const body = {
         apiResource: 'values',
@@ -43,6 +43,19 @@ const sendToBackend = state => () => {
                     await user.updateEmail(newEmail.toLowerCase())
                     await docRefCollection.update({ email: newEmail.toLowerCase() })
                     await docRefUser.update({ email: newEmail.toLowerCase() })
+                    await post(
+                        `${process.env.ZOOP_URL_SELLERS_UPDATE}?seller_id=${zoopId}`,
+                        {
+                            owner: {
+                                email: newEmail.toLowerCase()
+                            }
+                        },
+                        {
+                            headers: {
+                                Authorization: `${process.env.ZOOP_TOKEN}`,
+                            },
+                        }
+                    );
                     try {
                         await user.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })
                         window.alert('Email atualizado! Acesse a confirmação na sua caixa de entrada e refaça o login')

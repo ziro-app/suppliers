@@ -38,6 +38,8 @@ module.exports = (env, { mode }) => {
 			cnpj_token,
 			zoop_token,
 			zoop_url_sellers,
+			zoop_url_sellers_update,
+			zoop_url_sellers_delete,
 			zoop_url_token_bank,
 			zoop_url_bank_associate,
 			zoop_url_upload_file
@@ -56,6 +58,8 @@ module.exports = (env, { mode }) => {
 					SHEET_SUPPLIERS_ID: JSON.stringify(sheet_suppliers_id),
 					ZOOP_TOKEN: JSON.stringify(zoop_token),
 					ZOOP_URL_SELLERS: JSON.stringify(zoop_url_sellers),
+					ZOOP_URL_SELLERS_UPDATE: JSON.stringify(zoop_url_sellers_update),
+					ZOOP_URL_SELLERS_DELETE: JSON.stringify(zoop_url_sellers_delete),
 					ZOOP_URL_TOKEN_BANK: JSON.stringify(zoop_url_token_bank),
 					ZOOP_URL_BANK_ASSOCIATE: JSON.stringify(zoop_url_bank_associate),
 					ZOOP_URL_UPLOAD_FILE: JSON.stringify(zoop_url_upload_file)
@@ -91,6 +95,8 @@ module.exports = (env, { mode }) => {
 					SHEET_SUPPLIERS_ID: JSON.stringify(process.env.SHEET_SUPPLIERS_ID),
 					ZOOP_TOKEN: JSON.stringify(process.env.ZOOP_TOKEN),
 					ZOOP_URL_SELLERS: JSON.stringify(process.env.ZOOP_URL_SELLERS),
+					ZOOP_URL_SELLERS_UPDATE: JSON.stringify(process.env.ZOOP_URL_SELLERS_UPDATE),
+					ZOOP_URL_SELLERS_DELETE: JSON.stringify(process.env.ZOOP_URL_SELLERS_DELETE),
 					ZOOP_URL_TOKEN_BANK: JSON.stringify(process.env.ZOOP_URL_TOKEN_BANK),
 					ZOOP_URL_BANK_ASSOCIATE: JSON.stringify(process.env.ZOOP_URL_BANK_ASSOCIATE),
 					ZOOP_URL_UPLOAD_FILE: JSON.stringify(process.env.ZOOP_URL_UPLOAD_FILE)

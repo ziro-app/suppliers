@@ -35,7 +35,7 @@ export const Menu = ({ title, children }) => {
 							path: '/transacoes',
 							onClick: () => setIsOpen(false),
 							icon: <Icon type='trending' size={15} strokeWidth={2} />,
-							text: 'Transações'
+							text: 'Vendas'
 						},
 						{
 							path: '/login',

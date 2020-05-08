@@ -8,6 +8,7 @@ import ResendEmail from './ResendEmail/index'
 import ResetPass from './ResetPass/index'
 import ConfirmEmail from '@bit/vitorbarbosa19.ziro.confirm-email'
 import { Menu } from './Menu/index'
+import { HeaderBack } from './HeaderBack/index'
 import MyAccount from '@bit/vitorbarbosa19.ziro.my-account'
 import UpdateEmail from './UpdateEmail/index'
 import UpdatePass from './UpdatePass/index'
@@ -16,6 +17,7 @@ import CreatePayment from './CreatePayment/index'
 import Transactions from './Transactions/index'
 import TransactionDetails from './TransactionDetails/index'
 import FirebaseMigration from './FirebaseMigration/index'
+import UpdateUserInfo from './UpdateUserInfo/index'
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found'
 import { useRoute, useLocation } from 'wouter'
 
@@ -41,7 +43,8 @@ const Router = ({ isLogged }) => {
         '/criar-cobranca': <Menu title='Criar Cobrança'><CreatePayment /></Menu>,
         '/transacoes': <Menu title='Vendas'><Transactions /></Menu>,
         [match && params.charge && params.date && params.expectedDate && params.fees && params.installment
-            && params.installments && params.seller && params.status && params.statusColor ? location : null]: <TransactionDetails />
+            && params.installments && params.seller && params.status && params.statusColor ? location : null]: <TransactionDetails />,
+        '/update': <HeaderBack title='Atualizar informações' navigateTo='/login'><UpdateUserInfo /></HeaderBack>
         //'/migrations': <Menu title='Migrações'><FirebaseMigration /></Menu>
     }
     return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback='/' />)

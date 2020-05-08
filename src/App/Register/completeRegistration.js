@@ -199,7 +199,8 @@ const completeRegistration = state => () => {
 												tipoConta: accountTypeViewName,
 												titular,
 												numConta: accountNumber,
-												agencia: agency
+												agencia: agency,
+												tipoCadastro: 'Completo'
 											})
 
 											await db.collection('users').add({ email, app: 'suppliers' })

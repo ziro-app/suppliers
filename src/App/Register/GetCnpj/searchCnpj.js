@@ -43,8 +43,14 @@ const searchCnpj = state => () => {
                         setCnpjValid(true)
                         resolve('CNPJ válido')
                     } else throw { msg: 'CNPJ inválido na Receita', customError: true }
-                } else throw { msg: 'CNPJ já cadastrado', customError: true }
-            } else throw { msg: 'Deve ter 14 números', customError: true }
+                } else {
+                    setCnpjValid(false)
+                    throw { msg: 'CNPJ já cadastrado', customError: true }
+                }
+            } else {
+                setCnpjValid(false)
+                throw { msg: 'Deve ter 14 números', customError: true }
+            }
         } catch (error) {
             // clear all fields
             setReason('')

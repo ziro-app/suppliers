@@ -108,7 +108,8 @@ const simplifiedRegistration = state => () => {
                                         endereco,
                                         bairro: neighborhood,
                                         cidade: city,
-                                        estado: cityState
+                                        estado: cityState,
+                                        tipoCadastro: 'Simplificado'
                                     })
                                     // Adicionando usuário nos users
                                     await db.collection('users').add({ email, app: 'suppliers' })
@@ -150,7 +151,7 @@ const simplifiedRegistration = state => () => {
 
                 } catch (error) {
                     if (error.customError) throw error
-                    throw { msg: 'Erro ao ao salvar usuário. Tente novamente.', customError: true }
+                    throw { msg: 'Erro ao salvar usuário. Tente novamente.', customError: true }
                 }
                 window.location.assign('/confirmar-email')
             } else {

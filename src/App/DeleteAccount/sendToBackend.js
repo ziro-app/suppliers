@@ -1,8 +1,9 @@
+import { get } from 'axios'
 import { fbauth, auth, db } from '../../Firebase/index'
 
 const sendToBackend = state => () => new Promise(async (resolve, reject) => {
 	try {
-		const { pass } = state
+		const { zoopId, pass } = state
 		const user = auth.currentUser
 		const credential = fbauth.EmailAuthProvider.credential(user.email, pass)
 		await user.reauthenticateWithCredential(credential)
@@ -21,9 +22,22 @@ const sendToBackend = state => () => new Promise(async (resolve, reject) => {
 			await docRefCollection.delete()
 			await docRefUser.delete()
 			try {
-				await user.delete()
-				window.location.replace('/')
-				await auth.signOut()
+				await get(`${process.env.ZOOP_URL_SELLERS_DELETE}?seller_id=${zoopId}`, {},
+					{
+						headers: {
+							Authorization: `${process.env.ZOOP_TOKEN}`,
+						},
+					});
+
+				try {
+					await user.delete()
+					window.location.replace('/')
+					await auth.signOut()
+				} catch (error) {
+					console.log(error)
+					if (error.response) console.log(error.response)
+					throw error
+				}
 			} catch (error) {
 				console.log(error)
 				if (error.response) console.log(error.response)
