@@ -97,7 +97,7 @@ const Register = () => {
 	const validations = [
 		{
 			name: 'cnpjValid',
-			validation: value => (step === 1 && typeOfRegistration === 'Simplificado') || (step === 4 && typeOfRegistration === 'Completo') ? value : true,
+			validation: value => (step === 1) || (step === 4 && typeOfRegistration === 'Completo') ? value : true,
 			value: cnpjValid,
 			message: 'Cnpj precisa ser validado'
 		}, {
@@ -181,6 +181,11 @@ const Register = () => {
 			value: street,
 			message: 'Campo obrigatório'
 		}, {
+			name: 'number',
+			validation: value => step === 1 ? !!value : true,
+			value: number,
+			message: 'Campo obrigatório'
+		}, {
 			name: 'neighborhood',
 			validation: value => step === 1 ? !!value : true,
 			value: neighborhood,
@@ -217,14 +222,14 @@ const Register = () => {
 			message: 'Documento obrigatório'
 		}, {
 			name: 'bankNumber',
-			validation: value => step === 4 ? banksList.filter(bank => value === bank.split(' - ')) : true,
+			validation: value => step === 4 ? banksList.includes(bankName) : true,
 			value: bankNumber,
 			message: 'Campo obrigatório'
 		}, {
 			name: 'holderName',
-			validation: value => step === 4 ? !!value : true,
+			validation: value => step === 4 ? (value.length >= 6 && value.includes(' ')) : true,
 			value: holderName,
-			message: 'Campo obrigatório'
+			message: 'Nome e sobrenome do titular'
 		}, {
 			name: 'agency',
 			validation: value => step === 4 ? !!value : true,
@@ -536,7 +541,8 @@ const Register = () => {
 									onChange={({ target: { value } }) => setCityState(maskInput(value.toUpperCase(), '##', false))}
 									placeholder='SP'
 								/>
-							} />
+							} />,
+							<FormInput name='cnpjValid' label='' input={<></>} />
 						]}
 					/>
 				</>
@@ -548,28 +554,6 @@ const Register = () => {
 						validations={validations}
 						sendToBackend={() => setStep(step + 1)}
 						inputs={[
-							<FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
-								<Dropdown
-									value={typeOfRegistration}
-									onChange={({ target: { value } }) => {
-										clearFields()
-										setTypeOfRegistration(value)
-										if (value === '') setStep(0)
-										else setStep(1)
-									}}
-									onChangeKeyboard={element => {
-										if (element) {
-											clearFields()
-											setTypeOfRegistration(element.value)
-											if (element.value === '') setStep(0)
-											else setStep(1)
-										}
-									}}
-									list={typeOfRegistrationList}
-									placeholder="Escolha Completo ou Simplificado"
-									readOnly={true}
-								/>
-							} />,
 							<FormInput name='fname' label='Nome' input={
 								<InputText
 									value={fname}
@@ -651,36 +635,14 @@ const Register = () => {
 						validations={validations}
 						sendToBackend={() => setStep(step + 1)}
 						inputs={[
-							<FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
-								<Dropdown
-									value={typeOfRegistration}
-									onChange={({ target: { value } }) => {
-										clearFields()
-										setTypeOfRegistration(value)
-										if (value === '') setStep(0)
-										else setStep(1)
-									}}
-									onChangeKeyboard={element => {
-										if (element) {
-											clearFields()
-											setTypeOfRegistration(element.value)
-											if (element.value === '') setStep(0)
-											else setStep(1)
-										}
-									}}
-									list={typeOfRegistrationList}
-									placeholder="Escolha Completo ou Simplificado"
-									readOnly={true}
-								/>
-							} />,
-							<FormInput name='idDoc' label='Documento de Identificação (Ex: RG)' input={
+							<FormInput name='idDoc' label='Documento de Identificação (RG E CPF OU CNH) - Frente e Verso' input={
 								<SingleImageUpload
 									setFile={setFileDoc}
 									persistFilename={fileDoc.name}
 									indexOfFile={0}
 								/>
 							} />,
-							<FormInput name='idAtv' label='Documento de Atividade (Ex: Alvará)' input={
+							<FormInput name='idAtv' label='Documento de Atividade (Nota fiscal compra de produtos)' input={
 								<SingleImageUpload
 									setFile={setFileAtv}
 									persistFilename={fileAtv.name}
@@ -690,11 +652,11 @@ const Register = () => {
 							<FormInput name='idRes' label='Comprovante de Residência (Ex: Conta de luz)' input={
 								<SingleImageUpload
 									setFile={setFileRes}
-									persistFilename={fileRes.name}
+									persistFilename={fileRes.name || 'Nos envie uma nota fiscal de produtos que você comprou para vender na sua loja'}
 									indexOfFile={2}
 								/>
 							} />,
-							<FormInput name='idCnpj' label='Documento de CNPJ' input={
+							<FormInput name='idCnpj' label='Cartão CNPJ' input={
 								<SingleImageUpload
 									setFile={setFileCnpj}
 									persistFilename={fileCnpj.name}
@@ -719,28 +681,6 @@ const Register = () => {
 						validations={validations}
 						sendToBackend={completeRegistration ? completeRegistration(state) : () => null}
 						inputs={[
-							<FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
-								<Dropdown
-									value={typeOfRegistration}
-									onChange={({ target: { value } }) => {
-										clearFields()
-										setTypeOfRegistration(value)
-										if (value === '') setStep(0)
-										else setStep(1)
-									}}
-									onChangeKeyboard={element => {
-										if (element) {
-											clearFields()
-											setTypeOfRegistration(element.value)
-											if (element.value === '') setStep(0)
-											else setStep(1)
-										}
-									}}
-									list={typeOfRegistrationList}
-									placeholder="Escolha Completo ou Simplificado"
-									readOnly={true}
-								/>
-							} />,
 							<FormInput name='accountType' label='Tipo da Conta' input={
 								<Dropdown
 									value={accountTypeViewName}
