@@ -28,6 +28,7 @@ const fetch = (setIsLoading, setErrorLoading, setPayments, docId) => {
                                 })
                                 .replace(' de ', '/');
                             paymentDoc.push({
+                                transactionId: doc.id,
                                 cardHolder,
                                 cardNumber,
                                 charge: chargeFormatted,

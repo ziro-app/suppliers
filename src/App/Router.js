@@ -15,14 +15,13 @@ import UpdatePass from './UpdatePass/index'
 import DeleteAccount from './DeleteAccount/index'
 import CreatePayment from './CreatePayment/index'
 import Transactions from './Transactions/index'
-import TransactionDetails from './TransactionDetails/index'
 import FirebaseMigration from './FirebaseMigration/index'
 import UpdateUserInfo from './UpdateUserInfo/index'
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found'
 import { useRoute, useLocation } from 'wouter'
 
 const Router = ({ isLogged }) => {
-    const [match, params] = useRoute('/transacoes/:charge?/:date?/:expectedDate?/:fees?/:installment?/:installments?/:seller?/:status?/:statusColor?')
+    const [match, params] = useRoute('/transacoes/:transactionId?')
     const [location] = useLocation()
 
     const publicRoutes = {
@@ -41,9 +40,7 @@ const Router = ({ isLogged }) => {
         '/trocar-senha': <UpdatePass />,
         '/deletar-conta': <DeleteAccount />,
         '/criar-cobranca': <Menu title='Criar Cobrança'><CreatePayment /></Menu>,
-        '/transacoes': <Menu title='Vendas'><Transactions /></Menu>,
-        [match && params.charge && params.date && params.expectedDate && params.fees && params.installment
-            && params.installments && params.seller && params.status && params.statusColor ? location : null]: <TransactionDetails />,
+        [match ? location : null]: <Transactions {...params} />,
         '/update': <HeaderBack title='Atualizar informações' navigateTo='/login'><UpdateUserInfo /></HeaderBack>
         //'/migrations': <Menu title='Migrações'><FirebaseMigration /></Menu>
     }
