@@ -618,7 +618,7 @@ const Register = () => {
 							} />
 						]}
 					/>
-					<div style={button} >
+					<div style={{ paddingTop: '15px' }} >
 						<Button
 							type="button"
 							cta="Voltar"
@@ -665,7 +665,7 @@ const Register = () => {
 							} />
 						]}
 					/>
-					<div style={button} >
+					<div style={{ paddingTop: '15px' }} >
 						<Button
 							type="button"
 							cta="Voltar"
@@ -756,7 +756,7 @@ const Register = () => {
 							} />
 						]}
 					/>
-					<div style={button} >
+					<div style={{ paddingTop: '15px' }} >
 						<Button
 							type="button"
 							cta="Voltar"
