@@ -12,7 +12,7 @@ const banksList = [
     "025 - Banco Alfa S.A.",
     "029 - Banco Banerj S.A.",
     "031 - Banco Beg S.A.",
-    "033 - Banco S",
+    "033 - Banco Santander",
     "036 - Banco Bradesco BBI S.A.",
     "037 - Banco do Estado do Pará S.A.",
     "039 - Banco do Estado do Piauí S.A. ",

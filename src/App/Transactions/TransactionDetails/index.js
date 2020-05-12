@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useLocation } from 'wouter';
 import Table from '@bit/vitorbarbosa19.ziro.table';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
@@ -13,6 +14,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
     const [data, setData] = useState([])
     const [blocks, setBlocks] = useState([])
     const [transaction, setTransaction] = useState({})
+    const [, setLocation] = useLocation();
 
     const round = (num, places) => {
         if (!("" + num).includes("e")) {
@@ -148,7 +150,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
         /**/
     }, [])
 
-    if (!transaction) return <Error />;
+    if (!transaction) return <Error backRoute='/transacoes' message='Transação inválida ou não encontrada, retorne e tente novamente.' type='noData' title='Erro ao buscar detalhes da transação' backRoute='/transacoes' backRouteFunction={(route) => setLocation(route)} />;
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>

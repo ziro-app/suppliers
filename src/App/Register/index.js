@@ -22,13 +22,8 @@ import simplifiedRegistration from './simplifiedRegistration'
 const categories = {
 	'Bijouterias': '09',
 	'Calçados/Bolsas/Malas': '10',
-	'Cosméticos/Produtos de beleza': '11',
-	'Lavanderia/Tinturaria': '12',
-	'Magazines': '13',
 	'Roupas masc., fem., inf., geral': '14',
-	'Uniformes': '15',
-	'Vestuário': '25',
-	'Joalheria': '32'
+	'Vestuário': '25'
 }
 
 const Register = () => {
@@ -48,7 +43,7 @@ const Register = () => {
 	const [opening, setOpening] = useState('')
 	const [categoryName, setCategoryName] = useState('')
 	const [category, setCategory] = useState('')
-	const categoryList = ['Bijouterias', 'Calçados/Bolsas/Malas', 'Cosméticos/Produtos de beleza', 'Lavanderia/Tinturaria', 'Magazines', 'Roupas masc., fem., inf., geral', 'Uniformes', 'Vestuário', 'Joalheria']
+	const categoryList = ['Bijouterias', 'Calçados/Bolsas/Malas', 'Roupas masc., fem., inf., geral', 'Vestuário']
 	const [cep, setCep] = useState('')
 	const [street, setStreet] = useState('')
 	const [number, setNumber] = useState('')
@@ -147,7 +142,7 @@ const Register = () => {
 			message: 'CPF inválido'
 		}, {
 			name: 'birthdate',
-			validation: value => step === 2 ? (value === '' || /^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(value)) : true,
+			validation: value => step === 2 ? (/^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(value)) : true,
 			value: birthdate,
 			message: 'Data inválida'
 		}, {
@@ -470,25 +465,6 @@ const Register = () => {
 									inputMode='numeric'
 								/>
 							} />,
-							<FormInput name='category' label='Categoria' input={
-								<Dropdown
-									value={categoryName}
-									onChange={({ target: { value } }) => {
-										setCategoryName(value)
-										setCategory(categories[value])
-									}}
-									onChangeKeyboard={element => {
-										if (element) {
-											setCategoryName(element.value)
-											setCategory(categories[element.value])
-										}
-									}
-									}
-									list={categoryList}
-									placeholder="Bijouterias"
-									readOnly={true}
-								/>
-							} />,
 							<FormInput name='cep' label='CEP' input={
 								<InputText
 									value={cep}
@@ -540,6 +516,25 @@ const Register = () => {
 									value={cityState}
 									onChange={({ target: { value } }) => setCityState(maskInput(value.toUpperCase(), '##', false))}
 									placeholder='SP'
+								/>
+							} />,
+							<FormInput name='category' label='Categoria' input={
+								<Dropdown
+									value={categoryName}
+									onChange={({ target: { value } }) => {
+										setCategoryName(value)
+										setCategory(categories[value])
+									}}
+									onChangeKeyboard={element => {
+										if (element) {
+											setCategoryName(element.value)
+											setCategory(categories[element.value])
+										}
+									}
+									}
+									list={categoryList}
+									placeholder="Bijouterias"
+									readOnly={true}
 								/>
 							} />,
 							<FormInput name='cnpjValid' label='' input={<></>} />
@@ -645,14 +640,14 @@ const Register = () => {
 							<FormInput name='idAtv' label='Documento de Atividade (Nota fiscal compra de produtos)' input={
 								<SingleImageUpload
 									setFile={setFileAtv}
-									persistFilename={fileAtv.name}
+									persistFilename={fileAtv.name || 'Nos envie uma nota fiscal de produtos que você comprou para vender na sua loja'}
 									indexOfFile={1}
 								/>
 							} />,
 							<FormInput name='idRes' label='Comprovante de Residência (Ex: Conta de luz)' input={
 								<SingleImageUpload
 									setFile={setFileRes}
-									persistFilename={fileRes.name || 'Nos envie uma nota fiscal de produtos que você comprou para vender na sua loja'}
+									persistFilename={fileRes.name}
 									indexOfFile={2}
 								/>
 							} />,
@@ -727,7 +722,7 @@ const Register = () => {
 							<FormInput name='holderName' label='Titular' input={
 								<InputText
 									value={holderName}
-									onChange={({ target: { value } }) => setHolderName(capitalize(value))}
+									onChange={({ target: { value } }) => setHolderName(capitalize(value).trim())}
 									placeholder='Nome do titular'
 								/>
 							} />,

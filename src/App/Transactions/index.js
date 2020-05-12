@@ -10,10 +10,13 @@ import { userContext } from '../appContext';
 const Transactions = ({ transactionId }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [payments, setPayments] = useState([]);
+    const [totalTransactions, setTotalTransactions] = useState(-1);
+    const [lastDoc, setLastDoc] = useState(null);
     const { docId } = useContext(userContext);
 
-    useEffect(() => fetch(setIsLoading, setErrorLoading, setPayments, docId), []);
+    useEffect(() => fetch(setIsLoading, setErrorLoading, payments, setPayments, docId, 10, lastDoc, setLastDoc, totalTransactions, setTotalTransactions, setLoadingMore), []);
 
     if (isLoading)
         return (
@@ -21,10 +24,13 @@ const Transactions = ({ transactionId }) => {
                 <Spinner size="5.5rem" />
             </div>
         );
-    if (errorLoading) return <Error />;
 
-    if (transactionId) return <TransactionDetails transactions={payments} transactionId={transactionId} />
-    return <TransactionsList transactions={payments} />
+    if (errorLoading) return <Error />;
+    if (transactionId) return <TransactionDetails transactions={payments} transactionId={transactionId} />;
+    return <TransactionsList transactions={payments} btnMoreClick={() => {
+        setLoadingMore(true)
+        fetch(setIsLoading, setErrorLoading, payments, setPayments, docId, 10, lastDoc, setLastDoc, totalTransactions, setTotalTransactions, setLoadingMore)
+    }} hasMore={!(payments.length === totalTransactions)} loadingMore={loadingMore} />;
 
 };
 
