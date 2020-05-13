@@ -4,7 +4,7 @@ const searchCnpj = state => () => {
     const { cnpj, suppliers, setCnpjValid,
         setStreet, setNumber,
         setComplement, setNeighborhood, setCep, setCity, setCityState,
-        setReason, setFantasia, setOpening } = state
+        setReason, setFantasia } = state
     const config = {
         method: 'POST',
         url: process.env.CNPJ_URL,
@@ -29,8 +29,6 @@ const searchCnpj = state => () => {
                         // Alinhar os campos que vou precisar aqui
                         setReason(result.nome)
                         setFantasia(result.fantasia)
-                        setOpening(result.abertura)
-
                         setStreet(result.logradouro)
                         setNumber(result.numero)
                         setComplement(result.complemento)
@@ -55,7 +53,6 @@ const searchCnpj = state => () => {
             // clear all fields
             setReason('')
             setFantasia('')
-            setOpening('')
             if (error.customError) reject(error)
             else {
                 console.log(error)

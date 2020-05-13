@@ -40,7 +40,6 @@ const Register = () => {
 	// form fields 1
 	const [reason, setReason] = useState('')
 	const [fantasia, setFantasia] = useState('')
-	const [opening, setOpening] = useState('')
 	const [categoryName, setCategoryName] = useState('')
 	const [category, setCategory] = useState('')
 	const categoryList = ['Bijouterias', 'Calçados/Bolsas/Malas', 'Roupas masc., fem., inf., geral', 'Vestuário']
@@ -78,13 +77,13 @@ const Register = () => {
 	const accountTypeList = ['Conta Corrente', 'Conta Poupança']
 
 	const setState = {
-		setTypeOfRegistration, setCnpj, setCnpjValid, setReason, setFantasia, setOpening, setCategory,
+		setTypeOfRegistration, setCnpj, setCnpjValid, setReason, setFantasia, setCategory,
 		setFName, setLName, setCpf, setEmail, setBirthdate, setPhone, setStreet, setNumber, setComplement,
 		setNeighborhood, setCep, setCity, setCityState, setPass, setBankNumber, setHolderName, setAccountNumber,
 		setAgency, setAccountType, setFileDoc, setFileAtv, setFileRes, setFileCnpj
 	}
 	const state = {
-		cnpjValid, typeOfRegistration, cnpj, reason, fantasia, opening, category, cep, street, number,
+		cnpjValid, typeOfRegistration, cnpj, reason, fantasia, category, cep, street, number,
 		complement, neighborhood, city, cityState, fname, lname, cpf, email, birthdate, phone, pass,
 		bankName, bankNumber, holderName, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
 		fileCnpj, categoryName, accountTypeViewName, ...setState
@@ -114,11 +113,6 @@ const Register = () => {
 			name: 'fantasia',
 			validation: value => (typeOfRegistration === 'Completo' && step === 1) ? !!value : true,
 			value: fantasia,
-			message: 'Campo obrigatório'
-		}, {
-			name: 'opening',
-			validation: value => (typeOfRegistration === 'Completo' && step === 1) ? (value === '' || /^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(value)) : true,
-			value: opening,
 			message: 'Campo obrigatório'
 		}, {
 			name: 'category',
@@ -249,7 +243,6 @@ const Register = () => {
 		setCnpjValid(false)
 		setReason('')
 		setFantasia('')
-		setOpening('')
 		setCategory('')
 		setFName('')
 		setLName('')
@@ -455,14 +448,6 @@ const Register = () => {
 									value={fantasia}
 									onChange={({ target: { value } }) => setFantasia(value.toUpperCase())}
 									placeholder='ATELIE DE ROUPAS'
-								/>
-							} />,
-							<FormInput name='opening' label='Data de Abertura' input={
-								<InputText
-									value={opening}
-									onChange={({ target: { value } }) => setOpening(maskInput(value, '##/##/####', true))}
-									placeholder='01/01/2000'
-									inputMode='numeric'
 								/>
 							} />,
 							<FormInput name='cep' label='CEP' input={
@@ -722,7 +707,7 @@ const Register = () => {
 							<FormInput name='holderName' label='Titular' input={
 								<InputText
 									value={holderName}
-									onChange={({ target: { value } }) => setHolderName(capitalize(value).trim())}
+									onChange={({ target: { value } }) => setHolderName(capitalize(value))}
 									placeholder='Nome do titular'
 								/>
 							} />,

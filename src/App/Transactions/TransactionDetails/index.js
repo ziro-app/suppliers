@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
 import Table from '@bit/vitorbarbosa19.ziro.table';
@@ -6,15 +6,51 @@ import Details from '@bit/vitorbarbosa19.ziro.details';
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import Header from '@bit/vitorbarbosa19.ziro.header';
 import Error from '@bit/vitorbarbosa19.ziro.error';
-import { containerWithPadding } from '@ziro/theme';
+import Button from '@bit/vitorbarbosa19.ziro.button';
+import { alertColor, containerWithPadding, successColor } from '@ziro/theme';
 import currencyFormat from '@ziro/currency-format';
-import { custom, illustrationContainer } from './styles';
+import { userContext } from '../../appContext';
+import { button, custom, illustrationContainer, buttonContainer } from './styles';
 
 const TransactionDetails = ({ transactions, transactionId }) => {
-    const [data, setData] = useState([])
-    const [blocks, setBlocks] = useState([])
-    const [transaction, setTransaction] = useState({})
+    const { docId } = useContext(userContext)
+    const [data, setData] = useState([]);
+    const [blocks, setBlocks] = useState([]);
+    const [transaction, setTransaction] = useState({});
     const [, setLocation] = useLocation();
+    const [copyResultText, setCopyResultText] = useState('')
+    const [copyResultStatus, setCopyResultStatus] = useState(true)
+    const textAreaRef = useRef(null)
+    const paymentLink = `https://catalogo.ziro.app/transacao?doc=${transactionId}&sel=${docId}`;
+
+    const copyToClipboard = (e) => {
+        e.preventDefault()
+        if (document.queryCommandSupported('copy')) {
+            try {
+                textAreaRef.current.select()
+                document.execCommand('copy')
+                setCopyResultStatus(true)
+                setCopyResultText('Copiado !')
+                setTimeout(() => {
+                    setCopyResultText('')
+                }, 2500)
+            } catch (error) {
+                console.log(error)
+                setCopyResultStatus(false)
+                setCopyResultText('Erro ao copiar.')
+                setTimeout(() => {
+                    setCopyResultText('')
+                }, 2500)
+            }
+        } else {
+            setCopyResultStatus(false)
+            setCopyResultText('Sem suporte para cópia.')
+            setTimeout(() => {
+                setCopyResultText('')
+            }, 2500)
+        }
+
+    }
 
     const round = (num, places) => {
         if (!("" + num).includes("e")) {
@@ -154,6 +190,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
+            <input type="text" style={{ position: 'absolute', left: '-9999px' }} value={paymentLink} ref={textAreaRef} readOnly />
             <Header type='icon-link' title='Detalhes' navigateTo='transacoes' icon='back' />
             <div style={{ display: 'grid', gridRowGap: '12px' }}>
                 <Details blocks={blocks} />
@@ -178,12 +215,28 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                 }
                 {
                     transaction.status === 'Aguardando Pagamento' &&
-                    <div style={illustrationContainer}>
-                        <div style={{ display: 'grid', justifyItems: 'center' }}>
-                            <Illustration type="waiting" size={175} />
-                            <span style={custom(15, transaction.statusColor)}>Pagamento não realizado.</span>
+                    <>
+                        <div style={buttonContainer}>
+                            <Button
+                                type="button"
+                                cta="copiar link"
+                                click={copyToClipboard}
+                                style={button}
+                            />
+                            {copyResultText ?
+                                <div style={{ padding: '6px 0 0', fontSize: '1.3rem', color: copyResultStatus ? successColor : alertColor, textAlign: 'center' }} >
+                                    <span>{copyResultText}</span>
+                                </div>
+                                : <div style={{ height: '24px' }}>&nbsp;</div>
+                            }
                         </div>
-                    </div>
+                        <div style={illustrationContainer}>
+                            <div style={{ display: 'grid', justifyItems: 'center' }}>
+                                <Illustration type="waiting" size={175} />
+                                <span style={custom(15, transaction.statusColor)}>Pagamento não realizado.</span>
+                            </div>
+                        </div>
+                    </>
                 }
             </div>
         </motion.div>

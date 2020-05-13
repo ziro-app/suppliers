@@ -4,7 +4,7 @@ import dateHourFormatterUTC3 from '@ziro/format-date-utc3'
 
 const simplifiedRegistration = state => () => {
     const { fname, lname, email, cnpj, cnpjValid, pass, reason, fantasia,
-        opening, cep, street, number, complement, neighborhood, city, cityState } = state
+        cep, street, number, complement, neighborhood, city, cityState } = state
     const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
     const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
     const today = new Date()
@@ -32,7 +32,6 @@ const simplifiedRegistration = state => () => {
                     cnpj,
                     reason,
                     fantasia,
-                    opening,
                     ,
                     cep,
                     endereco,
@@ -81,8 +80,7 @@ const simplifiedRegistration = state => () => {
                                             state: cityState,
                                             postal_code: cep.replace('-', ''),
                                             country: 'BR'
-                                        },
-                                        business_opening_date: opening.split('/').reverse().join('-')
+                                        }
                                     },
                                     {
                                         headers: {
@@ -103,7 +101,6 @@ const simplifiedRegistration = state => () => {
                                         cnpj,
                                         razao: reason,
                                         fantasia,
-                                        abertura: opening,
                                         cep,
                                         endereco,
                                         bairro: neighborhood,

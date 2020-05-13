@@ -11,7 +11,7 @@ const config = {
 }
 
 const completeRegistration = state => () => {
-	const { cnpjValid, cnpj, reason, fantasia, opening, category, cep, bankName,
+	const { cnpjValid, cnpj, reason, fantasia, category, cep, bankName,
 		street, number, complement, neighborhood, city, cityState, fname, lname, cpf, email,
 		birthdate, phone, pass, bankNumber, holderName, accountNumber, agency, accountType,
 		fileDoc, fileAtv, fileRes, fileCnpj, categoryName, accountTypeViewName } = state
@@ -37,7 +37,6 @@ const completeRegistration = state => () => {
 					cnpj,
 					reason,
 					fantasia,
-					opening,
 					categoryName,
 					cep,
 					endereco,
@@ -95,7 +94,6 @@ const completeRegistration = state => () => {
 											postal_code: cep.replace('-', ''),
 											country: 'BR'
 										},
-										business_opening_date: opening.split('/').reverse().join('-'),
 										mcc: category
 									},
 									{
@@ -187,7 +185,6 @@ const completeRegistration = state => () => {
 												cnpj,
 												razao: reason,
 												fantasia,
-												abertura: opening,
 												categoria: categoryName,
 												cep,
 												endereco,
