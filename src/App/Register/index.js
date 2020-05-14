@@ -13,11 +13,12 @@ import capitalize from '@ziro/capitalize'
 import { containerWithPadding } from '@ziro/theme'
 import SingleImageUpload from './SingleImageUpload/index'
 import GetCnpj from './GetCnpj/index'
-import { welcome, marker, button } from './styles'
+import { welcome, marker } from './styles'
 import banksList from './banks'
 import fetch from './fetch'
 import completeRegistration from './completeRegistration'
 import simplifiedRegistration from './simplifiedRegistration'
+import { atvdText, cnpjText, docText, homeText } from './modals'
 
 const categories = {
 	'Bijouterias': '09',
@@ -615,28 +616,28 @@ const Register = () => {
 						validations={validations}
 						sendToBackend={() => setStep(step + 1)}
 						inputs={[
-							<FormInput name='idDoc' label='Documento de Identificação (RG E CPF OU CNH) - Frente e Verso' input={
+							<FormInput name='idDoc' label='' LabelComponent={docText} input={
 								<SingleImageUpload
 									setFile={setFileDoc}
 									persistFilename={fileDoc.name}
 									indexOfFile={0}
 								/>
 							} />,
-							<FormInput name='idAtv' label='Documento de Atividade (Nota fiscal compra de produtos)' input={
+							<FormInput name='idAtv' label='' LabelComponent={atvdText} input={
 								<SingleImageUpload
 									setFile={setFileAtv}
-									persistFilename={fileAtv.name || 'Nos envie uma nota fiscal de produtos que você comprou para vender na sua loja'}
+									persistFilename={fileAtv.name}
 									indexOfFile={1}
 								/>
 							} />,
-							<FormInput name='idRes' label='Comprovante de Residência (Ex: Conta de luz)' input={
+							<FormInput name='idRes' label='' LabelComponent={homeText} input={
 								<SingleImageUpload
 									setFile={setFileRes}
 									persistFilename={fileRes.name}
 									indexOfFile={2}
 								/>
 							} />,
-							<FormInput name='idCnpj' label='Cartão CNPJ' input={
+							<FormInput name='idCnpj' label='' LabelComponent={cnpjText} input={
 								<SingleImageUpload
 									setFile={setFileCnpj}
 									persistFilename={fileCnpj.name}
