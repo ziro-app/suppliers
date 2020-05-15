@@ -3,7 +3,7 @@ import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import { modalContainer, modalLabel, modalBox } from './styles';
 
-export const docText = () => {
+export const DocText = () => {
     const [modalDoc, setModalDoc] = useState(false);
 
     return (
@@ -21,20 +21,25 @@ export const docText = () => {
     );
 }
 
-export const atvdText = () => {
+export const AtvdText = () => {
     const [modalAtvd, setModalAtvd] = useState(false);
 
     return (
         <div style={modalContainer}>
             <Modal boxStyle={modalBox} isOpen={modalAtvd} setIsOpen={() => setModalAtvd(false)}>
                 <label style={modalLabel}>Nota fiscal de compra de produtos</label>
+                <img
+                    src="https://res.cloudinary.com/ziro/image/upload/v1589552592/nota_abs6jw.jpg"
+                    alt="Nota Fiscal"
+                    style={{ paddingTop: '10px', width: '100%', height: '100%', alignContent: 'center' }}
+                />
             </Modal>
             <label style={modalLabel}>Nota fiscal de compra de produtos&nbsp;<Icon type="help" size={16} color='#F7BA00' onClick={() => setModalAtvd(true)} /></label>
         </div>
     );
 }
 
-export const cnpjText = () => {
+export const CnpjText = () => {
     const [modalCNPJ, setModalCNPJ] = useState(false);
 
     return (
@@ -42,7 +47,7 @@ export const cnpjText = () => {
             <Modal boxStyle={modalBox} isOpen={modalCNPJ} setIsOpen={() => setModalCNPJ(false)}>
                 <label style={modalLabel}>Cartão CNPJ</label>
                 <img
-                    src="https://res.cloudinary.com/ziro/image/upload/v1589474596/cartao_nn6ium.png"
+                    src="https://res.cloudinary.com/ziro/image/upload/v1589510718/cartao_w7gh3k.png"
                     alt="Cartão CNPJ"
                     style={{ paddingTop: '10px', width: '100%', height: '100%', alignContent: 'center' }}
                 />
@@ -53,7 +58,7 @@ export const cnpjText = () => {
 
 }
 
-export const homeText = () =>
+export const HomeText = () =>
     <div style={modalContainer}>
         <label style={modalLabel}>Comprovante de Residência</label>
     </div>

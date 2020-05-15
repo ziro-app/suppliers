@@ -18,7 +18,7 @@ import banksList from './banks'
 import fetch from './fetch'
 import completeRegistration from './completeRegistration'
 import simplifiedRegistration from './simplifiedRegistration'
-import { atvdText, cnpjText, docText, homeText } from './modals'
+import { AtvdText, CnpjText, DocText, HomeText } from './modals'
 
 const categories = {
 	'Bijouterias': '09',
@@ -30,8 +30,8 @@ const categories = {
 const Register = () => {
 	const [isError, setIsError] = useState(false)
 	const [isLoading, setIsLoading] = useState(true)
-	const [suppliers, setSuppliers] = useState([])
 	const [step, setStep] = useState(0)
+	const [suppliers, setSuppliers] = useState([])
 	const [cnpjValid, setCnpjValid] = useState(false)
 	// mixed form field
 	const [cnpj, setCnpj] = useState('')
@@ -616,28 +616,28 @@ const Register = () => {
 						validations={validations}
 						sendToBackend={() => setStep(step + 1)}
 						inputs={[
-							<FormInput name='idDoc' label='' LabelComponent={docText} input={
+							<FormInput name='idDoc' label='' LabelComponent={<DocText />} input={
 								<SingleImageUpload
 									setFile={setFileDoc}
 									persistFilename={fileDoc.name}
 									indexOfFile={0}
 								/>
 							} />,
-							<FormInput name='idAtv' label='' LabelComponent={atvdText} input={
+							<FormInput name='idAtv' label='' LabelComponent={<AtvdText />} input={
 								<SingleImageUpload
 									setFile={setFileAtv}
 									persistFilename={fileAtv.name}
 									indexOfFile={1}
 								/>
 							} />,
-							<FormInput name='idRes' label='' LabelComponent={homeText} input={
+							<FormInput name='idRes' label='' LabelComponent={<HomeText />} input={
 								<SingleImageUpload
 									setFile={setFileRes}
 									persistFilename={fileRes.name}
 									indexOfFile={2}
 								/>
 							} />,
-							<FormInput name='idCnpj' label='' LabelComponent={cnpjText} input={
+							<FormInput name='idCnpj' label='' LabelComponent={<CnpjText />} input={
 								<SingleImageUpload
 									setFile={setFileCnpj}
 									persistFilename={fileCnpj.name}
