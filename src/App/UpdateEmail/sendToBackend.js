@@ -7,7 +7,7 @@ const sendToBackend = state => () => {
     const body = {
         apiResource: 'values',
         apiMethod: 'update',
-        range: `Fabricantes!F${row}`,
+        range: `Base!F${row}`,
         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
         resource: {
             values: [[newEmail.toLowerCase()]]

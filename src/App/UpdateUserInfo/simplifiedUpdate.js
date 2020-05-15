@@ -16,7 +16,7 @@ const simplifiedUpdate = (fname, lname, docId, userPos, zoopId, setIsLoading, se
         apiResource: 'values',
         apiMethod: 'update',
         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
-        range: `Fabricantes!B${userPos}`,
+        range: `Base!B${userPos}`,
         resource: {
             values: [[`${nome} ${sobrenome}`]]
         },
