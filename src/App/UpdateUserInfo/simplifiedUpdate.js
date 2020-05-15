@@ -33,19 +33,13 @@ const simplifiedUpdate = (fname, lname, docId, userPos, zoopId, setIsLoading, se
                 try {
                     // Atualizando registro na Zoop
                     await post(
-                        `${process.env.ZOOP_URL_SELLERS_UPDATE}?seller_id=${zoopId}`,
+                        `${process.env.ZOOP_URL}sellers-update?seller_id=${zoopId}`,
                         {
                             owner: {
                                 first_name: nome,
                                 last_name: sobrenome
                             }
-                        },
-                        {
-                            headers: {
-                                Authorization: `${process.env.ZOOP_TOKEN}`,
-                            },
-                        }
-                    );
+                        });
 
                     try {
                         // Atualizando usuário no Firestore

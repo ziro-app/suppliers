@@ -712,19 +712,19 @@ const Register = () => {
 									placeholder='Nome do titular'
 								/>
 							} />,
-							<FormInput name='accountNumber' label='Número da Conta com DV' input={
-								<InputText
-									value={accountNumber}
-									onChange={({ target: { value } }) => setAccountNumber(value)}
-									placeholder='Ex.: 9472156-8'
-									inputMode='numeric'
-								/>
-							} />,
 							<FormInput name='agency' label='Agência sem DV' input={
 								<InputText
 									value={agency}
 									onChange={({ target: { value } }) => setAgency(maskInput(value, '####', true))}
 									placeholder='Ex.: 0001'
+									inputMode='numeric'
+								/>
+							} />,
+							<FormInput name='accountNumber' label='Número da Conta com DV' input={
+								<InputText
+									value={accountNumber}
+									onChange={({ target: { value } }) => setAccountNumber(value)}
+									placeholder='Ex.: 9472156-8'
 									inputMode='numeric'
 								/>
 							} />,

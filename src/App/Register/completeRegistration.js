@@ -24,7 +24,7 @@ const completeRegistration = state => () => {
 		apiResource: 'values',
 		apiMethod: 'append',
 		spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
-		range: 'Fabricantes!A1',
+		range: 'Base!A1',
 		resource: {
 			values: [
 				[
@@ -37,17 +37,17 @@ const completeRegistration = state => () => {
 					cnpj,
 					reason,
 					fantasia,
-					categoryName,
 					cep,
 					endereco,
 					neighborhood,
 					city,
 					cityState,
-					bankNumber,
+					categoryName,
 					accountTypeViewName,
+					bankNumber,
 					titular,
-					accountNumber,
-					agency
+					agency,
+					accountNumber
 				]
 			]
 		},
@@ -69,10 +69,10 @@ const completeRegistration = state => () => {
 						try {
 							await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })
 
-							try {
+							try {/*
 								// Criando vendedor na Zoop
 								const { data: { id } } = await post(
-									process.env.ZOOP_URL_SELLERS,
+									`${process.env.ZOOP_URL}sellers-create`,
 									{
 										ein: cnpj,
 										owner: {
@@ -95,18 +95,12 @@ const completeRegistration = state => () => {
 											country: 'BR'
 										},
 										mcc: category
-									},
-									{
-										headers: {
-											Authorization: `${process.env.ZOOP_TOKEN}`,
-										},
-									}
-								);
+									});
 
 								try {
 									// Criando token da conta
 									const responseAccount = await post(
-										process.env.ZOOP_URL_TOKEN_BANK,
+										`${process.env.ZOOP_URL}token-bank-create`,
 										{
 											ein: cnpj,
 											bank_code: bankNumber,
@@ -114,27 +108,15 @@ const completeRegistration = state => () => {
 											routing_number: agency,
 											account_number: accountNumber,
 											type: accountType
-										},
-										{
-											headers: {
-												Authorization: `${process.env.ZOOP_TOKEN}`,
-											},
-										}
-									);
+										});
 
 									// Associando conta ao vendedor
 									await post(
-										process.env.ZOOP_URL_BANK_ASSOCIATE,
+										`${process.env.ZOOP_URL}bank-associate`,
 										{
 											customer: id,
 											token: responseAccount.data.id
-										},
-										{
-											headers: {
-												Authorization: `${process.env.ZOOP_TOKEN}`,
-											},
-										}
-									);
+										});
 
 									try {
 										// Upload das imagens
@@ -142,9 +124,8 @@ const completeRegistration = state => () => {
 											url: `?seller_id=${id}`,
 											method: 'post',
 											params: {},
-											baseURL: process.env.ZOOP_URL_UPLOAD_FILE,
+											baseURL: `${process.env.ZOOP_URL}seller-document-create`,
 											headers: {
-												'Authorization': process.env.ZOOP_TOKEN,
 												'Content-Type': 'multipart/form-data',
 												'Accept': 'application/json'
 											},
@@ -168,63 +149,63 @@ const completeRegistration = state => () => {
 												if (error.customError) throw error
 												throw { msg: `Erro no upload da imagem ${i + 1}, fale com seu assessor.`, customError: true }
 											}
-										}));
+										}));*/
 
-										try {
-											// Adicionando registro ao Firestore
-											await db.collection('suppliers').doc(user.uid).set({
-												cadastro: today,
-												uid: user.uid,
-												zoopId: id,
-												nome: fname ? fname.trim() : '',
-												sobrenome: lname ? lname.trim() : '',
-												cpf,
-												nascimento: birthdate,
-												telefone: phone,
-												email,
-												cnpj,
-												razao: reason,
-												fantasia,
-												categoria: categoryName,
-												cep,
-												endereco,
-												bairro: neighborhood,
-												cidade: city,
-												estado: cityState,
-												nomeBanco: bankName.includes(' - ') ? bankName.split(' - ')[1] : bankName,
-												codBanco: bankNumber,
-												tipoConta: accountTypeViewName,
-												titular,
-												numConta: accountNumber,
-												agencia: agency,
-												tipoCadastro: 'Completo'
-											})
+								try {
+									// Adicionando registro ao Firestore
+									await db.collection('suppliers').doc(user.uid).set({
+										cadastro: today,
+										uid: user.uid,
+										//zoopId: id,
+										nome: fname ? fname.trim() : '',
+										sobrenome: lname ? lname.trim() : '',
+										cpf,
+										nascimento: birthdate,
+										telefone: phone,
+										email,
+										cnpj,
+										razao: reason,
+										fantasia,
+										categoria: categoryName,
+										cep,
+										endereco,
+										bairro: neighborhood,
+										cidade: city,
+										estado: cityState,
+										nomeBanco: bankName.includes(' - ') ? bankName.split(' - ')[1] : bankName,
+										codBanco: bankNumber,
+										tipoConta: accountTypeViewName,
+										titular,
+										numConta: accountNumber,
+										agencia: agency,
+										tipoCadastro: 'Completo'
+									})
 
-											await db.collection('users').add({ email, app: 'suppliers' })
+									await db.collection('users').add({ email, app: 'suppliers' })
 
-											try {
-												await auth.signOut() // user needs to validate email before signing in to app
-											} catch (error) {
-												if (error.response) console.log(error.response)
-												throw 'Erro ao fazer signOut'
-											}
-										} catch (error) {
-											if (error.customError) throw error
-											if (error.response) console.log(error.response)
-											throw 'Erro ao salvar na Firestore'
-										}
-
-
-
+									try {
+										await auth.signOut() // user needs to validate email before signing in to app
 									} catch (error) {
-										if (error.customError) throw error
-										else throw { msg: 'Erro no upload das imagens. Fale com seu assessor', customError: true }
+										if (error.response) console.log(error.response)
+										throw 'Erro ao fazer signOut'
 									}
-
 								} catch (error) {
 									if (error.customError) throw error
-									throw { msg: 'Erro ao criar conta bancária. Fale com seu assessor', customError: true }
+									if (error.response) console.log(error.response)
+									throw 'Erro ao salvar na Firestore'
 								}
+
+
+
+								/*} catch (error) {
+									if (error.customError) throw error
+									else throw { msg: 'Erro no upload das imagens. Fale com seu assessor', customError: true }
+								}
+
+							} catch (error) {
+								if (error.customError) throw error
+								throw { msg: 'Erro ao criar conta bancária. Fale com seu assessor', customError: true }
+								}*/
 
 							} catch (error) {
 								if (error.customError) throw error

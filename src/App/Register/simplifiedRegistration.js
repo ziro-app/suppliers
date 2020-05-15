@@ -19,7 +19,7 @@ const simplifiedRegistration = state => () => {
         apiResource: 'values',
         apiMethod: 'append',
         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
-        range: 'Fabricantes!A1',
+        range: 'Base!A1',
         resource: {
             values: [
                 [
@@ -32,7 +32,6 @@ const simplifiedRegistration = state => () => {
                     cnpj,
                     reason,
                     fantasia,
-                    ,
                     cep,
                     endereco,
                     neighborhood,
@@ -59,10 +58,10 @@ const simplifiedRegistration = state => () => {
                             // Enviando email de confirmação
                             await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })
 
-                            try {
+                            try {/*
                                 // Criando registro na Zoop
                                 const { data: { id } } = await post(
-                                    process.env.ZOOP_URL_SELLERS,
+                                    `${process.env.ZOOP_URL}sellers-create`,
                                     {
                                         ein: cnpj,
                                         owner: {
@@ -81,20 +80,14 @@ const simplifiedRegistration = state => () => {
                                             postal_code: cep.replace('-', ''),
                                             country: 'BR'
                                         }
-                                    },
-                                    {
-                                        headers: {
-                                            Authorization: `${process.env.ZOOP_TOKEN}`,
-                                        },
-                                    }
-                                );
+                                    });*/
 
                                 try {
                                     // Adicionando usuário no Firestore
                                     await db.collection('suppliers').doc(user.uid).set({
                                         cadastro: today,
                                         uid: user.uid,
-                                        zoopId: id,
+                                        //zoopId: id,
                                         nome: fname ? fname.trim() : '',
                                         sobrenome: lname ? lname.trim() : '',
                                         email,

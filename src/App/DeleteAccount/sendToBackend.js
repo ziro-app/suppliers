@@ -22,12 +22,7 @@ const sendToBackend = state => () => new Promise(async (resolve, reject) => {
 			await docRefCollection.delete()
 			await docRefUser.delete()
 			try {
-				await get(`${process.env.ZOOP_URL_SELLERS_DELETE}?seller_id=${zoopId}`, {},
-					{
-						headers: {
-							Authorization: `${process.env.ZOOP_TOKEN}`,
-						},
-					});
+				await get(`${process.env.ZOOP_URL}sellers-delete?seller_id=${zoopId}`);
 
 				try {
 					await user.delete()
