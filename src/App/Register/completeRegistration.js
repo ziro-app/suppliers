@@ -19,6 +19,9 @@ const completeRegistration = state => () => {
 	const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
 	const telefone = phone ? `55 ${phone.trim()}` : ''
 	const titular = holderName ? holderName.trim() : ''
+	cep = cep.split('')
+	cep.splice(2, 0, '.')
+	const dotCep = cep.join('')
 	const today = new Date()
 	const body = {
 		apiResource: 'values',
@@ -37,7 +40,7 @@ const completeRegistration = state => () => {
 					cnpj,
 					reason,
 					fantasia,
-					cep,
+					dotCep,
 					endereco,
 					neighborhood,
 					city,
@@ -46,7 +49,7 @@ const completeRegistration = state => () => {
 					accountTypeViewName,
 					bankNumber,
 					titular,
-					agency,
+					`'${agency}`,
 					accountNumber
 				]
 			]
@@ -167,7 +170,7 @@ const completeRegistration = state => () => {
 										razao: reason,
 										fantasia,
 										categoria: categoryName,
-										cep,
+										cep: dotCep,
 										endereco,
 										bairro: neighborhood,
 										cidade: city,

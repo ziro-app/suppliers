@@ -192,24 +192,24 @@ const Register = () => {
 			message: 'Campo obrigatório'
 		}, {
 			name: 'idDoc',
-			validation: value => step === 3 ? value !== '' : true,
+			validation: value => step === 3 ? value !== '' && /[\.jpg|\.png|\.pdf]$/.test(value.name) : true,
 			value: fileDoc,
-			message: 'Documento obrigatório'
+			message: 'Documento inválido, formatos válidos: .png, .jpg e .pdf'
 		}, {
 			name: 'idAtv',
-			validation: value => step === 3 ? value !== '' : true,
+			validation: value => step === 3 ? value !== '' && /[\.jpg|\.png|\.pdf]$/.test(value.name) : true,
 			value: fileAtv,
-			message: 'Documento obrigatório'
+			message: 'Documento inválido, formatos válidos: .png, .jpg e .pdf'
 		}, {
 			name: 'idRes',
-			validation: value => step === 3 ? value !== '' : true,
+			validation: value => step === 3 ? value !== '' && /[\.jpg|\.png|\.pdf]$/.test(value.name) : true,
 			value: fileRes,
-			message: 'Documento obrigatório'
+			message: 'Documento inválido, formatos válidos: .png, .jpg e .pdf'
 		}, {
 			name: 'idCnpj',
-			validation: value => step === 3 ? value !== '' : true,
+			validation: value => step === 3 ? value !== '' && /[\.jpg|\.png|\.pdf]$/.test(value.name) : true,
 			value: fileCnpj,
-			message: 'Documento obrigatório'
+			message: 'Documento inválido, formatos válidos: .png, .jpg e .pdf'
 		}, {
 			name: 'bankNumber',
 			validation: value => step === 4 ? banksList.includes(bankName) : true,

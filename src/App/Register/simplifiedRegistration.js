@@ -8,6 +8,9 @@ const simplifiedRegistration = state => () => {
     const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
     const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
     const today = new Date()
+    cep = cep.split('')
+    cep.splice(2, 0, '.')
+    const dotCep = cep.join('')
     const url = process.env.SHEET_URL
     const config = {
         headers: {
@@ -32,7 +35,7 @@ const simplifiedRegistration = state => () => {
                     cnpj,
                     reason,
                     fantasia,
-                    cep,
+                    dotCep,
                     endereco,
                     neighborhood,
                     city,
@@ -94,7 +97,7 @@ const simplifiedRegistration = state => () => {
                                         cnpj,
                                         razao: reason,
                                         fantasia,
-                                        cep,
+                                        cep: dotCep,
                                         endereco,
                                         bairro: neighborhood,
                                         cidade: city,
