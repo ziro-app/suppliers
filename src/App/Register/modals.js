@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import Modal from '@bit/vitorbarbosa19.ziro.modal';
-import { modalContainer, modalLabel } from './styles';
+import { modalContainer, modalLabel, modalBox } from './styles';
 
 export const DocText = () => {
     const [modalDoc, setModalDoc] = useState(false);
 
     return (
         <div style={modalContainer}>
-            <Modal isOpen={modalDoc} setIsOpen={() => setModalDoc(false)}>
-                <label style={modalLabel}>
-                    É necessário o envio de um documento de identificação com foto, como no exemplo a seguir
-                    </label>
+            <Modal boxStyle={modalBox} isOpen={modalDoc} setIsOpen={() => setModalDoc(false)}>
+                <label style={modalLabel}>RG ou CNH (Frente e Verso)</label>
                 <img
                     src="https://res.cloudinary.com/ziro/image/upload/v1589474596/cnh_vczghs.jpg"
                     alt="Documento com foto"
-                    style={{ paddingTop: '20px', width: '100%', height: '100%', alignContent: 'center' }}
+                    style={{ paddingTop: '10px', width: '100%', height: '100%', alignContent: 'center' }}
                 />
             </Modal>
-            <label style={modalLabel}>Identificação (RG, CNH) - Frente e Verso <Icon type="help" size={18} color='#F7BA00' onClick={() => setModalDoc(true)} /></label>
+            <label style={modalLabel}>RG ou CNH (Frente e Verso)&nbsp;<Icon type="help" size={16} color='#F7BA00' onClick={() => setModalDoc(true)} /></label>
         </div>
     );
 }
@@ -28,17 +26,15 @@ export const AtvdText = () => {
 
     return (
         <div style={modalContainer}>
-            <Modal isOpen={modalAtvd} setIsOpen={() => setModalAtvd(false)}>
-                <label style={modalLabel}>
-                    Nos envie uma nota fiscal de produtos que você comprou para vender na sua loja, como no exemplo a seguir
-                    </label>
+            <Modal boxStyle={modalBox} isOpen={modalAtvd} setIsOpen={() => setModalAtvd(false)}>
+                <label style={modalLabel}>Nota fiscal de compra de produtos</label>
                 <img
-                    src="https://res.cloudinary.com/ziro/image/upload/v1589511807/nota_xpxiek.jpg"
+                    src="https://res.cloudinary.com/ziro/image/upload/v1589552592/nota_abs6jw.jpg"
                     alt="Nota Fiscal"
-                    style={{ paddingTop: '20px', width: '100%', height: '100%', alignContent: 'center' }}
+                    style={{ paddingTop: '10px', width: '100%', height: '100%', alignContent: 'center' }}
                 />
             </Modal>
-            <label style={modalLabel}>Atividade (Nota fiscal de compra de produtos) <Icon type="help" size={18} color='#F7BA00' onClick={() => setModalAtvd(true)} /></label>
+            <label style={modalLabel}>Nota fiscal de compra de produtos&nbsp;<Icon type="help" size={16} color='#F7BA00' onClick={() => setModalAtvd(true)} /></label>
         </div>
     );
 }
@@ -48,17 +44,15 @@ export const CnpjText = () => {
 
     return (
         <div style={modalContainer}>
-            <Modal isOpen={modalCNPJ} setIsOpen={() => setModalCNPJ(false)}>
-                <label style={modalLabel}>
-                    Nos envie o cartão CNPJ de sua empresa, como no exemplo a seguir
-                    </label>
+            <Modal boxStyle={modalBox} isOpen={modalCNPJ} setIsOpen={() => setModalCNPJ(false)}>
+                <label style={modalLabel}>Cartão CNPJ</label>
                 <img
                     src="https://res.cloudinary.com/ziro/image/upload/v1589510718/cartao_w7gh3k.png"
                     alt="Cartão CNPJ"
-                    style={{ paddingTop: '20px', width: '100%', height: '100%', alignContent: 'center' }}
+                    style={{ paddingTop: '10px', width: '100%', height: '100%', alignContent: 'center' }}
                 />
             </Modal>
-            <label style={modalLabel}>Cartão CNPJ <Icon type="help" size={18} color='#F7BA00' onClick={() => setModalCNPJ(true)} /></label>
+            <label style={modalLabel}>Cartão CNPJ&nbsp;<Icon type="help" size={16} color='#F7BA00' onClick={() => setModalCNPJ(true)} /></label>
         </div>
     );
 
@@ -66,5 +60,5 @@ export const CnpjText = () => {
 
 export const HomeText = () =>
     <div style={modalContainer}>
-        <label style={modalLabel}>Comprovante de Residência (Ex: Conta de luz)</label>
+        <label style={modalLabel}>Comprovante de Residência</label>
     </div>

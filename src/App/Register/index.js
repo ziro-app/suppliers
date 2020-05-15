@@ -43,7 +43,7 @@ const Register = () => {
 	const [fantasia, setFantasia] = useState('')
 	const [categoryName, setCategoryName] = useState('')
 	const [category, setCategory] = useState('')
-	const categoryList = ['Bijouterias', 'Calçados/Bolsas/Malas', 'Roupas masc., fem., inf., geral', 'Vestuário']
+	const categoryList = ['Vestuário', 'Bijouterias', 'Calçados/Bolsas/Malas', 'Roupas masc., fem., inf., geral']
 	const [cep, setCep] = useState('')
 	const [street, setStreet] = useState('')
 	const [number, setNumber] = useState('')
@@ -94,7 +94,7 @@ const Register = () => {
 			name: 'cnpjValid',
 			validation: value => (step === 1) || (step === 4 && typeOfRegistration === 'Completo') ? value : true,
 			value: cnpjValid,
-			message: 'Cnpj precisa ser validado'
+			message: 'CNPJ precisa ser validado'
 		}, {
 			name: 'typeOfRegistration',
 			validation: value => step <= 2 ? typeOfRegistrationList.includes(value) : true,
@@ -327,7 +327,7 @@ const Register = () => {
 									}
 								}}
 								list={typeOfRegistrationList}
-								placeholder="Escolha Completo ou Simplificado"
+								placeholder="Completo ou Simplificado"
 								readOnly={true}
 							/>
 						} />
@@ -519,7 +519,7 @@ const Register = () => {
 									}
 									}
 									list={categoryList}
-									placeholder="Bijouterias"
+									placeholder="Vestuário"
 									readOnly={true}
 								/>
 							} />,
