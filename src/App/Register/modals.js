@@ -3,7 +3,7 @@ import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import { modalContainer, modalLabel } from './styles';
 
-export const docText = () => {
+export const DocText = () => {
     const [modalDoc, setModalDoc] = useState(false);
 
     return (
@@ -23,22 +23,27 @@ export const docText = () => {
     );
 }
 
-export const atvdText = () => {
+export const AtvdText = () => {
     const [modalAtvd, setModalAtvd] = useState(false);
 
     return (
         <div style={modalContainer}>
             <Modal isOpen={modalAtvd} setIsOpen={() => setModalAtvd(false)}>
                 <label style={modalLabel}>
-                    Nos envie uma nota fiscal de produtos que você comprou para vender na sua loja
+                    Nos envie uma nota fiscal de produtos que você comprou para vender na sua loja, como no exemplo a seguir
                     </label>
+                <img
+                    src="https://res.cloudinary.com/ziro/image/upload/v1589511807/nota_xpxiek.jpg"
+                    alt="Nota Fiscal"
+                    style={{ paddingTop: '20px', width: '100%', height: '100%', alignContent: 'center' }}
+                />
             </Modal>
             <label style={modalLabel}>Atividade (Nota fiscal de compra de produtos) <Icon type="help" size={18} color='#F7BA00' onClick={() => setModalAtvd(true)} /></label>
         </div>
     );
 }
 
-export const cnpjText = () => {
+export const CnpjText = () => {
     const [modalCNPJ, setModalCNPJ] = useState(false);
 
     return (
@@ -48,7 +53,7 @@ export const cnpjText = () => {
                     Nos envie o cartão CNPJ de sua empresa, como no exemplo a seguir
                     </label>
                 <img
-                    src="https://res.cloudinary.com/ziro/image/upload/v1589474596/cartao_nn6ium.png"
+                    src="https://res.cloudinary.com/ziro/image/upload/v1589510718/cartao_w7gh3k.png"
                     alt="Cartão CNPJ"
                     style={{ paddingTop: '20px', width: '100%', height: '100%', alignContent: 'center' }}
                 />
@@ -59,7 +64,7 @@ export const cnpjText = () => {
 
 }
 
-export const homeText = () =>
+export const HomeText = () =>
     <div style={modalContainer}>
         <label style={modalLabel}>Comprovante de Residência (Ex: Conta de luz)</label>
     </div>
