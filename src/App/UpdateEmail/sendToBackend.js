@@ -49,6 +49,10 @@ const sendToBackend = state => () => {
                             owner: {
                                 email: newEmail.toLowerCase()
                             }
+                        }, {
+                            headers: {
+                                Authorization: `${process.env.PAY_TOKEN}`,
+                            },
                         });
                     try {
                         await user.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })

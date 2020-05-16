@@ -39,6 +39,10 @@ const simplifiedUpdate = (fname, lname, docId, userPos, zoopId, setIsLoading, se
                                 first_name: nome,
                                 last_name: sobrenome
                             }
+                        }, {
+                            headers: {
+                                Authorization: `${process.env.PAY_TOKEN}`,
+                            },
                         });
 
                     try {

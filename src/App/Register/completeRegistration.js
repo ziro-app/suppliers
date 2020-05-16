@@ -46,7 +46,7 @@ const completeRegistration = state => () => {
 					cityState,
 					categoryName,
 					accountTypeViewName,
-					bankNumber,
+					bankNumber.startsWith('0') ? `'${bankNumber}` : bankNumber,
 					reason,
 					`'${agency}`,
 					accountNumber
@@ -95,11 +95,11 @@ const completeRegistration = state => () => {
 											country: 'BR'
 										},
 										mcc: category
-									},{
-							            headers: {
-							              Authorization: `${process.env.PAY_TOKEN}`,
-							        },
-							    });
+									}, {
+										headers: {
+											Authorization: `${process.env.PAY_TOKEN}`,
+										},
+									});
 								try {
 									// Criando token da conta
 									const responseAccount = await post(
@@ -111,26 +111,26 @@ const completeRegistration = state => () => {
 											routing_number: agency,
 											account_number: accountNumber,
 											type: accountType
-										},{
-							            headers: {
-							              Authorization: `${process.env.PAY_TOKEN}`,
-							        },
-							    });
+										}, {
+											headers: {
+												Authorization: `${process.env.PAY_TOKEN}`,
+											},
+										});
 									// Associando conta ao vendedor
 									await post(
 										`${process.env.ZOOP_URL}bank-associate`,
 										{
 											customer: id,
 											token: responseAccount.data.id
-										},{
-							            headers: {
-							              Authorization: `${process.env.PAY_TOKEN}`,
-							        },
-							    });
+										}, {
+											headers: {
+												Authorization: `${process.env.PAY_TOKEN}`,
+											},
+										});
 									try {
 										// Upload das imagens
 										const uploadConfig = {
-											url: `${process.env.DOC_URL}`,
+											url: `${process.env.DOC_URL}${id}/documents`,
 											method: 'post',
 											params: {},
 											headers: {
@@ -158,60 +158,60 @@ const completeRegistration = state => () => {
 												throw { msg: `Erro no upload da imagem ${index + 1}, fale com seu assessor.`, customError: true }
 											}
 										}));
-								try {
-									// Adicionando registro ao Firestore
-									await db.collection('suppliers').doc(user.uid).set({
-										cadastro: today,
-										uid: user.uid,
-										//zoopId: id,
-										nome: fname ? fname.trim() : '',
-										sobrenome: lname ? lname.trim() : '',
-										cpf,
-										nascimento: birthdate,
-										telefone: phone,
-										email,
-										cnpj,
-										razao: reason,
-										fantasia,
-										categoria: categoryName,
-										cep: dotCep,
-										endereco,
-										bairro: neighborhood,
-										cidade: city,
-										estado: cityState,
-										nomeBanco: bankName.includes(' - ') ? bankName.split(' - ')[1] : bankName,
-										codBanco: bankNumber,
-										tipoConta: accountTypeViewName,
-										titular: reason,
-										numConta: accountNumber,
-										agencia: agency,
-										tipoCadastro: 'Completo'
-									})
+										try {
+											// Adicionando registro ao Firestore
+											await db.collection('suppliers').doc(user.uid).set({
+												cadastro: today,
+												uid: user.uid,
+												zoopId: id,
+												nome: fname ? fname.trim() : '',
+												sobrenome: lname ? lname.trim() : '',
+												cpf,
+												nascimento: birthdate,
+												telefone: phone,
+												email,
+												cnpj,
+												razao: reason,
+												fantasia,
+												categoria: categoryName,
+												cep: dotCep,
+												endereco,
+												bairro: neighborhood,
+												cidade: city,
+												estado: cityState,
+												nomeBanco: bankName.includes(' - ') ? bankName.split(' - ')[1] : bankName,
+												codBanco: bankNumber,
+												tipoConta: accountTypeViewName,
+												titular: reason,
+												numConta: accountNumber,
+												agencia: agency,
+												tipoCadastro: 'Completo'
+											})
 
-									await db.collection('users').add({ email, app: 'suppliers' })
+											await db.collection('users').add({ email, app: 'suppliers' })
 
-									try {
-										await auth.signOut() // user needs to validate email before signing in to app
+											try {
+												await auth.signOut() // user needs to validate email before signing in to app
+											} catch (error) {
+												if (error.response) console.log(error.response)
+												throw 'Erro ao fazer signOut'
+											}
+										} catch (error) {
+											if (error.customError) throw error
+											if (error.response) console.log(error.response)
+											throw 'Erro ao salvar na Firestore'
+										}
+
+
+
 									} catch (error) {
-										if (error.response) console.log(error.response)
-										throw 'Erro ao fazer signOut'
+										if (error.customError) throw error
+										else throw { msg: 'Erro no upload das imagens. Fale com seu assessor', customError: true }
 									}
-								} catch (error) {
-									if (error.customError) throw error
-									if (error.response) console.log(error.response)
-									throw 'Erro ao salvar na Firestore'
-								}
-
-
 
 								} catch (error) {
 									if (error.customError) throw error
-									else throw { msg: 'Erro no upload das imagens. Fale com seu assessor', customError: true }
-								}
-
-							} catch (error) {
-								if (error.customError) throw error
-								throw { msg: 'Erro ao criar conta bancária. Fale com seu assessor', customError: true }
+									throw { msg: 'Erro ao criar conta bancária. Fale com seu assessor', customError: true }
 								}
 
 							} catch (error) {
