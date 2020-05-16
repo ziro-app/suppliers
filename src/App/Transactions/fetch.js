@@ -2,14 +2,14 @@ import currencyFormat from '@ziro/currency-format';
 import { db } from '../../Firebase/index';
 import matchStatusColor from './matchStatusColor'
 
-const fetch = (setIsLoading, setErrorLoading, payments, setPayments, docId, limit, lastDoc, setLastDoc, totalTransactions, setTotalTransactions, setLoadingMore) => {
-    let query = db.collection('suppliers').doc(docId).collection('payments').orderBy('date', 'desc').limit(limit);
+const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, totalTransactions, setTotalTransactions, setLoadingMore) => {
+    let query = db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).limit(limit);
     if (lastDoc) query = query.startAfter(lastDoc);
 
     const run = async () => {
         try {
             if (totalTransactions === -1) {
-                let collectionData = await db.collection('suppliers').doc(docId).collection('payments').get();
+                let collectionData = await db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).get();
                 setTotalTransactions(collectionData.docs.length);
             }
             const snap = await query.get();
@@ -18,32 +18,33 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, docId, limi
                 const { cardHolder, cardNumber, charge, date, expectedDate, fees, installment,
                     installments, maxInstallments, seller, sellerZoopId, status } = doc.data();
                 const chargeFormatted = currencyFormat(charge);
-                const dateFormatted = new Date(date.seconds * 1000)
+                const dateFormatted = date ? new Date(date.seconds * 1000)
                     .toLocaleDateString('pt-br', {
                         day: '2-digit',
                         month: '2-digit',
                     })
-                    .replace(' de ', '/');
-                const expectedFormatted = new Date(expectedDate.seconds * 1000)
+                    .replace(' de ', '/') : '';
+                const expectedFormatted = expectedDate ? new Date(expectedDate.seconds * 1000)
                     .toLocaleDateString('pt-br', {
                         day: '2-digit',
                         month: '2-digit',
                     })
-                    .replace(' de ', '/');
+                    .replace(' de ', '/') : '';
+
                 paymentDoc.push({
                     transactionId: doc.id,
-                    cardHolder,
-                    cardNumber,
+                    cardHolder: cardHolder ? cardHolder : '',
+                    cardNumber: cardNumber ? cardNumber : '',
                     charge: chargeFormatted,
-                    date: dateFormatted,
-                    expectedDate: expectedFormatted,
+                    date: dateFormatted ? dateFormatted : '',
+                    expectedDate: expectedFormatted ? expectedFormatted : '',
                     fees: fees ? fees : '',
-                    installment,
-                    installments,
-                    maxInstallments,
-                    seller,
-                    sellerZoopId,
-                    status,
+                    installment: installment ? installment : '',
+                    installments: installments ? installments : '',
+                    maxInstallments: maxInstallments ? maxInstallments : '',
+                    seller: seller ? seller : '',
+                    sellerZoopId: sellerZoopId ? sellerZoopId : '',
+                    status: status ? status : '',
                     statusColor: matchStatusColor(status)
                 });
             });

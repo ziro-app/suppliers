@@ -44,7 +44,7 @@ export const App = () => {
 	const body = {
 		"apiResource": "values",
 		"apiMethod": "get",
-		"range": "Fabricantes",
+		"range": "Base",
 		"spreadsheetId": process.env.SHEET_SUPPLIERS_ID
 	}
 

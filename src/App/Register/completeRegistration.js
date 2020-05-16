@@ -18,9 +18,9 @@ const completeRegistration = state => () => {
 	const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
 	const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
 	const telefone = phone ? `55 ${phone.trim()}` : ''
-	cep = cep.split('')
-	cep.splice(2, 0, '.')
-	const dotCep = cep.join('')
+	let cepSplit = cep.split('')
+	cepSplit.splice(2, 0, '.')
+	const dotCep = cepSplit.join('')
 	const today = new Date()
 	const body = {
 		apiResource: 'values',

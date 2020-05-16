@@ -8,9 +8,9 @@ const simplifiedRegistration = state => () => {
     const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
     const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
     const today = new Date()
-    cep = cep.split('')
-    cep.splice(2, 0, '.')
-    const dotCep = cep.join('')
+    let cepSplit = cep.split('')
+    cepSplit.splice(2, 0, '.')
+    const dotCep = cepSplit.join('')
     const url = process.env.SHEET_URL
     const config = {
         headers: {

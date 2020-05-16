@@ -13,7 +13,6 @@ import { userContext } from '../../appContext';
 import { button, custom, illustrationContainer, buttonContainer } from './styles';
 
 const TransactionDetails = ({ transactions, transactionId }) => {
-    const { docId } = useContext(userContext)
     const [data, setData] = useState([]);
     const [blocks, setBlocks] = useState([]);
     const [transaction, setTransaction] = useState({});
@@ -21,7 +20,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
     const [copyResultText, setCopyResultText] = useState('')
     const [copyResultStatus, setCopyResultStatus] = useState(true)
     const textAreaRef = useRef(null)
-    const paymentLink = `https://catalogo.ziro.app/transacao?doc=${transactionId}&sel=${docId}`;
+    const paymentLink = `https://catalogo.ziro.app/transacao?doc=${transactionId}`;
 
     const copyToClipboard = (e) => {
         e.preventDefault()
