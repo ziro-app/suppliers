@@ -63,15 +63,13 @@ const completeRegistration = state => () => {
 				try {
 					// Cadastrando usuário na planilha
 					await post(url, body, config)
-
 					try {
 						// Cadastrando no Firebase Auth 
 						const { user } = await auth.createUserWithEmailAndPassword(email, pass)
 						// Enviando email de verificação
 						try {
 							await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })
-
-							try {/*
+							try {
 								// Criando vendedor na Zoop
 								const { data: { id } } = await post(
 									`${process.env.ZOOP_URL}sellers-create`,
@@ -97,8 +95,11 @@ const completeRegistration = state => () => {
 											country: 'BR'
 										},
 										mcc: category
-									});
-
+									},{
+							            headers: {
+							              Authorization: `${process.env.PAY_TOKEN}`,
+							        },
+							    });
 								try {
 									// Criando token da conta
 									const responseAccount = await post(
@@ -110,26 +111,32 @@ const completeRegistration = state => () => {
 											routing_number: agency,
 											account_number: accountNumber,
 											type: accountType
-										});
-
+										},{
+							            headers: {
+							              Authorization: `${process.env.PAY_TOKEN}`,
+							        },
+							    });
 									// Associando conta ao vendedor
 									await post(
 										`${process.env.ZOOP_URL}bank-associate`,
 										{
 											customer: id,
 											token: responseAccount.data.id
-										});
-
+										},{
+							            headers: {
+							              Authorization: `${process.env.PAY_TOKEN}`,
+							        },
+							    });
 									try {
 										// Upload das imagens
 										const uploadConfig = {
-											url: `?seller_id=${id}`,
+											url: `${process.env.DOC_URL}`,
 											method: 'post',
 											params: {},
-											baseURL: `${process.env.ZOOP_URL}seller-document-create`,
 											headers: {
 												'Content-Type': 'multipart/form-data',
-												'Accept': 'application/json'
+												'Accept': 'application/json',
+												'Authorization': `${process.env.ZOOP_AUTH}`
 											},
 											data: {}
 										}
@@ -141,7 +148,6 @@ const completeRegistration = state => () => {
 												else if (index === 1) category = 'atividade'
 												else if (index === 2) category = 'residencia'
 												else category = 'cnpj'
-
 												const formData = new FormData();
 												formData.append("file", file);
 												formData.append("category", category);
@@ -149,10 +155,9 @@ const completeRegistration = state => () => {
 												await axios(uploadConfig)
 											} catch (error) {
 												if (error.customError) throw error
-												throw { msg: `Erro no upload da imagem ${i + 1}, fale com seu assessor.`, customError: true }
+												throw { msg: `Erro no upload da imagem ${index + 1}, fale com seu assessor.`, customError: true }
 											}
-										}));*/
-
+										}));
 								try {
 									// Adicionando registro ao Firestore
 									await db.collection('suppliers').doc(user.uid).set({
@@ -199,7 +204,7 @@ const completeRegistration = state => () => {
 
 
 
-								/*} catch (error) {
+								} catch (error) {
 									if (error.customError) throw error
 									else throw { msg: 'Erro no upload das imagens. Fale com seu assessor', customError: true }
 								}
@@ -207,7 +212,7 @@ const completeRegistration = state => () => {
 							} catch (error) {
 								if (error.customError) throw error
 								throw { msg: 'Erro ao criar conta bancária. Fale com seu assessor', customError: true }
-								}*/
+								}
 
 							} catch (error) {
 								if (error.customError) throw error

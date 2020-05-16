@@ -36,7 +36,10 @@ module.exports = (env, { mode }) => {
 			continue_url,
 			cnpj_url,
 			cnpj_token,
-			zoop_url
+			zoop_url,
+			pay_token,
+			zoop_auth,
+			doc_url
 		} = require('./credentials')
 		config.devtool = 'cheap-module-eval-source-map'
 		config.devServer = { historyApiFallback: true }
@@ -50,7 +53,10 @@ module.exports = (env, { mode }) => {
 					CNPJ_URL: JSON.stringify(cnpj_url),
 					CNPJ_TOKEN: JSON.stringify(cnpj_token),
 					SHEET_SUPPLIERS_ID: JSON.stringify(sheet_suppliers_id),
-					ZOOP_URL: JSON.stringify(zoop_url)
+					ZOOP_URL: JSON.stringify(zoop_url),
+					PAY_TOKEN: JSON.stringify(pay_token),
+					ZOOP_AUTH: JSON.stringify(zoop_auth),
+					DOC_URL: JSON.stringify(doc_url)
 				}
 			})
 		)
@@ -81,7 +87,10 @@ module.exports = (env, { mode }) => {
 					CNPJ_URL: JSON.stringify(process.env.CNPJ_URL),
 					CNPJ_TOKEN: JSON.stringify(process.env.CNPJ_TOKEN),
 					SHEET_SUPPLIERS_ID: JSON.stringify(process.env.SHEET_SUPPLIERS_ID),
-					ZOOP_URL: JSON.stringify(process.env.ZOOP_URL)
+					ZOOP_URL: JSON.stringify(process.env.ZOOP_URL),
+					PAY_TOKEN: JSON.stringify(process.env.PAY_TOKEN),
+					ZOOP_AUTH: JSON.stringify(process.env.ZOOP_AUTH),
+					DOC_URL: JSON.stringify(process.env.DOC_URL)
 				}
 			})
 		)
