@@ -13,12 +13,11 @@ const config = {
 const completeRegistration = state => () => {
 	const { cnpjValid, cnpj, reason, fantasia, category, cep, bankName,
 		street, number, complement, neighborhood, city, cityState, fname, lname, cpf, email,
-		birthdate, phone, pass, bankNumber, holderName, accountNumber, agency, accountType,
+		birthdate, phone, pass, bankNumber, accountNumber, agency, accountType,
 		fileDoc, fileAtv, fileRes, fileCnpj, categoryName, accountTypeViewName } = state
 	const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
 	const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
 	const telefone = phone ? `55 ${phone.trim()}` : ''
-	const titular = holderName ? holderName.trim() : ''
 	cep = cep.split('')
 	cep.splice(2, 0, '.')
 	const dotCep = cep.join('')
@@ -48,7 +47,7 @@ const completeRegistration = state => () => {
 					categoryName,
 					accountTypeViewName,
 					bankNumber,
-					titular,
+					reason,
 					`'${agency}`,
 					accountNumber
 				]
@@ -107,7 +106,7 @@ const completeRegistration = state => () => {
 										{
 											ein: cnpj,
 											bank_code: bankNumber,
-											holder_name: titular,
+											holder_name: reason,
 											routing_number: agency,
 											account_number: accountNumber,
 											type: accountType
@@ -178,7 +177,7 @@ const completeRegistration = state => () => {
 										nomeBanco: bankName.includes(' - ') ? bankName.split(' - ')[1] : bankName,
 										codBanco: bankNumber,
 										tipoConta: accountTypeViewName,
-										titular,
+										titular: reason,
 										numConta: accountNumber,
 										agencia: agency,
 										tipoCadastro: 'Completo'

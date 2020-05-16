@@ -18,7 +18,7 @@ import banksList from './banks'
 import fetch from './fetch'
 import completeRegistration from './completeRegistration'
 import simplifiedRegistration from './simplifiedRegistration'
-import { AtvdText, CnpjText, DocText, HomeText } from './modals'
+import { AtvdText, CnpjText, DocText, HolderText, HomeText } from './modals'
 
 const categories = {
 	'Bijouterias': '09',
@@ -70,7 +70,6 @@ const Register = () => {
 	// form fields 4 - Dados bancários
 	const [bankName, setBankName] = useState('')
 	const [bankNumber, setBankNumber] = useState('')
-	const [holderName, setHolderName] = useState('')
 	const [agency, setAgency] = useState('')
 	const [accountNumber, setAccountNumber] = useState('')
 	const [accountTypeViewName, setAccountTypeViewName] = useState('')
@@ -80,13 +79,13 @@ const Register = () => {
 	const setState = {
 		setTypeOfRegistration, setCnpj, setCnpjValid, setReason, setFantasia, setCategory,
 		setFName, setLName, setCpf, setEmail, setBirthdate, setPhone, setStreet, setNumber, setComplement,
-		setNeighborhood, setCep, setCity, setCityState, setPass, setBankNumber, setHolderName, setAccountNumber,
+		setNeighborhood, setCep, setCity, setCityState, setPass, setBankNumber, setAccountNumber,
 		setAgency, setAccountType, setFileDoc, setFileAtv, setFileRes, setFileCnpj
 	}
 	const state = {
 		cnpjValid, typeOfRegistration, cnpj, reason, fantasia, category, cep, street, number,
 		complement, neighborhood, city, cityState, fname, lname, cpf, email, birthdate, phone, pass,
-		bankName, bankNumber, holderName, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
+		bankName, bankNumber, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
 		fileCnpj, categoryName, accountTypeViewName, ...setState
 	}
 	const validations = [
@@ -192,22 +191,22 @@ const Register = () => {
 			message: 'Campo obrigatório'
 		}, {
 			name: 'idDoc',
-			validation: value => step === 3 ? value !== '' && /[\.jpg|\.png|\.pdf]$/.test(value.name) : true,
+			validation: value => step === 3 ? value !== '' && /(\.jpg|\.png|\.pdf)$/.test(value.name) : true,
 			value: fileDoc,
 			message: 'Formatos válidos: .png, .jpg e .pdf'
 		}, {
 			name: 'idAtv',
-			validation: value => step === 3 ? value !== '' && /[\.jpg|\.png|\.pdf]$/.test(value.name) : true,
+			validation: value => step === 3 ? value !== '' && /(\.jpg|\.png|\.pdf)$/.test(value.name) : true,
 			value: fileAtv,
 			message: 'Formatos válidos: .png, .jpg e .pdf'
 		}, {
 			name: 'idRes',
-			validation: value => step === 3 ? value !== '' && /[\.jpg|\.png|\.pdf]$/.test(value.name) : true,
+			validation: value => step === 3 ? value !== '' && /(\.jpg|\.png|\.pdf)$/.test(value.name) : true,
 			value: fileRes,
 			message: 'Formatos válidos: .png, .jpg e .pdf'
 		}, {
 			name: 'idCnpj',
-			validation: value => step === 3 ? value !== '' && /[\.jpg|\.png|\.pdf]$/.test(value.name) : true,
+			validation: value => step === 3 ? value !== '' && /(\.jpg|\.png|\.pdf)$/.test(value.name) : true,
 			value: fileCnpj,
 			message: 'Formatos válidos: .png, .jpg e .pdf'
 		}, {
@@ -215,11 +214,6 @@ const Register = () => {
 			validation: value => step === 4 ? banksList.includes(bankName) : true,
 			value: bankNumber,
 			message: 'Campo obrigatório'
-		}, {
-			name: 'holderName',
-			validation: value => step === 4 ? (value.length >= 6 && value.includes(' ')) : true,
-			value: holderName,
-			message: 'Nome e sobrenome do titular'
 		}, {
 			name: 'agency',
 			validation: value => step === 4 ? !!value : true,
@@ -261,7 +255,6 @@ const Register = () => {
 		setPass('')
 		setConfirmPass('')
 		setBankNumber('')
-		setHolderName('')
 		setAccountNumber('')
 		setAgency('')
 		setAccountType('')
@@ -705,13 +698,6 @@ const Register = () => {
 									placeholder="Nubank"
 								/>
 							} />,
-							<FormInput name='holderName' label='Titular' input={
-								<InputText
-									value={holderName}
-									onChange={({ target: { value } }) => setHolderName(capitalize(value))}
-									placeholder='Nome do titular'
-								/>
-							} />,
 							<FormInput name='agency' label='Agência sem DV' input={
 								<InputText
 									value={agency}
@@ -726,6 +712,13 @@ const Register = () => {
 									onChange={({ target: { value } }) => setAccountNumber(value)}
 									placeholder='Ex.: 9472156-8'
 									inputMode='numeric'
+								/>
+							} />,
+							<FormInput name='holderName' label='' LabelComponent={<HolderText />} input={
+								<InputText
+									value={reason}
+									onChange={() => { }}
+									disabled={true}
 								/>
 							} />,
 							<FormInput name='cnpjValid' label='CNPJ' input={

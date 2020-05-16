@@ -60,5 +60,19 @@ export const CnpjText = () => {
 
 export const HomeText = () =>
     <div style={modalContainer}>
-        <label style={modalLabel}>Comprovante de Residência</label>
+        <label style={modalLabel}>Comprovante de endereço da empresa</label>
     </div>
+
+export const HolderText = () => {
+    const [modalHolder, setModalHolder] = useState(false);
+
+    return (
+        <div>
+            <Modal boxStyle={modalBox} isOpen={modalHolder} setIsOpen={() => setModalHolder(false)}>
+                <label style={modalLabel}>Conta precisa estar no nome da empresa</label>
+            </Modal>
+            <label style={{ ...modalLabel, justifyContent: 'start' }}>Titular&nbsp;<Icon type="help" size={16} color='#F7BA00' onClick={() => setModalHolder(true)} /></label>
+        </div>
+    );
+
+}

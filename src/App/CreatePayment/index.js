@@ -9,10 +9,10 @@ import InputText from '@bit/vitorbarbosa19.ziro.input-text'
 import { userContext } from '../appContext'
 
 const CreatePayment = () => {
-    const { fname, lname, zoopId, docId } = useContext(userContext)
+    const { fname, lname, zoopId } = useContext(userContext)
     const [charge, setCharge] = useState('')
     const [maxInstallments, setMaxInstallments] = useState('')
-    const state = { seller: capitalize(`${fname} ${lname}`), sellerId: zoopId, charge, maxInstallments, docId, setCharge, setMaxInstallments }
+    const state = { seller: capitalize(`${fname} ${lname}`), sellerId: zoopId, charge, maxInstallments, setCharge, setMaxInstallments }
     const validations = [
         {
             name: 'charge',
