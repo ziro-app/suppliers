@@ -21,11 +21,12 @@ export const custom = (fontSize, color) => ({
     },
     modalContainer = {
         zIndex: '999',
-        maxWidth: '500px',
+        maxWidth: '350px',
         width: '90%',
         margin: '0 auto',
-        padding: '5%',
+        padding: '30px',
         boxSizing: 'border-box',
+        textAlign: 'center',
         borderRadius: '3px',
         background: 'white',
         boxShadow: `1px 0px 8px 0px rgba(34,34,34,0.15), 1px 0px 8px 0px rgba(34,34,34,0.10),
@@ -35,6 +36,6 @@ export const custom = (fontSize, color) => ({
         display: 'flex',
         justifyContent: 'center',
         fontFamily: fontTitle,
-        fontSize: fontSizeSmall,
+        fontSize: '1.4rem',
         textTransform: 'uppercase'
     }
