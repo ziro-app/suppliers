@@ -15,7 +15,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
             const snap = await query.get();
             const paymentDoc = [];
             snap.forEach(doc => {
-                const { charge, date, expectedDate, fees, installment,
+                const { charge, date, expectedDate, fees, installment, dateLinkCreated,
                     installments, maxInstallments, seller, sellerZoopId, status, buyerRazao } = doc.data();
                 const chargeFormatted = currencyFormat(charge);
                 const dateFormatted = date ? new Date(date.seconds * 1000)
@@ -34,6 +34,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                 paymentDoc.push({
                     transactionId: doc.id,
                     charge: chargeFormatted,
+                    dateLinkCreated,
                     date: dateFormatted ? dateFormatted : '',
                     expectedDate: expectedFormatted ? expectedFormatted : '',
                     fees: fees ? fees : '',
@@ -47,8 +48,9 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                     buyerRazao
                 });
             });
+            let sorted = [...payments, ...paymentDoc].sort((a, b) => b.dateLinkCreated - a.dateLinkCreated, 'desc');
             setLastDoc(snap.docs[snap.docs.length - 1])
-            setPayments([...payments, ...paymentDoc]);
+            setPayments(sorted);
         } catch (error) {
             setErrorLoading(true)
         } finally {

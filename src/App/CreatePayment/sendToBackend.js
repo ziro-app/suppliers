@@ -7,6 +7,7 @@ const sendToBackend = state => () => {
         try {
             if (seller && sellerId) {
                 const docRef = await db.collection('credit-card-payments').add({
+                    dateLinkCreated: new Date(),
                     seller,
                     sellerZoopId: sellerId,
                     charge,
