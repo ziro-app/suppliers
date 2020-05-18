@@ -16,7 +16,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
             const paymentDoc = [];
             snap.forEach(doc => {
                 const { charge, date, expectedDate, fees, installment, dateLinkCreated,
-                    installments, maxInstallments, seller, sellerZoopId, status, buyerRazao } = doc.data();
+                    installments, maxInstallments, sellerZoopId, status, buyerRazao } = doc.data();
                 const chargeFormatted = currencyFormat(charge);
                 const dateFormatted = date ? new Date(date.seconds * 1000)
                     .toLocaleDateString('pt-br', {
@@ -41,7 +41,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                     installment: installment ? installment : '',
                     installments: installments ? installments : '',
                     maxInstallments: maxInstallments ? maxInstallments : '',
-                    seller: seller ? seller : '',
+                    seller: buyerRazao ? buyerRazao : '-',
                     sellerZoopId: sellerZoopId ? sellerZoopId : '',
                     status: status ? status : '',
                     statusColor: matchStatusColor(status),

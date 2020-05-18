@@ -104,6 +104,7 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
             let dataTable;
             if (effectTransaction[0].status === 'Aprovado') {
                 const installmentsNumber = parseInt(effectTransaction[0].installments);
+                /*
                 const installmentNumber = parseInt(effectTransaction[0].installment);
 
                 if (installmentNumber <= installmentsNumber && installmentsNumber > 0) {
@@ -150,12 +151,12 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
                                     content: effectTransaction[0].charge
                                 },
                                 {
-                                    title: 'Max. parcelas',
-                                    content: effectTransaction[0].maxInstallments
+                                    title: 'Parcela máxima',
+                                    content: `${effectTransaction[0].maxInstallments}x`
                                 },
                                 {
-                                    title: 'Forma',
-                                    content: `Crédito ${installmentsNumber}x`
+                                    title: 'Parcela escolhida',
+                                    content: `${installmentsNumber}x`
                                 },
                                 {
                                     title: 'Data',
@@ -169,7 +170,39 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
                             ]
                         }
                     ]
-                }
+                }*/
+                block = [
+                    {
+                        header: 'Compra',
+                        body: [
+                            {
+                                title: 'Lojista',
+                                content: effectTransaction[0].buyerRazao
+                            },
+                            {
+                                title: 'Valor',
+                                content: effectTransaction[0].charge
+                            },
+                            {
+                                title: 'Parcela máxima',
+                                content: `${effectTransaction[0].maxInstallments}x`
+                            },
+                            {
+                                title: 'Parcela escolhida',
+                                content: `${installmentsNumber}x`
+                            },
+                            {
+                                title: 'Data',
+                                content: `${effectTransaction[0].date}/20`
+                            },
+                            {
+                                title: 'Status',
+                                content: effectTransaction[0].status,
+                                color: effectTransaction[0].statusColor
+                            },
+                        ]
+                    }
+                ]
             } else {
                 block = [
                     {
@@ -184,11 +217,11 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
                                 content: effectTransaction[0].charge
                             },
                             {
-                                title: 'Max. parcelas',
-                                content: effectTransaction[0].maxInstallments
+                                title: 'Parcela máxima',
+                                content: `${effectTransaction[0].maxInstallments}x`
                             },
                             {
-                                title: 'Forma',
+                                title: 'Parcela escolhida',
                                 content: `-`
                             },
                             {
