@@ -16,7 +16,8 @@ export const custom = (fontSize, color) => ({
     },
     buttonContainer = {
         display: 'grid',
-        gridRowGap: '20px'
+        gridRowGap: '20px',
+        marginTop: '-30px'
     },
     modalContainer = {
         zIndex: '999',

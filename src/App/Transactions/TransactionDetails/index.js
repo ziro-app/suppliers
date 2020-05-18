@@ -242,16 +242,16 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
                     <>
                         <div style={illustrationContainer}>
                             <div style={{ display: 'grid', justifyItems: 'center' }}>
-                                <Illustration type="waiting" size={175} />
+                                <Illustration type="waiting" size={200} />
                             </div>
                         </div>
                         <div style={buttonContainer}>
                             <div>
                                 {copyResultText ?
-                                    <div style={{ padding: '6px 0 0', height: '24px', fontSize: '1.5rem', color: copyResultStatus ? successColor : alertColor, textAlign: 'center' }} >
-                                        <span style={{ height: '24px' }}>{copyResultText}</span>
+                                    <div style={{ padding: '0 0 5px', height: '24px', fontSize: '1.6rem', color: copyResultStatus ? successColor : alertColor, textAlign: 'center' }} >
+                                        <span>{copyResultText}</span>
                                     </div>
-                                    : <div style={{ height: '24px' }}>&nbsp;</div>
+                                    : <div style={{ padding: '0 0 5px', height: '24px' }}>&nbsp;</div>
                                 }
                                 <Button
                                     type="button"
