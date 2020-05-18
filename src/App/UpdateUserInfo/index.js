@@ -1,10 +1,22 @@
 import React, { useState, useContext } from 'react'
-import { userContext } from '../appContext'
+import Lottie from 'react-lottie'
+import { motion } from 'framer-motion'
 import InputEdit from '@bit/vitorbarbosa19.ziro.input-edit'
-import maskInput from '@ziro/mask-input'
 import capitalize from '@ziro/capitalize'
+import maskInput from '@ziro/mask-input'
 import currencyFormat from '@ziro/currency-format'
+import { warningColor } from '@ziro/theme';
+import { userContext } from '../appContext'
+import WebProgramming from '../animations/webprogramming.json'
 import simplifiedUpdate from './simplifiedUpdate'
+
+const custom = (fontSize, color) => ({
+    display: 'grid',
+    justifyItems: 'center',
+    fontSize: `${(fontSize + 2) / 10}rem`,
+    fontWeight: '500',
+    color: color
+})
 
 const UpdateUserInfo = () => {
     const { fname, lname, cep, city, cityState, userPos, accountNumber,
@@ -16,6 +28,14 @@ const UpdateUserInfo = () => {
     const [newLName, setNewLName] = useState(lname)
     const [errorLName, setErrorLName] = useState('')
     const [loadingLName, setLoadingLName] = useState(false)
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: WebProgramming,
+        rendererSettings: {
+            preserveAspectRatio: 'xMidYMid slice'
+        }
+    }
 
     const validateFName = () => {
         if (newFName !== '') {
@@ -37,9 +57,32 @@ const UpdateUserInfo = () => {
     }
 
     return (
-        <>
-            {
-                typeRegister === 'Simplificado' &&
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{
+            display: 'grid',
+            gridTemplateRows: '1fr auto',
+            gridRowGap: '20px',
+            justifyContent: 'center',
+            alignContent: 'center'
+        }}>
+            <span style={custom(16, warningColor)}>Aguarde. Em desenvolvimento</span>
+            <Lottie
+                options={defaultOptions}
+                height={250}
+                width={250}
+                speed={2}
+                isPaused={false}
+                isStopped={false}
+                isClickToPauseDisabled
+            />
+        </motion.div>
+    )
+}
+
+export default UpdateUserInfo
+
+/*
+
+typeRegister === 'Simplificado' &&
                 <>
                     <InputEdit
                         name="Nome"
@@ -66,9 +109,5 @@ const UpdateUserInfo = () => {
                         isLoading={loadingLName}
                     />
                 </>
-            }
-        </>
-    )
-}
 
-export default UpdateUserInfo
+*/

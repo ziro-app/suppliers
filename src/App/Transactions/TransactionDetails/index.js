@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
 import Table from '@bit/vitorbarbosa19.ziro.table';
@@ -7,20 +7,37 @@ import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import Header from '@bit/vitorbarbosa19.ziro.header';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import Button from '@bit/vitorbarbosa19.ziro.button';
+import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import { alertColor, containerWithPadding, successColor } from '@ziro/theme';
 import currencyFormat from '@ziro/currency-format';
-import { userContext } from '../../appContext';
-import { button, custom, illustrationContainer, buttonContainer } from './styles';
+import { db } from '../../../Firebase/index';
+import { custom, illustrationContainer, buttonContainer, modalContainer, modalLabel } from './styles';
 
-const TransactionDetails = ({ transactions, transactionId }) => {
+const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
     const [data, setData] = useState([]);
     const [blocks, setBlocks] = useState([]);
     const [transaction, setTransaction] = useState({});
     const [, setLocation] = useLocation();
-    const [copyResultText, setCopyResultText] = useState('')
-    const [copyResultStatus, setCopyResultStatus] = useState(true)
-    const textAreaRef = useRef(null)
+    const [copyResultText, setCopyResultText] = useState('');
+    const [copyResultStatus, setCopyResultStatus] = useState(true);
+    const [cancelModal, setCancelModal] = useState(false);
+    const textAreaRef = useRef(null);
     const paymentLink = `https://catalogo.ziro.app/transacao?doc=${transactionId}`;
+
+    const deleteTransaction = async () => {
+        setIsLoading(true);
+        try {
+            await db.collection('credit-card-payments').doc(transactionId).delete();
+            setLocation('/transacoes');
+        } catch (error) {
+            console.log(error);
+            if (error.response) console.log(error.response);
+            throw error;
+        } finally {
+            setIsLoading(false);
+        }
+
+    }
 
     const copyToClipboard = (e) => {
         e.preventDefault()
@@ -125,12 +142,16 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                             header: 'Compra',
                             body: [
                                 {
-                                    title: 'Marca',
-                                    content: effectTransaction[0].seller
+                                    title: 'Lojista',
+                                    content: effectTransaction[0].buyerRazao
                                 },
                                 {
                                     title: 'Valor',
                                     content: effectTransaction[0].charge
+                                },
+                                {
+                                    title: 'Max. parcelas',
+                                    content: effectTransaction[0].maxInstallments
                                 },
                                 {
                                     title: 'Forma',
@@ -155,12 +176,16 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                         header: 'Compra',
                         body: [
                             {
-                                title: 'Marca',
-                                content: effectTransaction[0].seller
+                                title: 'Lojista',
+                                content: `-`
                             },
                             {
                                 title: 'Valor',
                                 content: effectTransaction[0].charge
+                            },
+                            {
+                                title: 'Max. parcelas',
+                                content: effectTransaction[0].maxInstallments
                             },
                             {
                                 title: 'Forma',
@@ -185,7 +210,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
         /**/
     }, [])
 
-    if (!transaction) return <Error backRoute='/transacoes' message='Transação inválida ou não encontrada, retorne e tente novamente.' type='noData' title='Erro ao buscar detalhes da transação' backRoute='/transacoes' backRouteFunction={(route) => setLocation(route)} />;
+    if (!transaction) return <Error message='Transação inválida ou não encontrada, retorne e tente novamente.' type='noData' title='Erro ao buscar detalhes da transação' backRoute='/transacoes' backRouteFunction={(route) => setLocation(route)} />;
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
@@ -215,24 +240,52 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                 {
                     transaction.status === 'Aguardando Pagamento' &&
                     <>
-                        <div style={buttonContainer}>
-                            <Button
-                                type="button"
-                                cta="copiar link"
-                                click={copyToClipboard}
-                                style={button}
-                            />
-                            {copyResultText ?
-                                <div style={{ padding: '6px 0 0', fontSize: '1.3rem', color: copyResultStatus ? successColor : alertColor, textAlign: 'center' }} >
-                                    <span>{copyResultText}</span>
-                                </div>
-                                : <div style={{ height: '24px' }}>&nbsp;</div>
-                            }
-                        </div>
                         <div style={illustrationContainer}>
                             <div style={{ display: 'grid', justifyItems: 'center' }}>
                                 <Illustration type="waiting" size={175} />
-                                <span style={custom(15, transaction.statusColor)}>Pagamento não realizado.</span>
+                            </div>
+                        </div>
+                        <div style={buttonContainer}>
+                            <div>
+                                {copyResultText ?
+                                    <div style={{ padding: '6px 0 0', height: '24px', fontSize: '1.5rem', color: copyResultStatus ? successColor : alertColor, textAlign: 'center' }} >
+                                        <span style={{ height: '24px' }}>{copyResultText}</span>
+                                    </div>
+                                    : <div style={{ height: '24px' }}>&nbsp;</div>
+                                }
+                                <Button
+                                    type="button"
+                                    cta="Copiar link"
+                                    click={copyToClipboard}
+                                    template='regular'
+                                />
+                            </div>
+                            <div>
+                                <Modal boxStyle={modalContainer} isOpen={cancelModal} setIsOpen={() => setCancelModal(false)}>
+                                    <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gridRowGap: '20px' }} >
+                                        <label style={modalLabel}>Deseja realmente cancelar o link ?</label>
+                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridColumnGap: '20px' }} >
+                                            <Button
+                                                type="button"
+                                                cta="Sim"
+                                                click={deleteTransaction}
+                                                template='regular'
+                                            />
+                                            <Button
+                                                type="button"
+                                                cta="Não"
+                                                click={() => setCancelModal(false)}
+                                                template='light'
+                                            />
+                                        </div>
+                                    </div>
+                                </Modal>
+                                <Button
+                                    type="button"
+                                    cta="Cancelar link"
+                                    click={() => setCancelModal(true)}
+                                    template='destructive'
+                                />
                             </div>
                         </div>
                     </>

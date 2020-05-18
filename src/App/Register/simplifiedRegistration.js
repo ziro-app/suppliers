@@ -62,6 +62,7 @@ const simplifiedRegistration = state => () => {
                             await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })
 
                             try {
+                                /*
                                 // Criando registro na Zoop
                                 const { data: { id } } = await post(
                                     `${process.env.ZOOP_URL}sellers-create`,
@@ -81,20 +82,21 @@ const simplifiedRegistration = state => () => {
                                             city,
                                             state: cityState,
                                             postal_code: cep.replace('-', ''),
-                                            country: 'BR'
+                                            country_code: 'BR'
                                         }
                                     }, {
                                         headers: {
                                             Authorization: `${process.env.PAY_TOKEN}`,
                                         },
                                     });
+                                    */
 
                                 try {
                                     // Adicionando usuário no Firestore
                                     await db.collection('suppliers').doc(user.uid).set({
                                         cadastro: today,
                                         uid: user.uid,
-                                        zoopId: id,
+                                        //zoopId: id,
                                         nome: fname ? fname.trim() : '',
                                         sobrenome: lname ? lname.trim() : '',
                                         email,

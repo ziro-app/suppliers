@@ -15,8 +15,8 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
             const snap = await query.get();
             const paymentDoc = [];
             snap.forEach(doc => {
-                const { cardHolder, cardNumber, charge, date, expectedDate, fees, installment,
-                    installments, maxInstallments, seller, sellerZoopId, status } = doc.data();
+                const { charge, date, expectedDate, fees, installment,
+                    installments, maxInstallments, seller, sellerZoopId, status, buyerRazao } = doc.data();
                 const chargeFormatted = currencyFormat(charge);
                 const dateFormatted = date ? new Date(date.seconds * 1000)
                     .toLocaleDateString('pt-br', {
@@ -33,8 +33,6 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
 
                 paymentDoc.push({
                     transactionId: doc.id,
-                    cardHolder: cardHolder ? cardHolder : '',
-                    cardNumber: cardNumber ? cardNumber : '',
                     charge: chargeFormatted,
                     date: dateFormatted ? dateFormatted : '',
                     expectedDate: expectedFormatted ? expectedFormatted : '',
@@ -45,7 +43,8 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                     seller: seller ? seller : '',
                     sellerZoopId: sellerZoopId ? sellerZoopId : '',
                     status: status ? status : '',
-                    statusColor: matchStatusColor(status)
+                    statusColor: matchStatusColor(status),
+                    buyerRazao
                 });
             });
             setLastDoc(snap.docs[snap.docs.length - 1])
