@@ -64,7 +64,7 @@
     "@bit/vitorbarbosa19.ziro.update-email": "0.1.55",
     "@bit/vitorbarbosa19.ziro.update-pass": "0.1.50",
     "@ziro/capitalize": "^1.0.0",
-    "@ziro/currency-format": "1.0.0",
+    "@ziro/currency-format": "1.0.1",
     "@ziro/format-date-utc3": "^1.0.0",
     "@ziro/mask-input": "^1.0.0",
     "@ziro/router": "^3.0.0",
