@@ -102,7 +102,7 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
         if (effectTransaction[0]) {
             let block;
             let dataTable;
-            if (effectTransaction[0].status === 'Aprovado') {
+            if (effectTransaction[0].status === 'Aprovado' || effectTransaction[0].status === 'Pré Autorizado') {
                 const installmentsNumber = parseInt(effectTransaction[0].installments);
                 /*
                 const installmentNumber = parseInt(effectTransaction[0].installment);
@@ -252,7 +252,7 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
             <div style={{ display: 'grid', gridRowGap: '12px' }}>
                 <Details blocks={blocks} />
                 {
-                    transaction.status === 'Aprovado' &&
+                    (transaction.status === 'Aprovado' || transaction.status === 'Pré Autorizado') &&
                     <>
                         <Table data={data} customGrid={{
                             gridTemplateColumns: 'auto 1fr 1fr 1fr',
