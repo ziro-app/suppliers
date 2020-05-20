@@ -37,7 +37,7 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
             setIsLoading(false);
         }
 
-    }
+    };
 
     const copyToClipboard = (e) => {
         e.preventDefault()
@@ -81,18 +81,24 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
         }
     }
 
-    const dateFormat = (date, plusMonth) => {
-        const monthNumber = (parseInt(date.split('/')[1]) + plusMonth) > 12 ? (parseInt(date.split('/')[1]) + plusMonth) % 12 : (parseInt(date.split('/')[1]) + plusMonth)
-        if (monthNumber >= 10) return `${date.split('/')[0]}/${monthNumber}`
-        return `${date.split('/')[0]}/0${monthNumber}`
-    }
-
-    const numberFormat = (number) => {
-        if (number) return number.replace(/[R$\.,]/g, '')
+    const dateFormat = (date) => {
+        if (date) {
+            return new Date(date.seconds * 1000)
+                .toLocaleDateString('pt-br', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit'
+                })
+                .replace(' de ', '/');
+        } else return '-';
     }
 
     const parcelFormat = (number) => {
-        const formatted = currencyFormat(('' + number * 100).replace('.', ''));
+        if (number === 0) return number;
+        let numSplit = ('' + number).split('.');
+        if (numSplit.length === 1) return number;
+        let num = numSplit[1].length === 1 ? `${number}0` : `${number}`
+        const formatted = currencyFormat((num).replace('.', ''));
         return formatted.replace('R$', '');
     }
 
@@ -102,146 +108,83 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
         if (effectTransaction[0]) {
             let block;
             let dataTable;
-            if (effectTransaction[0].status === 'Aprovado' || effectTransaction[0].status === 'Pré Autorizado') {
-                const installmentsNumber = parseInt(effectTransaction[0].installments);
-                /*
-                const installmentNumber = parseInt(effectTransaction[0].installment);
 
-                if (installmentNumber <= installmentsNumber && installmentsNumber > 0) {
-                    const chargeNumber = parseFloat(parseInt(numberFormat(effectTransaction[0].charge)) / 100);
-                    const feesNumber = parseFloat(parseInt(numberFormat(effectTransaction[0].fees)) / 100);
-                    const chargeWithoutFees = chargeNumber - feesNumber;
-                    const parcelWithFees = round((chargeNumber / installmentsNumber), 2);
-                    const parcelWithoutFees = round((chargeWithoutFees / installmentsNumber), 2);
-                    const paidRows = [];
-                    const unpaidRows = [];
-                    for (let i = 1; i <= installmentsNumber; i++) {
-                        if (i < installmentNumber) {
-                            paidRows.push([`${i}`, `${parcelFormat(parcelWithFees)}`, `${parcelFormat(parcelWithoutFees)}`, `${dateFormat(effectTransaction[0].date, i)}`])
-                        } else if (i > installmentNumber) {
-                            unpaidRows.push([`${i}`, `${parcelFormat(parcelWithFees)}`, `${parcelFormat(parcelWithoutFees)}`, `${dateFormat(effectTransaction[0].date, i)}`])
-                        } else unpaidRows.push([`${i}`, `${parcelFormat(parcelWithFees)}`, `${parcelFormat(parcelWithoutFees)}`, `${effectTransaction[0].expectedDate}`])
-                    }
-
-                    dataTable = [
+            block = [
+                {
+                    header: 'Compra',
+                    body: [
                         {
-                            title: 'Lançamentos Pagos',
-                            header: ['Parc.', '(R$) Bruto', '(R$) Líquido', 'Data'],
-                            rows: paidRows,
-                            totals: ['-', `${parcelFormat(round(paidRows.length * parcelWithFees, 2))}`, `${parcelFormat(round(paidRows.length * parcelWithoutFees, 2))}`, '-']
+                            title: 'Lojista',
+                            content: effectTransaction[0].buyerRazao ? effectTransaction[0].buyerRazao : '-'
                         },
                         {
-                            title: 'Lançamentos Futuros',
-                            header: ['Parc.', '(R$) Bruto', '(R$) Líquido', 'Data'],
-                            rows: unpaidRows,
-                            totals: ['-', `${parcelFormat(round(unpaidRows.length * parcelWithFees, 2))}`, `${parcelFormat(round(unpaidRows.length * parcelWithoutFees, 2))}`, '-']
-                        }
-                    ]
-
-                    block = [
+                            title: 'Valor',
+                            content: effectTransaction[0].charge
+                        },
                         {
-                            header: 'Compra',
-                            body: [
-                                {
-                                    title: 'Lojista',
-                                    content: effectTransaction[0].buyerRazao
-                                },
-                                {
-                                    title: 'Valor',
-                                    content: effectTransaction[0].charge
-                                },
-                                {
-                                    title: 'Parcela máxima',
-                                    content: `${effectTransaction[0].maxInstallments}x`
-                                },
-                                {
-                                    title: 'Parcela escolhida',
-                                    content: `${installmentsNumber}x`
-                                },
-                                {
-                                    title: 'Data',
-                                    content: `${effectTransaction[0].date}/20`
-                                },
-                                {
-                                    title: 'Status',
-                                    content: effectTransaction[0].status,
-                                    color: effectTransaction[0].statusColor
-                                },
-                            ]
-                        }
+                            title: 'Parcela máxima',
+                            content: `${effectTransaction[0].maxInstallments}x`
+                        },
+                        {
+                            title: 'Parcela escolhida',
+                            content: effectTransaction[0].installments ? `${effectTransaction[0].installments}x` : '-'
+                        },
+                        {
+                            title: 'Data',
+                            content: effectTransaction[0].date ? `${effectTransaction[0].date}` : '-'
+                        },
+                        {
+                            title: 'Status',
+                            content: effectTransaction[0].status,
+                            color: effectTransaction[0].statusColor
+                        },
                     ]
-                }*/
-                block = [
-                    {
-                        header: 'Compra',
-                        body: [
-                            {
-                                title: 'Lojista',
-                                content: effectTransaction[0].buyerRazao
-                            },
-                            {
-                                title: 'Valor',
-                                content: effectTransaction[0].charge
-                            },
-                            {
-                                title: 'Parcela máxima',
-                                content: `${effectTransaction[0].maxInstallments}x`
-                            },
-                            {
-                                title: 'Parcela escolhida',
-                                content: `${installmentsNumber}x`
-                            },
-                            {
-                                title: 'Data',
-                                content: `${effectTransaction[0].date}/20`
-                            },
-                            {
-                                title: 'Status',
-                                content: effectTransaction[0].status,
-                                color: effectTransaction[0].statusColor
-                            },
-                        ]
+                }
+            ];
+
+            if (effectTransaction[0].receivables.length) {
+                const sortedTransactions = effectTransaction[0].receivables.sort((a, b) => b.installment - a.installment);
+                const paidRows = [];
+                let paidAmount = 0;
+                let paidAmountWithoutFees = 0;
+                const unpaidRows = [];
+                let unpaidAmount = 0;
+                let unpaidAmountWithoutFees = 0;
+                sortedTransactions.map(transaction => {
+                    if (!transaction.paid_at) {
+                        let upAm = round(parseFloat(transaction.gross_amount), 2);
+                        let upAmw = round(parseFloat(transaction.amount), 2);
+                        unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`]);
+                        unpaidAmount += parseFloat(upAm);
+                        unpaidAmountWithoutFees += parseFloat(upAmw);
+                    } else {
+                        let upAm = round(parseFloat(transaction.gross_amount), 2);
+                        let upAmw = round(parseFloat(transaction.amount), 2);
+                        paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.paid_at)}`]);
+                        paidAmount += parseFloat(upAm);
+                        paidAmountWithoutFees += parseFloat(upAmw);
                     }
-                ]
-            } else {
-                block = [
+                });
+                dataTable = [
                     {
-                        header: 'Compra',
-                        body: [
-                            {
-                                title: 'Lojista',
-                                content: `-`
-                            },
-                            {
-                                title: 'Valor',
-                                content: effectTransaction[0].charge
-                            },
-                            {
-                                title: 'Parcela máxima',
-                                content: `${effectTransaction[0].maxInstallments}x`
-                            },
-                            {
-                                title: 'Parcela escolhida',
-                                content: `-`
-                            },
-                            {
-                                title: 'Data',
-                                content: `-`
-                            },
-                            {
-                                title: 'Status',
-                                content: effectTransaction[0].status,
-                                color: effectTransaction[0].statusColor
-                            },
-                        ]
+                        title: 'Lançamentos Pagos',
+                        header: ['Parc.', '(R$) Bruto', '(R$) Líquido', 'Data'],
+                        rows: paidRows,
+                        totals: ['-', `${parcelFormat(paidAmount)}`, `${parcelFormat(paidAmountWithoutFees)}`, '-']
+                    },
+                    {
+                        title: 'Lançamentos Futuros',
+                        header: ['Parc.', '(R$) Bruto', '(R$) Líquido', 'Data'],
+                        rows: unpaidRows,
+                        totals: ['-', `${parcelFormat(unpaidAmount)}`, `${parcelFormat(unpaidAmountWithoutFees)}`, '-']
                     }
                 ]
             }
-            setBlocks(block)
-            setData(dataTable ? dataTable : [])
+
+            setBlocks(block);
+            setData(dataTable ? dataTable : []);
         }
-        /**/
-    }, [])
+    }, []);
 
     if (!transaction) return <Error message='Transação inválida ou não encontrada, retorne e tente novamente.' type='noData' title='Erro ao buscar detalhes da transação' backRoute='/transacoes' backRouteFunction={(route) => setLocation(route)} />;
 
@@ -252,7 +195,7 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
             <div style={{ display: 'grid', gridRowGap: '12px' }}>
                 <Details blocks={blocks} />
                 {
-                    (transaction.status === 'Aprovado' || transaction.status === 'Pré Autorizado') &&
+                    (transaction.status === 'Aprovado' || transaction.status === 'Pago' || transaction.status === 'Pré Autorizado') &&
                     <>
                         <Table data={data} customGrid={{
                             gridTemplateColumns: 'auto 1fr 1fr 1fr',
@@ -262,7 +205,7 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
                     </>
                 }
                 {
-                    transaction.status === 'Cancelado' &&
+                    (transaction.status === 'Cancelado' || transaction.status === 'Falhado') &&
                     <div style={illustrationContainer}>
                         <div style={{ display: 'grid', justifyItems: 'center' }}>
                             <Illustration type="paymentError" size={175} />
@@ -271,7 +214,7 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
                     </div>
                 }
                 {
-                    transaction.status === 'Aguardando Pagamento' &&
+                    (transaction.status === 'Aguardando Pagamento' || transaction.status === 'Aprovação Pendente') &&
                     <>
                         <div style={illustrationContainer}>
                             <div style={{ display: 'grid', justifyItems: 'center' }}>

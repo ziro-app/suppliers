@@ -3,7 +3,10 @@ import { db } from '../../Firebase/index';
 import matchStatusColor from './matchStatusColor'
 
 const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, totalTransactions, setTotalTransactions, setLoadingMore) => {
-    let query = db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).limit(limit);
+    let query = db.collection('credit-card-payments')
+        .where('sellerZoopId', '==', zoopId)
+        .orderBy('dateLinkCreated', 'desc')
+        .limit(limit);
     if (lastDoc) query = query.startAfter(lastDoc);
 
     const run = async () => {
@@ -15,19 +18,14 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
             const snap = await query.get();
             const paymentDoc = [];
             snap.forEach(doc => {
-                const { charge, date, expectedDate, fees, installment, dateLinkCreated,
-                    installments, maxInstallments, sellerZoopId, status, buyerRazao } = doc.data();
+                const { charge, date, fees, installments, dateLinkCreated,
+                    maxInstallments, sellerZoopId, status, buyerRazao, receivables } = doc.data();
                 const chargeFormatted = currencyFormat(charge);
                 const dateFormatted = date ? new Date(date.seconds * 1000)
                     .toLocaleDateString('pt-br', {
                         day: '2-digit',
                         month: '2-digit',
-                    })
-                    .replace(' de ', '/') : '';
-                const expectedFormatted = expectedDate ? new Date(expectedDate.seconds * 1000)
-                    .toLocaleDateString('pt-br', {
-                        day: '2-digit',
-                        month: '2-digit',
+                        year: '2-digit'
                     })
                     .replace(' de ', '/') : '';
 
@@ -35,22 +33,20 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                     transactionId: doc.id,
                     charge: chargeFormatted,
                     dateLinkCreated,
-                    date: dateFormatted ? dateFormatted : '',
-                    expectedDate: expectedFormatted ? expectedFormatted : '',
+                    date: dateFormatted,
                     fees: fees ? fees : '',
-                    installment: installment ? installment : '',
                     installments: installments ? installments : '',
                     maxInstallments: maxInstallments ? maxInstallments : '',
                     seller: buyerRazao ? buyerRazao : '-',
                     sellerZoopId: sellerZoopId ? sellerZoopId : '',
                     status: status ? status : '',
                     statusColor: matchStatusColor(status),
-                    buyerRazao
+                    buyerRazao,
+                    receivables: receivables ? receivables : []
                 });
             });
-            let sorted = [...payments, ...paymentDoc].sort((a, b) => b.dateLinkCreated - a.dateLinkCreated, 'desc');
             setLastDoc(snap.docs[snap.docs.length - 1])
-            setPayments(sorted);
+            setPayments([...payments, ...paymentDoc]);
         } catch (error) {
             setErrorLoading(true)
         } finally {
