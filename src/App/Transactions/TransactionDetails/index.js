@@ -169,13 +169,13 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
                     {
                         title: 'Lançamentos Pagos',
                         header: ['Parc.', '(R$) Bruto', '(R$) Líquido', 'Data'],
-                        rows: paidRows,
+                        rows: paidRows.reverse(),
                         totals: ['-', `${parcelFormat(paidAmount)}`, `${parcelFormat(paidAmountWithoutFees)}`, '-']
                     },
                     {
                         title: 'Lançamentos Futuros',
                         header: ['Parc.', '(R$) Bruto', '(R$) Líquido', 'Data'],
-                        rows: unpaidRows,
+                        rows: unpaidRows.reverse(),
                         totals: ['-', `${parcelFormat(unpaidAmount)}`, `${parcelFormat(unpaidAmountWithoutFees)}`, '-']
                     }
                 ]
