@@ -38,4 +38,8 @@ export const custom = (fontSize, color) => ({
         fontFamily: fontTitle,
         fontSize: '1.4rem',
         textTransform: 'uppercase'
+    },
+    spinner = {
+        display: 'grid',
+        justifyItems: 'center'
     }

@@ -2,7 +2,7 @@ import currencyFormat from '@ziro/currency-format';
 import { db } from '../../Firebase/index';
 import matchStatusColor from './matchStatusColor'
 
-const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, totalTransactions, setTotalTransactions, setLoadingMore) => {
+const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, setLoadingMore) => {
     let query = db.collection('credit-card-payments')
         .where('sellerZoopId', '==', zoopId)
         .orderBy('dateLinkCreated', 'desc')
@@ -11,9 +11,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
 
     const run = async () => {
         try {
-            await query.onSnapshot(async snapshot => {
-                let collectionData = await db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).get();
-                setTotalTransactions(collectionData.docs.length);
+            await query.onSnapshot(snapshot => {
                 const paymentDoc = [];
                 if (!snapshot.empty) {
                     snapshot.forEach(doc => {
@@ -43,11 +41,8 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                             receivables: receivables ? receivables : []
                         });
                     });
-                    setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
+                    setLastDoc(snapshot.docs[snapshot.docs.length - 1])
                     setPayments([...payments, ...paymentDoc]);
-                } else {
-                    setLastDoc(null);
-                    setPayments([]);
                 }
                 setIsLoading(false);
                 setLoadingMore(false);

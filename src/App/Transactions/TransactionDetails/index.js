@@ -8,12 +8,14 @@ import Header from '@bit/vitorbarbosa19.ziro.header';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Modal from '@bit/vitorbarbosa19.ziro.modal';
+import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import { alertColor, containerWithPadding, successColor } from '@ziro/theme';
 import currencyFormat from '@ziro/currency-format';
 import { db } from '../../../Firebase/index';
-import { custom, illustrationContainer, buttonContainer, modalContainer, modalLabel } from './styles';
+import { custom, illustrationContainer, buttonContainer, modalContainer, modalLabel, spinner } from './styles';
 
-const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
+const TransactionDetails = ({ transactions, transactionId }) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
     const [blocks, setBlocks] = useState([]);
     const [transaction, setTransaction] = useState({});
@@ -29,11 +31,12 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
         try {
             await db.collection('credit-card-payments').doc(transactionId).delete();
             setLocation('/transacoes');
+            setIsLoading(false);
         } catch (error) {
             console.log(error);
             if (error.response) console.log(error.response);
-            throw error;
-        } finally {
+            setCopyResultStatus(false);
+            setCopyResultText('Erro ao excluir transação!')
             setIsLoading(false);
         }
 
@@ -186,6 +189,12 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
         }
     }, []);
 
+    if (isLoading)
+        return (
+            <div style={spinner}>
+                <Spinner size="5.5rem" />
+            </div>
+        );
     if (!transaction) return <Error message='Transação inválida ou não encontrada, retorne e tente novamente.' type='noData' title='Erro ao buscar detalhes da transação' backRoute='/transacoes' backRouteFunction={(route) => setLocation(route)} />;
 
     return (

@@ -26,7 +26,7 @@ const Transactions = ({ transactionId }) => {
         );
 
     if (errorLoading) return <Error />;
-    if (transactionId) return <TransactionDetails transactions={payments} transactionId={transactionId} setIsLoading={setIsLoading} />;
+    if (transactionId) return <TransactionDetails transactions={payments} transactionId={transactionId} />;
     return <TransactionsList transactions={payments} btnMoreClick={() => {
         setLoadingMore(true)
         fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, totalTransactions, setTotalTransactions, setLoadingMore)
