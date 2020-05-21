@@ -32,7 +32,7 @@ export const Menu = ({ title, children }) => {
 							text: 'Criar Cobrança'
 						},
 						{
-							path: '/',
+							path: '/minha-conta',
 							onClick: () => setIsOpen(false),
 							icon: <Icon type='gear' size={15} strokeWidth={2} />,
 							text: 'Minha Conta'

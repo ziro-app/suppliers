@@ -47,15 +47,14 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                     });
                     setLastDoc(snapshot.docs[snapshot.docs.length - 1])
                     setPayments([...payments, ...paymentDoc]);
+                    setIsLoading(false);
+                    setLoadingMore(false);
                 }
             }, error => {
                 console.log(error);
             });
         } catch (error) {
             setErrorLoading(true);
-        } finally {
-            setIsLoading(false);
-            setLoadingMore(false);
         }
     }
     run();
