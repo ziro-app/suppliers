@@ -18,8 +18,7 @@ const sendToBackend = state => () => {
                     const doc = await docRef.get()
                     if (doc) await navigator.clipboard.writeText(`${baseUrl}${doc.id}`)
                 } catch (error) {
-                    console.log(error)
-                    reject('Error in clipboard API')
+                    throw { copyError: true }
                 }
                 resolve('Link copiado')
                 setCharge('')
@@ -28,6 +27,7 @@ const sendToBackend = state => () => {
                 throw { msg: 'Vendedor não encontrado', customError: true }
             }
         } catch (error) {
+            if (error.copyError) resolve('Link criado')
             if (error.customError) reject(error)
             else {
                 console.log(error)

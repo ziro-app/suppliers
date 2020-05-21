@@ -35,13 +35,12 @@ const Router = ({ isLogged }) => {
     }
     const privateRoutes = { // Menu can't be put inside the components because then it'll unmount on transition
         '/': <Menu title='Minha Conta'><MyAccount /></Menu>,
-        '/login': <Menu title='Minha Conta'><MyAccount /></Menu>,
         '/trocar-email': <UpdateEmail />,
         '/trocar-senha': <UpdatePass />,
         '/deletar-conta': <DeleteAccount />,
         '/criar-cobranca': <Menu title='Criar Cobrança'><CreatePayment /></Menu>,
         [match ? location : null]: <Transactions {...params} />,
-        '/update': <HeaderBack title='Atualizar informações' navigateTo='/login'><UpdateUserInfo /></HeaderBack>
+        '/update': <HeaderBack title='Atualizar informações' navigateTo='/'><UpdateUserInfo /></HeaderBack>
         //'/migrations': <Menu title='Migrações'><FirebaseMigration /></Menu>
     }
     return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback='/' />)
