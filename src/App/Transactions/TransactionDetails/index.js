@@ -192,7 +192,7 @@ const TransactionDetails = ({ transactions, transactionId, setIsLoading }) => {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
             <input type="text" style={{ position: 'absolute', left: '-9999px' }} value={paymentLink} ref={textAreaRef} readOnly />
             <Header type='icon-link' title='Detalhes' navigateTo='transacoes' icon='back' />
-            <div style={{ display: 'grid', gridRowGap: '12px' }}>
+            <div style={{ display: 'grid', gridRowGap: '40px' }}>
                 <Details blocks={blocks} />
                 {
                     (transaction.status === 'Aprovado' || transaction.status === 'Pago' || transaction.status === 'Pré Autorizado') &&
