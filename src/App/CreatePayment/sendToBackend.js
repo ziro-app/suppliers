@@ -27,7 +27,11 @@ const sendToBackend = state => () => {
                 throw { msg: 'Vendedor não encontrado', customError: true }
             }
         } catch (error) {
-            if (error.copyError) resolve('Link criado')
+            if (error.copyError) {
+                resolve('Link criado no menu de Vendas')
+                setCharge('')
+                setMaxInstallments('')
+            }
             if (error.customError) reject(error)
             else {
                 console.log(error)
