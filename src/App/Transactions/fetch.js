@@ -2,7 +2,7 @@ import currencyFormat from '@ziro/currency-format';
 import { db } from '../../Firebase/index';
 import matchStatusColor from './matchStatusColor'
 
-const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, totalTransactions, setTotalTransactions, setLoadingMore) => {
+const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore) => {
     let query = db.collection('credit-card-payments')
         .where('sellerZoopId', '==', zoopId)
         .orderBy('dateLinkCreated', 'desc')

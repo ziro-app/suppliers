@@ -16,7 +16,7 @@ const Transactions = ({ transactionId }) => {
     const [lastDoc, setLastDoc] = useState(null);
     const { zoopId } = useContext(userContext);
 
-    useEffect(() => fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, totalTransactions, setTotalTransactions, setLoadingMore), []);
+    useEffect(() => fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore), []);
 
     if (isLoading)
         return (
@@ -27,10 +27,15 @@ const Transactions = ({ transactionId }) => {
 
     if (errorLoading) return <Error />;
     if (transactionId) return <TransactionDetails transactions={payments} transactionId={transactionId} />;
-    return <TransactionsList transactions={payments} btnMoreClick={() => {
-        setLoadingMore(true)
-        fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, totalTransactions, setTotalTransactions, setLoadingMore)
-    }} hasMore={!(payments.length === totalTransactions)} loadingMore={loadingMore} />;
+    return <TransactionsList
+        transactions={payments}
+        btnMoreClick={() => {
+            setLoadingMore(true)
+            fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore)
+        }}
+        hasMore={!(payments.length === totalTransactions)}
+        loadingMore={loadingMore}
+    />;
 
 };
 

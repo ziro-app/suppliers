@@ -97,12 +97,12 @@ const TransactionDetails = ({ transactions, transactionId }) => {
     }
 
     const parcelFormat = (number) => {
-        if (number === 0) return number;
+        if (number === 0) return '0,00';
         let numSplit = ('' + number).split('.');
-        if (numSplit.length === 1) return number;
+        if (numSplit.length === 1) return `${number},00`;
         let num = numSplit[1].length === 1 ? `${number}0` : `${number}`
         const formatted = currencyFormat((num).replace('.', ''));
-        return formatted.replace('R$', '');
+        return formatted.replace('R$', '').includes(',') ? formatted.replace('R$', '') : `${formatted.replace('R$', '')},00`;
     }
 
     useEffect(() => {
