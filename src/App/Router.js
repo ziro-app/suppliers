@@ -15,6 +15,7 @@ import UpdatePass from './UpdatePass/index'
 import DeleteAccount from './DeleteAccount/index'
 import CreatePayment from './CreatePayment/index'
 import Transactions from './Transactions/index'
+import TestCnpj from './TestCnpj/index'
 import FirebaseMigration from './FirebaseMigration/index'
 import UpdateUserInfo from './UpdateUserInfo/index'
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found'
@@ -31,7 +32,8 @@ const Router = ({ isLogged }) => {
         '/problemas-acesso': <LoginTrouble navigateTo='/login' />,
         '/reenviar-email': <ResendEmail />,
         '/resetar-senha': <ResetPass />,
-        '/confirmar-email': <ConfirmEmail />
+        '/confirmar-email': <ConfirmEmail />,
+        '/teste': <TestCnpj />,
     }
     const privateRoutes = { // Menu can't be put inside the components because then it'll unmount on transition
         '/': <Transactions {...params} />,
