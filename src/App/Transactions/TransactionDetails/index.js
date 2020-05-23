@@ -98,6 +98,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
 
     const parcelFormat = (number) => {
         if (number === 0) return '0,00';
+        if (number > 0 && number < 1) return ('' + number).replace('.', ',');
         let numSplit = ('' + number).split('.');
         if (numSplit.length === 1) return `${number},00`;
         let num = numSplit[1].length === 1 ? `${number}0` : `${number}`
@@ -148,9 +149,11 @@ const TransactionDetails = ({ transactions, transactionId }) => {
             if (effectTransaction[0].receivables.length) {
                 const sortedTransactions = effectTransaction[0].receivables.sort((a, b) => b.installment - a.installment);
                 const paidRows = [];
+                const paidClicks = [];
                 let paidAmount = 0;
                 let paidAmountWithoutFees = 0;
                 const unpaidRows = [];
+                const unpaidClicks = [];
                 let unpaidAmount = 0;
                 let unpaidAmountWithoutFees = 0;
                 sortedTransactions.map(transaction => {
@@ -158,12 +161,14 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                         let upAm = round(parseFloat(transaction.gross_amount), 2);
                         let upAmw = round(parseFloat(transaction.amount), 2);
                         unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`]);
+                        unpaidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
                         unpaidAmount += parseFloat(upAm);
                         unpaidAmountWithoutFees += parseFloat(upAmw);
                     } else {
                         let upAm = round(parseFloat(transaction.gross_amount), 2);
                         let upAmw = round(parseFloat(transaction.amount), 2);
                         paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.paid_at)}`]);
+                        paidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
                         paidAmount += parseFloat(upAm);
                         paidAmountWithoutFees += parseFloat(upAmw);
                     }
@@ -173,12 +178,14 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                         title: 'Lançamentos Pagos',
                         header: ['Parc.', '(R$) Bruto', '(R$) Líquido', 'Data'],
                         rows: paidRows.reverse(),
+                        rowsClicks: paidClicks.reverse(),
                         totals: ['-', `${parcelFormat(round(paidAmount, 2))}`, `${parcelFormat(round(paidAmountWithoutFees, 2))}`, '-']
                     },
                     {
                         title: 'Lançamentos Futuros',
                         header: ['Parc.', '(R$) Bruto', '(R$) Líquido', 'Data'],
                         rows: unpaidRows.reverse(),
+                        rowsClicks: unpaidClicks.reverse(),
                         totals: ['-', `${parcelFormat(round(unpaidAmount, 2))}`, `${parcelFormat(round(unpaidAmountWithoutFees, 2))}`, '-']
                     }
                 ]

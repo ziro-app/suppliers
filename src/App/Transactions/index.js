@@ -3,11 +3,12 @@ import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import TransactionsList from './TransactionsList/index';
 import TransactionDetails from './TransactionDetails/index';
+import ReceivableDetails from './ReceivableDetails/index';
 import { spinner } from './styles';
 import fetch from './fetch';
 import { userContext } from '../appContext';
 
-const Transactions = ({ transactionId }) => {
+const Transactions = ({ transactionId, receivableId }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
     const [loadingMore, setLoadingMore] = useState(false);
@@ -26,6 +27,7 @@ const Transactions = ({ transactionId }) => {
         );
 
     if (errorLoading) return <Error />;
+    if (transactionId && receivableId) return <ReceivableDetails transactions={payments} transactionId={transactionId} receivableId={receivableId} />;
     if (transactionId) return <TransactionDetails transactions={payments} transactionId={transactionId} />;
     return <TransactionsList
         transactions={payments}

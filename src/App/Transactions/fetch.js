@@ -17,7 +17,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                 const paymentDoc = [];
                 if (!snapshot.empty) {
                     snapshot.forEach(doc => {
-                        const { charge, date, fees, installments, dateLinkCreated,
+                        const { charge, date, fees, installments, dateLinkCreated, transactionZoopId,
                             maxInstallments, sellerZoopId, status, buyerRazao, receivables } = doc.data();
                         const chargeFormatted = currencyFormat(charge);
                         const dateFormatted = date ? new Date(date.seconds * 1000)
@@ -28,6 +28,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                             })
                             .replace(' de ', '/') : '';
                         paymentDoc.push({
+                            transactionZoopId: transactionZoopId ? transactionZoopId : '',
                             transactionId: doc.id,
                             charge: chargeFormatted,
                             dateLinkCreated,

@@ -22,7 +22,7 @@ import NotFound from '@bit/vitorbarbosa19.ziro.not-found'
 import { useRoute, useLocation } from 'wouter'
 
 const Router = ({ isLogged }) => {
-    const [match, params] = useRoute('/transacoes/:transactionId?')
+    const [match, params] = useRoute('/transacoes/:transactionId?/:receivableId?')
     const [location] = useLocation()
 
     const publicRoutes = {
