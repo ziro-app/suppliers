@@ -33,4 +33,6 @@ export const round = (num, places) => {
         let num = numSplit[1].length === 1 ? `${number}0` : `${number}`
         const formatted = currencyFormat((num).replace('.', ''));
         return formatted.replace('R$', '').includes(',') ? formatted.replace('R$', '') : `${formatted.replace('R$', '')},00`;
-    }
+    },
+
+    stringToFloat = (str) => parseFloat(str.replace(/[R$\.,]/g, '')) / 100;

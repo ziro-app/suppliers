@@ -14,9 +14,6 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId }) => {
     const [receivable, setReceivable] = useState({});
     const [, setLocation] = useLocation();
 
-    const stringToFloat = (str) => parseFloat(str.replace(/[R$\.,]/g, '')) / 100;
-
-
     useEffect(() => {
         const effectTransaction = transactions.filter(transaction => transaction.transactionId === transactionId)[0];
         setTransaction(effectTransaction);
@@ -25,7 +22,6 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId }) => {
             const effectReceivable = effectTransaction.receivables.filter(receivable => receivable.receivableZoopId === receivableId)[0];
             setReceivable(effectReceivable);
             if (effectReceivable) {
-                let percentage = (effectTransaction.fees / stringToFloat(effectTransaction.charge)) * 100;
                 block = [
                     {
                         header: 'Informações adicionais',
@@ -40,7 +36,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId }) => {
                             },
                             {
                                 title: 'Tarifa Ziro Pay',
-                                content: `- (${round(percentage, 2)}%) R$${parcelFormat(round(effectTransaction.fees, 2))}`
+                                content: `- R$${parcelFormat(round(parseFloat(effectTransaction.fees) / parseInt(effectTransaction.installments), 2))}`
                             },
                             {
                                 title: 'Valor líquido',

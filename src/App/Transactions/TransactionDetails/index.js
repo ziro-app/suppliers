@@ -11,7 +11,7 @@ import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import { alertColor, containerWithPadding, successColor } from '@ziro/theme';
 import { db } from '../../../Firebase/index';
-import { dateFormat, parcelFormat, round } from '../utils';
+import { dateFormat, parcelFormat, round, stringToFloat } from '../utils';
 import { custom, illustrationContainer, buttonContainer, modalContainer, modalLabel, spinner } from './styles';
 
 const TransactionDetails = ({ transactions, transactionId }) => {
@@ -80,7 +80,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
 
             block = [
                 {
-                    header: 'Compra',
+                    header: 'Venda',
                     body: [
                         {
                             title: 'Lojista',
@@ -89,6 +89,14 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                         {
                             title: 'Valor',
                             content: effectTransaction.charge
+                        },
+                        {
+                            title: 'Tarifa Ziro Pay',
+                            content: `- R$${effectTransaction.fees}`
+                        },
+                        {
+                            title: 'Valor líquido',
+                            content: `R$${parseFloat(stringToFloat(effectTransaction.charge)) - parseFloat(effectTransaction.fees)}`
                         },
                         {
                             title: 'Parcela máxima',
