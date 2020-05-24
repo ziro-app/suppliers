@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
 import Table from '@bit/vitorbarbosa19.ziro.table';
 import Details from '@bit/vitorbarbosa19.ziro.details';
+import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import Header from '@bit/vitorbarbosa19.ziro.header';
 import Error from '@bit/vitorbarbosa19.ziro.error';
@@ -133,14 +134,14 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                     if (!transaction.paid_at) {
                         let upAm = round(parseFloat(transaction.gross_amount), 2);
                         let upAmw = round(parseFloat(transaction.amount), 2);
-                        unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`]);
+                        unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`, <Icon type='chevronRight' size={14} />]);
                         unpaidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
                         unpaidAmount += parseFloat(upAm);
                         unpaidAmountWithoutFees += parseFloat(upAmw);
                     } else {
                         let upAm = round(parseFloat(transaction.gross_amount), 2);
                         let upAmw = round(parseFloat(transaction.amount), 2);
-                        paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.paid_at)}`]);
+                        paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.paid_at)}`, <Icon type='chevronRight' size={14} />]);
                         paidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
                         paidAmount += parseFloat(upAm);
                         paidAmountWithoutFees += parseFloat(upAmw);
@@ -149,17 +150,17 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                 dataTable = [
                     {
                         title: 'Lançamentos Pagos',
-                        header: ['Parc.', '(R$) Bruto', '(R$) Líquido', 'Data'],
+                        header: ['Parc.', 'Bruto', 'Líquido', 'Data', ''],
                         rows: paidRows.reverse(),
                         rowsClicks: paidClicks.reverse(),
-                        totals: ['-', `${parcelFormat(round(paidAmount, 2))}`, `${parcelFormat(round(paidAmountWithoutFees, 2))}`, '-']
+                        totals: ['-', `${parcelFormat(round(paidAmount, 2))}`, `${parcelFormat(round(paidAmountWithoutFees, 2))}`, '-', '']
                     },
                     {
                         title: 'Lançamentos Futuros',
-                        header: ['Parc.', '(R$) Bruto', '(R$) Líquido', 'Data'],
+                        header: ['Parc.', 'Bruto', 'Líquido', 'Data', ''],
                         rows: unpaidRows.reverse(),
                         rowsClicks: unpaidClicks.reverse(),
-                        totals: ['-', `${parcelFormat(round(unpaidAmount, 2))}`, `${parcelFormat(round(unpaidAmountWithoutFees, 2))}`, '-']
+                        totals: ['-', `${parcelFormat(round(unpaidAmount, 2))}`, `${parcelFormat(round(unpaidAmountWithoutFees, 2))}`, '-', '']
                     }
                 ]
             }
@@ -187,7 +188,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                     (transaction.status === 'Aprovado' || transaction.status === 'Pago' || transaction.status === 'Pré Autorizado') &&
                     <>
                         <Table data={data} customGrid={{
-                            gridTemplateColumns: 'auto 1fr 1fr 1fr',
+                            gridTemplateColumns: 'auto 1fr 1fr 1fr 20px',
                             gridRowGap: '15px'
                         }} />
                         <span style={{ fontFamily: 'Rubik', fontSize: '12px' }}>* Os valores das parcelas foram arredondados para a segunda casa decimal</span>
