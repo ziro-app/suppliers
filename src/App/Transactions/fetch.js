@@ -1,6 +1,7 @@
 import currencyFormat from '@ziro/currency-format';
 import { db } from '../../Firebase/index';
 import matchStatusColor from './matchStatusColor'
+import { dateFormat } from './utils';
 
 const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore) => {
     let query = db.collection('credit-card-payments')
@@ -18,15 +19,9 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                 if (!snapshot.empty) {
                     snapshot.forEach(doc => {
                         const { charge, date, fees, installments, dateLinkCreated, transactionZoopId,
-                            maxInstallments, sellerZoopId, status, buyerRazao, receivables } = doc.data();
+                            maxInstallments, sellerZoopId, status, buyerRazao, receivables, receivement } = doc.data();
                         const chargeFormatted = currencyFormat(charge);
-                        const dateFormatted = date ? new Date(date.seconds * 1000)
-                            .toLocaleDateString('pt-br', {
-                                day: '2-digit',
-                                month: '2-digit',
-                                year: '2-digit'
-                            })
-                            .replace(' de ', '/') : '';
+                        const dateFormatted = date ? dateFormat(date) : '';
                         paymentDoc.push({
                             transactionZoopId: transactionZoopId ? transactionZoopId : '',
                             transactionId: doc.id,
@@ -41,7 +36,8 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                             status: status ? status : '',
                             statusColor: matchStatusColor(status),
                             buyerRazao,
-                            receivables: receivables ? receivables : []
+                            receivables: receivables ? receivables : [],
+                            receivement
                         });
                     });
                     setLastDoc(snapshot.docs[snapshot.docs.length - 1]);

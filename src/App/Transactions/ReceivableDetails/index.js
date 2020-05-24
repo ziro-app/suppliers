@@ -1,40 +1,80 @@
-import React from 'react';
-import Lottie from 'react-lottie';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'wouter';
 import { motion } from 'framer-motion';
 import Header from '@bit/vitorbarbosa19.ziro.header';
-import { containerWithPadding, warningColor } from '@ziro/theme';
-import WebProgramming from '../../animations/webprogramming.json';
+import Error from '@bit/vitorbarbosa19.ziro.error';
+import Details from '@bit/vitorbarbosa19.ziro.details';
+import { containerWithPadding } from '@ziro/theme';
+import matchStatusColor from '../matchStatusColor';
+import { dateFormat, parcelFormat, round } from '../utils';
 
 const ReceivableDetails = ({ transactions, transactionId, receivableId }) => {
-    const defaultOptions = {
-        loop: true,
-        autoplay: true,
-        animationData: WebProgramming,
-        rendererSettings: {
-            preserveAspectRatio: 'xMidYMid slice'
+    const [blocks, setBlocks] = useState([]);
+    const [transaction, setTransaction] = useState({});
+    const [receivable, setReceivable] = useState({});
+    const [, setLocation] = useLocation();
+
+    const stringToFloat = (str) => parseFloat(str.replace(/[R$\.,]/g, '')) / 100;
+
+
+    useEffect(() => {
+        const effectTransaction = transactions.filter(transaction => transaction.transactionId === transactionId)[0];
+        setTransaction(effectTransaction);
+        let block = [];
+        if (effectTransaction) {
+            const effectReceivable = effectTransaction.receivables.filter(receivable => receivable.receivableZoopId === receivableId)[0];
+            setReceivable(effectReceivable);
+            if (effectReceivable) {
+                let percentage = (effectTransaction.fees / stringToFloat(effectTransaction.charge)) * 100;
+                block = [
+                    {
+                        header: 'Informações adicionais',
+                        body: [
+                            {
+                                title: 'Parcela',
+                                content: effectReceivable.installment
+                            },
+                            {
+                                title: 'Valor da parcela',
+                                content: `R$${parcelFormat(round(effectReceivable.gross_amount, 2))}`
+                            },
+                            {
+                                title: 'Tarifa Ziro Pay',
+                                content: `- (${round(percentage, 2)}%) R$${parcelFormat(round(effectTransaction.fees, 2))}`
+                            },
+                            {
+                                title: 'Valor líquido',
+                                content: `R$${parcelFormat(round(effectReceivable.amount, 2))}`
+                            },
+                            {
+                                title: 'Recebimento',
+                                content: effectTransaction.receivement ? effectTransaction.receivement : 'D+30'
+                            },
+                            {
+                                title: 'Data recebimento',
+                                content: effectReceivable.paid_at ? dateFormat(effectReceivable.paid_at) : dateFormat(effectReceivable.expected_on)
+                            },
+                            {
+                                title: 'Status',
+                                content: effectReceivable.status === 'paid' ? 'Pago' : 'Pendente',
+                                color: matchStatusColor(effectReceivable.status)
+                            },
+                        ]
+                    }
+                ];
+            }
         }
-    };
-    const custom = (fontSize, color) => ({
-        display: 'grid',
-        justifyItems: 'center',
-        fontSize: `${(fontSize + 2) / 10}rem`,
-        fontWeight: '500',
-        color: color
-    });
+        setBlocks(block);
+    }, []);
+
+    if (!transaction || !receivable) return <Error message='Lançamento inválido ou não encontrado, retorne e tente novamente.' type='noData' title='Erro ao buscar detalhes do lançamento' backRoute={`/transacoes/${transactionId}`} backRouteFunction={(route) => setLocation(route)} />;
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
             <Header type='icon-link' title='Detalhes do lançamento' navigateTo={`transacoes/${transactionId}`} icon='back' />
-            <span style={custom(16, warningColor)}>Aguarde. Em desenvolvimento</span>
-            <Lottie
-                options={defaultOptions}
-                height={250}
-                width={250}
-                speed={2}
-                isPaused={false}
-                isStopped={false}
-                isClickToPauseDisabled
-            />
+            <div style={{ display: 'grid' }}>
+                <Details blocks={blocks} />
+            </div>
         </motion.div>
     );
 }

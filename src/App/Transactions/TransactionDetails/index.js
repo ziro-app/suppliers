@@ -10,8 +10,8 @@ import Button from '@bit/vitorbarbosa19.ziro.button';
 import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import { alertColor, containerWithPadding, successColor } from '@ziro/theme';
-import currencyFormat from '@ziro/currency-format';
 import { db } from '../../../Firebase/index';
+import { dateFormat, parcelFormat, round } from '../utils';
 import { custom, illustrationContainer, buttonContainer, modalContainer, modalLabel, spinner } from './styles';
 
 const TransactionDetails = ({ transactions, transactionId }) => {
@@ -71,45 +71,10 @@ const TransactionDetails = ({ transactions, transactionId }) => {
 
     }
 
-    const round = (num, places) => {
-        if (!("" + num).includes("e")) {
-            return +(Math.round(num + "e+" + places) + "e-" + places);
-        } else {
-            let arr = ("" + num).split("e");
-            let sig = ""
-            if (+arr[1] + places > 0) {
-                sig = "+";
-            }
-            return +(Math.round(+arr[0] + "e" + sig + (+arr[1] + places)) + "e-" + places);
-        }
-    }
-
-    const dateFormat = (date) => {
-        if (date) {
-            return new Date(date.seconds * 1000)
-                .toLocaleDateString('pt-br', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: '2-digit'
-                })
-                .replace(' de ', '/');
-        } else return '-';
-    }
-
-    const parcelFormat = (number) => {
-        if (number === 0) return '0,00';
-        if (number > 0 && number < 1) return ('' + number).replace('.', ',');
-        let numSplit = ('' + number).split('.');
-        if (numSplit.length === 1) return `${number},00`;
-        let num = numSplit[1].length === 1 ? `${number}0` : `${number}`
-        const formatted = currencyFormat((num).replace('.', ''));
-        return formatted.replace('R$', '').includes(',') ? formatted.replace('R$', '') : `${formatted.replace('R$', '')},00`;
-    }
-
     useEffect(() => {
-        const effectTransaction = transactions.filter(transaction => transaction.transactionId === transactionId);
-        setTransaction(effectTransaction[0]);
-        if (effectTransaction[0]) {
+        const effectTransaction = transactions.filter(transaction => transaction.transactionId === transactionId)[0];
+        setTransaction(effectTransaction);
+        if (effectTransaction) {
             let block;
             let dataTable;
 
@@ -119,35 +84,35 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                     body: [
                         {
                             title: 'Lojista',
-                            content: effectTransaction[0].buyerRazao ? effectTransaction[0].buyerRazao : '-'
+                            content: effectTransaction.buyerRazao ? effectTransaction.buyerRazao : '-'
                         },
                         {
                             title: 'Valor',
-                            content: effectTransaction[0].charge
+                            content: effectTransaction.charge
                         },
                         {
                             title: 'Parcela máxima',
-                            content: `${effectTransaction[0].maxInstallments}x`
+                            content: `${effectTransaction.maxInstallments}x`
                         },
                         {
                             title: 'Parcela escolhida',
-                            content: effectTransaction[0].installments ? `${effectTransaction[0].installments}x` : '-'
+                            content: effectTransaction.installments ? `${effectTransaction.installments}x` : '-'
                         },
                         {
                             title: 'Data',
-                            content: effectTransaction[0].date ? `${effectTransaction[0].date}` : '-'
+                            content: effectTransaction.date ? `${effectTransaction.date}` : '-'
                         },
                         {
                             title: 'Status',
-                            content: effectTransaction[0].status,
-                            color: effectTransaction[0].statusColor
+                            content: effectTransaction.status,
+                            color: effectTransaction.statusColor
                         },
                     ]
                 }
             ];
 
-            if (effectTransaction[0].receivables.length) {
-                const sortedTransactions = effectTransaction[0].receivables.sort((a, b) => b.installment - a.installment);
+            if (effectTransaction.receivables.length) {
+                const sortedTransactions = effectTransaction.receivables.sort((a, b) => b.installment - a.installment);
                 const paidRows = [];
                 const paidClicks = [];
                 let paidAmount = 0;
@@ -207,7 +172,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
             <input type="text" style={{ position: 'absolute', left: '-9999px' }} value={paymentLink} ref={textAreaRef} readOnly />
-            <Header type='icon-link' title='Detalhes' navigateTo='transacoes' icon='back' />
+            <Header type='icon-link' title='Detalhes da venda' navigateTo='transacoes' icon='back' />
             <div style={{ display: 'grid', gridRowGap: '40px' }}>
                 <Details blocks={blocks} />
                 {

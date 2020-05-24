@@ -18,7 +18,7 @@ const sendToBackend = state => () => {
                     const doc = await docRef.get()
                     if (doc) await navigator.clipboard.writeText(`${baseUrl}${doc.id}`)
                 } catch (error) {
-                    throw { copyError: true }
+                    throw { msg: 'Erro ao realizar a cópia', copyError: true }
                 }
                 resolve('Link copiado')
                 setCharge('')
