@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Header from '@bit/vitorbarbosa19.ziro.header';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import Details from '@bit/vitorbarbosa19.ziro.details';
+import currencyFormat from '@ziro/currency-format';
 import { containerWithPadding } from '@ziro/theme';
 import matchStatusColor from '../matchStatusColor';
 import { dateFormat, parcelFormat, round } from '../utils';
@@ -22,6 +23,8 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId }) => {
             const effectReceivable = effectTransaction.receivables.filter(receivable => receivable.receivableZoopId === receivableId)[0];
             setReceivable(effectReceivable);
             if (effectReceivable) {
+                let feesFormatted = (effectReceivable.gross_amount && effectReceivable.amount) ?
+                    `- ${currencyFormat(parseFloat(`${round(parseFloat(effectReceivable.gross_amount) - parseFloat(effectReceivable.amount), 2)}`.replace(/[R$\.,]/g, '')))}` : '-';
                 block = [
                     {
                         header: 'Informações adicionais',
@@ -36,7 +39,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId }) => {
                             },
                             {
                                 title: 'Tarifa Ziro Pay',
-                                content: `- R$${parcelFormat(round(parseFloat(effectTransaction.fees) / parseInt(effectTransaction.installments), 2))}`
+                                content: feesFormatted
                             },
                             {
                                 title: 'Valor líquido',

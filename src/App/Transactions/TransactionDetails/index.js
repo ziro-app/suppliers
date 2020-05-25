@@ -10,6 +10,7 @@ import Error from '@bit/vitorbarbosa19.ziro.error';
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
+import currencyFormat from '@ziro/currency-format';
 import { alertColor, containerWithPadding, successColor } from '@ziro/theme';
 import { db } from '../../../Firebase/index';
 import { dateFormat, parcelFormat, round, stringToFloat } from '../utils';
@@ -78,6 +79,8 @@ const TransactionDetails = ({ transactions, transactionId }) => {
         if (effectTransaction) {
             let block;
             let dataTable;
+            let feesFormatted = effectTransaction.fees ? `- ${currencyFormat(parseFloat(effectTransaction.fees.replace('.', '')))}` : '-';
+            let liquidFormatted = effectTransaction.fees ? currencyFormat(parseFloat(`${stringToFloat(effectTransaction.charge) - parseFloat(effectTransaction.fees)}`.replace(/[R$\.,]/g, ''))) : '-';
 
             block = [
                 {
@@ -93,11 +96,11 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                         },
                         {
                             title: 'Tarifa Ziro Pay',
-                            content: `- R$${effectTransaction.fees}`
+                            content: feesFormatted
                         },
                         {
                             title: 'Valor líquido',
-                            content: `R$${parseFloat(stringToFloat(effectTransaction.charge)) - parseFloat(effectTransaction.fees)}`
+                            content: liquidFormatted
                         },
                         {
                             title: 'Parcela máxima',
