@@ -80,7 +80,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
             let block;
             let dataTable;
             let feesFormatted = effectTransaction.fees ? `- ${currencyFormat(parseFloat(effectTransaction.fees.replace('.', '')))}` : '-';
-            let liquidFormatted = effectTransaction.fees ? currencyFormat(parseFloat(`${stringToFloat(effectTransaction.charge) - parseFloat(effectTransaction.fees)}`.replace(/[R$\.,]/g, ''))) : '-';
+            let liquidFormatted = effectTransaction.fees ? currencyFormat(parseFloat(`${(stringToFloat(effectTransaction.charge) - parseFloat(effectTransaction.fees)).toFixed(2)}`.replace(/[R$\.,]/g, ''))) : '-';
 
             block = [
                 {
