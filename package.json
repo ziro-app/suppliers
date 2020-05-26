@@ -63,7 +63,7 @@
     "@bit/vitorbarbosa19.ziro.timeline": "0.1.39",
     "@bit/vitorbarbosa19.ziro.update-email": "0.1.56",
     "@bit/vitorbarbosa19.ziro.update-pass": "0.1.51",
-    "@bit/vitorbarbosa19.ziro.get-cnpj": "0.0.3",
+    "@bit/vitorbarbosa19.ziro.get-cnpj": "0.0.18",
     "@ziro/capitalize": "^1.0.0",
     "@ziro/currency-format": "1.0.1",
     "@ziro/format-date-utc3": "^1.0.0",

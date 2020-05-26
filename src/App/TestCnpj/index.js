@@ -15,7 +15,7 @@ const TestCnpj = () => {
     const [neighborhood, setNeighborhood] = useState('')
     const [city, setCity] = useState('')
     const [cityState, setCityState] = useState('')
-    const validCnaes = [];
+    const validCnaes = ['4781-4/00', '1412-6/01', '1412-6/03'];
     // Usar as env's
     const cnpjUrl = process.env.CNPJ_URL;
     const cnpjToken = process.env.CNPJ_TOKEN;
