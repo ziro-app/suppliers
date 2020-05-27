@@ -38,6 +38,12 @@ export const Menu = ({ title, children }) => {
 							text: 'Minha Conta'
 						},
 						{
+							path: '/gerar-boleto',
+							onClick: () => setIsOpen(false),
+							icon: <Icon type='file' size={15} strokeWidth={2} />,
+							text: 'Gerar Boleto'
+						},
+						{
 							path: '/login',
 							onClick: () => auth.signOut(),
 							icon: <Icon type='logout' size={15} strokeWidth={3} />,
