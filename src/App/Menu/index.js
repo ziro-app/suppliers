@@ -20,28 +20,16 @@ export const Menu = ({ title, children }) => {
 					userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
 					options={[
 						{
-							path: '/transacoes',
+							path: '/relatorio',
 							onClick: () => setIsOpen(false),
-							icon: <Icon type='trending' size={15} strokeWidth={2} />,
-							text: 'Vendas'
-						},
-						{
-							path: '/criar-cobranca',
-							onClick: () => setIsOpen(false),
-							icon: <Icon type='money' size={15} strokeWidth={2} />,
-							text: 'Criar Cobrança'
+							icon: <Icon type='file' size={15} strokeWidth={2} />,
+							text: 'Relatório'
 						},
 						{
 							path: '/login',
 							onClick: () => setIsOpen(false),
 							icon: <Icon type='gear' size={15} strokeWidth={2} />,
 							text: 'Minha Conta'
-						},
-						{
-							path: '/gerar-boleto',
-							onClick: () => setIsOpen(false),
-							icon: <Icon type='file' size={15} strokeWidth={2} />,
-							text: 'Gerar Boleto'
 						},
 						{
 							path: '/login',

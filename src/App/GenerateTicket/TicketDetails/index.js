@@ -41,28 +41,45 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
             }
         }
         let block;
+        let block2;
         let dataTable;
         const arrayTicket = filtrado[0].values.map(item => [moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") !== 'Invalid date' ? moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") : moment(item.data_venda, 'DD/MMM./YYYY').format("DD/MM/YY"), item.romaneio || '-', item.lojista, currencyFormat(stringToNumber(item.valor)).replace('R$', '')])
-        const arrayClickTicket = filtrado[0].values.map(item => () => setLocation(`/gerar-boleto/${boletbankId}/${item.boletId}`))
+        const arrayClickTicket = filtrado[0].values.map(item => () => setLocation(`/relatorio/${boletbankId}/${item.boletId || item.boleto}`))
         const totalVendas = filtrado[0].values.map(item => stringToNumber(item.valor)).reduce((a,b) => a+b)
         const totalReceitas = filtrado[0].values.map(item => stringToNumber(item.receita)).reduce((a,b) => a+b)
         setTotalReceitas(totalReceitas)
                     dataTable = [
                         {
-                            title: 'Vendas Realizadas',
+                            title: status === 'Comissões em Aberto' ? 'Comissões Pendentes' : 'Comissões',
                             header: ['Data', 'Romaneio', 'Cliente', 'Venda'],
                             rows: arrayTicket,
                             rowsClicks: arrayClickTicket,
-                            totals: ['-','-','Total',currencyFormat(totalVendas).replace('R$','')]
+                            totals: ['-','-','-',currencyFormat(totalVendas).replace('R$','')]
                         }
                     ]
                     block = [
                         {
-                            header: 'Vendas',
+                            header: 'sumário',
                             body: [
                                 {
+                                    title: 'Total',
+                                    content: currencyFormat(totalReceitas)
+                                },
+                                {
+                                    title: 'Status',
+                                    content: status,
+                                    color: matchStatusColor(status)
+                                },
+                            ]
+                        }
+                    ]
+                    block2 = [
+                    {
+                        header: 'sumário',
+                        body: [
+                                {
                                     title: 'Data',
-                                    content: moment(new Date()).format("DD/MMM./YYYY")
+                                    content: status === 'Aguardando Pagamento' ? '-' : filtrado[0].date_payment
                                 },
                                 {
                                     title: 'Total',
@@ -76,7 +93,7 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                             ]
                         }
                     ]
-        setBlocks(block)
+        setBlocks(status === 'Comissões em Aberto' ? block : block2)
         setData(dataTable ? dataTable : [])
     }, [])
     if(boletId) return <DetailsBoleto boletbankId={boletbankId} boletId={boletId} data={filtrado[0]}/>
@@ -84,7 +101,7 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         return (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
                 <input type="text" style={{ position: 'absolute', left: '-9999px' }} ref={textAreaRef} readOnly />
-                <Header type='icon-link' title='Detalhes' navigateTo='gerar-boleto' icon='back' />
+                <Header type='icon-link' title={filtrado[0].relatorio} navigateTo='relatorio' icon='back' />
                 <div style={{ display: 'grid', gridRowGap: '12px' }}>
                     <Details blocks={blocks} />
                         <>
@@ -96,7 +113,7 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                     {load ? (
                         <Spinner size="5.5rem" />
                         ):(
-                            status === 'Aguardando Boleto' ? (
+                            status === 'Comissões em Aberto' ? (
                                     <div style={buttonContainer}>
                                     <Button
                                         type="button"
@@ -105,7 +122,8 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                         click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado[0],setLoad)}
                                     />
                                 </div>
-                                ) : (   
+                                ) : (
+                                    status === 'Aguardando Pagamento' &&   
                                     <div style={buttonContainer}>
                                     <Button
                                         type="button"

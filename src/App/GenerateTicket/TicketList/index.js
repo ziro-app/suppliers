@@ -9,9 +9,9 @@ export default ({ transactions }) => {
     const [, setLocation] = useLocation()
 
     return (
-        <Menu title='Boletos'>
+        <Menu title='Relatórios'>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <Timeline transactions={transactions} transactionClick={({ transaction }) => setLocation(`/gerar-boleto/${transaction.id}`)}/>
+                <Timeline transactions={transactions} transactionClick={({ transaction }) => setLocation(`/relatorio/${transaction.id}`)}/>
             </motion.div>
 
         </Menu>

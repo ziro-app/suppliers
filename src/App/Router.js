@@ -23,7 +23,7 @@ import { useRoute, useLocation } from 'wouter'
 
 const Router = ({ isLogged }) => {
     const [match, params] = useRoute('/transacoes/:transactionId?')
-    const [match2, params2] = useRoute('/gerar-boleto/:boletbankId?/:boletId?')
+    const [match2, params2] = useRoute('/relatorio/:boletbankId?/:boletId?')
     const [location] = useLocation()
 
     const publicRoutes = {
@@ -40,8 +40,8 @@ const Router = ({ isLogged }) => {
         '/trocar-senha': <UpdatePass />,
         '/deletar-conta': <DeleteAccount />,
         '/criar-cobranca': <Menu title='Criar Cobrança'><CreatePayment /></Menu>,
-        [match ? location : null]: <Transactions {...params} />,
         [match2 ? location : null]: <GenerateTicket {...params2} />,
+        [match ? location : null]: <Transactions {...params} />,
         '/update': <HeaderBack title='Atualizar informações' navigateTo='/login'><UpdateUserInfo /></HeaderBack>
     }
     const privateRoutes = { // Menu can't be put inside the components because then it'll unmount on transition
