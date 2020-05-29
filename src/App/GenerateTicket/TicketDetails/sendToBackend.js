@@ -1,11 +1,9 @@
 import axios from 'axios'
 import { db } from '../../../Firebase/index';
-import moment from 'moment'
-import 'moment/locale/pt-br'
 
-const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad) => async () => {
+const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,razao) => async () => {
         const arrayBillets = data.values.map(item => {
-            const {boleto, romaneio, valor, vencimento, comissao, venda, lojista, receita, status } = item
+            const { boleto, romaneio, valor, vencimento, comissao, venda, lojista, receita, status,rua,polo } = item
             return {
                 boletId:boleto,
                 romaneio,
@@ -15,7 +13,9 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad) => async (
                 comissao,
                 receita,
                 vencimento,
-                status
+                status,
+                rua,
+                polo
             }
         })
         try {
@@ -36,18 +36,29 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad) => async (
                     'Authorization': `Basic ${process.env.ZOOP_TOKEN}`
                 }
             }
+            let arrayFirebase = []
+            let query = db.collection('duplicate').where('fabricante', '==', razao)
+            const snap = await query.get()
+            snap.forEach((doc) => {
+                    arrayFirebase.push(1)
+                })
             const createBoleto = await axios(configBoletos)
             const urlBoleto = createBoleto.data.payment_method.url
-            console.log(data.fabricante)
-            const docRef = await db.collection('duplicate').add({
-                fabricante: data.fabricante,
-                id_transaction:createBoleto.data.id,
-                status:'Aguardando Pagamento',
-                date: moment(new Date()).format("DD/MMM./YY"),
-                url: urlBoleto,
-                billets: arrayBillets
-            })
+            const objeto = {
+                'fantasia': data.fabricante,
+                'transactionZoopId': createBoleto.data.id,
+                'status': 'Aguardando Pagamento',
+                'date': new Date(),
+                'counter': arrayFirebase.length+1,
+                'url': urlBoleto,
+                'billets': arrayBillets
+            }
+            const docRef = await db.collection('duplicate').add(objeto)
             const doc = await docRef.get()
+            const obj = {
+                status:'Aguardando Pagamento'
+            }
+            await db.collection('pending_commission').doc(razao).update(obj)
             setUrl(urlBoleto)
             await setLoad(false)
             console.log(doc)
