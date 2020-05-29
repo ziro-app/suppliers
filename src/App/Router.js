@@ -15,7 +15,11 @@ import UpdatePass from './UpdatePass/index'
 import DeleteAccount from './DeleteAccount/index'
 import CreatePayment from './CreatePayment/index'
 import Transactions from './Transactions/index'
+<<<<<<< HEAD
 import TestCnpj from './TestCnpj/index'
+=======
+import GenerateTicket from './GenerateTicket/index'
+>>>>>>> 4f85155... geracao de boletos
 import FirebaseMigration from './FirebaseMigration/index'
 import UpdateUserInfo from './UpdateUserInfo/index'
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found'
@@ -23,6 +27,7 @@ import { useRoute, useLocation } from 'wouter'
 
 const Router = ({ isLogged }) => {
     const [match, params] = useRoute('/transacoes/:transactionId?/:receivableId?')
+    const [match2, params2] = useRoute('/gerar-boleto/:boletbankId?/:boletId?')
     const [location] = useLocation()
 
     const publicRoutes = {
@@ -38,14 +43,17 @@ const Router = ({ isLogged }) => {
     const privateRoutes = { // Menu can't be put inside the components because then it'll unmount on transition
         '/': <Transactions {...params} />,
         '/minha-conta': <Menu title='Minha Conta'><MyAccount /></Menu>,
+        '/': <Menu title='Minha Conta'><MyAccount /></Menu>,
+        '/login': <Menu title='Minha Conta'><MyAccount /></Menu>,
         '/trocar-email': <UpdateEmail />,
         '/trocar-senha': <UpdatePass />,
         '/deletar-conta': <DeleteAccount />,
         '/criar-cobranca': <Menu title='Criar Cobrança'><CreatePayment /></Menu>,
         [match ? location : null]: <Transactions {...params} />,
-        '/update': <HeaderBack title='Atualizar informações' navigateTo='/minha-conta'><UpdateUserInfo /></HeaderBack>
-        //'/migrations': <Menu title='Migrações'><FirebaseMigration /></Menu>
+        [match2 ? location : null]: <GenerateTicket {...params2} />,
+        '/update': <HeaderBack title='Atualizar informações' navigateTo='/login'><UpdateUserInfo /></HeaderBack>
     }
+    
     return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback='/' />)
 }
 
