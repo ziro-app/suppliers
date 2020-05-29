@@ -17,7 +17,7 @@ const searchCnpj = state => () =>
         try {
             if (cnpj.length !== 18) throw { msg: 'Deve ter 14 números', customError: true };
             if (suppliers.includes(cnpj)) throw { msg: 'CNPJ já cadastrado', customError: true };
-            const [status, result] = await consultCnpj(config, false);
+            const [status, result] = await consultCnpj(config);
             const objResult = checkResult(status, result, validCnaes, false);
             mountObject(state, objResult);
             setCnpjValid(true);

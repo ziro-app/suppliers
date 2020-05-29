@@ -20,7 +20,7 @@ const handleError = async ({ cnpj, setReason, setFantasia, setAlertMessage, vali
             setReason('');
             setFantasia('');
             setAlertMessage('Aguarde um momento');
-            const [status, result] = await consultCnpj(config, true);
+            const [status, result] = await consultCnpj(config);
             const objResult = checkResult(status, result, validCnaes, true);
             mountObject(state, objResult);
             return { msg: 'CNPJ válido', success: true };
@@ -31,7 +31,7 @@ const handleError = async ({ cnpj, setReason, setFantasia, setAlertMessage, vali
                 else if (error.tryAgain) {
                     setAlertMessage('A validação é demorada, aguarde');
                     config['data']['ignore_db'] = false;
-                    const [status, result] = await consultCnpj(config, false);
+                    const [status, result] = await consultCnpj(config);
                     const objResult = checkResult(status, result, validCnaes, false);
                     mountObject(state, objResult);
                     return { msg: 'CNPJ válido', success: true };
@@ -43,6 +43,7 @@ const handleError = async ({ cnpj, setReason, setFantasia, setAlertMessage, vali
             }
         }
     }
+    else return { msg: 'Erro na validação, tente novamente.', customError: true };
 };
 
 export default handleError
