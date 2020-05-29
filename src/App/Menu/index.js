@@ -20,6 +20,18 @@ export const Menu = ({ title, children }) => {
 					userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
 					options={[
 						{
+							path: '/transacoes',
+							onClick: () => setIsOpen(false),
+							icon: <Icon type='trending' size={15} strokeWidth={2} />,
+							text: 'Vendas'
+						},
+						{
+							path: '/criar-cobranca',
+							onClick: () => setIsOpen(false),
+							icon: <Icon type='money' size={15} strokeWidth={2} />,
+							text: 'Criar Cobrança'
+						},
+						{
 							path: '/relatorio',
 							onClick: () => setIsOpen(false),
 							icon: <Icon type='file' size={15} strokeWidth={2} />,
