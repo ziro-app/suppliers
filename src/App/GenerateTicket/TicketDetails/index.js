@@ -5,6 +5,7 @@ import Table from '@bit/vitorbarbosa19.ziro.table';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import Header from '@bit/vitorbarbosa19.ziro.header';
+import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import Sucesso from './Sucesso/index'
 import Button from '@bit/vitorbarbosa19.ziro.button';
@@ -23,7 +24,6 @@ import DetailsBoleto from '../boletidDetails'
 const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
     const [data, setData] = useState([]);
     const [blocks, setBlocks] = useState([]);
-    const [transaction, setTransaction] = useState({});
     const [totalReceitas, setTotalReceitas] = useState();
     const [url, setUrl] = useState('');
     const [load, setLoad] = useState(false);
@@ -43,24 +43,28 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         let block;
         let block2;
         let dataTable;
-        const arrayTicket = filtrado[0].values.map(item => [moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") !== 'Invalid date' ? moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") : moment(item.data_venda, 'DD/MMM./YYYY').format("DD/MM/YY"), item.romaneio || '-', item.lojista, currencyFormat(stringToNumber(item.valor)).replace('R$', '')])
+        const arrayTicket = filtrado[0].values.map(item => [moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") !== 'Invalid date' ? moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") : moment(item.data_venda, 'DD/MMM./YYYY').format("DD/MM/YY"), item.romaneio || '-', item.lojista, currencyFormat(stringToNumber(item.receita)).replace('R$', '')])
         const arrayClickTicket = filtrado[0].values.map(item => () => setLocation(`/relatorio/${boletbankId}/${item.boletId || item.boleto}`))
-        const totalVendas = filtrado[0].values.map(item => stringToNumber(item.valor)).reduce((a,b) => a+b)
+        // const totalVendas = filtrado[0].values.map(item => stringToNumber(item.valor)).reduce((a,b) => a+b)
         const totalReceitas = filtrado[0].values.map(item => stringToNumber(item.receita)).reduce((a,b) => a+b)
         setTotalReceitas(totalReceitas)
                     dataTable = [
                         {
                             title: status === 'Comissões em Aberto' ? 'Comissões Pendentes' : 'Comissões',
-                            header: ['Data', 'Romaneio', 'Cliente', 'Venda'],
+                            header: ['Data', 'Romaneio', 'Cliente', 'Receita'],
                             rows: arrayTicket,
                             rowsClicks: arrayClickTicket,
-                            totals: ['-','-','-',currencyFormat(totalVendas).replace('R$','')]
+                            totals: ['-','-','-',currencyFormat(totalReceitas).replace('R$','')]
                         }
                     ]
                     block = [
                         {
                             header: 'sumário',
                             body: [
+                                {
+                                    title: 'Endereço',
+                                    content: filtrado[0].endereco
+                                },
                                 {
                                     title: 'Total',
                                     content: currencyFormat(totalReceitas)
@@ -78,8 +82,12 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                         header: 'sumário',
                         body: [
                                 {
+                                    title: 'Endereço',
+                                    content: filtrado[0].endereco
+                                },
+                                {
                                     title: 'Data',
-                                    content: status === 'Aguardando Pagamento' ? '-' : filtrado[0].date_payment
+                                    content: status === 'Aguardando Pagamento' ? '-' : moment(filtrado[0].date_payment.toDate()).format('DD/MMM./YY')
                                 },
                                 {
                                     title: 'Total',
@@ -119,7 +127,7 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                         type="button"
                                         cta="Gerar Boleto"
                                         style={button}
-                                        click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado[0],setLoad)}
+                                        click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado[0],setLoad,transactions[0].fabricante)}
                                     />
                                 </div>
                                 ) : (

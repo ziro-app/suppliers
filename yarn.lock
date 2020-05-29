@@ -996,6 +996,14 @@
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
+"@bit/vitorbarbosa19.ziro.icon@^1.0.17":
+  version "1.0.17"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.icon/-/vitorbarbosa19.ziro.icon-1.0.17.tgz#059e3a9b168927dc386a48c7d83d5942961823fb"
+  integrity sha1-BZ46mxaJJ9w4akjH2D1ZQpYYI/s=
+  dependencies:
+    "@ziro/theme" "^1.0.3"
+    prop-types "15.7.2"
+
 "@bit/vitorbarbosa19.ziro.illustration@0.1.11":
   version "0.1.11"
   resolved "https://node.bit.dev/vitorbarbosa19.ziro.illustration/-/vitorbarbosa19.ziro.illustration-0.1.11.tgz#6e7f96e5891270eb54a49ce1ec3da576810494c8"
@@ -1179,10 +1187,10 @@
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.table@^0.0.3":
-  version "0.0.3"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.table/-/vitorbarbosa19.ziro.table-0.0.3.tgz#7a0e07c7e15cc255557dcdcfa9743f2f402a8b17"
-  integrity sha1-eg4Hx+FcwlVVfc3PqXQ/L0Aqixc=
+"@bit/vitorbarbosa19.ziro.table@^0.0.4":
+  version "0.0.4"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.table/-/vitorbarbosa19.ziro.table-0.0.4.tgz#6bca88780450ed854e7246295ba13ae8bc15ed72"
+  integrity sha1-a8qIeARQ7YVOckYpW6E66LwV7XI=
   dependencies:
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
