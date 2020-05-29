@@ -19,7 +19,7 @@ const handleError = async ({ cnpj, setReason, setFantasia, setAlertMessage, vali
         try {
             setReason('');
             setFantasia('');
-            setAlertMessage('Aguarde um momento');
+            setAlertMessage('Aguarde. Pode levar alguns minutos. Não saia da página');
             const [status, result] = await consultCnpj(config);
             const objResult = checkResult(status, result, validCnaes, true);
             mountObject(state, objResult);
@@ -29,7 +29,7 @@ const handleError = async ({ cnpj, setReason, setFantasia, setAlertMessage, vali
                 if (error.customError) return error;
                 else if (error.finally) return { msg: error.msg, customError: true };
                 else if (error.tryAgain) {
-                    setAlertMessage('A validação é demorada, aguarde');
+                    setAlertMessage('A validação é demorada, aguarde sem sair da página');
                     config['data']['ignore_db'] = false;
                     const [status, result] = await consultCnpj(config);
                     const objResult = checkResult(status, result, validCnaes, false);
