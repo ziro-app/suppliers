@@ -1,9 +1,9 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyA7HtrtccE7MYiD8ULKEvvavGziLY6W1M0",
-  authDomain: "ziro-app-data.firebaseapp.com",
-  databaseURL: "https://ziro-app-data.firebaseio.com",
-  projectId: "ziro-app-data",
-  storageBucket: "ziro-app-data.appspot.com",
-  messagingSenderId: "128486864666",
-  appId: "1:128486864666:web:dcb315a4d5aca2e2"
+  apiKey: "AIzaSyDhEYS6JB6wRPnedQkmJZ9-4DPgOuMBCVQ",
+  authDomain: "zirobillet.firebaseapp.com",
+  databaseURL: "https://zirobillet.firebaseio.com",
+  projectId: "zirobillet",
+  storageBucket: "zirobillet.appspot.com",
+  messagingSenderId: "1057711648510",
+  appId: "1:1057711648510:web:cc79d1c231ddecf58e3faf"
 }
