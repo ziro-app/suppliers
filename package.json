@@ -59,7 +59,7 @@
     "@bit/vitorbarbosa19.ziro.resend-email": "0.1.59",
     "@bit/vitorbarbosa19.ziro.reset-pass": "0.1.55",
     "@bit/vitorbarbosa19.ziro.spinner": "0.1.1",
-    "@bit/vitorbarbosa19.ziro.table": "0.0.4",
+    "@bit/vitorbarbosa19.ziro.table": "^0.0.4",
     "@bit/vitorbarbosa19.ziro.timeline": "0.1.39",
     "@bit/vitorbarbosa19.ziro.update-email": "0.1.56",
     "@bit/vitorbarbosa19.ziro.update-pass": "0.1.51",
