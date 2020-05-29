@@ -5,7 +5,13 @@ import {containerWithPadding } from '@ziro/theme';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 
 export default ({boletbankId,boletId,data}) => {
-    const filtrado = data.values.filter(item => String(item.boletId) || String(item.boleto)  === boletId)
+    const filtrado = data.values.filter(item => {
+        if(item.boleto){
+            return String(item.boleto) === boletId
+        }else{
+            return String(item.boletId) === boletId
+        }
+    })
     const [blocks, setBlocks] = useState([]);
     useEffect(() => {
         const {comissao, fornecedor, lojista, polo, receita, romaneio, rua, valor, vencimento, venda, status,boleto,boletId,data_venda} = filtrado[0]
@@ -16,7 +22,7 @@ export default ({boletbankId,boletId,data}) => {
                 body: [
                     {
                         title: 'Boleto',
-                        content: boleto || boletId
+                        content: boletId || boleto
                     },
                     {
                         title: 'Venda',
@@ -59,7 +65,7 @@ export default ({boletbankId,boletId,data}) => {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
                 <input type="text" style={{ position: 'absolute', left: '-9999px' }} ref={textAreaRef} readOnly />
-                <Header type='icon-link' title='Detalhe do Boleto' navigateTo={`gerar-boleto/${boletbankId}`} icon='back' />
+                <Header type='icon-link' title='Detalhe do Boleto' navigateTo={`relatorio/${boletbankId}`} icon='back' />
                 <div style={{ display: 'grid', gridRowGap: '12px' }}>
                     <Details blocks={blocks} />
                 </div>

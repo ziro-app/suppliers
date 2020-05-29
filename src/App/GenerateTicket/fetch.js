@@ -28,8 +28,9 @@ const fetch = (setIsLoading, setIsError, razao, setfisrtTicket, setTicket) => {
             let fetchFirebase = []
             let billetFirebase = []
             const snap = await query.get()
-            snap.forEach(doc => {
-                const arrayReceitas = doc.data().billets.map(item => {
+            let counter = 1
+            snap.forEach((doc) => {
+                const arrayReceitas = doc.data().billets.map((item) => {
                     if(typeof item.receita === 'number'){
                         return item.receita
                     }else{
@@ -38,19 +39,22 @@ const fetch = (setIsLoading, setIsError, razao, setfisrtTicket, setTicket) => {
                 })
                 const totalReceitas = arrayReceitas.reduce((a,b) => a+b)
                 const soma = (Math.round(totalReceitas*100)/100).toLocaleString()
+                let contador = counter++
                 billetFirebase.push({
                     id:doc.data().id_transaction,
                     charge: soma,
-                    seller:`Boleto ${doc.data().date}`,
+                    date: doc.data().status === 'Aguardando Pagamento' ? '-' : doc.data().date_payment,
+                    seller:`Relatório ${contador}`,
                     status:doc.data().status,
-                    date: doc.data().date,
                     statusColor: matchStatusColor(doc.data().status)
                 })
                 fetchFirebase.push({
                     id:doc.data().id_transaction,
                     fabricante:doc.data().fabricante,
                     status:doc.data().status,
+                    date_payment: doc.data().date_payment,
                     values:doc.data().billets,
+                    relatorio: `Relatório ${contador}`,
                     url: doc.data().url
                 })
             })
@@ -21995,14 +21999,13 @@ const fetch = (setIsLoading, setIsError, razao, setfisrtTicket, setTicket) => {
             const firstTicket = [
                 {
                     id: 1,
-                    seller: 'Em aberto',
+                    seller: 'Relatório Futuro',
                     charge: (Math.round(totalReceita.receita*100)/100).toLocaleString(),
-                    status: 'Aguardando Boleto',
-                    date: 'Atualmente',
-                    statusColor: matchStatusColor('Aguardando Boleto')
+                    status: 'Comissões em Aberto',
+                    statusColor: matchStatusColor('Comissões em Aberto')
                 }
             ]
-            setfisrtTicket([{id:1,fabricante:razao, status: 'Aguardando Boleto', values:charge},...fetchFirebase])
+            setfisrtTicket([{id:1,fabricante:razao,relatorio:'Relatório Futuro', status: 'Comissões em Aberto', values:charge},...fetchFirebase])
             setTicket([...firstTicket,...billetFirebase])
             setIsLoading(false)
         } catch (error) {
