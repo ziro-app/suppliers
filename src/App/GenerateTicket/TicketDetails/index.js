@@ -1,23 +1,21 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { useLocation } from 'wouter';
-import Table from '@bit/vitorbarbosa19.ziro.table';
-import Details from '@bit/vitorbarbosa19.ziro.details';
-import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
-import Header from '@bit/vitorbarbosa19.ziro.header';
-import Icon from '@bit/vitorbarbosa19.ziro.icon';
+import { motion } from 'framer-motion'
+import { useLocation } from 'wouter'
+import Table from '@bit/vitorbarbosa19.ziro.table'
+import Details from '@bit/vitorbarbosa19.ziro.details'
+import Header from '@bit/vitorbarbosa19.ziro.header'
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import Sucesso from './Sucesso/index'
-import Button from '@bit/vitorbarbosa19.ziro.button';
-import { alertColor, containerWithPadding, successColor } from '@ziro/theme';
-import currencyFormat from '@ziro/currency-format';
-import { userContext } from '../../appContext';
-import { button, custom, illustrationContainer, buttonContainer } from './styles';
+import Button from '@bit/vitorbarbosa19.ziro.button'
+import { containerWithPadding } from '@ziro/theme'
+import currencyFormat from '@ziro/currency-format'
+import { button, buttonContainer } from './styles'
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
-import matchStatusColor from '../matchStatusColor'
-import sendToBackend from './sendToBackend'
 import moment from 'moment'
 import 'moment/locale/pt-br'
+
+import matchStatusColor from '../matchStatusColor'
+import sendToBackend from './sendToBackend'
 import DetailsBoleto from '../boletidDetails'
 
 
@@ -27,6 +25,7 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
     const [totalReceitas, setTotalReceitas] = useState();
     const [url, setUrl] = useState('');
     const [load, setLoad] = useState(false);
+    const [isError, setIsError] = useState(false)
     const [, setLocation] = useLocation();
     const textAreaRef = useRef(null);
     const filtrado = transactions.filter(item => String(item.id) === boletbankId)
@@ -87,7 +86,7 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                 },
                                 {
                                     title: 'Data',
-                                    content: status === 'Aguardando Pagamento' ? '-' : moment(filtrado[0].date_payment.toDate()).format('DD/MMM./YY')
+                                    content: status !== 'Pagamento Realizado' ? '-' : moment(filtrado[0].date_payment.toDate()).format('DD/MMM./YY')
                                 },
                                 {
                                     title: 'Total',
@@ -101,9 +100,11 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                             ]
                         }
                     ]
+        console.log(status === 'Comissões em Aberto' ? block : block2)
         setBlocks(status === 'Comissões em Aberto' ? block : block2)
         setData(dataTable ? dataTable : [])
     }, [])
+    if (isError) return <Error />
     if(boletId) return <DetailsBoleto boletbankId={boletbankId} boletId={boletId} data={filtrado[0]}/>
     if(url !== '') return <Sucesso urlBoleto={url}/>
         return (
@@ -127,7 +128,7 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                         type="button"
                                         cta="Gerar Boleto"
                                         style={button}
-                                        click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado[0],setLoad,transactions[0].fabricante)}
+                                        click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado[0],setLoad,transactions[0].fabricante, setIsError)}
                                     />
                                 </div>
                                 ) : (

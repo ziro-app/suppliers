@@ -72,7 +72,7 @@ export default ({boletbankId,boletId,data}) => {
                 <Header type='icon-link' title={`Boleto ${boletId || boleto}`} navigateTo={`relatorio/${boletbankId}`} icon='back' />
                 <div style={{ display: 'grid', gridRowGap: '12px'}}>
                     <Details blocks={blocks} />
-                    <Modal isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
+                    <Modal boxStyle={{width:'95%'}} isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
                     <img style={{width:'100%'}} src={'https://lh3.googleusercontent.com/pw/ACtC-3cMGQZtbL-xYirA3kyq_fMVVAyUe0sAI5afZWUWQFg9EJlvFImu_VwCTG-6yfNpay10RcgNPYNZxxkES2Cgz_c_LFqqL5eb5PpP2N5gL2Glr8fX9uxRTT-fRxp3qZrCYUoy0xSNULZ0msOJhWDyUXw=w678-h903-no?authuser=0'} alt={'exemplo'}/>
                     </Modal>
                      <div style={{ display: 'grid', marginTop:'15px' }} onClick={() => setIsOpen(true)}>

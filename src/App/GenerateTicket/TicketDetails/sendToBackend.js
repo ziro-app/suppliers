@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { db } from '../../../Firebase/index';
 
-const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,razao) => async () => {
+const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, setIsError) => async () => {
         const arrayBillets = data.values.map(item => {
             const { boleto, romaneio, valor, vencimento, comissao, venda, lojista, receita, status,rua,polo } = item
             return {
@@ -37,10 +37,11 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,razao) => a
                 }
             }
             let arrayFirebase = []
-            let query = db.collection('boleto-payments').where('fabricante', '==', razao)
+            let query = db.collection('boleto-payments').where('fantasia', '==', seller)
             const snap = await query.get()
             snap.forEach((doc) => {
-                    arrayFirebase.push(1)
+                console.log(doc.data())
+                    arrayFirebase.push(doc.data().status)
                 })
             const createBoleto = await axios(configBoletos)
             const urlBoleto = createBoleto.data.payment_method.url
@@ -58,12 +59,14 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,razao) => a
             const obj = {
                 status:'Aguardando Pagamento'
             }
-            await db.collection('pending_commission').doc(razao).update(obj)
+            await db.collection('pending-commission').doc(seller).update(obj)
             setUrl(urlBoleto)
             await setLoad(false)
             console.log(doc)
         } catch (error) {
-            console.log(error)
+            console.log(error) 
+            setLoad(false)
+            setIsError(true)
         }
 }
 
