@@ -4,9 +4,10 @@ import matchStatusColor from './matchStatusColor'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 
-const fetch = (setIsLoading, setIsError, razao, setfisrtTicket, setTicket) => {
-    let query = db.collection('boleto-payments').where('fantasia', '==', razao)
-    let queryFirst = db.collection('pending_commission').where('fantasia', '==', razao)
+const fetch = (state) => {
+    const { setIsLoading, setIsError, seller, setfisrtTicket, setTicket } = state
+    let query = db.collection('boleto-payments').where('fantasia', '==', seller)
+    let queryFirst = db.collection('pending-commission').where('fantasia', '==', seller)
     const source = axios.CancelToken.source()
     const run = async () => {
         try {
