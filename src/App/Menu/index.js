@@ -26,12 +26,6 @@ export const Menu = ({ title, children }) => {
 							text: 'Relatório'
 						},
 						{
-							path: '/relatorio',
-							onClick: () => setIsOpen(false),
-							icon: <Icon type='file' size={15} strokeWidth={2} />,
-							text: 'Relatório'
-						},
-						{
 							path: '/minha-conta',
 							onClick: () => setIsOpen(false),
 							icon: <Icon type='gear' size={15} strokeWidth={2} />,

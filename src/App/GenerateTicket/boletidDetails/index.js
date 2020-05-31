@@ -73,9 +73,7 @@ export default ({boletbankId,boletId,data}) => {
                 <div style={{ display: 'grid', gridRowGap: '12px'}}>
                     <Details blocks={blocks} />
                     <Modal isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
-                    <div>
                     <img style={{width:'100%'}} src={'https://lh3.googleusercontent.com/pw/ACtC-3cMGQZtbL-xYirA3kyq_fMVVAyUe0sAI5afZWUWQFg9EJlvFImu_VwCTG-6yfNpay10RcgNPYNZxxkES2Cgz_c_LFqqL5eb5PpP2N5gL2Glr8fX9uxRTT-fRxp3qZrCYUoy0xSNULZ0msOJhWDyUXw=w678-h903-no?authuser=0'} alt={'exemplo'}/>
-                    </div>
                     </Modal>
                      <div style={{ display: 'grid', marginTop:'15px' }} onClick={() => setIsOpen(true)}>
                     <Button type="submit" cta="Imagem do boleto" />
