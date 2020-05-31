@@ -37,7 +37,7 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,razao) => a
                 }
             }
             let arrayFirebase = []
-            let query = db.collection('boleto-payment').where('fabricante', '==', razao)
+            let query = db.collection('boleto-payments').where('fabricante', '==', razao)
             const snap = await query.get()
             snap.forEach((doc) => {
                     arrayFirebase.push(1)
@@ -53,7 +53,7 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,razao) => a
                 'url': urlBoleto,
                 'billets': arrayBillets
             }
-            const docRef = await db.collection('boleto-payment').add(objeto)
+            const docRef = await db.collection('boleto-payments').add(objeto)
             const doc = await docRef.get()
             const obj = {
                 status:'Aguardando Pagamento'
