@@ -2,7 +2,7 @@ import { db } from '../../Firebase/index'
 
 const sendToBackend = state => () => {
     const { seller, sellerId, charge, maxInstallments, setCharge, setMaxInstallments } = state
-    const baseUrl = 'https://catalogo.ziro.app/transacao?doc='
+    const baseUrl = 'https://ziro.app/transacao?doc='
     return new Promise(async (resolve, reject) => {
         try {
             if (seller && sellerId) {
