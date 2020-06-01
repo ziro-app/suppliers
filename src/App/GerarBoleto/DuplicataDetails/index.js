@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion'
 import { useLocation } from 'wouter'
 import Table from '@bit/vitorbarbosa19.ziro.table'
@@ -17,15 +17,17 @@ import 'moment/locale/pt-br'
 import matchStatusColor from '../utils/matchStatusColor'
 import sendToBackend from './sendToBackend'
 import BoletoDetails from '../BoletoDetails'
+import BankInfo from '../BankInfo'
 
 
-const TicketDetails = ({transactions,boletbankId,boletId,sellerId}) => {
+const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
     const [data, setData] = useState([]);
     const [blocks, setBlocks] = useState([]);
     const [totalReceitas, setTotalReceitas] = useState();
     const [url, setUrl] = useState('');
     const [load, setLoad] = useState(false);
     const [isError, setIsError] = useState(false)
+    const [bank, setBank] = useState(false)
     const [, setLocation] = useLocation();
     const textAreaRef = useRef(null);
     const filtrado = transactions.filter(item => String(item.id) === boletbankId)
@@ -42,7 +44,7 @@ const TicketDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         let block;
         let block2;
         let dataTable;
-        const arrayTicket = filtrado[0].values.map(item => [moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") !== 'Invalid date' ? moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") : moment(item.data_venda, 'DD/MMM./YYYY').format("DD/MM/YY"), item.romaneio || '-', item.lojista, currencyFormat(stringToNumber(item.receita)).replace('R$', '')])
+        const arrayTicket = filtrado[0].values.map(item => [moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") !== 'Invalid date' ? moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") : moment(item.data_venda, 'DD/MMM./YYYY').format("DD/MM/YY"), item.romaneio || '-', item.lojista, (stringToNumber(item.receita)/100).toLocaleString(undefined,{minimumFractionDigits: 2,maximumFractionDigits: 2})])
         const arrayClickTicket = filtrado[0].values.map(item => () => setLocation(`/relatorio/${boletbankId}/${item.boletId || item.boleto}`))
         // const totalVendas = filtrado[0].values.map(item => stringToNumber(item.valor)).reduce((a,b) => a+b)
         const totalReceitas = filtrado[0].values.map(item => stringToNumber(item.receita)).reduce((a,b) => a+b)
@@ -100,11 +102,11 @@ const TicketDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                             ]
                         }
                     ]
-        console.log(status === 'Comissões em Aberto' ? block : block2)
         setBlocks(status === 'Comissões em Aberto' ? block : block2)
         setData(dataTable ? dataTable : [])
     }, [])
     if (isError) return <Error />
+    if(boletId === 'transferencia_bancaria') return <BankInfo valorTotal={totalReceitas}/>
     if(boletId) return <BoletoDetails boletbankId={boletbankId} boletId={boletId} data={filtrado[0]}/>
     if(url !== '') return <Sucesso urlBoleto={url}/>
         return (
@@ -122,23 +124,33 @@ const TicketDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                     {load ? (
                         <Spinner size="5.5rem" />
                         ):(
-                            status === 'Comissões em Aberto' ? (
+                            status === 'Comissões em Aberto' && url === '' ? (
                                     <div style={buttonContainer}>
                                     <Button
-                                        type="button"
-                                        cta="Gerar Boleto"
-                                        click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado[0],setLoad,transactions[0].fabricante, setIsError)}
+                                        type="link"
+                                        cta="Fazer Transferência"
+                                        navigate={() => setLocation(`/relatorio/${boletbankId}/transferencia_bancaria`)}
                                     />
+                                    {totalReceitas/100 <= 2000 &&
+                                        <Button
+                                        type="button"
+                                        cta="Gerar Duplicata"
+                                        click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado[0],setLoad,transactions[0].fabricante, setIsError)}
+                                        />
+                                    }
                                 </div>
                                 ) : (
-                                    status === 'Aguardando Pagamento' &&   
-                                    <div style={buttonContainer}>
-                                    <Button
-                                        type="button"
-                                        cta="Visualizar Duplicata"
-                                        click={() => window.open(sendUrl,'_blank')}
-                                    />
-                                </div>
+                                    status === 'Aguardando Pagamento' && sendUrl !== '' ? (
+                                        <div style={buttonContainer}>
+                                        <Button
+                                            type="button"
+                                            cta="Visualizar Duplicata"
+                                            click={() => window.open(sendUrl,'_blank')}
+                                        />
+                                    </div>
+                                    ):(
+                                        <> </>
+                                    )
                                 )
                         )
                     }
@@ -147,4 +159,4 @@ const TicketDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         );
 }
 
-export default TicketDetails
+export default DuplicateDetails
