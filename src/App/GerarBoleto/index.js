@@ -8,7 +8,7 @@ import RelatorioList from './RelatorioList/index'
 import fetch from './fetch'
 
 const GerarBoleto = ({ boletbankId, boletId }) => {
-    const { fname, lname, zoopId, docId, razao, email } = useContext(userContext)
+    const { zoopId, docId, razao, email, fantasy } = useContext(userContext)
     const [firstTicket, setfisrtTicket] = useState([]);
     const [ticket, setTicket] = useState([]);
     const [isError, setIsError] = useState(false)
@@ -17,7 +17,7 @@ const GerarBoleto = ({ boletbankId, boletId }) => {
     const [url, setUrl] = useState('')
     const [urlLoad, setUrlLoad] = useState(false)
     const [maxInstallments, setMaxInstallments] = useState('')
-    const state = { seller, sellerId, razao, charge, maxInstallments, docId,url,urlLoad,email,setCharge, setMaxInstallments, setIsError, setIsLoading, setUrl,setUrlLoad, setfisrtTicket, setTicket  }
+    const state = { seller:fantasy, sellerId:zoopId, razao, charge, maxInstallments, docId,url,urlLoad,email,setCharge, setMaxInstallments, setIsError, setIsLoading, setUrl,setUrlLoad, setfisrtTicket, setTicket  }
     useEffect(() => fetch(state),[]);
     if (isLoading)
         return (
