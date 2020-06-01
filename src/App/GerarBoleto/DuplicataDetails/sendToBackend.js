@@ -40,7 +40,6 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
             let query = db.collection('boleto-payments').where('fantasia', '==', seller.toUpperCase())
             const snap = await query.get()
             snap.forEach((doc) => {
-                console.log(doc.data())
                     arrayFirebase.push(doc.data().status)
                 })
             const createBoleto = await axios(configBoletos)

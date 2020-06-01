@@ -6,7 +6,6 @@ import 'moment/locale/pt-br'
 
 const fetch = (state) => {
     const { setIsLoading, setIsError, seller, setfisrtTicket, setTicket } = state
-    console.log(seller)
     let query = db.collection('boleto-payments').where('fantasia', '==', seller)
     let queryFirst = db.collection('pending-commission').where('fantasia', '==', seller)
     const source = axios.CancelToken.source()
