@@ -17,7 +17,7 @@ const GerarBoleto = ({ boletbankId, boletId }) => {
     const [url, setUrl] = useState('')
     const [urlLoad, setUrlLoad] = useState(false)
     const [maxInstallments, setMaxInstallments] = useState('')
-    const state = { seller: 'CRISFAEL', sellerId: '6e4b9db52193481ca2a345dfc3577c8e', razao, charge, maxInstallments, docId,url,urlLoad,email,setCharge, setMaxInstallments, setIsError, setIsLoading, setUrl,setUrlLoad, setfisrtTicket, setTicket  }
+    const state = { seller, sellerId, razao, charge, maxInstallments, docId,url,urlLoad,email,setCharge, setMaxInstallments, setIsError, setIsLoading, setUrl,setUrlLoad, setfisrtTicket, setTicket  }
     useEffect(() => fetch(state),[]);
     if (isLoading)
         return (
