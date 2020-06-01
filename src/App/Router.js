@@ -16,7 +16,7 @@ import DeleteAccount from './DeleteAccount/index'
 import CreatePayment from './CreatePayment/index'
 import Transactions from './Transactions/index'
 import TestCnpj from './TestCnpj/index'
-import GenerateTicket from './GenerateTicket/index'
+import GerarBoleto from './GerarBoleto/index'
 import FirebaseMigration from './FirebaseMigration/index'
 import UpdateUserInfo from './UpdateUserInfo/index'
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found'
@@ -46,7 +46,7 @@ const Router = ({ isLogged }) => {
         '/trocar-senha': <UpdatePass />,
         '/deletar-conta': <DeleteAccount />,
         '/criar-cobranca': <Menu title='Criar Cobrança'><CreatePayment /></Menu>,
-        [match2 ? location : null]: <GenerateTicket {...params2} />,
+        [match2 ? location : null]: <GerarBoleto {...params2} />,
         [match ? location : null]: <Transactions {...params} />,
         '/update': <HeaderBack title='Atualizar informações' navigateTo='/login'><UpdateUserInfo /></HeaderBack>
     }

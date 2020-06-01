@@ -14,12 +14,12 @@ import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 
-import matchStatusColor from '../matchStatusColor'
+import matchStatusColor from '../utils/matchStatusColor'
 import sendToBackend from './sendToBackend'
-import DetailsBoleto from '../boletidDetails'
+import BoletoDetails from '../BoletoDetails'
 
 
-const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
+const TicketDetails = ({transactions,boletbankId,boletId,sellerId}) => {
     const [data, setData] = useState([]);
     const [blocks, setBlocks] = useState([]);
     const [totalReceitas, setTotalReceitas] = useState();
@@ -89,7 +89,7 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                     content: status !== 'Pagamento Realizado' ? '-' : moment(filtrado[0].date_payment.toDate()).format('DD/MMM./YY')
                                 },
                                 {
-                                    title: 'Total',
+                                    title: 'Total Comissões',
                                     content: currencyFormat(totalReceitas)
                                 },
                                 {
@@ -105,7 +105,7 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         setData(dataTable ? dataTable : [])
     }, [])
     if (isError) return <Error />
-    if(boletId) return <DetailsBoleto boletbankId={boletbankId} boletId={boletId} data={filtrado[0]}/>
+    if(boletId) return <BoletoDetails boletbankId={boletbankId} boletId={boletId} data={filtrado[0]}/>
     if(url !== '') return <Sucesso urlBoleto={url}/>
         return (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
@@ -136,7 +136,7 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                     <div style={buttonContainer}>
                                     <Button
                                         type="button"
-                                        cta="Link do Boleto"
+                                        cta="Visualizar Duplicata"
                                         style={button}
                                         click={() => window.open(sendUrl,'_blank')}
                                     />
@@ -149,4 +149,4 @@ const TransactionDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         );
 }
 
-export default TransactionDetails
+export default TicketDetails

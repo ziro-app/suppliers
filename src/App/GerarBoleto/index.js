@@ -1,15 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react'
-// import capitalize from '@ziro/capitalize'
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
 import { spinner } from './styles';
 import Error from '@bit/vitorbarbosa19.ziro.error'
-// import Timeline from '@bit/vitorbarbosa19.ziro.timeline'
-// import { motion } from 'framer-motion'
 import { userContext } from '../appContext'
-import TicketDetails from './TicketDetails/index'
-// import sendToBackend from './sendToBackend'
-// import sendToEmail from './sendToEmail'
-import TicketList from './TicketList/index'
+import DuplicataDetails from './DuplicataDetails/index'
+import RelatorioList from './RelatorioList/index'
 import fetch from './fetch'
 
 const GerarBoleto = ({ boletbankId, boletId }) => {
@@ -22,7 +17,7 @@ const GerarBoleto = ({ boletbankId, boletId }) => {
     const [url, setUrl] = useState('')
     const [urlLoad, setUrlLoad] = useState(false)
     const [maxInstallments, setMaxInstallments] = useState('')
-    const state = { seller: 'Crisfael', sellerId: '6e4b9db52193481ca2a345dfc3577c8e', razao: 'Crisfael', charge, maxInstallments, docId,url,urlLoad,email:'ahmad.forhat@gmail.com',setCharge, setMaxInstallments, setIsError, setIsLoading, setUrl,setUrlLoad, setfisrtTicket, setTicket  }
+    const state = { seller: 'CRISFAEL', sellerId: '6e4b9db52193481ca2a345dfc3577c8e', razao, charge, maxInstallments, docId,url,urlLoad,email,setCharge, setMaxInstallments, setIsError, setIsLoading, setUrl,setUrlLoad, setfisrtTicket, setTicket  }
     useEffect(() => fetch(state),[]);
     if (isLoading)
         return (
@@ -31,9 +26,9 @@ const GerarBoleto = ({ boletbankId, boletId }) => {
             </div>
         );
     if (isError) return <Error />
-    if (boletbankId && boletId) return <TicketDetails transactions={firstTicket} boletbankId={boletbankId} boletId={boletId} sellerId={state.sellerId}/>
-    if (boletbankId) return <TicketDetails transactions={firstTicket} boletbankId={boletbankId} boletId={''} sellerId={state.sellerId}/>;
-    return <TicketList transactions={ticket}/>;
+    if (boletbankId && boletId) return <DuplicataDetails transactions={firstTicket} boletbankId={boletbankId} boletId={boletId} sellerId={state.sellerId}/>
+    if (boletbankId) return <DuplicataDetails transactions={firstTicket} boletbankId={boletbankId} boletId={''} sellerId={state.sellerId}/>;
+    return <RelatorioList transactions={ticket}/>;
 }
 
 export default GerarBoleto

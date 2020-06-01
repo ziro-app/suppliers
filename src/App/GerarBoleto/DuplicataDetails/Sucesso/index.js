@@ -10,10 +10,12 @@ const ErrorExpired = ({urlBoleto}) => {
 	return (
 		<div style={{...containerWithPadding, ...container}}>
 			<div style={svg}><Illustration type='paymentSuccess' /></div>
-			<label style={title}>Boleto gerado com sucesso!</label>
-			<label>Veja mais informações sobre ele na sua timeline</label>
-			<Button type='link' cta='Retornar' navigate={async () => setLocation('/')} />
-			<Button type='link' cta='Link Duplicata' navigate={async () => window.open(urlBoleto,'_blank')} />
+			<label style={title}>Duplicata gerada com sucesso</label>
+			<Button type='link' cta='Visualizar Duplicata' navigate={async () => window.open(urlBoleto,'_blank')} />
+			<Button type='link' template="light" cta='Retornar' navigate={async () => {
+				await setLocation('/')
+				await setLocation('/relatorio')
+				}} />
 		</div>
 	)
 }
