@@ -40,7 +40,6 @@ const Router = ({ isLogged }) => {
     const privateRoutes = { // Menu can't be put inside the components because then it'll unmount on transition
         '/': <Transactions {...params} />,
         '/minha-conta': <Menu title='Minha Conta'><MyAccount /></Menu>,
-        '/': <Menu title='Minha Conta'><MyAccount /></Menu>,
         '/login': <Menu title='Minha Conta'><MyAccount /></Menu>,
         '/trocar-email': <UpdateEmail />,
         '/trocar-senha': <UpdatePass />,

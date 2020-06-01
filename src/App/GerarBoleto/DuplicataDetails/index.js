@@ -9,7 +9,7 @@ import Sucesso from './Sucesso/index'
 import Button from '@bit/vitorbarbosa19.ziro.button'
 import { containerWithPadding } from '@ziro/theme'
 import currencyFormat from '@ziro/currency-format'
-import { button, buttonContainer } from './styles'
+import { buttonContainer } from './styles'
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
 import moment from 'moment'
 import 'moment/locale/pt-br'
@@ -127,7 +127,6 @@ const TicketDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                     <Button
                                         type="button"
                                         cta="Gerar Boleto"
-                                        style={button}
                                         click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado[0],setLoad,transactions[0].fabricante, setIsError)}
                                     />
                                 </div>
@@ -137,7 +136,6 @@ const TicketDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                     <Button
                                         type="button"
                                         cta="Visualizar Duplicata"
-                                        style={button}
                                         click={() => window.open(sendUrl,'_blank')}
                                     />
                                 </div>
