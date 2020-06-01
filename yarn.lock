@@ -1009,6 +1009,14 @@
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
+"@bit/vitorbarbosa19.ziro.icon@^1.0.17":
+  version "1.0.17"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.icon/-/vitorbarbosa19.ziro.icon-1.0.17.tgz#059e3a9b168927dc386a48c7d83d5942961823fb"
+  integrity sha1-BZ46mxaJJ9w4akjH2D1ZQpYYI/s=
+  dependencies:
+    "@ziro/theme" "^1.0.3"
+    prop-types "15.7.2"
+
 "@bit/vitorbarbosa19.ziro.illustration@0.1.11":
   version "0.1.11"
   resolved "https://node.bit.dev/vitorbarbosa19.ziro.illustration/-/vitorbarbosa19.ziro.illustration-0.1.11.tgz#6e7f96e5891270eb54a49ce1ec3da576810494c8"

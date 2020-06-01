@@ -23,7 +23,6 @@ const fetch = (setIsLoading, setIsError, razao, setfisrtTicket, setTicket) => {
                 })
                 const totalReceitas = arrayReceitas.reduce((a,b) => a+b)
                 const soma = (Math.round(totalReceitas*100)/100).toLocaleString()
-                let contador = counter++
                 billetFirebase.push({
                     contador: doc.data().counter,
                     id:doc.data().transactionZoopId,
@@ -91,20 +90,6 @@ const fetch = (setIsLoading, setIsError, razao, setfisrtTicket, setTicket) => {
                 setfisrtTicket([...firstTicket,...orderFetch])
                 setTicket([...firstInfo,...orderBillet])
             }
-            const baseCharge = arrayObject(dataCharge.valueRanges[0])
-            const charge = baseCharge.filter(charge => charge.fornecedor === razao)
-            const totalReceita = charge.reduce((a, b) => ({receita: a.receita + b.receita}))
-            const firstTicket = [
-                {
-                    id: 1,
-                    seller: 'Relatório Futuro',
-                    charge: (Math.round(totalReceita.receita*100)/100).toLocaleString(),
-                    status: 'Comissões em Aberto',
-                    statusColor: matchStatusColor('Comissões em Aberto')
-                }
-            ]
-            setfisrtTicket([{id:1,fabricante:razao,relatorio:'Relatório Futuro', status: 'Comissões em Aberto', values:charge},...fetchFirebase])
-            setTicket([...firstTicket,...billetFirebase])
             setIsLoading(false)
         } catch (error) {
             if (error.response) console.log(error.response)
