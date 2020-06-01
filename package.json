@@ -66,7 +66,7 @@
     "@bit/vitorbarbosa19.ziro.get-cnpj": "0.0.21",
     "@ziro/array-object": "^1.0.0",
     "@ziro/capitalize": "^1.0.0",
-    "@ziro/currency-format": "1.0.1",
+    "@ziro/currency-format": "1.0.2",
     "@ziro/format-date-utc3": "^1.0.0",
     "@ziro/mask-input": "^1.0.0",
     "@ziro/router": "^3.0.0",

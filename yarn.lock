@@ -849,41 +849,41 @@
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.button@0.1.5":
-  version "0.1.5"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.button/-/vitorbarbosa19.ziro.button-0.1.5.tgz#32da949e2967671bf571557cc258278b3d973474"
-  integrity sha1-MtqUnilnZxv1cVV8wlgniz2XNHQ=
+"@bit/vitorbarbosa19.ziro.button@0.1.6":
+  version "0.1.6"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.button/-/vitorbarbosa19.ziro.button-0.1.6.tgz#89d132b412843f25c60b5d1e6ad71be1f8c42d6b"
+  integrity sha1-idEytBKEPyXGC10eatcb4fjELWs=
   dependencies:
     "@ziro/theme" "^1.0.3"
     framer-motion "^1.10.3"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.confirm-email@0.1.44":
-  version "0.1.44"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.confirm-email/-/vitorbarbosa19.ziro.confirm-email-0.1.44.tgz#59b0ee10858dec48b406ef3234fd2fde5ad94003"
-  integrity sha1-WbDuEIWN7Ei0Bu8yNP0v3lrZQAM=
+"@bit/vitorbarbosa19.ziro.confirm-email@0.1.45":
+  version "0.1.45"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.confirm-email/-/vitorbarbosa19.ziro.confirm-email-0.1.45.tgz#b594b01ad3ae1fb87783c215280409a339ca6658"
+  integrity sha1-tZSwGtOuH7h3g8IVKAQJoznKZlg=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.button" "0.1.5"
+    "@bit/vitorbarbosa19.ziro.button" "0.1.6"
     "@bit/vitorbarbosa19.ziro.illustration" "0.1.11"
     "@ziro/theme" "^1.0.3"
     wouter "^2.4.0"
 
-"@bit/vitorbarbosa19.ziro.delete-account@0.1.52":
-  version "0.1.52"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.delete-account/-/vitorbarbosa19.ziro.delete-account-0.1.52.tgz#bf7ca322496169a9028fec91238c775bb66f9372"
-  integrity sha1-v3yjIklhaakCj+yRI4x3W7Zvk3I=
+"@bit/vitorbarbosa19.ziro.delete-account@0.1.55":
+  version "0.1.55"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.delete-account/-/vitorbarbosa19.ziro.delete-account-0.1.55.tgz#bf291a4311e0751c68e91f594bbd539d88c67a50"
+  integrity sha1-vykaQxHgdRxo6R9ZS71TnYjGelA=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.form" "0.1.7"
+    "@bit/vitorbarbosa19.ziro.form" "0.1.10"
     "@bit/vitorbarbosa19.ziro.form-input" "0.1.38"
-    "@bit/vitorbarbosa19.ziro.header" "0.1.45"
+    "@bit/vitorbarbosa19.ziro.header" "0.1.46"
     "@bit/vitorbarbosa19.ziro.input-text" "0.1.2"
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.details@0.0.5":
-  version "0.0.5"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.details/-/vitorbarbosa19.ziro.details-0.0.5.tgz#c043769543c5e31fd54fae3d6ee5b6b248a0b183"
-  integrity sha1-wEN2lUPF4x/VT649buW2skigsYM=
+"@bit/vitorbarbosa19.ziro.details@0.0.6":
+  version "0.0.6"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.details/-/vitorbarbosa19.ziro.details-0.0.6.tgz#587d4ddaed63d95eaf6b18f997f38a41d210fe5e"
+  integrity sha1-WH1N2u1j2V6vaxj5l/OKQdIQ/l4=
   dependencies:
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
@@ -927,12 +927,12 @@
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.error@0.1.40":
-  version "0.1.40"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.error/-/vitorbarbosa19.ziro.error-0.1.40.tgz#94baacba0c1d22ddf52dd84a00ddeef2fb525f78"
-  integrity sha1-lLqsugwdIt31LdhKAN3u8vtSX3g=
+"@bit/vitorbarbosa19.ziro.error@0.1.41":
+  version "0.1.41"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.error/-/vitorbarbosa19.ziro.error-0.1.41.tgz#5415e6d914f234017ddd647240b800c165db3d98"
+  integrity sha1-VBXm2RTyNAF93WRyQLgAwWXbPZg=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.button" "0.1.5"
+    "@bit/vitorbarbosa19.ziro.button" "0.1.6"
     "@bit/vitorbarbosa19.ziro.illustration" "0.1.11"
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
@@ -955,23 +955,23 @@
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.form@0.1.7":
-  version "0.1.7"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.form/-/vitorbarbosa19.ziro.form-0.1.7.tgz#94af92cd89c9a7d9230040e9ad81b5b9c57990d8"
-  integrity sha1-lK+SzYnJp9kjAEDprYG1ucV5kNg=
+"@bit/vitorbarbosa19.ziro.form@0.1.10":
+  version "0.1.10"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.form/-/vitorbarbosa19.ziro.form-0.1.10.tgz#12d4d71391f45cd51ac2a11464d0917c41cbea83"
+  integrity sha1-EtTXE5H0XNUawqEUZNCRfEHL6oM=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.button" "0.1.5"
+    "@bit/vitorbarbosa19.ziro.button" "0.1.6"
     "@bit/vitorbarbosa19.ziro.modal" "0.1.2"
     "@bit/vitorbarbosa19.ziro.spinner" "0.1.1"
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.get-cnpj@0.0.18":
-  version "0.0.18"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.get-cnpj/-/vitorbarbosa19.ziro.get-cnpj-0.0.18.tgz#c6670acc083612681e6cfb8f97bb9cda3669fc09"
-  integrity sha1-xmcKzAg2EmgebPuPl7uc2jZp/Ak=
+"@bit/vitorbarbosa19.ziro.get-cnpj@0.0.21":
+  version "0.0.21"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.get-cnpj/-/vitorbarbosa19.ziro.get-cnpj-0.0.21.tgz#461cc23750e2060be78c4c6f0a4d9443ea00c2bc"
+  integrity sha1-RhzCN1DiBgvnjExvCk2UQ+oAwrw=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.form" "0.1.7"
+    "@bit/vitorbarbosa19.ziro.form" "0.1.10"
     "@bit/vitorbarbosa19.ziro.form-input" "0.1.38"
     "@bit/vitorbarbosa19.ziro.input-text" "0.1.2"
     "@ziro/mask-input" "^1.0.0"
@@ -989,12 +989,12 @@
     prop-types "15.7.2"
     wouter "^2.4.0"
 
-"@bit/vitorbarbosa19.ziro.header@0.1.45":
-  version "0.1.45"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.header/-/vitorbarbosa19.ziro.header-0.1.45.tgz#463d4ba50c36bd4d9b156bddb546478433f90d85"
-  integrity sha1-Rj1LpQw2vU2bFWvdtUZHhDP5DYU=
+"@bit/vitorbarbosa19.ziro.header@0.1.46":
+  version "0.1.46"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.header/-/vitorbarbosa19.ziro.header-0.1.46.tgz#fb4aca3a2c74d2ea7ff802567c10decefd07228d"
+  integrity sha1-+0rKOix00up/+AJWfBDezv0HIo0=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.button" "0.1.5"
+    "@bit/vitorbarbosa19.ziro.button" "0.1.6"
     "@bit/vitorbarbosa19.ziro.icon" "1.0.17"
     "@ziro/theme" "^1.0.3"
     framer-motion "^1.10.3"
@@ -1071,34 +1071,34 @@
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.login-form@0.1.48":
-  version "0.1.48"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.login-form/-/vitorbarbosa19.ziro.login-form-0.1.48.tgz#03c8f7192f096fc40da59207312be10745cc0b11"
-  integrity sha1-A8j3GS8Jb8QNpZIHMSvhB0XMCxE=
+"@bit/vitorbarbosa19.ziro.login-form@0.1.51":
+  version "0.1.51"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.login-form/-/vitorbarbosa19.ziro.login-form-0.1.51.tgz#280fae411889da891e5ec22f666a54a203ab4ab2"
+  integrity sha1-KA+uQRiJ2okeXsIvZmpUogOrSrI=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.form" "0.1.7"
+    "@bit/vitorbarbosa19.ziro.form" "0.1.10"
     "@bit/vitorbarbosa19.ziro.form-input" "0.1.38"
     "@bit/vitorbarbosa19.ziro.input-text" "0.1.2"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.login-page@0.1.50":
-  version "0.1.50"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.login-page/-/vitorbarbosa19.ziro.login-page-0.1.50.tgz#521515f701a707516ebd05b1975e73c23a4342a6"
-  integrity sha1-UhUV9wGnB1FuvQWxl15zwjpDQqY=
+"@bit/vitorbarbosa19.ziro.login-page@0.1.53":
+  version "0.1.53"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.login-page/-/vitorbarbosa19.ziro.login-page-0.1.53.tgz#10a946df0739b511fd757d66f997765d2ecd54d9"
+  integrity sha1-EKlG3wc5tRH9dX1m+Zd2XS7NVNk=
   dependencies:
     "@bit/vitorbarbosa19.ziro.header-home" "0.1.34"
-    "@bit/vitorbarbosa19.ziro.login-form" "0.1.48"
+    "@bit/vitorbarbosa19.ziro.login-form" "0.1.51"
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
     wouter "^2.4.0"
 
-"@bit/vitorbarbosa19.ziro.login-trouble@0.1.46":
-  version "0.1.46"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.login-trouble/-/vitorbarbosa19.ziro.login-trouble-0.1.46.tgz#531cd008ff51b01b7a116ff37c38a913f99c6b7c"
-  integrity sha1-UxzQCP9RsBt6EW/zfDipE/mca3w=
+"@bit/vitorbarbosa19.ziro.login-trouble@0.1.47":
+  version "0.1.47"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.login-trouble/-/vitorbarbosa19.ziro.login-trouble-0.1.47.tgz#1f02f33138d46d6d35abf16a48d25ff3d6a07311"
+  integrity sha1-HwLzMTjUbW01q/FqSNJf89agcxE=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.button" "0.1.5"
-    "@bit/vitorbarbosa19.ziro.header" "0.1.45"
+    "@bit/vitorbarbosa19.ziro.button" "0.1.6"
+    "@bit/vitorbarbosa19.ziro.header" "0.1.46"
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
     wouter "^2.4.0"
@@ -1138,33 +1138,33 @@
     "@ziro/theme" "^1.0.3"
     wouter "^2.4.0"
 
-"@bit/vitorbarbosa19.ziro.not-found@0.1.43":
-  version "0.1.43"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.not-found/-/vitorbarbosa19.ziro.not-found-0.1.43.tgz#f1c7cf864d3abc55794b582224796f14cde68140"
-  integrity sha1-8cfPhk06vFV5S1giJHlvFM3mgUA=
+"@bit/vitorbarbosa19.ziro.not-found@0.1.44":
+  version "0.1.44"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.not-found/-/vitorbarbosa19.ziro.not-found-0.1.44.tgz#8f0aec6343a9d29fa9a15e765104c22dbcf3f977"
+  integrity sha1-jwrsY0Op0p+poV52UQTCLbzz+Xc=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.error" "0.1.40"
+    "@bit/vitorbarbosa19.ziro.error" "0.1.41"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.resend-email@0.1.59":
-  version "0.1.59"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.resend-email/-/vitorbarbosa19.ziro.resend-email-0.1.59.tgz#868e618e3cacccc4ae8b2abe79e1cb3e014f8a95"
-  integrity sha1-ho5hjjyszMSuiyq+eeHLPgFPipU=
+"@bit/vitorbarbosa19.ziro.resend-email@0.1.62":
+  version "0.1.62"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.resend-email/-/vitorbarbosa19.ziro.resend-email-0.1.62.tgz#e86b0d5ce8193733a3fba7e3574bcb1d161fee2d"
+  integrity sha1-6GsNXOgZNzOj+6fjV0vLHRYf7i0=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.header" "0.1.45"
-    "@bit/vitorbarbosa19.ziro.login-form" "0.1.48"
+    "@bit/vitorbarbosa19.ziro.header" "0.1.46"
+    "@bit/vitorbarbosa19.ziro.login-form" "0.1.51"
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
     wouter "^2.4.0"
 
-"@bit/vitorbarbosa19.ziro.reset-pass@0.1.55":
-  version "0.1.55"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.reset-pass/-/vitorbarbosa19.ziro.reset-pass-0.1.55.tgz#7546fc4491583e9a3bb1a72f4626d6bd2d52bfd9"
-  integrity sha1-dUb8RJFYPpo7sacvRibWvS1Sv9k=
+"@bit/vitorbarbosa19.ziro.reset-pass@0.1.58":
+  version "0.1.58"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.reset-pass/-/vitorbarbosa19.ziro.reset-pass-0.1.58.tgz#6626cc796df6b910d49eca42b7f6105448501cf1"
+  integrity sha1-ZibMeW32uRDUnspCt/YQVEhQHPE=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.form" "0.1.7"
+    "@bit/vitorbarbosa19.ziro.form" "0.1.10"
     "@bit/vitorbarbosa19.ziro.form-input" "0.1.38"
-    "@bit/vitorbarbosa19.ziro.header" "0.1.45"
+    "@bit/vitorbarbosa19.ziro.header" "0.1.46"
     "@bit/vitorbarbosa19.ziro.input-text" "0.1.2"
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
@@ -1200,37 +1200,37 @@
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.timeline@0.1.39":
-  version "0.1.39"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.timeline/-/vitorbarbosa19.ziro.timeline-0.1.39.tgz#cf6fc4f7549b75b25c84c47fc6f2e4b592e85e64"
-  integrity sha1-z2/E91SbdbJchMR/xvLktZLoXmQ=
+"@bit/vitorbarbosa19.ziro.timeline@0.1.41":
+  version "0.1.41"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.timeline/-/vitorbarbosa19.ziro.timeline-0.1.41.tgz#e0834a0e16b5179a8a1e86b85445b5358a9f417e"
+  integrity sha1-4INKDha1F5qKHoa4VEW1NYqfQX4=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.button" "0.1.5"
+    "@bit/vitorbarbosa19.ziro.button" "0.1.6"
     "@bit/vitorbarbosa19.ziro.illustration" "0.1.11"
     "@bit/vitorbarbosa19.ziro.spinner-with-div" "0.0.2"
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.update-email@0.1.56":
-  version "0.1.56"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.update-email/-/vitorbarbosa19.ziro.update-email-0.1.56.tgz#15f83298979446598ac049d7172f26106c37d4eb"
-  integrity sha1-FfgymJeURlmKwEnXFy8mEGw31Os=
+"@bit/vitorbarbosa19.ziro.update-email@0.1.59":
+  version "0.1.59"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.update-email/-/vitorbarbosa19.ziro.update-email-0.1.59.tgz#839d3c816c3280625f0b15ece19d94abd07dda6a"
+  integrity sha1-g508gWwygGJfCxXs4Z2Uq9B92mo=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.form" "0.1.7"
+    "@bit/vitorbarbosa19.ziro.form" "0.1.10"
     "@bit/vitorbarbosa19.ziro.form-input" "0.1.38"
-    "@bit/vitorbarbosa19.ziro.header" "0.1.45"
+    "@bit/vitorbarbosa19.ziro.header" "0.1.46"
     "@bit/vitorbarbosa19.ziro.input-text" "0.1.2"
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
 
-"@bit/vitorbarbosa19.ziro.update-pass@0.1.51":
-  version "0.1.51"
-  resolved "https://node.bit.dev/vitorbarbosa19.ziro.update-pass/-/vitorbarbosa19.ziro.update-pass-0.1.51.tgz#ac842d1231248dfdbd29457a1c1f893d3c9b98bd"
-  integrity sha1-rIQtEjEkjf29KUV6HB+JPTybmL0=
+"@bit/vitorbarbosa19.ziro.update-pass@0.1.54":
+  version "0.1.54"
+  resolved "https://node.bit.dev/vitorbarbosa19.ziro.update-pass/-/vitorbarbosa19.ziro.update-pass-0.1.54.tgz#1f142f54918e1d2d79377a9eb582b65759713774"
+  integrity sha1-HxQvVJGOHS15N3qetYK2V1lxN3Q=
   dependencies:
-    "@bit/vitorbarbosa19.ziro.form" "0.1.7"
+    "@bit/vitorbarbosa19.ziro.form" "0.1.10"
     "@bit/vitorbarbosa19.ziro.form-input" "0.1.38"
-    "@bit/vitorbarbosa19.ziro.header" "0.1.45"
+    "@bit/vitorbarbosa19.ziro.header" "0.1.46"
     "@bit/vitorbarbosa19.ziro.input-text" "0.1.2"
     "@ziro/theme" "^1.0.3"
     prop-types "15.7.2"
@@ -2057,10 +2057,10 @@
   resolved "https://registry.yarnpkg.com/@ziro/capitalize/-/capitalize-1.0.0.tgz#07b5f98b8d69125752741b0a2aea432db99286e9"
   integrity sha512-rcqLUSOqOxgmFoO45EsOgSn/ATqYywqWeEE88vJWYA7aPJcd31kI6FYBUus0lsZtYRLguygvh9nKwskUIwfrog==
 
-"@ziro/currency-format@1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@ziro/currency-format/-/currency-format-1.0.1.tgz#45f93c6ac84465cf9f9405018e5ebd2a173376e1"
-  integrity sha512-wJ1jT3NKoLPzRvONfkNPfj+mX36Vf0x5Lf/41Ks3DQCWhgYMjnLPvKufAiD9dimr0p6yby/bDVOhADvAB3ZVkQ==
+"@ziro/currency-format@1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@ziro/currency-format/-/currency-format-1.0.2.tgz#e0a5a98684dd4847946b0216ed7ed27167c23c4f"
+  integrity sha512-Bx3aAES1gpPNSf359owCWDzzVNNA2Pq2r/twsTAaS3gd9Ey9GTelND83wHTa2Uv7vvnhfw0s8t0SfUnM5sXMnw==
 
 "@ziro/decimal-usa@^1.0.1":
   version "1.0.1"
