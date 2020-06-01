@@ -38,3 +38,19 @@ export const custom = (fontSize, color) => ({
         fontSize: fontSizeSmall,
         textTransform: 'uppercase'
     }
+    container = {
+        display: 'grid',
+        alignContent: 'center',
+        gridRowGap: '15px',
+        color: primaryColor,
+        textAlign: 'center'
+    },
+    
+    svg = {
+        justifySelf: 'center'
+    },
+    
+    title = {
+        fontFamily: fontTitle,
+        textTransform: 'uppercase'
+    }

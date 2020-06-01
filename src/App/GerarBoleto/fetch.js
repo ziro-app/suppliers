@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { db } from '../../Firebase/index'
-import matchStatusColor from './matchStatusColor'
+import matchStatusColor from './utils/matchStatusColor'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 
 const fetch = (state) => {
     const { setIsLoading, setIsError, seller, setfisrtTicket, setTicket } = state
+    console.log(seller)
     let query = db.collection('boleto-payments').where('fantasia', '==', seller)
     let queryFirst = db.collection('pending-commission').where('fantasia', '==', seller)
     const source = axios.CancelToken.source()
@@ -59,7 +60,7 @@ const fetch = (state) => {
                 const totalReceitas = arrayReceitas.reduce((a,b) => a+b)
                 const soma = (Math.round(totalReceitas*100)/100).toLocaleString()
                 firstInfo.push({
-                    id:doc.data().transactionZoopId,
+                    id:'relatorio_futuro',
                     charge: soma,
                     date: '-',
                     seller:'Relatório Futuro',
@@ -67,14 +68,12 @@ const fetch = (state) => {
                     statusColor: matchStatusColor(doc.data().status)
                 })
                 firstTicket.push({
-                    contador: doc.data().counter,
-                    id:doc.data().transactionZoopId,
+                    contador: 'Futuro',
+                    id:'relatorio_futuro',
                     fabricante:doc.data().fantasia,
                     status:doc.data().status,
-                    date_payment: doc.data().date_payment,
                     values:doc.data().billets,
-                    relatorio: `Relatório ${doc.data().counter}`,
-                    url: doc.data().url,
+                    relatorio: 'Relatório Futuro',
                     endereco: `${doc.data().billets[0].polo} - ${doc.data().billets[0].rua}`
                 })
             })

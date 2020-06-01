@@ -37,7 +37,7 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
                 }
             }
             let arrayFirebase = []
-            let query = db.collection('boleto-payments').where('fantasia', '==', seller)
+            let query = db.collection('boleto-payments').where('fantasia', '==', seller.toUpperCase())
             const snap = await query.get()
             snap.forEach((doc) => {
                 console.log(doc.data())
@@ -46,7 +46,7 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
             const createBoleto = await axios(configBoletos)
             const urlBoleto = createBoleto.data.payment_method.url
             const objeto = {
-                'fantasia': data.fabricante,
+                'fantasia': data.fabricante.toUpperCase(),
                 'transactionZoopId': createBoleto.data.id,
                 'status': 'Aguardando Pagamento',
                 'date': new Date(),
@@ -57,7 +57,8 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
             const docRef = await db.collection('boleto-payments').add(objeto)
             const doc = await docRef.get()
             const obj = {
-                status:'Aguardando Pagamento'
+                status:'Aguardando Pagamento',
+                billets:[{receita:0}]
             }
             await db.collection('pending-commission').doc(seller).update(obj)
             setUrl(urlBoleto)

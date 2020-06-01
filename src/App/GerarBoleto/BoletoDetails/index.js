@@ -6,6 +6,7 @@ import Details from '@bit/vitorbarbosa19.ziro.details';
 import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import currencyFormat from '@ziro/currency-format';
 import Button from '@bit/vitorbarbosa19.ziro.button';
+import NotFound from './NotFound/index'
 
 export default ({boletbankId,boletId,data}) => {
     const filtrado = data.values.filter(item => {
@@ -17,8 +18,9 @@ export default ({boletbankId,boletId,data}) => {
     })
     const [blocks, setBlocks] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [linkImage, setLinkImage] = useState('')
     useEffect(() => {
-        const {comissao, fornecedor, lojista, polo, receita, romaneio, rua, valor, vencimento, venda, status,boleto,boletId,data_venda} = filtrado[0]
+        const {comissao, lojista, polo, receita, romaneio, rua, valor, vencimento, venda,boleto,boletId,data_venda,url} = filtrado[0]
         let block;
         block = [
             {
@@ -29,28 +31,24 @@ export default ({boletbankId,boletId,data}) => {
                         content: boletId || boleto
                     },
                     {
-                        title: 'Venda',
-                        content: venda || data_venda
+                        title: 'Romaneio',
+                        content: romaneio === '' ? '-' : romaneio
                     },
                     {
                         title: 'Lojista',
                         content: lojista
                     },
                     {
-                        title: 'Romaneio',
-                        content: romaneio === '' ? '-' : romaneio
-                    },
-                    {
-                        title: 'Valor',
-                        content: currencyFormat(valor*100)
+                        title: 'Venda',
+                        content: venda || data_venda
                     },
                     {
                         title: 'Vencimento',
                         content: vencimento
                     },
                     {
-                        title: 'Status',
-                        content: status
+                        title: 'Valor',
+                        content: currencyFormat(valor*100)
                     },
                     {
                         title: 'Comissão',
@@ -64,6 +62,7 @@ export default ({boletbankId,boletId,data}) => {
             }
         ]
         setBlocks(block)
+        setLinkImage(url)
     }, [])
     const textAreaRef = useRef(null);
     return (
@@ -72,8 +71,13 @@ export default ({boletbankId,boletId,data}) => {
                 <Header type='icon-link' title={`Boleto ${boletId || boleto}`} navigateTo={`relatorio/${boletbankId}`} icon='back' />
                 <div style={{ display: 'grid', gridRowGap: '12px'}}>
                     <Details blocks={blocks} />
-                    <Modal boxStyle={{width:'95%'}} isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
-                    <img style={{width:'100%'}} src={'https://lh3.googleusercontent.com/pw/ACtC-3cMGQZtbL-xYirA3kyq_fMVVAyUe0sAI5afZWUWQFg9EJlvFImu_VwCTG-6yfNpay10RcgNPYNZxxkES2Cgz_c_LFqqL5eb5PpP2N5gL2Glr8fX9uxRTT-fRxp3qZrCYUoy0xSNULZ0msOJhWDyUXw=w678-h903-no?authuser=0'} alt={'exemplo'}/>
+                    <Modal isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
+                    <div>
+                    {linkImage ? (<img style={{width:'100%'}} src={linkImage} alt={'Imagem do Boleto'}/>):
+                    (<NotFound />
+                    )
+                    }
+                    </div>
                     </Modal>
                      <div style={{ display: 'grid', marginTop:'15px' }} onClick={() => setIsOpen(true)}>
                     <Button type="submit" cta="Imagem do boleto" />
