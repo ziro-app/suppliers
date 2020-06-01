@@ -20,6 +20,13 @@ export default ({boletbankId,boletId,data}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [linkImage, setLinkImage] = useState('')
     useEffect(() => {
+        const stringToNumber = (numero) => {
+            if(typeof numero === 'number'){
+                return Number(numero)*100
+            }else{
+                return Number((numero.replace('.','')).replace(',','.'))*100
+            }
+        }
         const {comissao, lojista, polo, receita, romaneio, rua, valor, vencimento, venda,boleto,boletId,data_venda,url} = filtrado[0]
         let block;
         block = [
@@ -48,15 +55,15 @@ export default ({boletbankId,boletId,data}) => {
                     },
                     {
                         title: 'Valor',
-                        content: currencyFormat(valor*100)
+                        content: currencyFormat(stringToNumber(valor))
                     },
                     {
                         title: 'Comissão',
-                        content: `${(comissao*100).toLocaleString()}%`
+                        content: `${(stringToNumber(comissao)).toLocaleString()}%`
                     },
                     {
                         title: 'Receita',
-                        content: currencyFormat(receita*100)
+                        content: `R$${(stringToNumber(receita)/100).toLocaleString(undefined,{minimumFractionDigits: 2,maximumFractionDigits: 2})}`
                     }
                 ]
             }
