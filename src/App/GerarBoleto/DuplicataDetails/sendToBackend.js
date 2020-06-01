@@ -33,7 +33,7 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
                 },
                 headers: {
                     'Content-type': 'application/json',
-                    'Authorization': `Basic ${process.env.ZOOP_AUTH}`
+                    'Authorization': process.env.ZOOP_AUTH
                 }
             }
             let arrayFirebase = []
