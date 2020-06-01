@@ -11,8 +11,8 @@ const fetch = (state) => {
     const source = axios.CancelToken.source()
     const run = async () => {
         try {
-            const paymentDuplicatas = []
-            const paymentBoletos = []
+            let paymentDuplicatas = []
+            let paymentBoletos = []
             const snapPayments = await queryPayments.get()
                 if (!snapPayments.empty) {
                     snapPayments.forEach((doc) => {
@@ -50,8 +50,8 @@ const fetch = (state) => {
                     paymentDuplicatas = []
                     paymentBoletos = []
                 }
-            const pendingDuplicatas = []
-            const pendingBoletos = []
+            let pendingDuplicatas = []
+            let pendingBoletos = []
             const snapPending = await queryPending.get()
                 if (!snapPending.empty) {
                     snapPending.forEach((doc) => {
