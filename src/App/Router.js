@@ -49,6 +49,7 @@ const Router = ({ isLogged }) => {
         [match2 ? location : null]: <GenerateTicket {...params2} />,
         [match ? location : null]: <Transactions {...params} />,
         [match2 ? location : null]: <GenerateTicket {...params2} />,
+        [match ? location : null]: <Transactions {...params} />,
         '/update': <HeaderBack title='Atualizar informações' navigateTo='/login'><UpdateUserInfo /></HeaderBack>
     }
 
