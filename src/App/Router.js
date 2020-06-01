@@ -48,6 +48,7 @@ const Router = ({ isLogged }) => {
         '/criar-cobranca': <Menu title='Criar Cobrança'><CreatePayment /></Menu>,
         [match2 ? location : null]: <GenerateTicket {...params2} />,
         [match ? location : null]: <Transactions {...params} />,
+        [match2 ? location : null]: <GenerateTicket {...params2} />,
         '/update': <HeaderBack title='Atualizar informações' navigateTo='/login'><UpdateUserInfo /></HeaderBack>
     }
 
