@@ -6,14 +6,14 @@ import {containerWithPadding } from '@ziro/theme';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Header from '@bit/vitorbarbosa19.ziro.header'
 
-export default ({valorTotal}) => {
+export default ({ valorTotal }) => {
 	const [blocks, setBlocks] = useState([]);
 	const [, setLocation] = useLocation();
     useEffect(() => {
         let block;
         block = [
             {
-                header: 'Informações Bancárias',
+                header: 'Dados Bancários',
                 body: [
                     {
                         title: 'Banco',
@@ -37,7 +37,7 @@ export default ({valorTotal}) => {
 					},
 					{
 						title:'Valor Total',
-						content: currencyFormat(valorTotal * 100)
+						content: currencyFormat(valorTotal)
 					}
                 ]
             }

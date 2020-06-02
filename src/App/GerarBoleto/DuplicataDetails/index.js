@@ -28,32 +28,33 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
     const [isError, setIsError] = useState(false)
     const [, setLocation] = useLocation();
     const textAreaRef = useRef(null);
-    const filtrado = transactions.filter(item => String(item.id) === boletbankId)
-    const status = filtrado[0].status
-    const sendUrl = filtrado[0].url
+    const [filtrado] = transactions.filter(item => String(item.id) === boletbankId)
+    filtrado.values.sort((a,b) => new Date(a.venda) < new Date(b.venda) ? -1 : 1)
+    const status = filtrado.status
+    const sendUrl = filtrado.url
     useEffect(() => {
         let block
         let block2
         let dataTable
-        const arrayTicket = filtrado[0].values.map(item => {
+        const arrayTicket = filtrado.values.map(item => {
         return [
             item.venda || item.data_venda ? formatDateUTC3(new Date(item.venda || item.data_venda)).split(' ')[0].substring(0,8) : '',
             item.romaneio || '-',
             item.lojista,
-            currencyFormat(Math.round(item.receita * 100 * 100) / 100).replace('R$',''),
+            currencyFormat(Math.round(item.receita * 100)).replace('R$',''),
             <Icon type='chevronRight' size={14} />
         ]})
-        const arrayClickTicket = filtrado[0].values.map(item => () => setLocation(`/relatorio/${boletbankId}/${item.boletId || item.boleto}`))
-        const totalReceitas = filtrado[0].values.map(item => item.receita).reduce((a,b) => a+b)
-        const datePayment = filtrado[0].date_payment ? formatDateUTC3(filtrado[0].date_payment.toDate()).split(' ')[0].substring(0,8) : ''
-        setTotalReceitas(Math.round(totalReceitas*100))
+        const arrayClickTicket = filtrado.values.map(item => () => setLocation(`/relatorio/${boletbankId}/${item.boletId || item.boleto}`))
+        const somaReceitas = filtrado.values.map(item => item.receita).reduce((a,b) => a+b)
+        const datePayment = filtrado.date_payment ? formatDateUTC3(filtrado.date_payment.toDate()).split(' ')[0].substring(0,8) : ''
+        setTotalReceitas(Math.round(somaReceitas*100))
                     dataTable = [
                         {
                             title: status === 'Comissões em Aberto' ? 'Comissões Pendentes' : 'Comissões',
                             header: ['Data', 'Roman.', 'Cliente', 'Receita', ''],
                             rows: arrayTicket,
                             rowsClicks: arrayClickTicket,
-                            totals: ['-','-','-',currencyFormat(Math.round(totalReceitas*100)).replace('R$',''), '']
+                            totals: ['-','-','-',currencyFormat(Math.round(somaReceitas*100)).replace('R$',''), '']
                         }
                     ]
                     block = [
@@ -62,11 +63,11 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                             body: [
                                 {
                                     title: 'Endereço',
-                                    content: filtrado[0].endereco
+                                    content: filtrado.endereco
                                 },
                                 {
                                     title: 'Total',
-                                    content: currencyFormat(Math.round(totalReceitas*100))
+                                    content: currencyFormat(Math.round(somaReceitas*100))
                                 },
                                 {
                                     title: 'Status',
@@ -82,7 +83,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                         body: [
                                 {
                                     title: 'Endereço',
-                                    content: filtrado[0].endereco
+                                    content: filtrado.endereco
                                 },
                                 {
                                     title: 'Data',
@@ -90,7 +91,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                 },
                                 {
                                     title: 'Total Comissões',
-                                    content: currencyFormat(totalReceitas * 100)
+                                    content: currencyFormat(somaReceitas * 100)
                                 },
                                 {
                                     title: 'Status',
@@ -105,12 +106,12 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
     }, [])
     if (isError) return <Error />
     if(boletId === 'transferencia_bancaria') return <BankInfo valorTotal={totalReceitas}/>
-    if(boletId) return <BoletoDetails boletbankId={boletbankId} boletId={boletId} data={filtrado[0]}/>
+    if(boletId) return <BoletoDetails boletbankId={boletbankId} boletId={boletId} data={filtrado}/>
     if(url !== '') return <Sucesso urlBoleto={url}/>
         return (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
                 <input type="text" style={{ position: 'absolute', left: '-9999px' }} ref={textAreaRef} readOnly />
-                <Header type='icon-link' title={filtrado[0].relatorio} navigateTo='relatorio' icon='back' />
+                <Header type='icon-link' title={filtrado.relatorio} navigateTo='relatorio' icon='back' />
                 <div style={{ display: 'grid', gridRowGap: '12px' }}>
                     <Details blocks={blocks} />
                         <>
@@ -133,7 +134,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                         <Button
                                         type="button"
                                         cta="Gerar Duplicata"
-                                        click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado[0],setLoad,transactions[0].fabricante, setIsError)}
+                                        click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado,setLoad,transactions[0].fabricante, setIsError)}
                                         />
                                     }
                                 </div>

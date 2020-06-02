@@ -1,10 +1,11 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion'
 import Header from '@bit/vitorbarbosa19.ziro.header';
-import {containerWithPadding } from '@ziro/theme';
+import { containerWithPadding } from '@ziro/theme';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import currencyFormat from '@ziro/currency-format';
+import { formatDateUTC3 } from '@ziro/format-date-utc3'
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import NotFound from './NotFound/index'
 import { modalContainer } from './styles'
@@ -21,13 +22,6 @@ export default ({boletbankId,boletId,data}) => {
     const [isOpen, setIsOpen] = useState(false);
     const [linkImage, setLinkImage] = useState('')
     useEffect(() => {
-        const stringToNumber = (numero) => {
-            if(typeof numero === 'number'){
-                return Number(numero)*100
-            }else{
-                return Number((numero.replace('.','')).replace(',','.'))*100
-            }
-        }
         const {comissao, lojista, polo, receita, romaneio, rua, valor, vencimento, venda,boleto,boletId,data_venda,url} = filtrado[0]
         let block;
         block = [
@@ -48,23 +42,23 @@ export default ({boletbankId,boletId,data}) => {
                     },
                     {
                         title: 'Venda',
-                        content: venda || data_venda
+                        content: formatDateUTC3(new Date(venda || data_venda)).split(' ')[0]
                     },
                     {
                         title: 'Vencimento',
-                        content: vencimento
+                        content: formatDateUTC3(new Date(vencimento)).split(' ')[0]
                     },
                     {
                         title: 'Valor',
-                        content: currencyFormat(stringToNumber(valor))
+                        content: currencyFormat(Math.round(valor * 100 * 100) / 100)
                     },
                     {
                         title: 'Comissão',
-                        content: `${(stringToNumber(comissao)).toLocaleString()}%`
+                        content: `${String(Math.round(comissao * 100 * 100) / 100).replace('.', ',')}%`
                     },
                     {
                         title: 'Receita',
-                        content: `R$${(stringToNumber(receita)/100).toLocaleString(undefined,{minimumFractionDigits: 2,maximumFractionDigits: 2})}`
+                        content: currencyFormat(Math.round(receita * 100 * 100) / 100)
                     }
                 ]
             }
