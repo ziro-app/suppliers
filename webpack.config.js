@@ -40,7 +40,6 @@ module.exports = (env, { mode }) => {
 			pay_token,
 			zoop_auth,
 			doc_url,
-			zoop_token,
 			sheet_id_charge,
 			seller_id_ziro
 		} = require('./credentials')
@@ -60,7 +59,6 @@ module.exports = (env, { mode }) => {
 					PAY_TOKEN: JSON.stringify(pay_token),
 					ZOOP_AUTH: JSON.stringify(zoop_auth),
 					DOC_URL: JSON.stringify(doc_url),
-					ZOOP_TOKEN: JSON.stringify(zoop_token),
 					SHEET_ID_CHARGE: JSON.stringify(sheet_id_charge),
 					SELLER_ID_ZIRO: JSON.stringify(seller_id_ziro)
 				}
@@ -97,7 +95,6 @@ module.exports = (env, { mode }) => {
 					PAY_TOKEN: JSON.stringify(process.env.PAY_TOKEN),
 					ZOOP_AUTH: JSON.stringify(process.env.ZOOP_AUTH),
 					DOC_URL: JSON.stringify(process.env.DOC_URL),
-					ZOOP_TOKEN: JSON.stringify(process.env.ZOOP_TOKEN),
 					SHEET_ID_CHARGE: JSON.stringify(process.env.SHEET_ID_CHARGE),
 					SELLER_ID_ZIRO: JSON.stringify(process.env.SELLER_ID_ZIRO)
 				}

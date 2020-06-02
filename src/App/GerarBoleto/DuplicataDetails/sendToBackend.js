@@ -23,7 +23,7 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
             await setLoad(true)
             const configBoletos = {
                 method: 'POST',
-                url: `${process.env.PAY_URL}transactions`,
+                url: `${process.env.PAY_URL}payments-create`,
                 data : {
                     'amount': receitaTotal*100,
                     'currency': 'BRL',
