@@ -67,7 +67,7 @@ const fetch = (state) => {
                         const totalReceitas = arrayReceitas.reduce((a,b) => a+b)
                         pendingDuplicatas.push({
                             id:'relatorio_futuro',
-                            charge: currencyFormat(totalReceitas * 100),
+                            charge: currencyFormat(Math.round(totalReceitas*100)),
                             date: '-',
                             seller:'Relatório Futuro',
                             status:doc.data().status,

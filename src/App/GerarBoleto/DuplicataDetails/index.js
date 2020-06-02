@@ -46,14 +46,14 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         const arrayClickTicket = filtrado[0].values.map(item => () => setLocation(`/relatorio/${boletbankId}/${item.boletId || item.boleto}`))
         const totalReceitas = filtrado[0].values.map(item => item.receita).reduce((a,b) => a+b)
         const datePayment = filtrado[0].date_payment ? formatDateUTC3(filtrado[0].date_payment.toDate()).split(' ')[0].substring(0,8) : ''
-        setTotalReceitas(totalReceitas)
+        setTotalReceitas(Math.round(totalReceitas*100))
                     dataTable = [
                         {
                             title: status === 'Comissões em Aberto' ? 'Comissões Pendentes' : 'Comissões',
                             header: ['Data', 'Roman.', 'Cliente', 'Receita', ''],
                             rows: arrayTicket,
                             rowsClicks: arrayClickTicket,
-                            totals: ['-','-','-',currencyFormat(totalReceitas * 100).replace('R$',''), '']
+                            totals: ['-','-','-',currencyFormat(Math.round(totalReceitas*100)).replace('R$',''), '']
                         }
                     ]
                     block = [
@@ -66,7 +66,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                 },
                                 {
                                     title: 'Total',
-                                    content: currencyFormat(totalReceitas * 100)
+                                    content: currencyFormat(Math.round(totalReceitas*100))
                                 },
                                 {
                                     title: 'Status',
