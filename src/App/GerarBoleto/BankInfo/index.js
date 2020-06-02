@@ -7,7 +7,6 @@ import Details from '@bit/vitorbarbosa19.ziro.details';
 import Header from '@bit/vitorbarbosa19.ziro.header'
 
 export default ({valorTotal}) => {
-    const receitaTotal = valorTotal
 	const [blocks, setBlocks] = useState([]);
 	const [, setLocation] = useLocation();
     useEffect(() => {
@@ -38,13 +37,13 @@ export default ({valorTotal}) => {
 					},
 					{
 						title:'Valor Total',
-						content: currencyFormat(receitaTotal)
+						content: currencyFormat(valorTotal * 100)
 					}
                 ]
             }
 		]
 		setBlocks(block)
-    }, [])
+    }, [valorTotal])
     const textAreaRef = useRef(null);
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>

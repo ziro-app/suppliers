@@ -1,6 +1,6 @@
 import { post } from 'axios'
 import { auth, db } from '../../Firebase/index'
-import dateHourFormatterUTC3 from '@ziro/format-date-utc3'
+const { formatDateUTC3 } = require('@ziro/format-date-utc3')
 
 const simplifiedRegistration = state => () => {
     const { fname, lname, email, cnpj, cnpjValid, pass, reason, fantasia,
@@ -26,7 +26,7 @@ const simplifiedRegistration = state => () => {
         resource: {
             values: [
                 [
-                    dateHourFormatterUTC3(today),
+                    formatDateUTC3(today),
                     nomeCompleto,
                     ,
                     ,

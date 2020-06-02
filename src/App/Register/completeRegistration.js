@@ -1,6 +1,6 @@
 import axios, { post } from 'axios'
 import { auth, db } from '../../Firebase/index'
-import dateHourFormatterUTC3 from '@ziro/format-date-utc3'
+const { formatDateUTC3 } = require('@ziro/format-date-utc3')
 
 const url = process.env.SHEET_URL
 const config = {
@@ -30,7 +30,7 @@ const completeRegistration = state => () => {
 		resource: {
 			values: [
 				[
-					dateHourFormatterUTC3(today),
+					formatDateUTC3(today),
 					nomeCompleto,
 					cpf,
 					birthdate,

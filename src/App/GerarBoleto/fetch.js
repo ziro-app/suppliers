@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { db } from '../../Firebase/index'
 import matchStatusColor from './utils/matchStatusColor'
-import moment from 'moment'
-import 'moment/locale/pt-br'
+import currencyFormat from '@ziro/currency-format'
+import { formatDateUTC3 } from '@ziro/format-date-utc3'
 
 const fetch = (state) => {
     const { setIsLoading, setIsError, seller, setfisrtTicket, setTicket } = state
@@ -24,12 +24,14 @@ const fetch = (state) => {
                             }
                         })
                         const totalReceitas = arrayReceitas.reduce((a,b) => a+b)
-                        const soma = (Math.round(totalReceitas*100)/100).toLocaleString()
+                        const [datePayment] = doc.data().date_payment
+                            ? formatDateUTC3(new Date(doc.data().date_payment.seconds * 1000)).split(' ')
+                            : ''
                         paymentDuplicatas.push({
                             contador: doc.data().counter,
                             id:doc.data().transactionZoopId,
-                            charge: soma,
-                            date: doc.data().status === 'Aguardando Pagamento' ? '-' : moment(doc.data().date_payment.toDate()).format('DD/MM/YY'),
+                            charge: currencyFormat(totalReceitas * 100),
+                            date: doc.data().status === 'Aguardando Pagamento' ? '-' : datePayment.substring(0,8),
                             seller:`Relatório ${doc.data().counter}`,
                             status:doc.data().status,
                             statusColor: matchStatusColor(doc.data().status)
@@ -63,10 +65,9 @@ const fetch = (state) => {
                             }
                         })
                         const totalReceitas = arrayReceitas.reduce((a,b) => a+b)
-                        const soma = (Math.round(totalReceitas*100)/100).toLocaleString()
                         pendingDuplicatas.push({
                             id:'relatorio_futuro',
-                            charge: soma,
+                            charge: currencyFormat(totalReceitas * 100),
                             date: '-',
                             seller:'Relatório Futuro',
                             status:doc.data().status,

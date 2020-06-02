@@ -9,11 +9,9 @@ import Sucesso from './Sucesso/index'
 import Button from '@bit/vitorbarbosa19.ziro.button'
 import { containerWithPadding } from '@ziro/theme'
 import currencyFormat from '@ziro/currency-format'
+import { formatDateUTC3 } from '@ziro/format-date-utc3'
 import { buttonContainer } from './styles'
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
-import moment from 'moment'
-import 'moment/locale/pt-br'
-
 import matchStatusColor from '../utils/matchStatusColor'
 import sendToBackend from './sendToBackend'
 import BoletoDetails from '../BoletoDetails'
@@ -34,20 +32,22 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
     const status = filtrado[0].status
     const sendUrl = filtrado[0].url
     useEffect(() => {
-        const stringToNumber = (numero) => {
-            if(typeof numero === 'number'){
-                return Number(numero)*100
-            }else{
-                return Number((numero.replace('.','')).replace(',','.'))*100
-            }
-        }
-        let block;
-        let block2;
-        let dataTable;
-        const arrayTicket = filtrado[0].values.map(item => [moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") !== 'Invalid date' ? moment(item.venda, 'DD/MMM./YYYY').format("DD/MM/YY") : moment(item.data_venda, 'DD/MMM./YYYY').format("DD/MM/YY"), item.romaneio || '-', item.lojista, (stringToNumber(item.receita)/100).toLocaleString(undefined,{minimumFractionDigits: 2,maximumFractionDigits: 2})])
+        let block
+        let block2
+        let dataTable
+        const arrayTicket = filtrado[0].values.map(item => {
+        return [
+            item.venda ? formatDateUTC3(new Date(item.venda)).split(' ')[0].substring(0,8) : '',
+            item.romaneio || '-',
+            item.lojista,
+            currencyFormat(Math.round(item.receita * 100 * 100) / 100).replace('R$','')
+        ]})
+        // console.log(filtrado[0])
         const arrayClickTicket = filtrado[0].values.map(item => () => setLocation(`/relatorio/${boletbankId}/${item.boletId || item.boleto}`))
-        // const totalVendas = filtrado[0].values.map(item => stringToNumber(item.valor)).reduce((a,b) => a+b)
-        const totalReceitas = filtrado[0].values.map(item => stringToNumber(item.receita)).reduce((a,b) => a+b)
+        const totalReceitas = filtrado[0].values.map(item => item.receita).reduce((a,b) => a+b)
+        const [datePayment] = filtrado[0].date_payment
+            ? formatDateUTC3(new Date(filtrado[0].date_payment)).split(' ')
+            : ''
         setTotalReceitas(totalReceitas)
                     dataTable = [
                         {
@@ -55,7 +55,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                             header: ['Data', 'Romaneio', 'Cliente', 'Receita'],
                             rows: arrayTicket,
                             rowsClicks: arrayClickTicket,
-                            totals: ['-','-','-',currencyFormat(totalReceitas).replace('R$','')]
+                            totals: ['-','-','-',currencyFormat(totalReceitas * 100).replace('R$','')]
                         }
                     ]
                     block = [
@@ -68,7 +68,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                 },
                                 {
                                     title: 'Total',
-                                    content: currencyFormat(totalReceitas)
+                                    content: currencyFormat(totalReceitas * 100)
                                 },
                                 {
                                     title: 'Status',
@@ -88,11 +88,11 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                 },
                                 {
                                     title: 'Data',
-                                    content: status !== 'Pagamento Realizado' ? '-' : moment(filtrado[0].date_payment.toDate()).format('DD/MMM./YY')
+                                    content: status !== 'Pagamento Realizado' ? '-' : datePayment.substring(0,8)
                                 },
                                 {
                                     title: 'Total Comissões',
-                                    content: currencyFormat(totalReceitas)
+                                    content: currencyFormat(totalReceitas * 100)
                                 },
                                 {
                                     title: 'Status',
@@ -117,7 +117,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                     <Details blocks={blocks} />
                         <>
                             <Table data={data} customGrid={{
-                                gridTemplateColumns: 'auto 1fr 1fr 1fr',
+                                gridTemplateColumns: '1fr 1fr 1fr 1fr',
                                 gridRowGap: '15px'
                             }} />
                         </>

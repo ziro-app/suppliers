@@ -35,7 +35,7 @@ export const Menu = ({ title, children }) => {
 							path: '/relatorio',
 							onClick: () => setIsOpen(false),
 							icon: <Icon type='file' size={15} strokeWidth={2} />,
-							text: 'Relatório'
+							text: 'Relatórios'
 						},
 						{
 							path: '/minha-conta',
