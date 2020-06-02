@@ -24,7 +24,7 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
                 method: 'POST',
                 url: process.env.ZOOP_URL_BOLETO,
                 data : {
-                    'amount': receitaTotal,
+                    'amount': receitaTotal*100,
                     'currency': 'BRL',
                     'description': 'venda',
                     'on_behalf_of': process.env.SELLER_ID_ZIRO,

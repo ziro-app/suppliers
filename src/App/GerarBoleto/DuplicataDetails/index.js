@@ -26,7 +26,6 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
     const [url, setUrl] = useState('');
     const [load, setLoad] = useState(false);
     const [isError, setIsError] = useState(false)
-    const [bank, setBank] = useState(false)
     const [, setLocation] = useLocation();
     const textAreaRef = useRef(null);
     const filtrado = transactions.filter(item => String(item.id) === boletbankId)
@@ -38,18 +37,15 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         let dataTable
         const arrayTicket = filtrado[0].values.map(item => {
         return [
-            item.venda ? formatDateUTC3(new Date(item.venda)).split(' ')[0].substring(0,8) : '',
+            item.venda || item.data_venda ? formatDateUTC3(new Date(item.venda || item.data_venda)).split(' ')[0].substring(0,8) : '',
             item.romaneio || '-',
             item.lojista,
             currencyFormat(Math.round(item.receita * 100 * 100) / 100).replace('R$',''),
             <Icon type='chevronRight' size={14} />
         ]})
-        // console.log(filtrado[0])
         const arrayClickTicket = filtrado[0].values.map(item => () => setLocation(`/relatorio/${boletbankId}/${item.boletId || item.boleto}`))
         const totalReceitas = filtrado[0].values.map(item => item.receita).reduce((a,b) => a+b)
-        const [datePayment] = filtrado[0].date_payment
-            ? formatDateUTC3(new Date(filtrado[0].date_payment)).split(' ')
-            : ''
+        const datePayment = filtrado[0].date_payment ? formatDateUTC3(filtrado[0].date_payment.toDate()).split(' ')[0].substring(0,8) : ''
         setTotalReceitas(totalReceitas)
                     dataTable = [
                         {
@@ -90,7 +86,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                 },
                                 {
                                     title: 'Data',
-                                    content: status !== 'Pagamento Realizado' ? '-' : datePayment.substring(0,8)
+                                    content: status !== 'Pagamento Realizado' ? '-' : datePayment
                                 },
                                 {
                                     title: 'Total Comissões',
