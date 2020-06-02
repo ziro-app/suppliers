@@ -4,7 +4,8 @@ import { useLocation } from 'wouter'
 import Table from '@bit/vitorbarbosa19.ziro.table'
 import Details from '@bit/vitorbarbosa19.ziro.details'
 import Header from '@bit/vitorbarbosa19.ziro.header'
-import Error from '@bit/vitorbarbosa19.ziro.error';
+import Error from '@bit/vitorbarbosa19.ziro.error'
+import Icon from '@bit/vitorbarbosa19.ziro.icon'
 import Sucesso from './Sucesso/index'
 import Button from '@bit/vitorbarbosa19.ziro.button'
 import { containerWithPadding } from '@ziro/theme'
@@ -40,7 +41,8 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
             item.venda ? formatDateUTC3(new Date(item.venda)).split(' ')[0].substring(0,8) : '',
             item.romaneio || '-',
             item.lojista,
-            currencyFormat(Math.round(item.receita * 100 * 100) / 100).replace('R$','')
+            currencyFormat(Math.round(item.receita * 100 * 100) / 100).replace('R$',''),
+            <Icon type='chevronRight' size={14} />
         ]})
         // console.log(filtrado[0])
         const arrayClickTicket = filtrado[0].values.map(item => () => setLocation(`/relatorio/${boletbankId}/${item.boletId || item.boleto}`))
@@ -52,10 +54,10 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                     dataTable = [
                         {
                             title: status === 'Comissões em Aberto' ? 'Comissões Pendentes' : 'Comissões',
-                            header: ['Data', 'Romaneio', 'Cliente', 'Receita'],
+                            header: ['Data', 'Roman.', 'Cliente', 'Receita', ''],
                             rows: arrayTicket,
                             rowsClicks: arrayClickTicket,
-                            totals: ['-','-','-',currencyFormat(totalReceitas * 100).replace('R$','')]
+                            totals: ['-','-','-',currencyFormat(totalReceitas * 100).replace('R$',''), '']
                         }
                     ]
                     block = [
@@ -117,7 +119,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                     <Details blocks={blocks} />
                         <>
                             <Table data={data} customGrid={{
-                                gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                                gridTemplateColumns: 'auto 1fr 1fr 1fr 10px',
                                 gridRowGap: '15px'
                             }} />
                         </>

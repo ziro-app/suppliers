@@ -1,4 +1,4 @@
-import { fontTitle, fontSizeSmall } from '@ziro/theme';
+import { primaryColor, fontTitle, fontSizeSmall } from '@ziro/theme';
 
 export const custom = (fontSize, color) => ({
     display: 'grid',
@@ -22,11 +22,11 @@ export const custom = (fontSize, color) => ({
     modalContainer = {
         zIndex: '999',
         maxWidth: '500px',
-        width: '90%',
+        width: '95%',
         margin: '0 auto',
-        padding: '5%',
+        padding: '0',
         boxSizing: 'border-box',
-        borderRadius: '3px',
+        borderRadius: '4px',
         background: 'white',
         boxShadow: `1px 0px 8px 0px rgba(34,34,34,0.15), 1px 0px 8px 0px rgba(34,34,34,0.10),
 1px 0px 8px 0px rgba(34,34,34,0.05)`
@@ -37,7 +37,7 @@ export const custom = (fontSize, color) => ({
         fontFamily: fontTitle,
         fontSize: fontSizeSmall,
         textTransform: 'uppercase'
-    }
+    },
     container = {
         display: 'grid',
         alignContent: 'center',

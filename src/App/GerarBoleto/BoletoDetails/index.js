@@ -7,6 +7,7 @@ import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import currencyFormat from '@ziro/currency-format';
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import NotFound from './NotFound/index'
+import { modalContainer } from './styles'
 
 export default ({boletbankId,boletId,data}) => {
     const filtrado = data.values.filter(item => {
@@ -78,13 +79,11 @@ export default ({boletbankId,boletId,data}) => {
                 <Header type='icon-link' title={`Boleto ${boletId || boleto}`} navigateTo={`relatorio/${boletbankId}`} icon='back' />
                 <div style={{ display: 'grid', gridRowGap: '12px'}}>
                     <Details blocks={blocks} />
-                    <Modal isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
-                    <div>
-                    {linkImage ? (<img style={{width:'100%'}} src={linkImage} alt={'Imagem do Boleto'}/>):
-                    (<NotFound />
-                    )
+                    <Modal boxStyle={modalContainer} isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
+                    {linkImage
+                        ? <img style={{display: 'block', width:'100%'}} src={linkImage} alt={'Imagem do Boleto'}/>
+                        : <NotFound />
                     }
-                    </div>
                     </Modal>
                      <div style={{ display: 'grid', marginTop:'15px' }} onClick={() => setIsOpen(true)}>
                     <Button type="submit" cta="Imagem do boleto" />
