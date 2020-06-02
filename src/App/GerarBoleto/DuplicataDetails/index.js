@@ -130,7 +130,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                         cta="Fazer Transferência"
                                         navigate={() => setLocation(`/relatorio/${boletbankId}/transferencia_bancaria`)}
                                     />
-                                    {totalReceitas/100 <= 2000 &&
+                                    {totalReceitas <= 200000 &&
                                         <Button
                                         type="button"
                                         cta="Gerar Duplicata"
