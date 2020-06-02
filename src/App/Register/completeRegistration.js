@@ -71,7 +71,7 @@ const completeRegistration = state => () => {
 							try {
 								// Criando vendedor na Zoop
 								const { data: { id } } = await post(
-									`${process.env.ZOOP_URL}sellers-create`,
+									`${process.env.PAY_URL}sellers-create`,
 									{
 										ein: cnpj,
 										owner: {
@@ -102,7 +102,7 @@ const completeRegistration = state => () => {
 								try {
 									// Criando token da conta
 									const responseAccount = await post(
-										`${process.env.ZOOP_URL}token-bank-create`,
+										`${process.env.PAY_URL}token-bank-create`,
 										{
 											ein: cnpj,
 											bank_code: bankNumber,
@@ -117,7 +117,7 @@ const completeRegistration = state => () => {
 										});
 									// Associando conta ao vendedor
 									await post(
-										`${process.env.ZOOP_URL}bank-associate`,
+										`${process.env.PAY_URL}bank-associate`,
 										{
 											customer: id,
 											token: responseAccount.data.id

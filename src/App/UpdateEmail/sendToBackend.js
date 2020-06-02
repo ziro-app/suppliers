@@ -44,7 +44,7 @@ const sendToBackend = state => () => {
                     await docRefCollection.update({ email: newEmail.toLowerCase() })
                     await docRefUser.update({ email: newEmail.toLowerCase() })
                     await post(
-                        `${process.env.ZOOP_URL}sellers-update?seller_id=${zoopId}`,
+                        `${process.env.PAY_URL}sellers-update?seller_id=${zoopId}`,
                         {
                             owner: {
                                 email: newEmail.toLowerCase()

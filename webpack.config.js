@@ -36,13 +36,12 @@ module.exports = (env, { mode }) => {
 			continue_url,
 			cnpj_url,
 			cnpj_token,
-			zoop_url,
+			pay_url,
 			pay_token,
 			zoop_auth,
 			doc_url,
 			zoop_token,
 			sheet_id_charge,
-			zoop_url_boleto,
 			seller_id_ziro
 		} = require('./credentials')
 		config.devtool = 'cheap-module-eval-source-map'
@@ -57,13 +56,12 @@ module.exports = (env, { mode }) => {
 					CNPJ_URL: JSON.stringify(cnpj_url),
 					CNPJ_TOKEN: JSON.stringify(cnpj_token),
 					SHEET_SUPPLIERS_ID: JSON.stringify(sheet_suppliers_id),
-					ZOOP_URL: JSON.stringify(zoop_url),
+					PAY_URL: JSON.stringify(pay_url),
 					PAY_TOKEN: JSON.stringify(pay_token),
 					ZOOP_AUTH: JSON.stringify(zoop_auth),
 					DOC_URL: JSON.stringify(doc_url),
 					ZOOP_TOKEN: JSON.stringify(zoop_token),
 					SHEET_ID_CHARGE: JSON.stringify(sheet_id_charge),
-					ZOOP_URL_BOLETO: JSON.stringify(zoop_url_boleto),
 					SELLER_ID_ZIRO: JSON.stringify(seller_id_ziro)
 				}
 			})
@@ -95,13 +93,12 @@ module.exports = (env, { mode }) => {
 					CNPJ_URL: JSON.stringify(process.env.CNPJ_URL),
 					CNPJ_TOKEN: JSON.stringify(process.env.CNPJ_TOKEN),
 					SHEET_SUPPLIERS_ID: JSON.stringify(process.env.SHEET_SUPPLIERS_ID),
-					ZOOP_URL: JSON.stringify(process.env.ZOOP_URL),
+					PAY_URL: JSON.stringify(process.env.PAY_URL),
 					PAY_TOKEN: JSON.stringify(process.env.PAY_TOKEN),
 					ZOOP_AUTH: JSON.stringify(process.env.ZOOP_AUTH),
 					DOC_URL: JSON.stringify(process.env.DOC_URL),
 					ZOOP_TOKEN: JSON.stringify(process.env.ZOOP_TOKEN),
 					SHEET_ID_CHARGE: JSON.stringify(process.env.SHEET_ID_CHARGE),
-					ZOOP_URL_BOLETO: JSON.stringify(process.env.ZOOP_URL_BOLETO),
 					SELLER_ID_ZIRO: JSON.stringify(process.env.SELLER_ID_ZIRO)
 				}
 			})

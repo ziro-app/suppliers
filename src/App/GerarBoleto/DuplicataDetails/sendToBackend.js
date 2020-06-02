@@ -18,11 +18,12 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
                 polo
             }
         })
+        console.log(arrayBillets)
         try {
             await setLoad(true)
             const configBoletos = {
                 method: 'POST',
-                url: process.env.ZOOP_URL_BOLETO,
+                url: `${process.env.PAY_URL}transactions`,
                 data : {
                     'amount': receitaTotal*100,
                     'currency': 'BRL',
@@ -33,7 +34,7 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
                 },
                 headers: {
                     'Content-type': 'application/json',
-                    'Authorization': process.env.ZOOP_AUTH
+                    'Authorization': process.env.PAY_TOKEN
                 }
             }
             let arrayFirebase = []

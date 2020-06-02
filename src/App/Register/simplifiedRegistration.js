@@ -64,7 +64,7 @@ const simplifiedRegistration = state => () => {
                             try {
                                 // Criando registro na Zoop
                                 const { data: { id } } = await post(
-                                    `${process.env.ZOOP_URL}sellers-create`,
+                                    `${process.env.PAY_URL}sellers-create`,
                                     {
                                         ein: cnpj,
                                         owner: {
