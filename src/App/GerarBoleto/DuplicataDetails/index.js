@@ -46,6 +46,8 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         ]})
         const arrayClickTicket = filtrado.values.map(item => () => setLocation(`/relatorio/${boletbankId}/${item.boletId || item.boleto}`))
         const somaReceitas = filtrado.values.map(item => item.receita).reduce((a,b) => a+b)
+        const arrayRecebido = filtrado.values.map(item => item.recebido)
+        const somaRecebido = arrayRecebido[0] ? arrayRecebido.reduce((a,b) => a+b) : NaN
         const datePayment = filtrado.date_payment ? `${formatDateUTC3(filtrado.date_payment.toDate()).split(' ')[0].substring(0,6)}${formatDateUTC3(filtrado.date_payment.toDate()).split(' ')[0].substring(8,10)}` : ''
         setTotalReceitas(Math.round(somaReceitas*100))
                     dataTable = [
@@ -89,6 +91,10 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                     title: 'Data',
                                     content: status !== 'Pagamento Realizado' ? '-' : datePayment
                                 },
+                                {
+                                    title: 'Total Pago',
+                                    content: status !== 'Pagamento Realizado' ? '-' : currencyFormat(somaRecebido * 100) || '-'
+                                },  
                                 {
                                     title: 'Total Comissões',
                                     content: currencyFormat(somaReceitas * 100)
