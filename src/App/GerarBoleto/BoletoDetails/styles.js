@@ -22,7 +22,7 @@ export const custom = (fontSize, color) => ({
     modalContainer = {
         zIndex: '999',
         maxWidth: '500px',
-        width: '95%',
+        width: '85%',
         margin: '0 auto',
         padding: '0',
         boxSizing: 'border-box',
