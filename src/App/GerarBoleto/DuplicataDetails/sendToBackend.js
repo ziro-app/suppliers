@@ -52,6 +52,7 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
                 'date': new Date(),
                 'counter': arrayFirebase.length+1,
                 'url': urlBoleto,
+                'payment_type': 'boleto',
                 'billets': arrayBillets
             }
             const docRef = await db.collection('boleto-payments').add(objeto)
