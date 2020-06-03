@@ -31,7 +31,7 @@ const fetch = (state) => {
                             contador: doc.data().counter,
                             id:doc.data().transactionZoopId,
                             charge: currencyFormat(totalReceitas * 100),
-                            date: doc.data().status === 'Aguardando Pagamento' ? '-' : datePayment.substring(0,8),
+                            date: doc.data().status === 'Aguardando Pagamento' ? '-' : `${datePayment.substring(0,6)}${datePayment.substring(8,10)}`,
                             seller:`Relatório ${doc.data().counter}`,
                             status:doc.data().status,
                             statusColor: matchStatusColor(doc.data().status)

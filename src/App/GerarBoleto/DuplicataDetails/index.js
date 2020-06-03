@@ -38,7 +38,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         let dataTable
         const arrayTicket = filtrado.values.map(item => {
         return [
-            item.venda || item.data_venda ? formatDateUTC3(new Date(item.venda || item.data_venda)).split(' ')[0].substring(0,8) : '',
+            item.venda || item.data_venda ? `${formatDateUTC3(new Date(item.venda || item.data_venda)).split(' ')[0].substring(0,6)}${formatDateUTC3(new Date(item.venda || item.data_venda)).split(' ')[0].substring(8,10)}` : '',
             item.romaneio || '-',
             item.lojista,
             currencyFormat(Math.round(item.receita * 100)).replace('R$',''),
@@ -46,7 +46,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         ]})
         const arrayClickTicket = filtrado.values.map(item => () => setLocation(`/relatorio/${boletbankId}/${item.boletId || item.boleto}`))
         const somaReceitas = filtrado.values.map(item => item.receita).reduce((a,b) => a+b)
-        const datePayment = filtrado.date_payment ? formatDateUTC3(filtrado.date_payment.toDate()).split(' ')[0].substring(0,8) : ''
+        const datePayment = filtrado.date_payment ? `${formatDateUTC3(filtrado.date_payment.toDate()).split(' ')[0].substring(0,6)}${formatDateUTC3(filtrado.date_payment.toDate()).split(' ')[0].substring(8,10)}` : ''
         setTotalReceitas(Math.round(somaReceitas*100))
                     dataTable = [
                         {
