@@ -30,7 +30,7 @@ const fetch = (state) => {
                         paymentDuplicatas.push({
                             contador: doc.data().counter,
                             id:doc.data().transactionZoopId,
-                            charge: currencyFormat(totalReceitas * 100),
+                            charge: currencyFormat(Math.round(totalReceitas * 100 * 100)/100),
                             date: doc.data().status === 'Aguardando Pagamento' ? '-' : `${datePayment.substring(0,6)}${datePayment.substring(8,10)}`,
                             seller:`Relatório ${doc.data().counter}`,
                             status:doc.data().status,

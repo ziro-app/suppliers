@@ -49,7 +49,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         const arrayRecebido = filtrado.values.map(item => item.recebido)
         const somaRecebido = arrayRecebido[0] ? arrayRecebido.reduce((a,b) => a+b) : NaN
         const datePayment = filtrado.date_payment ? `${formatDateUTC3(filtrado.date_payment.toDate()).split(' ')[0].substring(0,6)}${formatDateUTC3(filtrado.date_payment.toDate()).split(' ')[0].substring(8,10)}` : ''
-        setTotalReceitas(Math.round(somaReceitas*100))
+        setTotalReceitas(Math.round(somaReceitas*100*100)/100)
                     dataTable = [
                         {
                             title: status === 'Comissões em Aberto' ? 'Comissões Pendentes' : 'Comissões',
@@ -93,7 +93,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                 },
                                 {
                                     title: 'Total Pago',
-                                    content: status !== 'Pagamento Realizado' ? '-' : currencyFormat(somaRecebido * 100) || '-'
+                                    content: status !== 'Pagamento Realizado' ? '-' : currencyFormat(Math.round(somaRecebido * 100)) || '-'
                                 },  
                                 {
                                     title: 'Total Comissões',
