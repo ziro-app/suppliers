@@ -17,6 +17,7 @@ import matchStatusColor from '../utils/matchStatusColor'
 import sendToBackend from './sendToBackend'
 import BoletoDetails from '../BoletoDetails'
 import BankInfo from '../BankInfo'
+import convertCsv from './convertCsv'
 
 
 const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
@@ -137,11 +138,13 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                         navigate={() => setLocation(`/relatorio/${boletbankId}/transferencia_bancaria`)}
                                     />
                                     {totalReceitas <= 200000 &&
-                                        <Button
-                                        type="button"
-                                        cta="Gerar Duplicata"
-                                        click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado,setLoad,transactions[0].fabricante, setIsError)}
-                                        />
+                                        <>
+                                            <Button
+                                            type="button"
+                                            cta="Gerar Duplicata"
+                                            click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado,setLoad,transactions[0].fabricante, setIsError)}
+                                            />
+                                        </>
                                     }
                                 </div>
                                 ) : (
@@ -152,13 +155,18 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                             cta="Visualizar Duplicata"
                                             click={() => window.open(sendUrl,'_blank')}
                                         />
-                                    </div>
+                                        </div>
                                     ):(
                                         <> </>
                                     )
                                 )
                         )
                     }
+                        <Button
+                        type="button"
+                        cta="Importar"
+                        click={() => convertCsv(filtrado.values, 'relatorio.csv')}
+                        />
                 </div>
             </motion.div>
         );
