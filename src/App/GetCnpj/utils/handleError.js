@@ -2,7 +2,7 @@ import consultCnpj from './consultCnpj';
 import checkResult from './checkResult';
 import mountObject from './mountObject';
 
-const handleError = async ({ cnpj, setReason, setFantasia, validCnaes, cnpjUrl, cnpjToken, setStyledLabel, setFirstLabel, ...rest }, error) => {
+const handleError = async ({ cnpj, setReason, setFantasia, validCnaes, cnpjUrl, cnpjToken, setFirstLabel, setIsOpen, ...rest }, error) => {
     if (error.customError) return error;
     else if (error.tryAgain) {
         let config = {
@@ -19,7 +19,7 @@ const handleError = async ({ cnpj, setReason, setFantasia, validCnaes, cnpjUrl, 
         try {
             setReason('');
             setFantasia('');
-            setStyledLabel(true);
+            setIsOpen(true);
             setFirstLabel(true);
             const [status, result] = await consultCnpj(config);
             const objResult = checkResult(status, result, validCnaes, true);

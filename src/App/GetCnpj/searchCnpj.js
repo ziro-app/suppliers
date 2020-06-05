@@ -19,7 +19,7 @@ const lastReq = async (config, validCnaes, state) => {
 
 const searchCnpj = state => () =>
     new Promise(async (resolve, reject) => {
-        const { cnpj, suppliers, setCnpjValid, validCnaes, cnpjUrl, cnpjToken, setStyledLabel, setFirstLabel } = state;
+        const { cnpj, suppliers, setCnpjValid, validCnaes, cnpjUrl, cnpjToken, setFirstLabel, setIsOpen } = state;
         let config = {
             method: 'POST',
             url: cnpjUrl,
@@ -34,21 +34,19 @@ const searchCnpj = state => () =>
             const [status, result] = await consultCnpj(config);
             const objResult = checkResult(status, result, validCnaes, false);
             mountObject(state, objResult);
+            setIsOpen(false);
             setCnpjValid(true);
-            setStyledLabel(false);
             setFirstLabel(true);
             resolve('CNPJ válido');
         } catch (error) {
             const errorMsg = await handleError(state, error);
-            setStyledLabel(false);
             setFirstLabel(true);
             if (errorMsg.tryAgain) {
-                setStyledLabel(true);
                 setFirstLabel(false);
                 await setTimeout(async () => {
                     config['data']['ignore_db'] = false;
                     let result = await lastReq(config, validCnaes, state);
-                    setStyledLabel(false);
+                    setIsOpen(false);
                     setFirstLabel(true);
                     if (result.error) {
                         setCnpjValid(false);
@@ -61,9 +59,13 @@ const searchCnpj = state => () =>
                 }, 30000);
             }
             else if (errorMsg.success) {
+                setIsOpen(false);
+                setFirstLabel(true);
                 setCnpjValid(true);
                 resolve(errorMsg.msg);
             } else {
+                setIsOpen(false);
+                setFirstLabel(true);
                 setCnpjValid(false);
                 reject(errorMsg);
             }

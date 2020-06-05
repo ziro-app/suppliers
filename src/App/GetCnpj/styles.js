@@ -7,7 +7,6 @@ export const
 		justifyContent: 'center',
 		fontFamily: fontTitle,
 		fontSize: fontSizeSmall,
-		paddingBottom: '40px',
 		textTransform: 'uppercase'
 	},
 	modalBox = {
@@ -23,22 +22,4 @@ export const
 		background: 'white',
 		boxShadow: `1px 0px 8px 0px rgba(34,34,34,0.15), 1px 0px 8px 0px rgba(34,34,34,0.10),
 		1px 0px 8px 0px rgba(34,34,34,0.05)`
-	},
-	btn = {
-		display: 'block', // necessary for link version
-		WebkitAppearance: 'none',
-		WebkitTapHighlightColor: 'rgba(0,0,0,0)',
-		MozAppearance: 'none',
-		outline: 'none',
-		cursor: 'pointer',
-		width: '100%',
-		padding: '10px 0px',
-		border: 'none',
-		borderRadius: '20px',
-		fontFamily: fontTitle,
-		fontSize: fontSizeInput,
-		color: '#FFF',
-		textAlign: 'center',
-		background: gradient,
-		boxShadow: `${shadow}`
 	}
