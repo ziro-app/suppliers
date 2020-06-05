@@ -70,6 +70,7 @@
     "@ziro/currency-format": "1.0.2",
     "@ziro/format-date-utc3": "^2.0.0",
     "@ziro/mask-input": "^1.0.0",
+    "@ziro/object-array": "^1.0.2",
     "@ziro/router": "^3.0.0",
     "@ziro/theme": "^1.0.3",
     "axios": "^0.19.0",
