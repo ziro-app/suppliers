@@ -17,6 +17,7 @@ import matchStatusColor from '../utils/matchStatusColor'
 import sendToBackend from './sendToBackend'
 import BoletoDetails from '../BoletoDetails'
 import BankInfo from '../BankInfo'
+import convertCsv from './convertCsv'
 
 
 const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
@@ -111,7 +112,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         setData(dataTable ? dataTable : [])
     }, [])
     if (isError) return <Error />
-    if(boletId === 'transferencia_bancaria') return <BankInfo valorTotal={totalReceitas}/>
+    if(boletId === 'transferencia_bancaria') return <BankInfo valorTotal={totalReceitas} duplicateId={boletbankId}/>
     if(boletId) return <BoletoDetails boletbankId={boletbankId} boletId={boletId} data={filtrado}/>
     if(url !== '') return <Sucesso urlBoleto={url}/>
         return (
@@ -137,11 +138,18 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                         navigate={() => setLocation(`/relatorio/${boletbankId}/transferencia_bancaria`)}
                                     />
                                     {totalReceitas <= 200000 &&
-                                        <Button
-                                        type="button"
-                                        cta="Gerar Duplicata"
-                                        click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado,setLoad,transactions[0].fabricante, setIsError)}
-                                        />
+                                        <>
+                                            <Button
+                                            type="button"
+                                            cta="Gerar Duplicata"
+                                            click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado,setLoad,transactions[0].fabricante, setIsError)}
+                                            />
+                                            <Button
+                                            type="button"
+                                            cta="Exportar CSV"
+                                            click={() => convertCsv(filtrado.values, 'relatorio.csv')}
+                                            /> 
+                                        </>
                                     }
                                 </div>
                                 ) : (
@@ -152,9 +160,20 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                             cta="Visualizar Duplicata"
                                             click={() => window.open(sendUrl,'_blank')}
                                         />
-                                    </div>
+                                        <Button
+                                        type="button"
+                                        cta="Exportar CSV"
+                                        click={() => convertCsv(filtrado.values, 'relatorio.csv')}
+                                        />  
+                                        </div>
                                     ):(
-                                        <> </>
+                                        <> 
+                                        <Button
+                                        type="button"
+                                        cta="Exportar CSV"
+                                        click={() => convertCsv(filtrado.values, 'relatorio.csv')}
+                                        />
+                                        </>  
                                     )
                                 )
                         )

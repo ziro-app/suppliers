@@ -59,7 +59,6 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
             const doc = await docRef.get()
             const obj = {
                 status:'Aguardando Pagamento',
-                billets:[{receita:0}]
             }
             await db.collection('pending-commission').doc(seller).update(obj)
             setUrl(urlBoleto)
