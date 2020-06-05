@@ -111,7 +111,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         setData(dataTable ? dataTable : [])
     }, [])
     if (isError) return <Error />
-    if(boletId === 'transferencia_bancaria') return <BankInfo valorTotal={totalReceitas}/>
+    if(boletId === 'transferencia_bancaria') return <BankInfo valorTotal={totalReceitas} duplicateId={boletbankId}/>
     if(boletId) return <BoletoDetails boletbankId={boletbankId} boletId={boletId} data={filtrado}/>
     if(url !== '') return <Sucesso urlBoleto={url}/>
         return (
