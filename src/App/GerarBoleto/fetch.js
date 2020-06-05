@@ -3,6 +3,7 @@ import { db } from '../../Firebase/index'
 import matchStatusColor from './utils/matchStatusColor'
 import currencyFormat from '@ziro/currency-format'
 import { formatDateUTC3 } from '@ziro/format-date-utc3'
+import ellipsis from 'text-ellipsis'
 
 const fetch = (state) => {
     const { setIsLoading, setIsError, seller, setfisrtTicket, setTicket } = state
@@ -23,6 +24,8 @@ const fetch = (state) => {
                                 return Number(item.receita.replace('.','').replace(',','.'))
                             }
                         })
+                        const arrayPolo = doc.data().billets[0].rua.split(' ')
+                        const enderecoSimple = `${arrayPolo[0].replace(',','')}, ${arrayPolo[arrayPolo.length-1]}`
                         const totalReceitas = arrayReceitas.reduce((a,b) => a+b)
                         const [datePayment] = doc.data().date_payment
                             ? formatDateUTC3(new Date(doc.data().date_payment.seconds * 1000)).split(' ')
@@ -32,7 +35,7 @@ const fetch = (state) => {
                             id:doc.data().transactionZoopId,
                             charge: currencyFormat(Math.round(totalReceitas * 100 * 100)/100),
                             date: doc.data().status === 'Aguardando Pagamento' ? '-' : `${datePayment.substring(0,6)}${datePayment.substring(8,10)}`,
-                            seller:`Relatório ${doc.data().counter}`,
+                            seller:`${doc.data().counter}. ${enderecoSimple}`,
                             status:doc.data().status,
                             statusColor: matchStatusColor(doc.data().status)
                         })
@@ -43,7 +46,7 @@ const fetch = (state) => {
                             status:doc.data().status,
                             date_payment: doc.data().date_payment,
                             values:doc.data().billets,
-                            relatorio: `Relatório ${doc.data().counter}`,
+                            relatorio: `${doc.data().counter}. Relatório ${enderecoSimple}`,
                             url: doc.data().url,
                             endereco: `${doc.data().billets[0].polo} - ${doc.data().billets[0].rua}`
                         })
@@ -52,24 +55,58 @@ const fetch = (state) => {
                     paymentDuplicatas = []
                     paymentBoletos = []
                 }
+            const snapPending = await queryPending.get()
             let pendingDuplicatas = []
             let pendingBoletos = []
-            const snapPending = await queryPending.get()
                 if (!snapPending.empty) {
                     snapPending.forEach((doc) => {
-                        const arrayReceitas = doc.data().billets.map((item) => {
+                        const { pending_polos } = doc.data()
+                        if(pending_polos){
+                            pending_polos.map((polo) => {
+                             const arrayReceitas = polo.billets.map((item) => {
+                                 if(typeof item.receita === 'number'){
+                                     return item.receita
+                                 }else{
+                                     return Number(item.receita.replace('.','').replace(',','.'))
+                                 }
+                             })
+                             const arrayPolo = polo.billets[0].rua.split(' ')
+                             const enderecoSimple = `${arrayPolo[0].replace(',','')}, ${arrayPolo[arrayPolo.length-1]}`
+                             const totalReceitas = arrayReceitas.reduce((a,b) => a+b)
+                             pendingDuplicatas.push({
+                                 id:polo.transactionZoopId,
+                                 charge: currencyFormat(Math.round(totalReceitas*100)),
+                                 date: '-',
+                                 seller:`${enderecoSimple}`,
+                                 status:polo.status,
+                                 statusColor: matchStatusColor(polo.status)
+                             })
+                             pendingBoletos.push({
+                                 contador: `${polo.counter}`,
+                                 id:polo.transactionZoopId,
+                                 fabricante:polo.fantasia,
+                                 status:polo.status,
+                                 values:polo.billets,
+                                 relatorio: `Relatório ${enderecoSimple}`,
+                                 endereco: `${polo.billets[0].polo} - ${polo.billets[0].rua}`
+                                })
+                            })
+                        }else{
+                            const arrayReceitas = doc.data().billets.map((item) => {
                             if(typeof item.receita === 'number'){
                                 return item.receita
                             }else{
                                 return Number(item.receita.replace('.','').replace(',','.'))
                             }
                         })
+                        const arrayPolo = doc.data().billets[0].rua.split(' ')
+                        const enderecoSimple = `${arrayPolo[0].replace(',','')}, ${arrayPolo[arrayPolo.length-1]}`
                         const totalReceitas = arrayReceitas.reduce((a,b) => a+b)
                         pendingDuplicatas.push({
                             id:'relatorio_futuro',
                             charge: currencyFormat(Math.round(totalReceitas*100)),
                             date: '-',
-                            seller:'Relatório Futuro',
+                            seller:`${enderecoSimple}`,
                             status:doc.data().status,
                             statusColor: matchStatusColor(doc.data().status)
                         })
@@ -79,9 +116,10 @@ const fetch = (state) => {
                             fabricante:doc.data().fantasia,
                             status:doc.data().status,
                             values:doc.data().billets,
-                            relatorio: 'Relatório Futuro',
+                            relatorio: `Relatório ${enderecoSimple}`,
                             endereco: `${doc.data().billets[0].polo} - ${doc.data().billets[0].rua}`
-                        })
+                        })    
+                        }
                     })
                 }else{
                     pendingDuplicatas = []
