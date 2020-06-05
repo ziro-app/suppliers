@@ -6,7 +6,7 @@ import {containerWithPadding } from '@ziro/theme';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Header from '@bit/vitorbarbosa19.ziro.header'
 
-export default ({ valorTotal }) => {
+export default ({ valorTotal, duplicateId }) => {
 	const [blocks, setBlocks] = useState([]);
 	const [, setLocation] = useLocation();
     useEffect(() => {
@@ -47,7 +47,7 @@ export default ({ valorTotal }) => {
     const textAreaRef = useRef(null);
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
-            <Header type='icon-link' title='Transferência Bancária' navigateTo='relatorio/relatorio_futuro' icon='back' />
+            <Header type='icon-link' title='Transferência Bancária' navigateTo={`relatorio/${duplicateId}`} icon='back' />
                 <input type="text" style={{ position: 'absolute', left: '-9999px' }} ref={textAreaRef} readOnly />
                 <div style={{ display: 'grid', gridRowGap: '12px', marginTop:'20px'}}>
                     <Details blocks={blocks} />
