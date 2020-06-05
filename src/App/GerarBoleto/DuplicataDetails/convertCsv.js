@@ -1,8 +1,24 @@
 import objectToArray from '@ziro/object-array'
+import currencyFormat from '@ziro/currency-format';
+import { formatDateUTC3 } from '@ziro/format-date-utc3'
 
 const dowloadCsv = (data, title) => {
+    let dataChange = []
+    data.map(obj => {
+        const {boleto, comissao, lojista, receita, romaneio, valor, vencimento, venda} = obj
+         dataChange.push({
+            boleto: boleto || '-',
+            romaneio: romaneio || '-',
+            lojista: lojista || '-',
+            venda: formatDateUTC3(new Date(venda || data_venda)).split(' ')[0] || '-',
+            vencimento: formatDateUTC3(new Date(vencimento)).split(' ')[0] || '-',
+            valor: currencyFormat(Math.round(valor*100*100)/100) || '-',
+            comissao: `${String(comissao*100).replace('.',',')}%` || '-',
+            receita: currencyFormat(Math.round(receita*100*100)/100) || '-'
+            })
+    })
     let csvRow = []
-    const arrayData = objectToArray([data])
+    const arrayData = objectToArray([dataChange])
     arrayData.map(item => csvRow.push(item.join(';')))
     const csvFile = csvRow.join('\n')
     var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
@@ -13,7 +29,8 @@ const dowloadCsv = (data, title) => {
         if (link.download !== undefined) { // feature detection
             // Browsers that support HTML5 download attribute
             var url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
+            var encodedUri = encodeURI(url);
+            link.setAttribute("href", encodedUri);
             link.setAttribute("download", title);
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
