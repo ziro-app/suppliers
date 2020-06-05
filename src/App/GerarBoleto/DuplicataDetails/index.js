@@ -56,7 +56,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                             header: ['Data', 'Roman.', 'Cliente', 'Receita', ''],
                             rows: arrayTicket,
                             rowsClicks: arrayClickTicket,
-                            totals: ['-','-','-',currencyFormat(Math.round(somaReceitas*100)).replace('R$',''), '']
+                            totals: ['-','-','-',currencyFormat(Math.round(somaReceitas * 100 *100)/100).replace('R$',''), '']
                         }
                     ]
                     block = [
@@ -69,7 +69,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                 },
                                 {
                                     title: 'Total',
-                                    content: currencyFormat(Math.round(somaReceitas*100))
+                                    content: currencyFormat(Math.round(somaReceitas * 100 *100)/100)
                                 },
                                 {
                                     title: 'Status',
@@ -97,7 +97,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                 },  
                                 {
                                     title: 'Total Comissões',
-                                    content: currencyFormat(somaReceitas * 100)
+                                    content: currencyFormat(Math.round(somaReceitas * 100 *100)/100)
                                 },
                                 {
                                     title: 'Status',
