@@ -23,7 +23,7 @@ export default ({ boletbankId, boletId, data }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [linkImage, setLinkImage] = useState('')
     const [degrees, setDegrees] = useState(90)
-    const [counter, setCounter] = useState(0)
+    const [counter, setCounter] = useState(1)
     useEffect(() => {
         const { comissao, lojista, polo, receita, romaneio, rua, valor, vencimento, venda, boleto, boletId, data_venda, url } = filtrado[0]
         let block;
@@ -77,7 +77,7 @@ export default ({ boletbankId, boletId, data }) => {
             <Header type='icon-link' title={`Boleto ${boletId || boleto}`} navigateTo={`relatorio/${boletbankId}`} icon='back' />
             <div style={{ display: 'grid', gridRowGap: '12px' }}>
                 <Details blocks={blocks} />
-                <Modal degrees={degrees} boxStyle={modalContainer} isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
+                <Modal degrees={degrees} boxStyle={modalContainer(counter)} isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
                     {linkImage
                         ? <div style={{ position: 'relative' }}>
                             <img style={{ display: 'block', width: '100%' }} src={linkImage} alt={'Imagem do Boleto'} />

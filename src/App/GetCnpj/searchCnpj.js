@@ -3,9 +3,23 @@ import checkResult from './utils/checkResult';
 import mountObject from './utils/mountObject';
 import handleError from './utils/handleError';
 
+const lastReq = async (config, validCnaes, state) => {
+    let result = {};
+    try {
+        const [status, result] = await consultCnpj(config);
+        const objResult = checkResult(status, result, validCnaes, false);
+        mountObject(state, objResult);
+        result['error'] = false;
+    } catch (error) {
+        result['error'] = error;
+    } finally {
+        return result;
+    }
+}
+
 const searchCnpj = state => () =>
     new Promise(async (resolve, reject) => {
-        const { cnpj, suppliers, setCnpjValid, setAlertMessage, validCnaes, cnpjUrl, cnpjToken } = state;
+        const { cnpj, suppliers, setCnpjValid, validCnaes, cnpjUrl, cnpjToken, setStyledLabel, setFirstLabel } = state;
         let config = {
             method: 'POST',
             url: cnpjUrl,
@@ -21,13 +35,32 @@ const searchCnpj = state => () =>
             const objResult = checkResult(status, result, validCnaes, false);
             mountObject(state, objResult);
             setCnpjValid(true);
-            setAlertMessage('');
+            setStyledLabel(false);
+            setFirstLabel(true);
             resolve('CNPJ válido');
         } catch (error) {
-            console.log(error);
             const errorMsg = await handleError(state, error);
-            setAlertMessage('');
-            if (errorMsg.success) {
+            setStyledLabel(false);
+            setFirstLabel(true);
+            if (errorMsg.tryAgain) {
+                setStyledLabel(true);
+                setFirstLabel(false);
+                await setTimeout(async () => {
+                    config['data']['ignore_db'] = false;
+                    let result = await lastReq(config, validCnaes, state);
+                    setStyledLabel(false);
+                    setFirstLabel(true);
+                    if (result.error) {
+                        setCnpjValid(false);
+                        reject({ msg: result.error.msg, customError: true });
+                    }
+                    else {
+                        setCnpjValid(true);
+                        resolve('CNPJ válido');
+                    }
+                }, 30000);
+            }
+            else if (errorMsg.success) {
                 setCnpjValid(true);
                 resolve(errorMsg.msg);
             } else {

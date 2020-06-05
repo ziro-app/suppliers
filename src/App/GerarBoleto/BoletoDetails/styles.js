@@ -19,10 +19,10 @@ export const custom = (fontSize, color) => ({
         gridRowGap: '20px',
         marginTop: '10px'
     },
-    modalContainer = {
+    modalContainer = (counter) => ({
         zIndex: '999',
         maxWidth: '500px',
-        width: '85%',
+        width: (counter % 2 === 0) ? '' : '85%',
         margin: '0 auto',
         padding: '0',
         boxSizing: 'border-box',
@@ -30,7 +30,7 @@ export const custom = (fontSize, color) => ({
         background: 'white',
         boxShadow: `1px 0px 8px 0px rgba(34,34,34,0.15), 1px 0px 8px 0px rgba(34,34,34,0.10),
 1px 0px 8px 0px rgba(34,34,34,0.05)`
-    },
+    }),
     modalLabel = {
         display: 'flex',
         justifyContent: 'center',
@@ -45,11 +45,11 @@ export const custom = (fontSize, color) => ({
         color: primaryColor,
         textAlign: 'center'
     },
-    
+
     svg = {
         justifySelf: 'center'
     },
-    
+
     title = {
         fontFamily: fontTitle,
         textTransform: 'uppercase'

@@ -6,11 +6,13 @@ import Form from '@bit/vitorbarbosa19.ziro.form'
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input'
 import InputText from '@bit/vitorbarbosa19.ziro.input-text'
 import searchCnpj from './searchCnpj'
+import { CnpjTextOne, CnpjTextTwo } from './modals'
 
 const GetCnpj = ({ cnpj, setState, suppliers, setCnpjValid, validCnaes }) => {
-    const [alertMessage, setAlertMessage] = useState('')
+    const [styledLabel, setStyledLabel] = useState(false)
+    const [firstLabel, setFirstLabel] = useState(true)
     const { setCnpj, ...rest } = setState
-    const state = { cnpj, suppliers, setCnpjValid, validCnaes, setAlertMessage, ...rest }
+    const state = { cnpj, suppliers, setCnpjValid, validCnaes, setStyledLabel, setFirstLabel, ...rest }
     const validations = [
         {
             name: 'cnpj',
@@ -20,30 +22,22 @@ const GetCnpj = ({ cnpj, setState, suppliers, setCnpjValid, validCnaes }) => {
         }
     ]
     return (
-        <>
-            {alertMessage ?
-                <div style={{ padding: '0 0 5px', height: '24px', fontSize: '1.6rem', color: warningColor, textAlign: 'center' }} >
-                    <span>{alertMessage}</span>
-                </div>
-                : <div style={{ padding: '0 0 5px', height: '24px' }}>&nbsp;</div>
-            }
-            <Form
-                buttonName='Validar CNPJ'
-                buttonOnTop={true}
-                validations={validations}
-                sendToBackend={searchCnpj ? searchCnpj(state) : () => null}
-                inputs={[
-                    <FormInput name='cnpj' label='CNPJ' input={
-                        <InputText
-                            value={cnpj}
-                            onChange={({ target: { value } }) => setCnpj(maskInput(value, '##.###.###/####-##', true))}
-                            placeholder='00.111.222/0001-33'
-                            inputMode='numeric'
-                        />
-                    } />
-                ]}
-            />
-        </>
+        <Form
+            buttonName='Validar CNPJ'
+            buttonOnTop={true}
+            validations={validations}
+            sendToBackend={searchCnpj ? searchCnpj(state) : () => null}
+            inputs={[
+                <FormInput name='cnpj' label='CNPJ' LabelComponent={styledLabel ? (firstLabel ? <CnpjTextOne /> : <CnpjTextTwo />) : null} input={
+                    <InputText
+                        value={cnpj}
+                        onChange={({ target: { value } }) => setCnpj(maskInput(value, '##.###.###/####-##', true))}
+                        placeholder='00.111.222/0001-33'
+                        inputMode='numeric'
+                    />
+                } />
+            ]}
+        />
     )
 }
 
