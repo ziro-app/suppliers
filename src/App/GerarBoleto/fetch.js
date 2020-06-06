@@ -104,6 +104,7 @@ const fetch = (state) => {
                         const arrayPolo = doc.data().billets[0].rua.split(' ')
                         const enderecoSimple = `${arrayPolo[0].replace(',','')}, ${arrayPolo[arrayPolo.length-1]}`
                         const totalReceitas = arrayReceitas.reduce((a,b) => a+b)
+                        if(doc.data().status === 'Comissões em Aberto'){
                         pendingDuplicatas.push({
                             id:'relatorio_futuro',
                             charge: currencyFormat(Math.round(totalReceitas*100)),
@@ -121,6 +122,7 @@ const fetch = (state) => {
                             relatorio: `Relatório ${enderecoSimple}`,
                             endereco: `${doc.data().billets[0].polo} - ${doc.data().billets[0].rua}`
                         })    
+                        }
                         }
                     })
                 }else{
