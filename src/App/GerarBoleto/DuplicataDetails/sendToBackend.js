@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { db } from '../../../Firebase/index';
 
-const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, setIsError) => async () => {
+const sendToBackend = (sellerId, receitaTotal,setUrl,data,setLoad,seller, setIsError) => async () => {
         const arrayBillets = data.values.map(item => {
             const { boleto, romaneio, valor, vencimento, comissao, venda, lojista, receita, status,rua,polo } = item
             return {
@@ -18,7 +18,6 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
                 polo
             }
         })
-        console.log(arrayBillets)
         try {
             await setLoad(true)
             const configBoletos = {
@@ -39,6 +38,7 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
             }
             let arrayFirebase = []
             let query = db.collection('boleto-payments').where('fantasia', '==', seller.toUpperCase())
+            let queryPending = db.collection('pending-commission').where('fantasia', '==', seller.toUpperCase())
             const snap = await query.get()
             snap.forEach((doc) => {
                     arrayFirebase.push(doc.data().status)
@@ -55,12 +55,36 @@ const sendToBackend = (sellerId, receitaTotal, setUrl, data, setLoad,seller, set
                 'payment_type': 'boleto',
                 'billets': arrayBillets
             }
+            const snapPending = await queryPending.get()
+            let obj = []
+            snapPending.forEach((doc) => {
+                if(doc.data().pending_polos){
+                    let novoArray = [];
+                    doc.data().pending_polos.map((item, index) => {
+                        if(item.billets[0].rua === arrayBillets[0].rua){
+                            novoArray.push({
+                                billets:item.billets,
+                                fantasia:item.fantasia,
+                                polo: item.polo,
+                                status: 'Aguardando Pagamento',
+                                transactionZoopId: item.transactionZoopId
+                            })
+                        }else{
+                            novoArray.push(item)
+                        }
+                    })
+                    obj.push({
+                        pending_polos:novoArray
+                    })
+                }else{
+                    obj.push([{
+                        status:'Aguardando Pagamento'
+                    }])
+                }
+            })
             const docRef = await db.collection('boleto-payments').add(objeto)
             const doc = await docRef.get()
-            const obj = {
-                status:'Aguardando Pagamento',
-            }
-            await db.collection('pending-commission').doc(seller).update(obj)
+            await db.collection('pending-commission').doc(seller).update(...obj)
             setUrl(urlBoleto)
             await setLoad(false)
             console.log(doc)
