@@ -140,14 +140,14 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                     {totalReceitas <= 200000 &&
                                         <>
                                             <Button
-                                            type="button"
-                                            cta="Gerar Duplicata"
-                                            click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado,setLoad,transactions[0].fabricante, setIsError)}
+                                                type="button"
+                                                cta="Gerar Duplicata"
+                                                click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado,setLoad,transactions[0].fabricante, setIsError)}
                                             />
                                             <Button
-                                            type="button"
-                                            cta="Exportar CSV"
-                                            click={() => convertCsv(filtrado.values, 'relatorio.csv')}
+                                                type="button"
+                                                cta="Exportar CSV"
+                                                click={() => convertCsv(filtrado.values, 'relatorio.csv')}
                                             /> 
                                         </>
                                     }
@@ -155,24 +155,24 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                 ) : (
                                     status === 'Aguardando Pagamento' && sendUrl !== '' ? (
                                         <div style={buttonContainer}>
-                                        <Button
-                                            type="button"
-                                            cta="Visualizar Duplicata"
-                                            click={() => window.open(sendUrl,'_blank')}
-                                        />
-                                        <Button
-                                        type="button"
-                                        cta="Exportar CSV"
-                                        click={() => convertCsv(filtrado.values, 'relatorio.csv')}
-                                        />  
+                                            <Button
+                                                type="button"
+                                                cta="Visualizar Duplicata"
+                                                click={() => window.open(sendUrl,'_blank')}
+                                            />
+                                            <Button
+                                                type="button"
+                                                cta="Exportar CSV"
+                                                click={() => convertCsv(filtrado.values, 'relatorio.csv')}
+                                            />  
                                         </div>
                                     ):(
                                         <> 
-                                        <Button
-                                        type="button"
-                                        cta="Exportar CSV"
-                                        click={() => convertCsv(filtrado.values, 'relatorio.csv')}
-                                        />
+                                            <Button
+                                                type="button"
+                                                cta="Exportar CSV"
+                                                click={() => convertCsv(filtrado.values, 'relatorio.csv')}
+                                            />
                                         </>  
                                     )
                                 )
