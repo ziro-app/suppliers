@@ -19,7 +19,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                 if (!snapshot.empty) {
                     snapshot.forEach(doc => {
                         const { charge, date, fees, installments, dateLinkCreated, transactionZoopId,
-                            maxInstallments, sellerZoopId, status, buyerRazao, receivables, receivement } = doc.data();
+                            maxInstallments, sellerZoopId, status, buyerRazao, receivables, receivement, receiptId } = doc.data();
                         const chargeFormatted = currencyFormat(charge);
                         const dateFormatted = date ? dateFormat(date) : '';
                         paymentDoc.push({
@@ -37,7 +37,8 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                             statusColor: matchStatusColor(status),
                             buyerRazao,
                             receivables: receivables ? receivables : [],
-                            receivement
+                            receivement,
+                            receiptId: receiptId ? receiptId : '',
                         });
                     });
                     setLastDoc(snapshot.docs[snapshot.docs.length - 1]);

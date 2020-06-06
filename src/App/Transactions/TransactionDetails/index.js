@@ -17,6 +17,7 @@ import { dateFormat, parcelFormat, round, stringToFloat } from '../utils';
 import { custom, illustrationContainer, buttonContainer, modalContainer, modalLabel, spinner } from './styles';
 
 const TransactionDetails = ({ transactions, transactionId }) => {
+    const [receipt_id, setReceipt_id] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
     const [blocks, setBlocks] = useState([]);
@@ -76,6 +77,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
     useEffect(() => {
         const effectTransaction = transactions.filter(transaction => transaction.transactionId === transactionId)[0];
         setTransaction(effectTransaction);
+        setReceipt_id(effectTransaction.receiptId)
         if (effectTransaction) {
             let block;
             let dataTable;
@@ -187,6 +189,11 @@ const TransactionDetails = ({ transactions, transactionId }) => {
             <Header type='icon-link' title='Detalhes da venda' navigateTo='transacoes' icon='back' />
             <div style={{ display: 'grid', gridRowGap: '40px' }}>
                 <Details blocks={blocks} />
+                {receipt_id ? (
+                    <div style={{ marginTop: '40px' }}>
+                        <Button type="link" cta="Gerar comprovante" template="regular" navigate={() => setLocation(`/comprovante/${receipt_id}`)} />
+                    </div>
+                ) : null}
                 {
                     (transaction.status === 'Aprovado' || transaction.status === 'Pago' || transaction.status === 'Pré Autorizado') &&
                     <>

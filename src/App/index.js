@@ -5,6 +5,7 @@ import { userContext } from './appContext'
 import InitialLoader from '@bit/vitorbarbosa19.ziro.initial-loader'
 import Error from '@bit/vitorbarbosa19.ziro.error'
 import ErrorBoundary from '@bit/vitorbarbosa19.ziro.error-boundary'
+import FlowManager from '@bit/vitorbarbosa19.ziro.flow-manager';
 import Router from './Router'
 
 export const App = () => {
@@ -174,7 +175,9 @@ export const App = () => {
 	return (
 		<ErrorBoundary>
 			<userContext.Provider value={userData}>
-				<Router isLogged={!!uid} />
+                <FlowManager maxWidth={window.innerWidth > 500 ? 400 : window.innerWidth}>
+                    <Router isLogged={!!uid} />
+                </FlowManager>
 			</userContext.Provider>
 		</ErrorBoundary>
 	)
