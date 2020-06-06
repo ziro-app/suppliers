@@ -10,8 +10,7 @@ export default ({ valorTotal, duplicateId }) => {
 	const [blocks, setBlocks] = useState([]);
 	const [, setLocation] = useLocation();
     useEffect(() => {
-        let block;
-        block = [
+        const block = [
             {
                 header: 'Dados Bancários',
                 body: [
