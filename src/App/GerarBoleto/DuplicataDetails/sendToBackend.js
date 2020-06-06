@@ -77,9 +77,9 @@ const sendToBackend = (sellerId, receitaTotal,setUrl,data,setLoad,seller, setIsE
                         pending_polos:novoArray
                     })
                 }else{
-                    obj.push([{
+                    obj.push({
                         status:'Aguardando Pagamento'
-                    }])
+                    })
                 }
             })
             const docRef = await db.collection('boleto-payments').add(objeto)
