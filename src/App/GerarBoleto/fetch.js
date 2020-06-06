@@ -73,23 +73,25 @@ const fetch = (state) => {
                              const arrayPolo = polo.billets[0].rua.split(' ')
                              const enderecoSimple = `${arrayPolo[0].replace(',','')}, ${arrayPolo[arrayPolo.length-1]}`
                              const totalReceitas = arrayReceitas.reduce((a,b) => a+b)
-                             pendingDuplicatas.push({
-                                 id:polo.transactionZoopId,
-                                 charge: currencyFormat(Math.round(totalReceitas*100)),
-                                 date: '-',
-                                 seller:`${enderecoSimple}`,
-                                 status:polo.status,
-                                 statusColor: matchStatusColor(polo.status)
-                             })
-                             pendingBoletos.push({
-                                 contador: `${polo.counter}`,
-                                 id:polo.transactionZoopId,
-                                 fabricante:polo.fantasia,
-                                 status:polo.status,
-                                 values:polo.billets,
-                                 relatorio: `Relatório ${enderecoSimple}`,
-                                 endereco: `${polo.billets[0].polo} - ${polo.billets[0].rua}`
-                                })
+                                if(polo.status === 'Comissões em Aberto'){
+                                    pendingDuplicatas.push({
+                                        id:polo.transactionZoopId,
+                                        charge: currencyFormat(Math.round(totalReceitas*100)),
+                                        date: '-',
+                                        seller:`${enderecoSimple}`,
+                                        status:polo.status,
+                                        statusColor: matchStatusColor(polo.status)
+                                    })
+                                    pendingBoletos.push({
+                                        contador: `${polo.counter}`,
+                                        id:polo.transactionZoopId,
+                                        fabricante:polo.fantasia,
+                                        status:polo.status,
+                                        values:polo.billets,
+                                        relatorio: `Relatório ${enderecoSimple}`,
+                                        endereco: `${polo.billets[0].polo} - ${polo.billets[0].rua}`
+                                    })
+                                }
                             })
                         }else{
                             const arrayReceitas = doc.data().billets.map((item) => {
@@ -125,14 +127,14 @@ const fetch = (state) => {
                     pendingDuplicatas = []
                     pendingBoletos = []
                 }   
-            if(pendingBoletos[0]){
+            if(pendingBoletos[0] || paymentBoletos[0]){
                 function ordenar(a,b){
                     if(a.contador>b.contador) return -1
                     if(a.contador<b.contador) return 1
                 }
                 const orderFetch = paymentBoletos.sort((a,b) => ordenar(a,b))
                 const orderBillet = paymentDuplicatas.sort((a,b) => ordenar(a,b))
-                if(pendingBoletos[0].status !== 'Comissões em Aberto'){
+                if(!pendingBoletos[0]){
                     setfisrtTicket([...orderFetch])
                     setTicket([...orderBillet])    
                 }else{
