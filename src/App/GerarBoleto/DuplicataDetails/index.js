@@ -10,7 +10,7 @@ import Sucesso from './Sucesso/index'
 import Button from '@bit/vitorbarbosa19.ziro.button'
 import { containerWithPadding } from '@ziro/theme'
 import currencyFormat from '@ziro/currency-format'
-import { formatDateUTC3 } from '@ziro/format-date-utc3'
+const { formatDateUTC3 } =  require('@ziro/format-date-utc3')
 import { buttonContainer } from './styles'
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
 import matchStatusColor from '../utils/matchStatusColor'

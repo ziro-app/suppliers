@@ -6,7 +6,7 @@ import Details from '@bit/vitorbarbosa19.ziro.details';
 import Logo from '@bit/vitorbarbosa19.ziro.logo';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
-import { formatDateUTC3 } from '@ziro/format-date-utc3';
+const { formatDateUTC3 } = require('@ziro/format-date-utc3');
 import currencyFormat from '@ziro/currency-format';
 import translateStatus from './translateStatus';
 import matchStatusColor from '../Transactions/matchStatusColor';

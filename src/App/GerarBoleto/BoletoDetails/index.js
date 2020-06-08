@@ -4,7 +4,7 @@ import Header from '@bit/vitorbarbosa19.ziro.header';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import currencyFormat from '@ziro/currency-format';
-import { formatDateUTC3 } from '@ziro/format-date-utc3'
+const { formatDateUTC3 } = require('@ziro/format-date-utc3')
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import NotFound from './NotFound/index'
