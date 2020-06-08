@@ -1,6 +1,6 @@
 import objectToArray from '@ziro/object-array'
 import currencyFormat from '@ziro/currency-format';
-import { formatDateUTC3 } from '@ziro/format-date-utc3'
+const { formatDateUTC3 } = require('@ziro/format-date-utc3')
 
 const dowloadCsv = (data, title) => {
     const dataChange = []
