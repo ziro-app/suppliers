@@ -22,7 +22,7 @@ const GerarBoleto = ({ boletbankId, boletId }) => {
     if (isLoading)
         return (
             <div style={spinner}>
-                <Spinner size="5.5rem" />
+                <Spinner size="50" />
             </div>
         );
     if (isError) return <Error />

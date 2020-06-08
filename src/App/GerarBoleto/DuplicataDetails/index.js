@@ -128,7 +128,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                             }} />
                         </>
                     {load ? (
-                        <Spinner size="5.5rem" />
+                        <Spinner size="50" />
                         ):(
                             status === 'Comissões em Aberto' && url === '' ? (
                                     <div style={buttonContainer}>
