@@ -6,7 +6,6 @@ import Details from '@bit/vitorbarbosa19.ziro.details';
 import Logo from '@bit/vitorbarbosa19.ziro.logo';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
-const { formatDateUTC3 } = require('@ziro/format-date-utc3');
 import currencyFormat from '@ziro/currency-format';
 import translateStatus from './translateStatus';
 import matchStatusColor from '../Transactions/matchStatusColor';
@@ -15,6 +14,7 @@ import useFetch from './useFetch';
 import { container, header, body, footer, footerText } from './styles';
 import ReceiptError from './ReceiptError/index';
 import { Menu } from '../Menu/index';
+import { formatDateUTC3 } from '@ziro/format-date-utc3'
 
 export default ({ receiptId, receipt, setReceipt, installments, transactionId }) => {
   const [location, setLocation] = useLocation();

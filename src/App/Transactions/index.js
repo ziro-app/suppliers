@@ -25,7 +25,7 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
   if (isLoading)
     return (
       <div style={spinner}>
-        <Spinner size="50" />
+        <Spinner size="5rem" />
       </div>
     );
 

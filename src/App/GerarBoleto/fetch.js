@@ -2,8 +2,7 @@ import axios from 'axios'
 import { db } from '../../Firebase/index'
 import matchStatusColor from './utils/matchStatusColor'
 import currencyFormat from '@ziro/currency-format'
-const { formatDateUTC3 } = require('@ziro/format-date-utc3')
-import ellipsis from 'text-ellipsis'
+import { formatDateUTC3 } from '@ziro/format-date-utc3'
 
 const fetch = (state) => {
     const { setIsLoading, setIsError, seller, setfisrtTicket, setTicket } = state

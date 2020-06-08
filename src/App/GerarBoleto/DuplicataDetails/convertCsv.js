@@ -1,6 +1,7 @@
 import objectToArray from '@ziro/object-array'
 import currencyFormat from '@ziro/currency-format';
-const { formatDateUTC3 } = require('@ziro/format-date-utc3')
+import { formatDateUTC3 } from '@ziro/format-date-utc3'
+import convertMoth from './convertMonth'
 
 const dowloadCsv = (data, title) => {
     const dataChange = []
@@ -10,8 +11,8 @@ const dowloadCsv = (data, title) => {
             boleto: boleto || '-',
             romaneio: romaneio || '-',
             lojista: lojista || '-',
-            venda: formatDateUTC3(new Date(venda || data_venda)).split(' ')[0] || '-',
-            vencimento: formatDateUTC3(new Date(vencimento)).split(' ')[0] || '-',
+            venda: formatDateUTC3(convertMoth(venda || data_venda)).split(' ')[0] || '-',
+            vencimento: formatDateUTC3(convertMoth(vencimento)).split(' ')[0] || '-',
             valor: currencyFormat(Math.round(valor*100*100)/100).replace('R$','') || '-',
             comissao: `${String(comissao*100).replace('.',',')}%` || '-',
             receita: currencyFormat(Math.round(receita*100*100)/100).replace('R$','') || '-'

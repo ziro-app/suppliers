@@ -178,7 +178,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
     if (isLoading)
         return (
             <div style={spinner}>
-                <Spinner size="50" />
+                <Spinner size="5rem" />
             </div>
         );
     if (!transaction) return <Error message='Transação inválida ou não encontrada, retorne e tente novamente.' type='noData' title='Erro ao buscar detalhes da transação' backRoute='/transacoes' backRouteFunction={(route) => setLocation(route)} />;

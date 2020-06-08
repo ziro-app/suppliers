@@ -4,20 +4,21 @@ import Header from '@bit/vitorbarbosa19.ziro.header';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import currencyFormat from '@ziro/currency-format';
-const { formatDateUTC3 } = require('@ziro/format-date-utc3')
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
+import { containerWithPadding } from '@ziro/theme';
+import { formatDateUTC3 } from '@ziro/format-date-utc3'
 import NotFound from './NotFound/index'
 import { boxStyle, imgStyle, controls, circle } from './styles'
-import { containerWithPadding } from '@ziro/theme';
+import convertMonth from '../DuplicataDetails/convertMonth'
 
 export default ({ boletbankId, boletId, data }) => {
     const filtrado = data.values.filter(item => {
         if (item.boleto) {
             return String(item.boleto) === boletId
-        } else {
+        } 
             return String(item.boletId) === boletId
-        }
+        
     })
     const [blocks, setBlocks] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
@@ -26,8 +27,7 @@ export default ({ boletbankId, boletId, data }) => {
     const [scale, setScale] = useState(1)
     useEffect(() => {
         const { comissao, lojista, polo, receita, romaneio, rua, valor, vencimento, venda, boleto, boletId, data_venda, url } = filtrado[0]
-        let block;
-        block = [
+        const block = [
             {
                 header: 'Informações do boleto',
                 body: [
@@ -45,11 +45,11 @@ export default ({ boletbankId, boletId, data }) => {
                     },
                     {
                         title: 'Venda',
-                        content: formatDateUTC3(new Date(venda || data_venda)).split(' ')[0]
+                        content: formatDateUTC3(convertMonth(venda || data_venda)).split(' ')[0]
                     },
                     {
                         title: 'Vencimento',
-                        content: formatDateUTC3(new Date(vencimento)).split(' ')[0]
+                        content: formatDateUTC3(convertMonth(vencimento)).split(' ')[0]
                     },
                     {
                         title: 'Valor',
@@ -78,7 +78,7 @@ export default ({ boletbankId, boletId, data }) => {
                 <Details blocks={blocks} />
                 <Modal boxStyle={boxStyle} degrees={degrees} scale={scale} isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
                     {linkImage
-                        ? <img style={imgStyle} src={linkImage} alt={'Imagem do Boleto'} />
+                        ? <img style={imgStyle} src={linkImage} alt="Imagem do Boleto" />
                         : <NotFound />
                     }
                 </Modal>

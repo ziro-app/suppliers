@@ -10,7 +10,6 @@ import Sucesso from './Sucesso/index'
 import Button from '@bit/vitorbarbosa19.ziro.button'
 import { containerWithPadding } from '@ziro/theme'
 import currencyFormat from '@ziro/currency-format'
-const { formatDateUTC3 } =  require('@ziro/format-date-utc3')
 import { buttonContainer } from './styles'
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
 import matchStatusColor from '../utils/matchStatusColor'
@@ -18,6 +17,8 @@ import sendToBackend from './sendToBackend'
 import BoletoDetails from '../BoletoDetails'
 import BankInfo from '../BankInfo'
 import convertCsv from './convertCsv'
+import convertMoth from './convertMonth'
+import { formatDateUTC3 } from '@ziro/format-date-utc3'
 
 
 const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
@@ -39,7 +40,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
         let dataTable
         const arrayTicket = filtrado.values.map(item => {
         return [
-            item.venda || item.data_venda ? `${formatDateUTC3(new Date(item.venda || item.data_venda)).split(' ')[0].substring(0,6)}${formatDateUTC3(new Date(item.venda || item.data_venda)).split(' ')[0].substring(8,10)}` : '',
+            item.venda || item.data_venda ? `${formatDateUTC3(convertMoth(item.venda || item.data_venda)).split(' ')[0].substring(0,6)}${formatDateUTC3(convertMoth(item.venda || item.data_venda)).split(' ')[0].substring(8,10)}` : '',
             item.romaneio || '-',
             item.lojista,
             currencyFormat(Math.round(item.receita * 100)).replace('R$',''),
@@ -128,7 +129,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                             }} />
                         </>
                     {load ? (
-                        <Spinner size="50" />
+                        <Spinner size="5rem" />
                         ):(
                             status === 'Comissões em Aberto' && url === '' ? (
                                     <div style={buttonContainer}>
