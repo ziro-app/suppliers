@@ -7,7 +7,7 @@ import InputText from '@bit/vitorbarbosa19.ziro.input-text'
 import Modal from '@bit/vitorbarbosa19.ziro.modal'
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration'
 import searchCnpj from './searchCnpj'
-import { modalLabel, modalBox } from './styles'
+import { modalLabel, modalBox, title, svg } from './styles'
 
 const GetCnpj = ({ cnpj, setState, suppliers, setCnpjValid, validCnaes }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -25,7 +25,8 @@ const GetCnpj = ({ cnpj, setState, suppliers, setCnpjValid, validCnaes }) => {
     return (
         <>
             <Modal boxStyle={modalBox} isOpen={isOpen} setIsOpen={() => { }}>
-                <div style={{ justifySelf: 'center' }} ><Illustration type="waiting" size={200} /></div>
+                <div style={svg} ><Illustration type="waiting" size={200} /></div>
+                <label style={title}>Aguarde</label>
                 <label style={modalLabel}>{firstLabel ? 'Aguarde. Pode levar alguns minutos. Não saia da página' : 'A validação é demorada, aguarde sem sair da página'}</label>
             </Modal>
             <Form
