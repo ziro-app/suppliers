@@ -133,7 +133,6 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                         ):(
                             status === 'Comissões em Aberto' && url === '' ? (
                                     <div style={buttonContainer}>
-                                    <div>
                                     <Button
                                         type="link"
                                         cta="Fazer Transferência"
@@ -144,7 +143,6 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                         cta="Exportar CSV"
                                         click={() => convertCsv(filtrado.values, 'relatorio.csv')}
                                     /> 
-                                    <div/>
                                     {totalReceitas <= 200000 &&
                                         <>
                                             <Button
