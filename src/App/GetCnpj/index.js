@@ -6,8 +6,9 @@ import FormInput from '@bit/vitorbarbosa19.ziro.form-input'
 import InputText from '@bit/vitorbarbosa19.ziro.input-text'
 import Modal from '@bit/vitorbarbosa19.ziro.modal'
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration'
+import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
 import searchCnpj from './searchCnpj'
-import { modalLabel, modalBox, title, svg } from './styles'
+import { modalBox, container, title, svg } from './styles'
 
 const GetCnpj = ({ cnpj, setState, suppliers, setCnpjValid, validCnaes }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -25,9 +26,15 @@ const GetCnpj = ({ cnpj, setState, suppliers, setCnpjValid, validCnaes }) => {
     return (
         <>
             <Modal boxStyle={modalBox} isOpen={isOpen} setIsOpen={() => { }}>
-                <div style={svg} ><Illustration type="waiting" size={200} /></div>
-                <label style={title}>Aguarde</label>
-                <label style={modalLabel}>{firstLabel ? 'Aguarde. Pode levar alguns minutos. Não saia da página' : 'A validação é demorada, aguarde sem sair da página'}</label>
+                <div style={container}>
+                    <div style={svg} ><Illustration type="waiting" size={200} /></div>
+                    <label style={title}>{firstLabel ? 'Aguarde...' : 'Só mais um momento...'}</label>
+                    <label>{firstLabel
+                        ? 'Estamos validando seu CNPJ. Não saia da página'
+                        : 'Estamos concluindo a validação. Não saia da página'}
+                    </label>
+                    <Spinner size='3rem' />
+                </div>
             </Modal>
             <Form
                 buttonName='Validar CNPJ'
