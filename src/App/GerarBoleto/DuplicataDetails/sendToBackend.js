@@ -37,7 +37,7 @@ const sendToBackend = (sellerId, receitaTotal,setUrl,data,setLoad,seller, setIsE
                 }
             }
             let arrayFirebase = []
-            let query = db.collection('boleto-payments').where('fantasia', '==', seller.toUpperCase())
+            let query = db.collection('comission-payments').where('fantasia', '==', seller.toUpperCase())
             let queryPending = db.collection('pending-commission').where('fantasia', '==', seller.toUpperCase())
             const snap = await query.get()
             snap.forEach((doc) => {
@@ -82,7 +82,7 @@ const sendToBackend = (sellerId, receitaTotal,setUrl,data,setLoad,seller, setIsE
                     })
                 }
             })
-            const docRef = await db.collection('boleto-payments').add(objeto)
+            const docRef = await db.collection('comission-payments').add(objeto)
             const doc = await docRef.get()
             await db.collection('pending-commission').doc(seller).update(...obj)
             setUrl(urlBoleto)

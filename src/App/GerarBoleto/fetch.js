@@ -6,7 +6,7 @@ import { formatDateUTC3 } from '@ziro/format-date-utc3'
 
 const fetch = (state) => {
     const { setIsLoading, setIsError, seller, setfisrtTicket, setTicket } = state
-    let queryPayments = db.collection('boleto-payments').where('fantasia', '==', seller)
+    let queryPayments = db.collection('comission-payments').where('fantasia', '==', seller)
     let queryPending = db.collection('pending-commission').where('fantasia', '==', seller)
     const source = axios.CancelToken.source()
     const run = async () => {
