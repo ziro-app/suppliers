@@ -123,7 +123,16 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                 <div style={{ display: 'grid', gridRowGap: '12px' }}>
                     <Details blocks={blocks} />
                         <>
-                            <Table data={data} customGrid={{
+                            <Table cellStyle={{
+                                width: '100%',
+                                height: '100%',
+                                fontSize: '1.4rem',
+                                textAlign: 'center',
+                                textOverflow: 'ellipsis',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                                cursor: 'pointer'
+                            }} data={data} customGrid={{
                                 gridTemplateColumns: 'auto 1fr 1fr 1fr 10px',
                                 gridRowGap: '15px'
                             }} />
@@ -138,11 +147,6 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                         cta="Fazer Transferência"
                                         navigate={() => setLocation(`/relatorio/${boletbankId}/transferencia_bancaria`)}
                                     />
-                                    <Button
-                                        type="button"
-                                        cta="Exportar CSV"
-                                        click={() => convertCsv(filtrado.values, 'relatorio.csv')}
-                                    /> 
                                     {totalReceitas <= 200000 &&
                                         <>
                                             <Button
