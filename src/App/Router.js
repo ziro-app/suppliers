@@ -19,7 +19,6 @@ import GerarBoleto from './GerarBoleto/index'
 import FirebaseMigration from './FirebaseMigration/index'
 import UpdateUserInfo from './UpdateUserInfo/index'
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found'
-import Receipt from './Receipt/index';
 import { useRoute, useLocation } from 'wouter'
 
 const Router = ({ isLogged }) => {
@@ -49,7 +48,6 @@ const Router = ({ isLogged }) => {
         '/criar-cobranca': <Menu title='Criar Cobrança'><CreatePayment /></Menu>,
         [match2 ? location : null]: <GerarBoleto {...params2} />,
         [match ? location : null]: <Transactions {...params} setTransactionId={setTransactionId} />,
-        [matchMyReceipt ? location : null]: <Receipt {...paramsMyReceipt} receipt={receipt} setReceipt={setReceipt} transactionId={transactionId} />,
         '/update': <HeaderBack title='Atualizar informações' navigateTo='/login'><UpdateUserInfo /></HeaderBack>
     }
 
