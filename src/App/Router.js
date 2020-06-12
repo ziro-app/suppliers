@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Router2 as routeMatcher } from '@ziro/router'
 import Login from './Login/index'
@@ -15,7 +15,6 @@ import UpdatePass from './UpdatePass/index'
 import DeleteAccount from './DeleteAccount/index'
 import CreatePayment from './CreatePayment/index'
 import Transactions from './Transactions/index'
-import TestCnpj from './TestCnpj/index'
 import GerarBoleto from './GerarBoleto/index'
 import FirebaseMigration from './FirebaseMigration/index'
 import UpdateUserInfo from './UpdateUserInfo/index'
@@ -38,8 +37,7 @@ const Router = ({ isLogged }) => {
         '/problemas-acesso': <LoginTrouble navigateTo='/login' />,
         '/reenviar-email': <ResendEmail />,
         '/resetar-senha': <ResetPass />,
-        '/confirmar-email': <ConfirmEmail />,
-        '/teste': <TestCnpj />,
+        '/confirmar-email': <ConfirmEmail />
     }
     const privateRoutes = { // Menu can't be put inside the components because then it'll unmount on transition
         '/': <Transactions {...params} />,
