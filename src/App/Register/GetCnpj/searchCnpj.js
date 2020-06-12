@@ -1,4 +1,5 @@
 import axios from 'axios'
+import arrayObject from '@ziro/array-object'
 
 const searchCnpj = state => () => {
     const { cnpj, suppliers, setCnpjValid,
@@ -13,11 +14,28 @@ const searchCnpj = state => () => {
             'Authorization': process.env.CNPJ_TOKEN
         }
     }
+    const configSheet = {
+        method: 'POST',
+        url: process.env.SHEET_URL,
+        data: {
+            "apiResource": "values",
+            "apiMethod": "batchGet",
+            "spreadsheetId": process.env.SHEET_CNPJ_ID,
+            "ranges": ["Base CNPJ!A:B"]
+        },
+        headers: {
+            'Authorization': process.env.SHEET_TOKEN,
+            'Content-Type': 'application/json'
+        }
+    }
     return new Promise(async (resolve, reject) => {
         try {
             if (cnpj.length === 18) {
                 if (!suppliers.includes(cnpj)) {
+                    const dadosSheet = await axios(configSheet)
+                    const objectSheet = arrayObject(dadosSheet.data.valueRanges[0]).filter(item => item.cnpj === Number(cnpj.replace('.','').replace('.','').replace('/','').replace('-','')))
                     const { data: { status, result } } = await axios(config)
+                    const resultFantasia = objectSheet[0].fantasia ? objectSheet[0].fantasia : result.fantasia
                     if (status) {
                         // validations
                         const isActive = result.situacao === 'ATIVA'
@@ -25,7 +43,7 @@ const searchCnpj = state => () => {
                         // fill form fields to save time for user
                         // Alinhar os campos que vou precisar aqui
                         setReason(result.nome)
-                        setFantasia(result.fantasia)
+                        setFantasia(resultFantasia)
                         setStreet(result.logradouro)
                         setNumber(result.numero)
                         setComplement(result.complemento)
