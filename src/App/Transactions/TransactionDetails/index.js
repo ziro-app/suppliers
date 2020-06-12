@@ -115,8 +115,12 @@ const TransactionDetails = ({ transactions, transactionId }) => {
               content: effectTransaction.installments ? `${effectTransaction.installments}x` : '-',
             },
             {
-              title: 'Data',
+              title: 'Data de pagamento',
               content: effectTransaction.date ? `${effectTransaction.date}` : '-',
+            },
+            {
+              title: 'Data de criação do link',
+              content: effectTransaction.dateLinkCreated ? `${dateFormat(effectTransaction.dateLinkCreated)}` : '-',
             },
             {
               title: 'Status',
