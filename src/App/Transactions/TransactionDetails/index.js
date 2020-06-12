@@ -27,7 +27,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
   const [copyResultStatus, setCopyResultStatus] = useState(true);
   const [cancelModal, setCancelModal] = useState(false);
   const textAreaRef = useRef(null);
-  const paymentLink = `https://ziro.app/pagamento/${transactionId}/escolher-cartao`;
+  const paymentLink = `https://ziro.app/pagamento/${transactionId}/escolher-cartao?doc`;
 
   const deleteTransaction = async () => {
     setIsLoading(true);
