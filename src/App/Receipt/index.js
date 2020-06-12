@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { fontTitle } from '@ziro/theme';
-import { useHeader, useHistory } from '@bit/vitorbarbosa19.ziro.flow-manager';
 import Header from '@bit/vitorbarbosa19.ziro.header';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Logo from '@bit/vitorbarbosa19.ziro.logo';
