@@ -1,46 +1,25 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { containerWithPadding, fontTitle } from '@ziro/theme';
+import React, { useState } from 'react';
+import { containerWithPadding } from '@ziro/theme';
 import Header from '@bit/vitorbarbosa19.ziro.header';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Logo from '@bit/vitorbarbosa19.ziro.logo';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
 import currencyFormat from '@ziro/currency-format';
-import translateStatus from './translateStatus';
 import matchStatusColor from '../Transactions/matchStatusColor';
 import SpinnerWithDiv from '@bit/vitorbarbosa19.ziro.spinner-with-div';
 import useFetch from './useFetch';
 import { container, header, body, footer, footerText } from './styles';
 import ReceiptError from './ReceiptError/index';
-import { Menu } from '../Menu/index';
 import { formatDateUTC3 } from '@ziro/format-date-utc3';
 
 export default ({ receiptId, receipt, setReceipt, installments, transactionId }) => {
   const [location, setLocation] = useLocation();
-  //const history = useHistory();
-  // console.log(history);
-  /*const history = useHistory();
-
-  try {
-    if (typeof history[history.length - 1].pathname === 'undefined') {
-      setLocation('/transacoes');
-    }
-  } catch {
-    setLocation('/transacoes');
-  }
-
-  const backPath = useMemo(() => {
-    return `transacoes/${transactionId}`;
-    // if (history[history.length - 1].pathname === location) return '/transacoes';
-
-    //return history[history.length - 1].pathname;
-  }, [history]);*/
-  //const backPath = () => window.history.back();
 
   const [loading, setLoading] = useState(false);
 
   let block;
-  const { installmentDoc, error } = useFetch(receiptId, setLoading, location, setReceipt, installments, receipt);
+  const { error } = useFetch(receiptId, setLoading, location, setReceipt, installments, receipt);
 
   if (!receiptId) setLocation('/pagamentos');
   else {
@@ -49,7 +28,6 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
       if (receipt.statusZiro === 'Cancelado') {
         headerReceipt = 'Estornado';
       }
-      //if (receipt.original_receipt.sales_receipt_cardholder.includes('ESTORNO')) headerReceipt = 'Estornado';
       block = [
         {
           header: `Comprovante de Pagamento${headerReceipt ? ` ${headerReceipt}` : ''}`,
@@ -92,12 +70,9 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
       ];
     }
   }
-  //if (loading) return <SpinnerWithDiv />;
-  //useHeader(<Header title="Comprovante" navigateTo={backPath} />);
   const backPath = `/transacoes/${transactionId}`;
   return (
     <>
-      {/*<Header type="icon-link" title="Comprovante" navigateTo={() => window.history.back()} icon="back" />*/}
       {/* eslint-disable-next-line no-nested-ternary */}
       <div style={containerWithPadding}>
         <Header type="icon-link" title="Recibo" navigateTo={backPath} icon="back" />

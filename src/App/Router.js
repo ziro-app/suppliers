@@ -17,7 +17,6 @@ import CreatePayment from './CreatePayment/index';
 import Transactions from './Transactions/index';
 import GerarBoleto from './GerarBoleto/index';
 import Receipt from './Receipt/index';
-import FirebaseMigration from './FirebaseMigration/index';
 import UpdateUserInfo from './UpdateUserInfo/index';
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found';
 import { useRoute, useLocation } from 'wouter';
