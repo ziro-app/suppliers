@@ -81,9 +81,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
       let dataTable;
       let feesFormatted = effectTransaction.fees ? `- ${currencyFormat(parseFloat(effectTransaction.fees.replace('.', '')))}` : '-';
       let liquidFormatted = effectTransaction.fees
-        ? currencyFormat(
-            parseFloat(`${(stringToFloat(effectTransaction.charge) - parseFloat(effectTransaction.fees)).toFixed(2)}`.replace(/[R$\.,]/g, '')),
-          )
+        ? currencyFormat(parseFloat(`${(stringToFloat(effectTransaction.charge) - parseFloat(effectTransaction.fees)).toFixed(2)}`.replace(/[R$\.,]/g, '')))
         : '-';
 
       block = [
@@ -145,26 +143,14 @@ const TransactionDetails = ({ transactions, transactionId }) => {
           if (!transaction.paid_at) {
             let upAm = round(parseFloat(transaction.gross_amount), 2);
             let upAmw = round(parseFloat(transaction.amount), 2);
-            unpaidRows.push([
-              `${transaction.installment}`,
-              `${parcelFormat(upAm)}`,
-              `${parcelFormat(upAmw)}`,
-              `${dateFormat(transaction.expected_on)}`,
-              <Icon type="chevronRight" size={14} />,
-            ]);
+            unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`, <Icon type="chevronRight" size={14} />]);
             unpaidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
             unpaidAmount += parseFloat(upAm);
             unpaidAmountWithoutFees += parseFloat(upAmw);
           } else {
             let upAm = round(parseFloat(transaction.gross_amount), 2);
             let upAmw = round(parseFloat(transaction.amount), 2);
-            paidRows.push([
-              `${transaction.installment}`,
-              `${parcelFormat(upAm)}`,
-              `${parcelFormat(upAmw)}`,
-              `${dateFormat(transaction.paid_at)}`,
-              <Icon type="chevronRight" size={14} />,
-            ]);
+            paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.paid_at)}`, <Icon type="chevronRight" size={14} />]);
             paidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
             paidAmount += parseFloat(upAm);
             paidAmountWithoutFees += parseFloat(upAmw);
@@ -218,7 +204,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
         <Details blocks={blocks} />
         {receipt_id ? (
           <div style={{ marginTop: '40px' }}>
-            <Button type="link" cta="Gerar comprovante" template="regular" navigate={() => setLocation(`/comprovante/${receipt_id}`)} />
+            <Button type="link" cta="Gerar comprovante" template="regular" navigate={() => setLocation(`/comprovante/${transaction.transactionId}/${receipt_id}`)} />
           </div>
         ) : null}
         {(transaction.status === 'Aprovado' || transaction.status === 'Pago' || transaction.status === 'Pré Autorizado') && (

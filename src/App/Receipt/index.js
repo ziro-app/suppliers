@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { fontTitle } from '@ziro/theme';
+import { containerWithPadding, fontTitle } from '@ziro/theme';
 import Header from '@bit/vitorbarbosa19.ziro.header';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Logo from '@bit/vitorbarbosa19.ziro.logo';
@@ -13,12 +13,13 @@ import useFetch from './useFetch';
 import { container, header, body, footer, footerText } from './styles';
 import ReceiptError from './ReceiptError/index';
 import { Menu } from '../Menu/index';
-import { formatDateUTC3 } from '@ziro/format-date-utc3'
+import { formatDateUTC3 } from '@ziro/format-date-utc3';
 
 export default ({ receiptId, receipt, setReceipt, installments, transactionId }) => {
   const [location, setLocation] = useLocation();
-
-  const history = useHistory();
+  //const history = useHistory();
+  // console.log(history);
+  /*const history = useHistory();
 
   try {
     if (typeof history[history.length - 1].pathname === 'undefined') {
@@ -33,7 +34,8 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
     // if (history[history.length - 1].pathname === location) return '/transacoes';
 
     //return history[history.length - 1].pathname;
-  }, [history]);
+  }, [history]);*/
+  //const backPath = () => window.history.back();
 
   const [loading, setLoading] = useState(false);
 
@@ -92,27 +94,31 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
   }
   //if (loading) return <SpinnerWithDiv />;
   //useHeader(<Header title="Comprovante" navigateTo={backPath} />);
+  const backPath = `/transacoes/${transactionId}`;
   return (
     <>
-      <Header type="icon-link" title="Comprovante" navigateTo={backPath} icon="back" />
+      {/*<Header type="icon-link" title="Comprovante" navigateTo={() => window.history.back()} icon="back" />*/}
       {/* eslint-disable-next-line no-nested-ternary */}
-      {loading ? (
-        <SpinnerWithDiv />
-      ) : error ? (
-        <ReceiptError />
-      ) : (
-        <motion.div style={container} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <label style={header}>
-            <Logo size={38} />
-            Via do Fabricante
-          </label>
-          <div style={body}> {receipt && block ? <Details centerTitle blocks={block} /> : null}</div>
-          <div style={footer}>
-            <label style={footerText}>Ziro Marketplace</label>
-            <label style={footerText}>CNPJ: 28.026.371/0001-61</label>
-          </div>
-        </motion.div>
-      )}
+      <div style={containerWithPadding}>
+        <Header type="icon-link" title="Recibo" navigateTo={backPath} icon="back" />
+        {loading ? (
+          <SpinnerWithDiv />
+        ) : error ? (
+          <ReceiptError />
+        ) : (
+          <motion.div style={container} initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <label style={header}>
+              <Logo size={38} />
+              Via do Fabricante
+            </label>
+            <div style={body}> {receipt && block ? <Details centerTitle blocks={block} /> : null}</div>
+            <div style={footer}>
+              <label style={footerText}>Ziro Marketplace</label>
+              <label style={footerText}>CNPJ: 28.026.371/0001-61</label>
+            </div>
+          </motion.div>
+        )}
+      </div>
     </>
   );
 };
