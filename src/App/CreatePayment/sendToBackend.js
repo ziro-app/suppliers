@@ -28,7 +28,7 @@ const sendToBackend = state => () => {
       }
     } catch (error) {
       if (error.copyError) {
-        resolve('Link criado no menu de Vendas');
+        resolve('Link criado. Acesse na aba de Vendas');
         setCharge('');
         setMaxInstallments('');
       }

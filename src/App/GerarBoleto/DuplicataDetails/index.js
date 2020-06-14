@@ -144,22 +144,20 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                     <div style={buttonContainer}>
                                     <Button
                                         type="link"
-                                        cta="Fazer Transferência"
+                                        cta="Pagar via transferência"
                                         navigate={() => setLocation(`/relatorio/${boletbankId}/transferencia_bancaria`)}
                                     />
+                                    <Button
+                                        type="button"
+                                        cta="Exportar planilha"
+                                        click={() => convertCsv(filtrado.values, 'relatorio.csv')}
+                                    />
                                     {totalReceitas <= 200000 &&
-                                        <>
-                                            <Button
-                                                type="button"
-                                                cta="Gerar Duplicata"
-                                                click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado,setLoad,transactions[0].fabricante, setIsError)}
-                                            />
-                                            <Button
-                                                type="button"
-                                                cta="Exportar CSV"
-                                                click={() => convertCsv(filtrado.values, 'relatorio.csv')}
-                                            /> 
-                                        </>
+                                        <Button
+                                            type="button"
+                                            cta="Gerar Duplicata"
+                                            click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado,setLoad,transactions[0].fabricante, setIsError)}
+                                        />
                                     }
                                 </div>
                                 ) : (
@@ -172,7 +170,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                             />
                                             <Button
                                                 type="button"
-                                                cta="Exportar CSV"
+                                                cta="Exportar planilha"
                                                 click={() => convertCsv(filtrado.values, 'relatorio.csv')}
                                             />  
                                         </div>
@@ -180,7 +178,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                         <> 
                                             <Button
                                                 type="button"
-                                                cta="Exportar CSV"
+                                                cta="Exportar planilha"
                                                 click={() => convertCsv(filtrado.values, 'relatorio.csv')}
                                             />
                                         </>  
