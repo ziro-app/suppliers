@@ -59,7 +59,7 @@ const Register = () => {
     const [cpf, setCpf] = useState('')
     const [email, setEmail] = useState('')
     const [birthdate, setBirthdate] = useState('')
-    const [phone, setPhone] = useState('')
+    const [fone, setFone] = useState('')
     const [pass, setPass] = useState('')
     const [confirmPass, setConfirmPass] = useState('')
     // form fields 3 - Upload de documentos
@@ -81,13 +81,13 @@ const Register = () => {
 
     const setState = {
         setTypeOfRegistration, setCnpj, setCnpjValid, setReason, setFantasia, setCategory,
-        setFName, setLName, setCpf, setEmail, setBirthdate, setPhone, setStreet, setNumber, setComplement,
+        setFName, setLName, setCpf, setEmail, setBirthdate, setFone, setStreet, setNumber, setComplement,
         setNeighborhood, setCep, setCity, setCityState, setPass, setBankNumber, setAccountNumber,
         setAgency, setAccountType, setFileDoc, setFileAtv, setFileRes, setFileCnpj, cnpjUrl, cnpjToken
     }
     const state = {
         cnpjValid, typeOfRegistration, cnpj, reason, fantasia, category, cep, street, number,
-        complement, neighborhood, city, cityState, fname, lname, cpf, email, birthdate, phone, pass,
+        complement, neighborhood, city, cityState, fname, lname, cpf, email, birthdate, fone, pass,
         bankName, bankNumber, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
         fileCnpj, categoryName, accountTypeViewName, ...setState
     }
@@ -143,9 +143,9 @@ const Register = () => {
             value: birthdate,
             message: 'Data inválida'
         }, {
-            name: 'phone',
+            name: 'fone',
             validation: value => step === 2 ? /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(value) : true,
-            value: phone,
+            value: fone,
             message: 'Telefone inválido'
         }, {
             name: 'email',
@@ -247,7 +247,7 @@ const Register = () => {
         setCpf('')
         setEmail('')
         setBirthdate('')
-        setPhone('')
+        setFone('')
         setStreet('')
         setNumber('')
         setComplement('')
@@ -560,10 +560,10 @@ const Register = () => {
                                     inputMode='numeric'
                                 />
                             } />,
-                            <FormInput name='phone' label='Telefone' input={
+                            <FormInput name='fone' label='Telefone' input={
                                 <InputText
-                                    value={phone}
-                                    onChange={({ target: { value } }) => setPhone(maskInput(value, '(##) #####-####', true))}
+                                    value={fone}
+                                    onChange={({ target: { value } }) => setFone(maskInput(value, '(##) #####-####', true))}
                                     placeholder='(11) 99999-9999'
                                     inputMode='numeric'
                                 />
