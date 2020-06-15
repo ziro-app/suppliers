@@ -6,19 +6,19 @@ import Details from '@bit/vitorbarbosa19.ziro.details'
 import Header from '@bit/vitorbarbosa19.ziro.header'
 import Error from '@bit/vitorbarbosa19.ziro.error'
 import Icon from '@bit/vitorbarbosa19.ziro.icon'
-import Sucesso from './Sucesso/index'
 import Button from '@bit/vitorbarbosa19.ziro.button'
 import { containerWithPadding } from '@ziro/theme'
 import currencyFormat from '@ziro/currency-format'
-import { buttonContainer } from './styles'
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
+import { formatDateUTC3 } from '@ziro/format-date-utc3'
+import Sucesso from './Sucesso/index'
+import { buttonContainer } from './styles'
 import matchStatusColor from '../utils/matchStatusColor'
 import sendToBackend from './sendToBackend'
 import BoletoDetails from '../BoletoDetails'
 import BankInfo from '../BankInfo'
 import convertCsv from './convertCsv'
 import convertMoth from './convertMonth'
-import { formatDateUTC3 } from '@ziro/format-date-utc3'
 
 
 const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
@@ -32,7 +32,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
     const textAreaRef = useRef(null);
     const [filtrado] = transactions.filter(item => String(item.id) === boletbankId)
     filtrado.values.sort((a,b) => new Date(a.venda) < new Date(b.venda) ? -1 : 1)
-    const status = filtrado.status
+    const {status} = filtrado
     const sendUrl = filtrado.url
     useEffect(() => {
         let block
@@ -110,7 +110,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                         }
                     ]
         setBlocks(status === 'Comissões em Aberto' ? block : block2)
-        setData(dataTable ? dataTable : [])
+        setData(dataTable || [])
     }, [])
     if (isError) return <Error />
     if(boletId === 'transferencia_bancaria') return <BankInfo valorTotal={totalReceitas} duplicateId={boletbankId}/>
@@ -159,6 +159,11 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                             click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado,setLoad,transactions[0].fabricante, setIsError)}
                                         />
                                     }
+                                    <Button
+                                        type="button"
+                                        cta="Exportar CSV"
+                                        click={() => convertCsv(filtrado.values, 'relatorio.csv')}
+                                    />
                                 </div>
                                 ) : (
                                     status === 'Aguardando Pagamento' && sendUrl !== '' ? (
