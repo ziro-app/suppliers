@@ -4,9 +4,15 @@ const { formatDateUTC3 } = require('@ziro/format-date-utc3')
 
 const simplifiedRegistration = state => () => {
     const { fname, lname, email, cnpj, cnpjValid, pass, reason, fantasia,
-        cep, street, number, complement, neighborhood, city, cityState } = state
+        cep, street, number, complement, neighborhood, city, cityState, fantasias } = state
     const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
     const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
+    const fantasiaSheet = (fantasia) => {
+        if(fantasia) return fantasias.filter(item => item.cnpj === Number(cnpj.replace('.','').replace('.','').replace('/','').replace('-','')))
+        return undefined
+    }
+    const resultFantasia = fantasiaSheet(fantasia)[0] ? fantasiaSheet[0].fantasia : fantasia
+    console.log(resultFantasia)
     const today = new Date()
     let cepSplit = cep.split('')
     cepSplit.splice(2, 0, '.')
@@ -34,7 +40,7 @@ const simplifiedRegistration = state => () => {
                     email,
                     cnpj,
                     reason,
-                    fantasia,
+                    resultFantasia,
                     dotCep,
                     endereco,
                     neighborhood,
@@ -100,7 +106,7 @@ const simplifiedRegistration = state => () => {
                                         email,
                                         cnpj,
                                         razao: reason,
-                                        fantasia,
+                                        fantasia: resultFantasia,
                                         cep: dotCep,
                                         endereco,
                                         bairro: neighborhood,

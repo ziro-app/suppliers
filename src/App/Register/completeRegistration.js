@@ -14,10 +14,15 @@ const completeRegistration = state => () => {
 	const { cnpjValid, cnpj, reason, fantasia, category, cep, bankName,
 		street, number, complement, neighborhood, city, cityState, fname, lname, cpf, email,
 		birthdate, phone, pass, bankNumber, accountNumber, agency, accountType,
-		fileDoc, fileAtv, fileRes, fileCnpj, categoryName, accountTypeViewName } = state
+		fileDoc, fileAtv, fileRes, fileCnpj, categoryName, accountTypeViewName, fantasias } = state
 	const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
 	const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
 	const telefone = phone ? `55 ${phone.trim()}` : ''
+    const fantasiaSheet = (fantasia) => {
+        if(fantasia) return fantasias.filter(item => item.cnpj === Number(cnpj.replace('.','').replace('.','').replace('/','').replace('-','')))
+        return undefined
+    }
+    const resultFantasia = fantasiaSheet(fantasia)[0] ? fantasiaSheet[0].fantasia : fantasia
 	let cepSplit = cep.split('')
 	cepSplit.splice(2, 0, '.')
 	const dotCep = cepSplit.join('')
@@ -38,7 +43,7 @@ const completeRegistration = state => () => {
 					email,
 					cnpj,
 					reason,
-					fantasia,
+					resultFantasia,
 					dotCep,
 					endereco,
 					neighborhood,
@@ -171,7 +176,7 @@ const completeRegistration = state => () => {
 												email,
 												cnpj,
 												razao: reason,
-												fantasia,
+												fantasia: resultFantasia,
 												categoria: categoryName,
 												cep: dotCep,
 												endereco,
