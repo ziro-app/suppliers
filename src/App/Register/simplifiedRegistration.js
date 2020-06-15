@@ -1,5 +1,6 @@
 import { post } from 'axios'
 import { auth, db } from '../../Firebase/index'
+
 const { formatDateUTC3 } = require('@ziro/format-date-utc3')
 
 const simplifiedRegistration = state => () => {
@@ -7,14 +8,10 @@ const simplifiedRegistration = state => () => {
         cep, street, number, complement, neighborhood, city, cityState, fantasias } = state
     const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
     const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
-    const fantasiaSheet = (fantasia) => {
-        if(fantasia) return fantasias.filter(item => item.cnpj === Number(cnpj.replace('.','').replace('.','').replace('/','').replace('-','')))
-        return undefined
-    }
-    const resultFantasia = fantasiaSheet(fantasia)[0] ? fantasiaSheet[0].fantasia : fantasia
-    console.log(resultFantasia)
+    const fantasiaSheet = fantasias.filter(item => item.cnpj === Number(cnpj.replace('.','').replace('.','').replace('/','').replace('-','')))
+    const resultFantasia = fantasiaSheet[0] ? fantasiaSheet[0].fantasia : fantasia
     const today = new Date()
-    let cepSplit = cep.split('')
+    const cepSplit = cep.split('')
     cepSplit.splice(2, 0, '.')
     const dotCep = cepSplit.join('')
     const url = process.env.SHEET_URL

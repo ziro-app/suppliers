@@ -18,11 +18,8 @@ const completeRegistration = state => () => {
 	const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
 	const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
 	const telefone = phone ? `55 ${phone.trim()}` : ''
-    const fantasiaSheet = (fantasia) => {
-        if(fantasia) return fantasias.filter(item => item.cnpj === Number(cnpj.replace('.','').replace('.','').replace('/','').replace('-','')))
-        return undefined
-    }
-    const resultFantasia = fantasiaSheet(fantasia)[0] ? fantasiaSheet[0].fantasia : fantasia
+    const fantasiaSheet = fantasias.filter(item => item.cnpj === Number(cnpj.replace('.','').replace('.','').replace('/','').replace('-','')))
+    const resultFantasia = fantasiaSheet[0] ? fantasiaSheet[0].fantasia : fantasia
 	let cepSplit = cep.split('')
 	cepSplit.splice(2, 0, '.')
 	const dotCep = cepSplit.join('')
