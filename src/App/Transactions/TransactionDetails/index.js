@@ -14,7 +14,7 @@ import currencyFormat from '@ziro/currency-format';
 import { alertColor, containerWithPadding, successColor } from '@ziro/theme';
 import { db } from '../../../Firebase/index';
 import { dateFormat, parcelFormat, round, stringToFloat } from '../utils';
-import { custom, illustrationContainer, buttonContainer, modalContainer, modalLabel, spinner } from './styles';
+import { custom, illustrationContainer, buttonContainer, modalContainer, modalLabel, spinner, btn, btnRed } from './styles';
 
 const TransactionDetails = ({ transactions, transactionId }) => {
   const [receipt_id, setReceipt_id] = useState('');
@@ -195,19 +195,16 @@ const TransactionDetails = ({ transactions, transactionId }) => {
         backRouteFunction={route => setLocation(route)}
       />
     );
-
+  const isApproved = transaction.status === 'Aprovado' || transaction.status === 'Pago' || transaction.status === 'Pré Autorizado'
+  const isCanceled = transaction.status === 'Cancelado' || transaction.status === 'Falhado'
+  const isWaiting = transaction.status === 'Aguardando Pagamento' || transaction.status === 'Aprovação Pendente'
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
       <input type="text" style={{ position: 'absolute', left: '-9999px' }} value={paymentLink} ref={textAreaRef} readOnly />
       <Header type="icon-link" title="Detalhes da venda" navigateTo="transacoes" icon="back" />
-      <div style={{ display: 'grid', gridRowGap: '40px' }}>
+      <div style={{ display: 'grid', gridRowGap: isApproved ? '20px' : '0'  }}>
         <Details blocks={blocks} />
-        {receipt_id ? (
-          <div style={{ marginTop: '40px' }}>
-            <Button type="link" cta="Gerar comprovante" template="regular" navigate={() => setLocation(`/comprovante/${transaction.transactionId}/${receipt_id}`)} />
-          </div>
-        ) : null}
-        {(transaction.status === 'Aprovado' || transaction.status === 'Pago' || transaction.status === 'Pré Autorizado') && (
+        {isApproved && (
           <>
             <Table
               data={data}
@@ -216,10 +213,10 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                 gridRowGap: '15px',
               }}
             />
-            <span style={{ fontFamily: 'Rubik', fontSize: '12px' }}>* Os valores das parcelas foram arredondados para a segunda casa decimal</span>
+            <span style={{ marginTop: '20px', fontFamily: 'Rubik', fontSize: '12px' }}>* Valores arredondados para a segunda casa decimal</span>
           </>
         )}
-        {(transaction.status === 'Cancelado' || transaction.status === 'Falhado') && (
+        {isCanceled && (
           <div style={illustrationContainer}>
             <div style={{ display: 'grid', justifyItems: 'center' }}>
               <Illustration type="paymentError" size={175} />
@@ -227,7 +224,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
             </div>
           </div>
         )}
-        {(transaction.status === 'Aguardando Pagamento' || transaction.status === 'Aprovação Pendente') && (
+        {isWaiting && (
           <>
             <div style={illustrationContainer}>
               <div style={{ display: 'grid', justifyItems: 'center' }}>
@@ -251,7 +248,7 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                 ) : (
                   <div style={{ padding: '0 0 5px', height: '24px' }}>&nbsp;</div>
                 )}
-                <Button type="button" cta="Copiar link" click={copyToClipboard} template="regular" />
+                <Button style={btn} type="button" cta="Copiar link" click={copyToClipboard} template="regular" />
               </div>
               <div>
                 <Modal boxStyle={modalContainer} isOpen={cancelModal} setIsOpen={() => setCancelModal(false)}>
@@ -263,11 +260,16 @@ const TransactionDetails = ({ transactions, transactionId }) => {
                     </div>
                   </div>
                 </Modal>
-                <Button type="button" cta="Cancelar link" click={() => setCancelModal(true)} template="destructive" />
+                <Button style={btnRed} type="button" cta="Cancelar link" click={() => setCancelModal(true)} template="destructive" />
               </div>
             </div>
           </>
         )}
+        {receipt_id
+          ? <div style={{ marginTop: isCanceled ? '20px' : '0'}} >
+              <Button type="link" cta="Gerar comprovante" template="regular" navigate={() => setLocation(`/comprovante/${transaction.transactionId}/${receipt_id}`)} />
+            </div>
+          : null}
       </div>
     </motion.div>
   );
