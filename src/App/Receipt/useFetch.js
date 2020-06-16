@@ -32,7 +32,6 @@ export default (receipt_id, setLoading, location, setReceipt, installmentsDoc, r
         });
     }
     if (receipt_id) {
-
       const getReceipt = async () => {
         setLoading(true);
         try {
@@ -42,7 +41,7 @@ export default (receipt_id, setLoading, location, setReceipt, installmentsDoc, r
 
               {
                 headers: {
-                  Authorization: `Basic ${process.env.PAY_TOKEN}`,
+                  Authorization: `${process.env.PAY_TOKEN}`,
                 },
               },
             )
