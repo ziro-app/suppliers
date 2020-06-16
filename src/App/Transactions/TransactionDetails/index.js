@@ -195,14 +195,14 @@ const TransactionDetails = ({ transactions, transactionId }) => {
         backRouteFunction={route => setLocation(route)}
       />
     );
-  const isApproved = transaction.status === 'Aprovado' || transaction.status === 'Pago' || transaction.status === 'Pré Autorizado'
-  const isCanceled = transaction.status === 'Cancelado' || transaction.status === 'Falhado'
-  const isWaiting = transaction.status === 'Aguardando Pagamento' || transaction.status === 'Aprovação Pendente'
+  const isApproved = transaction.status === 'Aprovado' || transaction.status === 'Pago' || transaction.status === 'Pré Autorizado';
+  const isCanceled = transaction.status === 'Cancelado' || transaction.status === 'Falhado';
+  const isWaiting = transaction.status === 'Aguardando Pagamento' || transaction.status === 'Aprovação Pendente';
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
       <input type="text" style={{ position: 'absolute', left: '-9999px' }} value={paymentLink} ref={textAreaRef} readOnly />
       <Header type="icon-link" title="Detalhes da venda" navigateTo="transacoes" icon="back" />
-      <div style={{ display: 'grid', gridRowGap: isApproved ? '20px' : '0'  }}>
+      <div style={{ display: 'grid', gridRowGap: isApproved ? '20px' : '0' }}>
         <Details blocks={blocks} />
         {isApproved && (
           <>
@@ -265,11 +265,11 @@ const TransactionDetails = ({ transactions, transactionId }) => {
             </div>
           </>
         )}
-        {receipt_id
-          ? <div style={{ marginTop: isCanceled ? '20px' : '0'}} >
-              <Button type="link" cta="Gerar comprovante" template="regular" navigate={() => setLocation(`/comprovante/${transaction.transactionId}/${receipt_id}`)} />
-            </div>
-          : null}
+        {receipt_id ? (
+          <div style={{ marginTop: isCanceled ? '20px' : '0' }}>
+            <Button type="link" cta="Gerar comprovante" template="regular" navigate={() => setLocation(`/comprovante/${transaction.transactionId}/${receipt_id}`)} />
+          </div>
+        ) : null}
       </div>
     </motion.div>
   );

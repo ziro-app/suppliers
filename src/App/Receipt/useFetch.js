@@ -37,7 +37,7 @@ export default (receipt_id, setLoading, location, setReceipt, installmentsDoc, r
         try {
           await axios
             .get(
-              `${process.env.PAY_URL}/payments-receipt?receipt_id=${receipt_id}`,
+              `${process.env.PAY_URL}payments-receipt?receipt_id=${receipt_id}`,
 
               {
                 headers: {
