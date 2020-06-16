@@ -13,6 +13,7 @@ import maskInput from '@ziro/mask-input'
 import capitalize from '@ziro/capitalize'
 import { containerWithPadding } from '@ziro/theme'
 import SingleImageUpload from './SingleImageUpload/index'
+import fetchFantasia from './fetchFantasia'
 import { welcome, marker } from './styles'
 import banksList from './banks'
 import fetch from './fetch'
@@ -32,6 +33,7 @@ const Register = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [step, setStep] = useState(0)
     const [suppliers, setSuppliers] = useState([])
+    const [fantasias, setFantasias] = useState([])
     const [cnpjValid, setCnpjValid] = useState(false)
     // mixed form field
     const [cnpj, setCnpj] = useState('')
@@ -83,13 +85,13 @@ const Register = () => {
         setTypeOfRegistration, setCnpj, setCnpjValid, setReason, setFantasia, setCategory,
         setFName, setLName, setCpf, setEmail, setBirthdate, setFone, setStreet, setNumber, setComplement,
         setNeighborhood, setCep, setCity, setCityState, setPass, setBankNumber, setAccountNumber,
-        setAgency, setAccountType, setFileDoc, setFileAtv, setFileRes, setFileCnpj, cnpjUrl, cnpjToken
+        setAgency, setAccountType, setFileDoc, setFileAtv, setFileRes, setFileCnpj, cnpjUrl, cnpjToken, setFantasias
     }
     const state = {
         cnpjValid, typeOfRegistration, cnpj, reason, fantasia, category, cep, street, number,
         complement, neighborhood, city, cityState, fname, lname, cpf, email, birthdate, fone, pass,
         bankName, bankNumber, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
-        fileCnpj, categoryName, accountTypeViewName, ...setState
+        fileCnpj, categoryName, accountTypeViewName,fantasias, ...setState
     }
     const validations = [
         {
@@ -289,6 +291,7 @@ const Register = () => {
     }
 
     useEffect(() => fetch(setIsLoading, setIsError, setSuppliers), [])
+    useEffect(() => fetchFantasia(setFantasias, setIsLoading, setIsError), [])
 
     if (isLoading) return <div style={{ display: 'grid', marginTop: '15px' }}><Spinner size='5rem' /></div>
     if (isError) return <Error />
@@ -354,7 +357,7 @@ const Register = () => {
                             readOnly={true}
                         />
                     } />
-                    <GetCnpj cnpj={cnpj} setState={setState} baseCnpj={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
+                    <GetCnpj cnpj={cnpj} setState={setState} suppliers={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
                     <Form
                         validations={validations}
                         sendToBackend={simplifiedRegistration ? simplifiedRegistration(state) : () => null}
@@ -427,7 +430,7 @@ const Register = () => {
                             readOnly={true}
                         />
                     } />
-                    <GetCnpj cnpj={cnpj} setState={setState} baseCnpj={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
+                    <GetCnpj cnpj={cnpj} setState={setState} suppliers={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
                     <Form
                         buttonName="Avançar"
                         validations={validations}
