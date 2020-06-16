@@ -15,22 +15,19 @@ import { formatDateUTC3 } from '@ziro/format-date-utc3';
 
 export default ({ receiptId, receipt, setReceipt, installments, transactionId }) => {
   const [location, setLocation] = useLocation();
-
   const [loading, setLoading] = useState(false);
-
   let block;
   const { error } = useFetch(receiptId, setLoading, location, setReceipt, installments, receipt);
-
   if (!receiptId) setLocation('/pagamentos');
   else {
     if (!loading && receipt) {
-      let headerReceipt = '';
+      let headerReceipt = 'pagamento';
       if (receipt.statusZiro === 'Cancelado') {
-        headerReceipt = 'Estornado';
+        headerReceipt = 'estorno';
       }
       block = [
         {
-          header: `Comprovante de Pagamento${headerReceipt ? ` ${headerReceipt}` : ''}`,
+          header: `Comprovante de ${headerReceipt}`,
           body: [
             {
               title: 'Data',
