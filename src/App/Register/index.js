@@ -357,7 +357,7 @@ const Register = () => {
                             readOnly={true}
                         />
                     } />
-                    <GetCnpj cnpj={cnpj} setState={setState} suppliers={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
+                    <GetCnpj cnpj={cnpj} setState={setState} baseCnpj={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
                     <Form
                         validations={validations}
                         sendToBackend={simplifiedRegistration ? simplifiedRegistration(state) : () => null}
@@ -430,7 +430,7 @@ const Register = () => {
                             readOnly={true}
                         />
                     } />
-                    <GetCnpj cnpj={cnpj} setState={setState} suppliers={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
+                    <GetCnpj cnpj={cnpj} setState={setState} baseCnpj={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
                     <Form
                         buttonName="Avançar"
                         validations={validations}
