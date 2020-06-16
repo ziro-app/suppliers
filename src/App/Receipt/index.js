@@ -53,17 +53,17 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
               content: `${receipt.card.first6_digits}...( ${receipt.card.card_brand} )`,
             },
             {
-              title: 'Status',
-              content: receipt.statusZiro,
-              color: matchStatusColor(receipt.statusZiro),
-            },
-            {
               title: 'NSU',
               content: receipt.auth_nsu,
             },
             {
               title: 'Autorização',
               content: receipt.auth_number.toUpperCase(),
+            },
+            {
+              title: 'Status',
+              content: receipt.statusZiro,
+              color: matchStatusColor(receipt.statusZiro),
             },
           ],
         },

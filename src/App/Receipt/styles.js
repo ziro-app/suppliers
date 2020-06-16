@@ -4,8 +4,9 @@ container = {
 	display: 'grid',
 	justifyItems: 'center',
 	gridRowGap: '10px',
+	maxWidth: '370px',
 	boxShadow: '0px 5px 15px -2px #aaa',
-	margin: '20px 15px',
+	margin: '0 auto',
 	padding: '15px 0',
 	boxSizing: 'border-box',
 	borderRadius: '3px',
@@ -19,7 +20,7 @@ header = {
 
 body = {
 	width: '100%',
-	padding: '0 20px',
+	padding: '0 15px',
 	boxSizing: 'border-box'
 },
 
