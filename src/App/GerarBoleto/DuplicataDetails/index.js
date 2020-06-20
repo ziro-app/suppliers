@@ -150,7 +150,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                                     {totalReceitas <= 200000 &&
                                         <Button
                                             type="button"
-                                            cta="Gerar Duplicata"
+                                            cta="Pagar via duplicata"
                                             click={sendToBackend(sellerId, totalReceitas,setUrl,filtrado,setLoad,transactions[0].fabricante, setIsError)}
                                         />
                                     }
