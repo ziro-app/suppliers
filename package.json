@@ -77,6 +77,8 @@
         "@bit/vitorbarbosa19.ziro.timeline": "0.1.41",
         "@bit/vitorbarbosa19.ziro.update-email": "0.1.63",
         "@bit/vitorbarbosa19.ziro.update-pass": "0.1.58",
+        "@bit/vitorbarbosa19.ziro.submenu": "0.0.2",
+        "md5": "^2.2.1",
         "@ziro/array-object": "^1.0.0",
         "@ziro/capitalize": "^1.0.0",
         "@ziro/currency-format": "1.0.2",

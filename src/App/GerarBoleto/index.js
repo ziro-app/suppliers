@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
 import { spinner } from './styles';
 import Error from '@bit/vitorbarbosa19.ziro.error'
@@ -17,8 +18,8 @@ const GerarBoleto = ({ boletbankId, boletId }) => {
     const [url, setUrl] = useState('')
     const [urlLoad, setUrlLoad] = useState(false)
     const [maxInstallments, setMaxInstallments] = useState('')
-    const state = { seller:fantasy, sellerId:zoopId, razao, charge, maxInstallments, docId,url,urlLoad,email,setCharge, setMaxInstallments, setIsError, setIsLoading, setUrl,setUrlLoad, setfisrtTicket, setTicket  }
-    useEffect(() => fetch(state),[]);
+    const state = { seller: fantasy, sellerId: zoopId, razao, charge, maxInstallments, docId, url, urlLoad, email, setCharge, setMaxInstallments, setIsError, setIsLoading, setUrl, setUrlLoad, setfisrtTicket, setTicket }
+    useEffect(() => fetch(state), []);
     if (isLoading)
         return (
             <div style={spinner}>
@@ -26,9 +27,9 @@ const GerarBoleto = ({ boletbankId, boletId }) => {
             </div>
         );
     if (isError) return <Error />
-    if (boletbankId && boletId) return <DuplicataDetails transactions={firstTicket} boletbankId={boletbankId} boletId={boletId} sellerId={state.sellerId}/>
-    if (boletbankId) return <DuplicataDetails transactions={firstTicket} boletbankId={boletbankId} boletId={''} sellerId={state.sellerId}/>;
-    return <RelatorioList transactions={ticket}/>;
+    if (boletbankId && boletId) return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}><DuplicataDetails transactions={firstTicket} boletbankId={boletbankId} boletId={boletId} sellerId={state.sellerId} /></motion.div>
+    if (boletbankId) return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}><DuplicataDetails transactions={firstTicket} boletbankId={boletbankId} boletId={''} sellerId={state.sellerId} /></motion.div>;
+    return <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}><RelatorioList transactions={ticket} /></motion.div>;
 }
 
 export default GerarBoleto
