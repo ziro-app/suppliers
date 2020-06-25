@@ -21,6 +21,7 @@ import Receipt from './Receipt/index';
 import UpdateUserInfo from './UpdateUserInfo/index';
 //import Receivables from './Receivables/index';
 import InviteCollaborator from './InviteCollaborator/index';
+import RegisterCollaborator from './RegisterCollaborator/index';
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found';
 import Submenu from '@bit/vitorbarbosa19.ziro.submenu';
 import { useRoute, useLocation } from 'wouter';
@@ -42,6 +43,7 @@ const Router = ({ isLogged }) => {
         '/reenviar-email': <ResendEmail />,
         '/resetar-senha': <ResetPass />,
         '/confirmar-email': <ConfirmEmail />,
+        '/cadastrar-colaborador': <RegisterCollaborator />
     };
     const privateRoutes = {
         // Menu can't be put inside the components because then it'll unmount on transition

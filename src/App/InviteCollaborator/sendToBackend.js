@@ -1,7 +1,7 @@
 import { post } from 'axios';
 
 const mountLink = (uid) => {
-    if (uid) return `https://fabricantes.ziro.app/registrar/colaborador?rel=${btoa(uid)}`;
+    if (uid) return `https://fabricantes.ziro.app/cadastrar-colaborador?rel=${btoa(uid)}`;
     else return '';
 };
 

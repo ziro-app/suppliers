@@ -43,7 +43,8 @@ module.exports = (env, { mode }) => {
             sheet_id_charge,
             seller_id_ziro,
             sheet_cnpj_id,
-            api_email
+            api_email,
+            sheet_collaborators_id
         } = require('./credentials')
         config.devtool = 'cheap-module-eval-source-map'
         config.devServer = { historyApiFallback: true }
@@ -64,7 +65,8 @@ module.exports = (env, { mode }) => {
                     SHEET_ID_CHARGE: JSON.stringify(sheet_id_charge),
                     SELLER_ID_ZIRO: JSON.stringify(seller_id_ziro),
                     SHEET_CNPJ_ID: JSON.stringify(sheet_cnpj_id),
-                    API_EMAIL: JSON.stringify(api_email)
+                    API_EMAIL: JSON.stringify(api_email),
+                    SHEET_COLLABORATORS_ID: JSON.stringify(sheet_collaborators_id)
                 }
             })
         )
@@ -102,7 +104,8 @@ module.exports = (env, { mode }) => {
                     SHEET_ID_CHARGE: JSON.stringify(process.env.SHEET_ID_CHARGE),
                     SELLER_ID_ZIRO: JSON.stringify(process.env.SELLER_ID_ZIRO),
                     SHEET_CNPJ_ID: JSON.stringify(process.env.SHEET_CNPJ_ID),
-                    API_EMAIL: JSON.stringify(process.env.API_EMAIL)
+                    API_EMAIL: JSON.stringify(process.env.API_EMAIL),
+                    SHEET_COLLABORATORS_ID: JSON.stringify(process.env.SHEET_COLLABORATORS_ID)
                 }
             })
         )
