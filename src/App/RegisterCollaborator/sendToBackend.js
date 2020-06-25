@@ -2,12 +2,9 @@ import { post } from 'axios';
 import { auth, db } from '../../Firebase/index';
 const { formatDateUTC3 } = require('@ziro/format-date-utc3');
 
-const decryptUid = (uid) => atob(uid);
-
 const sendToBackend = state => () => {
-    const { fname, lname, email, pass, supplierId } = state;
+    const { fname, lname, email, pass, docId, supplierId, role } = state;
     const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : '';
-    const supplier = supplierId ? decryptUid(supplierId.trim()) : '';
     const today = new Date();
     const url = process.env.SHEET_URL;
     const config = {
@@ -22,29 +19,31 @@ const sendToBackend = state => () => {
         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
         range: 'Colaboradores!A1',
         resource: {
-            values: [[formatDateUTC3(today), nomeCompleto, email, supplier]]
+            values: [[formatDateUTC3(today), nomeCompleto, email, supplierId, 'Aprovado', role]]
         },
         valueInputOption: 'user_entered'
     };
-    const uidInCollection = [];
 
     return new Promise(async (resolve, reject) => {
         try {
             try {
-                const documents = await db.collection('suppliers').get();
-                documents.forEach(document => {
-                    if (document.data().uid !== '') uidInCollection.push(document.data().uid);
-                });
-                if (!supplier || !uidInCollection.includes(supplier)) throw { msg: 'Link inválido. Contate suporte', customError: true };
                 // Cadastrando usuário na planilha
                 await post(url, body, config);
                 try {
                     // Cadastrando no Firebase Auth
                     const { user } = await auth.createUserWithEmailAndPassword(email, pass);
+
+                    // Atualizando o registro na collection
+                    await db.collection('collaborators').doc(docId).update({
+                        cadastro: today,
+                        uid: user.uid,
+                        status: 'Aprovado'
+                    });
+
                     // Enviando email de verificação
                     try {
                         await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` });
-                        await db.collection('users').add({ email, app: 'suppliers', supplier })
+                        await db.collection('users').add({ email, app: 'suppliers' })
                         try {
                             await auth.signOut() // user needs to validate email before signing in to app
                         } catch (error) {

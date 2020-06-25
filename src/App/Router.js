@@ -92,7 +92,14 @@ const Router = ({ isLogged }) => {
                 </motion.div>
             </Menu>
         ),
-        '/convidar-colaborador': <HeaderBack title="Convidar Colaborador" navigateTo="/colaboradores"><InviteCollaborator /></HeaderBack>
+        '/convidar-colaborador': <HeaderBack title="Convidar Colaborador" navigateTo="/colaboradores"><InviteCollaborator /></HeaderBack>,
+        '/cadastrar-colaborador': (
+            <Menu title="Minha Conta">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <MyAccount />
+                </motion.div>
+            </Menu>
+        )
     };
 
     return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback="/" />);

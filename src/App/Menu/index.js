@@ -31,24 +31,24 @@ export const Menu = ({ title, children }) => {
                             icon: <Icon type='money' size={15} strokeWidth={2} />,
                             text: 'Criar Cobrança'
                         },
-                        /* {
-                             path: '/recebiveis',
-                             onClick: () => setIsOpen(false),
-                             icon: <Icon type='money' size={15} strokeWidth={2} />,
-                             text: 'Recebíveis'
-                         }, */
+                        // {
+                        //     path: '/recebiveis',
+                        //     onClick: () => setIsOpen(false),
+                        //     icon: <Icon type='money' size={15} strokeWidth={2} />,
+                        //     text: 'Recebíveis'
+                        // },
                         {
                             path: '/relatorio',
                             onClick: () => setIsOpen(false),
                             icon: <Icon type='file' size={15} strokeWidth={2} />,
                             text: 'Relatórios'
                         },
-                        {
-                            path: '/colaboradores',
-                            onClick: () => setIsOpen(false),
-                            icon: <Icon type='user' size={15} strokeWidth={2} />,
-                            text: 'Colaboradores'
-                        },
+                        // {
+                        //     path: '/colaboradores',
+                        //     onClick: () => setIsOpen(false),
+                        //     icon: <Icon type='user' size={15} strokeWidth={2} />,
+                        //     text: 'Colaboradores'
+                        // },
                         {
                             path: '/minha-conta',
                             onClick: () => setIsOpen(false),
