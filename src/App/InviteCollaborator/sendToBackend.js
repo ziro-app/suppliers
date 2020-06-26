@@ -13,7 +13,8 @@ const sendToBackend = state => () => {
     const url = process.env.API_EMAIL;
     const config = {
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            'Authorization': process.env.EMAIL_TOKEN
         }
     };
     return new Promise(async (resolve, reject) => {

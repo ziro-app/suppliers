@@ -43,6 +43,7 @@ module.exports = (env, { mode }) => {
             sheet_id_charge,
             seller_id_ziro,
             sheet_cnpj_id,
+            email_token,
             api_email
         } = require('./credentials')
         config.devtool = 'cheap-module-eval-source-map'
@@ -64,6 +65,7 @@ module.exports = (env, { mode }) => {
                     SHEET_ID_CHARGE: JSON.stringify(sheet_id_charge),
                     SELLER_ID_ZIRO: JSON.stringify(seller_id_ziro),
                     SHEET_CNPJ_ID: JSON.stringify(sheet_cnpj_id),
+                    EMAIL_TOKEN: JSON.stringify(email_token),
                     API_EMAIL: JSON.stringify(api_email)
                 }
             })
@@ -102,6 +104,7 @@ module.exports = (env, { mode }) => {
                     SHEET_ID_CHARGE: JSON.stringify(process.env.SHEET_ID_CHARGE),
                     SELLER_ID_ZIRO: JSON.stringify(process.env.SELLER_ID_ZIRO),
                     SHEET_CNPJ_ID: JSON.stringify(process.env.SHEET_CNPJ_ID),
+                    EMAIL_TOKEN: JSON.stringify(process.env.EMAIL_TOKEN),
                     API_EMAIL: JSON.stringify(process.env.API_EMAIL)
                 }
             })

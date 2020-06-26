@@ -61,7 +61,7 @@ const RegisterCollaborator = () => {
 
     if (isLoading) return <div style={{ display: 'grid', marginTop: '15px' }}><Spinner size='5rem' /></div>;
     if (customError) return <Error
-        message="Link inválido, contate um assessor."
+        message="Link inválido, contate suporte."
         type="notFound"
         title="Link inválido"
         backRoute="/"

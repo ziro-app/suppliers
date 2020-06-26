@@ -20,6 +20,7 @@ import GerarBoleto from './GerarBoleto/index';
 import Receipt from './Receipt/index';
 import UpdateUserInfo from './UpdateUserInfo/index';
 //import Receivables from './Receivables/index';
+import Collaborators from './Collaborators/index';
 import InviteCollaborator from './InviteCollaborator/index';
 import RegisterCollaborator from './RegisterCollaborator/index';
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found';
@@ -81,17 +82,18 @@ const Router = ({ isLogged }) => {
                 <UpdateUserInfo />
             </HeaderBack>
         ),
-        '/colaboradores': (
-            <Menu title="Colaboradores">
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                    <Submenu
-                        options={[
-                            ['Convidar Colaborador', 'convidar-colaborador']
-                        ]}
-                    />
-                </motion.div>
-            </Menu>
-        ),
+        '/colaboradores': <Menu title="Colaboradores"><Collaborators /></Menu>,
+        // '/colaboradores': (
+        //     <Menu title="Colaboradores">
+        //         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        //             <Submenu
+        //                 options={[
+        //                     ['Convidar Colaborador', 'convidar-colaborador']
+        //                 ]}
+        //             />
+        //         </motion.div>
+        //     </Menu>
+        // ),
         '/convidar-colaborador': <HeaderBack title="Convidar Colaborador" navigateTo="/colaboradores"><InviteCollaborator /></HeaderBack>,
         '/cadastrar-colaborador': (
             <Menu title="Minha Conta">
