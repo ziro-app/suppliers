@@ -2,12 +2,12 @@ import { fbauth, auth, db } from '../../Firebase/index'
 import { post } from 'axios'
 
 const sendToBackend = state => () => {
-    const { zoopId, row, pass, newEmail } = state
+    const { isCollaborator, zoopId, row, pass, newEmail } = state
     const url = process.env.SHEET_URL
     const body = {
         apiResource: 'values',
         apiMethod: 'update',
-        range: `Base!F${row}`,
+        range: isCollaborator ? `Colaboradores!C${row}` : `Base!F${row}`,
         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
         resource: {
             values: [[newEmail.toLowerCase()]]
@@ -29,31 +29,38 @@ const sendToBackend = state => () => {
                 const credential = fbauth.EmailAuthProvider.credential(user.email, pass)
                 await user.reauthenticateWithCredential(credential)
                 try {
-                    const snapCollection = await db.collection('suppliers').where('uid', '==', user.uid).get()
-                    //
-                    let docRefCollection
-                    snapCollection.forEach(doc => docRefCollection = doc.ref)
+                    let snapCollection;
+                    let docRefCollection;
                     const snapUser = await db.collection('users').where('email', '==', user.email).get()
                     let docRefUser, userApp
                     snapUser.forEach(doc => {
                         userApp = doc.data().app
                         docRefUser = doc.ref
-                    })
+                    });
                     if (userApp === 'admin') throw { msg: 'Não permitido para admin', customError: true }
-                    await user.updateEmail(newEmail.toLowerCase())
-                    await docRefCollection.update({ email: newEmail.toLowerCase() })
-                    await docRefUser.update({ email: newEmail.toLowerCase() })
-                    await post(
-                        `${process.env.PAY_URL}sellers-update?seller_id=${zoopId}`,
-                        {
-                            owner: {
-                                email: newEmail.toLowerCase()
-                            }
-                        }, {
-                            headers: {
-                                Authorization: `${process.env.PAY_TOKEN}`,
-                            },
-                        });
+                    if (isCollaborator) {
+                        snapCollection = await db.collection('collaborators').where('uid', '==', user.uid).get();
+                        snapCollection.forEach(doc => docRefCollection = doc.ref);
+                    } else {
+                        snapCollection = await db.collection('suppliers').where('uid', '==', user.uid).get();
+                        snapCollection.forEach(doc => docRefCollection = doc.ref);
+                    }
+                    await user.updateEmail(newEmail.toLowerCase());
+                    await docRefCollection.update({ email: newEmail.toLowerCase() });
+                    await docRefUser.update({ email: newEmail.toLowerCase() });
+                    if (!isCollaborator) {
+                        await post(
+                            `${process.env.PAY_URL}sellers-update?seller_id=${zoopId}`,
+                            {
+                                owner: {
+                                    email: newEmail.toLowerCase()
+                                }
+                            }, {
+                                headers: {
+                                    Authorization: `${process.env.PAY_TOKEN}`,
+                                },
+                            });
+                    }
                     try {
                         await user.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })
                         window.alert('Email atualizado! Acesse a confirmação na sua caixa de entrada e refaça o login')

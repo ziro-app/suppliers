@@ -4,7 +4,7 @@ import sendToBackend from './sendToBackend'
 import { userContext } from '../appContext'
 
 export default () => {
-    const { zoopId } = useContext(userContext)
+    const { zoopId, role } = useContext(userContext)
 
-    return <DeleteAccount zoopId={zoopId} sendToBackend={sendToBackend} navigateTo='/minha-conta' />
+    return <DeleteAccount isCollaborator={role !== ''} zoopId={zoopId} sendToBackend={sendToBackend} navigateTo='/minha-conta' />
 }

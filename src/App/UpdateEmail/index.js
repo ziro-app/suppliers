@@ -4,6 +4,6 @@ import sendToBackend from './sendToBackend'
 import { userContext } from '../appContext'
 
 export default () => {
-    const { userPos, zoopId } = useContext(userContext)
-    return <UpdateEmail zoopId={zoopId} row={userPos} sendToBackend={sendToBackend} navigateTo='/minha-conta' />
+    const { userPos, zoopId, role } = useContext(userContext);
+    return <UpdateEmail isCollaborator={role !== ''} zoopId={zoopId} row={userPos} sendToBackend={sendToBackend} navigateTo='/minha-conta' />
 }
