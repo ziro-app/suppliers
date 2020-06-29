@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { Router2 as routeMatcher } from '@ziro/router';
@@ -26,6 +26,7 @@ import RegisterCollaborator from './RegisterCollaborator/index';
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found';
 import Submenu from '@bit/vitorbarbosa19.ziro.submenu';
 import { useRoute, useLocation } from 'wouter';
+import { userContext } from './appContext'
 
 const Router = ({ isLogged }) => {
     const [match, params] = useRoute('/transacoes/:transactionId?/:receivableId?');
@@ -35,6 +36,7 @@ const Router = ({ isLogged }) => {
     const [receipt, setReceipt] = useState('');
     const [transactionId, setTransactionId] = useState('');
     const [location] = useLocation();
+    const { role } = useContext(userContext);
 
     const publicRoutes = {
         '/': <Login />,
@@ -82,27 +84,17 @@ const Router = ({ isLogged }) => {
                 <UpdateUserInfo />
             </HeaderBack>
         ),
-        '/colaboradores': <Menu title="Colaboradores"><Collaborators /></Menu>,
-        // '/colaboradores': (
-        //     <Menu title="Colaboradores">
-        //         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        //             <Submenu
-        //                 options={[
-        //                     ['Convidar Colaborador', 'convidar-colaborador']
-        //                 ]}
-        //             />
-        //         </motion.div>
-        //     </Menu>
-        // ),
-        '/convidar-colaborador': <HeaderBack title="Convidar Colaborador" navigateTo="/colaboradores"><InviteCollaborator /></HeaderBack>,
-        '/cadastrar-colaborador': (
-            <Menu title="Minha Conta">
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                    <MyAccount />
-                </motion.div>
-            </Menu>
-        )
     };
+
+    if (role === '') {
+        privateRoutes['/colaboradores'] = <Menu title="Vendedores"><Collaborators /></Menu>;
+        privateRoutes['/convidar-colaborador'] = <HeaderBack title="Convidar Vendedor" navigateTo="/colaboradores"><InviteCollaborator /></HeaderBack>;
+        privateRoutes['/cadastrar-colaborador'] = <Menu title="Minha Conta">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <MyAccount />
+            </motion.div>
+        </Menu>;
+    }
 
     return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback="/" />);
 };

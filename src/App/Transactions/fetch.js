@@ -3,17 +3,34 @@ import { db } from '../../Firebase/index';
 import matchStatusColor from './matchStatusColor'
 import { dateFormat } from './utils';
 
-const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore) => {
-    let query = db.collection('credit-card-payments')
-        .where('sellerZoopId', '==', zoopId)
-        .orderBy('dateLinkCreated', 'desc')
-        .limit(limit);
+const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore, docId, isCollaborator) => {
+    let query;
+    if (isCollaborator) {
+        query = db.collection('credit-card-payments')
+            .where('sellerZoopId', '==', zoopId)
+            .where('collaboratorId', '==', docId)
+            .orderBy('dateLinkCreated', 'desc')
+            .limit(limit);
+    } else {
+        query = db.collection('credit-card-payments')
+            .where('sellerZoopId', '==', zoopId)
+            .orderBy('dateLinkCreated', 'desc')
+            .limit(limit);
+    }
     if (lastDoc) query = query.startAfter(lastDoc);
 
     const run = async () => {
         try {
             await query.onSnapshot(async snapshot => {
-                let collectionData = await db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).get();
+                let collectionData;
+                if (isCollaborator) {
+                    collectionData = await db.collection('credit-card-payments')
+                        .where('sellerZoopId', '==', zoopId)
+                        .where('collaboratorId', '==', docId)
+                        .get();
+                } else {
+                    collectionData = await db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).get();
+                }
                 setTotalTransactions(collectionData.docs.length);
                 const paymentDoc = [];
                 if (!snapshot.empty) {
@@ -55,6 +72,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                 setLoadingMore(false);
             });
         } catch (error) {
+            console.log(error);
             setErrorLoading(true);
             setIsLoading(false);
             setLoadingMore(false);

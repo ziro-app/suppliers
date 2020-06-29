@@ -27,47 +27,50 @@ const sendToBackend = state => () => {
     return new Promise(async (resolve, reject) => {
         try {
             try {
-                // Cadastrando usuário na planilha
-                await post(url, body, config);
-                try {
-                    // Cadastrando no Firebase Auth
-                    const { user } = await auth.createUserWithEmailAndPassword(email, pass);
-
-                    // Atualizando o registro na collection
-                    await db.collection('collaborators').doc(docId).update({
-                        cadastro: today,
-                        uid: user.uid,
-                        status: 'Aprovado'
-                    });
-
-                    // Enviando email de verificação
+                const doc = await db.collection('collaborators').doc(docId).get();
+                if (doc.exists) {
+                    // Cadastrando usuário na planilha
+                    await post(url, body, config);
                     try {
-                        await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` });
-                        await db.collection('users').add({ email, app: 'suppliers' })
+                        // Cadastrando no Firebase Auth
+                        const { user } = await auth.createUserWithEmailAndPassword(email, pass);
+
+                        // Atualizando o registro na collection
+                        await db.collection('collaborators').doc(docId).update({
+                            cadastro: today,
+                            uid: user.uid,
+                            status: 'Aprovado'
+                        });
+
+                        // Enviando email de verificação
                         try {
-                            await auth.signOut() // user needs to validate email before signing in to app
+                            await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` });
+                            await db.collection('users').add({ email, app: 'suppliers' })
+                            try {
+                                await auth.signOut() // user needs to validate email before signing in to app
+                            } catch (error) {
+                                if (error.response) console.log(error.response)
+                                throw 'Erro ao fazer signOut'
+                            }
                         } catch (error) {
+                            if (error.customError) throw error
                             if (error.response) console.log(error.response)
-                            throw 'Erro ao fazer signOut'
+                            throw 'Erro ao enviar email de verificação'
                         }
                     } catch (error) {
                         if (error.customError) throw error
-                        if (error.response) console.log(error.response)
-                        throw 'Erro ao enviar email de verificação'
-                    }
-                } catch (error) {
-                    if (error.customError) throw error
-                    if (error.code) {
-                        switch (error.code) {
-                            case 'auth/network-request-failed': throw { msg: 'Sem conexão com a rede', customError: true }
-                            case 'auth/invalid-email': throw { msg: 'Email inválido', customError: true }
-                            case 'auth/email-already-in-use': throw { msg: 'Email já cadastrado', customError: true }
-                            case 'auth/operation-not-allowed': throw { msg: 'Operação não permitida', customError: true }
-                            case 'auth/weak-password': throw { msg: 'Senha fraca. Mínimo 6 caracteres', customError: true }
+                        if (error.code) {
+                            switch (error.code) {
+                                case 'auth/network-request-failed': throw { msg: 'Sem conexão com a rede', customError: true }
+                                case 'auth/invalid-email': throw { msg: 'Email inválido', customError: true }
+                                case 'auth/email-already-in-use': throw { msg: 'Email já cadastrado', customError: true }
+                                case 'auth/operation-not-allowed': throw { msg: 'Operação não permitida', customError: true }
+                                case 'auth/weak-password': throw { msg: 'Senha fraca. Mínimo 6 caracteres', customError: true }
+                            }
                         }
+                        throw 'Erro ao criar usuário'
                     }
-                    throw 'Erro ao criar usuário'
-                }
+                } else throw { msg: 'Link inválido', customError: true };
             } catch (error) {
                 if (error.customError) throw error
                 throw { msg: 'Erro ao ao salvar usuário. Tente novamente.', customError: true }

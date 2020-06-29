@@ -16,10 +16,10 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
     const [payments, setPayments] = useState([]);
     const [totalTransactions, setTotalTransactions] = useState(-1);
     const [lastDoc, setLastDoc] = useState(null);
-    const { zoopId } = useContext(userContext);
+    const { zoopId, docId, role } = useContext(userContext);
 
     useEffect(
-        () => fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore),
+        () => fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore, docId, role !== ''),
         [],
     );
 
@@ -40,7 +40,7 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
                 transactions={payments}
                 btnMoreClick={() => {
                     setLoadingMore(true);
-                    fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore);
+                    fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore, docId, role !== '');
                 }}
                 hasMore={!(payments.length === totalTransactions)}
                 loadingMore={loadingMore}

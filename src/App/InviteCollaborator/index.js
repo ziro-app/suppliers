@@ -50,14 +50,14 @@ const InviteCollaborator = () => {
                         <InputText
                             value={fname}
                             onChange={({ target: { value } }) => setFName(capitalize(value))}
-                            placeholder='Nome do colaborador'
+                            placeholder='Nome do vendedor'
                         />
                     } />,
                     <FormInput name='lname' label='Sobrenome' input={
                         <InputText
                             value={lname}
                             onChange={({ target: { value } }) => setLName(capitalize(value))}
-                            placeholder='Sobrenome do colaborador'
+                            placeholder='Sobrenome do vendedor'
                         />
                     } />,
                     <FormInput name='role' label='Permissão' input={
