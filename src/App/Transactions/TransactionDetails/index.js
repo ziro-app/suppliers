@@ -31,8 +31,6 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
   const { role } = useContext(userContext);
   const textAreaRef = useRef(null);
   const paymentLink = `https://ziro.app/pagamento/${transactionId}/escolher-cartao?doc`;
-  useEffect(() => {
-  }, []);
   const deleteTransaction = async () => {
     setIsLoading(true);
     try {
