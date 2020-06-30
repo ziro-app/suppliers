@@ -4,21 +4,23 @@ import { useLocation } from 'wouter';
 import Timeline from '@bit/vitorbarbosa19.ziro.timeline';
 import { Menu } from '../../Menu/index';
 
-export default ({ transactions, btnMoreClick, hasMore, loadingMore }) => {
+export default ({ transactions, btnMoreClick, hasMore, loadingMore, setTransaction }) => {
+  const [, setLocation] = useLocation();
 
-    const [, setLocation] = useLocation()
-
-    return (
-        <Menu title='Vendas'>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <Timeline
-                    transactions={transactions}
-                    transactionClick={({ transaction }) => setLocation(`/transacoes/${transaction.transactionId}`)}
-                    btnMoreClick={btnMoreClick}
-                    hasMore={hasMore}
-                    isSearching={loadingMore}
-                />
-            </motion.div>
-        </Menu>
-    )
-}
+  return (
+    <Menu title="Vendas">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <Timeline
+          transactions={transactions}
+          transactionClick={({ transaction }) => {
+            setTransaction({});
+            setLocation(`/transacoes/${transaction.transactionId}`);
+          }}
+          btnMoreClick={btnMoreClick}
+          hasMore={hasMore}
+          isSearching={loadingMore}
+        />
+      </motion.div>
+    </Menu>
+  );
+};

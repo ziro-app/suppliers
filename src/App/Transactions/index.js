@@ -52,6 +52,7 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
         }}
         hasMore={!(payments.length === totalTransactions)}
         loadingMore={loadingMore}
+        setTransaction={setTransaction}
       />
     </motion.div>
   );
