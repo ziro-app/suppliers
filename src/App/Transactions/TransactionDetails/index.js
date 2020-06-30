@@ -276,7 +276,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
           </>
         )}
         {receipt_id ? (
-          <div style={{ marginTop: isCanceled ? '20px' : '0' }}>
+          <div style={{ marginTop: isCanceled || transaction.status === 'Atualizando' ? '20px' : '0' }}>
             <Button type="link" cta="Gerar comprovante" template="regular" navigate={() => setLocation(`/comprovante/${transaction.transactionId}/${receipt_id}`)} />
           </div>
         ) : null}
