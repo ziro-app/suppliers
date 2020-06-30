@@ -135,7 +135,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             content: transaction.collaboratorName,
           });
         }
-        if (transaction.receivables.length) {
+        if (transaction.receivables) {
           const sortedTransactions = transaction.receivables.sort((a, b) => b.installment - a.installment);
           const paidRows = [];
           const paidClicks = [];
