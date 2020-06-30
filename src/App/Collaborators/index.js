@@ -76,9 +76,9 @@ const Collaborators = () => {
                             <label style={labelBody}>{collaboratorEmail}</label>
                         </div>
                         <div style={containerButtons}>
-                            <Button type="button" cta="Sim" click={() => {
+                            <Button type="button" cta="Sim" click={async () => {
                                 setDeleteModal(false);
-                                deleteCollaborator();
+                                await deleteCollaborator();
                             }} template="regular" />
                             <Button type="button" cta="Não" click={() => setDeleteModal(false)} template="light" />
                         </div>
@@ -91,6 +91,7 @@ const Collaborators = () => {
                 />
             </div>
             <div>
+                <Button type="button" cta="Convidar vendedor" click={() => setLocation('/convidar-colaborador')} template="regular" />
                 {deleteResultText ? (
                     <div style={resultStyle(deleteResultStatus)}>
                         <span>{deleteResultText}</span>
@@ -98,7 +99,6 @@ const Collaborators = () => {
                 ) : (
                         <div style={{ padding: '0 0 5px', height: '24px' }}>&nbsp;</div>
                     )}
-                <Button type="button" cta="Convidar vendedor" click={() => setLocation('/convidar-colaborador')} template="regular" />
             </div>
         </motion.div>
     );

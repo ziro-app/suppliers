@@ -45,7 +45,7 @@ export const modalContainer = {
         gridColumnGap: '20px'
     },
     customGrid = {
-        gridTemplateColumns: '100px 1fr 20px',
+        gridTemplateColumns: '1fr 3fr 20px',
         gridRowGap: '15px',
         gridColumnGap: '10px',
         placeItems: 'end start'
@@ -58,9 +58,12 @@ export const modalContainer = {
         textOverflow: 'ellipsis',
         overflow: 'hidden',
         whiteSpace: 'nowrap',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        alignItems: 'center',
+        justifyItems: 'center'
     },
     resultStyle = (resultStatus) => ({
+        marginTop: '15px',
         padding: '0 0 5px',
         height: '24px',
         fontSize: '1.6rem',

@@ -42,16 +42,8 @@ const sendToBackend = state => () => {
                             status: 'Aprovado'
                         });
 
-                        // Enviando email de verificação
                         try {
-                            await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` });
                             await db.collection('users').add({ email, app: 'suppliers' })
-                            try {
-                                await auth.signOut() // user needs to validate email before signing in to app
-                            } catch (error) {
-                                if (error.response) console.log(error.response)
-                                throw 'Erro ao fazer signOut'
-                            }
                         } catch (error) {
                             if (error.customError) throw error
                             if (error.response) console.log(error.response)
@@ -75,7 +67,7 @@ const sendToBackend = state => () => {
                 if (error.customError) throw error
                 throw { msg: 'Erro ao ao salvar usuário. Tente novamente.', customError: true }
             }
-            window.location.assign('/confirmar-email')
+            window.location.assign('/');
         } catch (error) {
             if (error.customError) reject(error)
             else {

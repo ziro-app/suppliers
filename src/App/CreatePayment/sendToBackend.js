@@ -1,7 +1,7 @@
 import { db } from '../../Firebase/index';
 
 const sendToBackend = state => () => {
-    const { seller, sellerId, charge, maxInstallments, isCollaborator, docId, setCharge, setMaxInstallments } = state;
+    const { seller, sellerId, charge, maxInstallments, isCollaborator, docId, fname, setCharge, setMaxInstallments } = state;
     const baseUrl = 'https://ziro.app/pagamento/';
     return new Promise(async (resolve, reject) => {
         try {
@@ -15,7 +15,8 @@ const sendToBackend = state => () => {
                         charge,
                         maxInstallments,
                         status: 'Aguardando Pagamento',
-                        collaboratorId: docId
+                        collaboratorId: docId,
+                        collaboratorName: fname
                     });
                 } else {
                     docRef = await db.collection('credit-card-payments').add({
