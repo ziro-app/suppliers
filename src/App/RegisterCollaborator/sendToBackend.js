@@ -32,14 +32,10 @@ const sendToBackend = state => () => {
                     // Cadastrando usuário na planilha
                     await post(url, body, config);
                     try {
-
                         const config = {
                             method: 'POST',
                             url: `${process.env.FIREBASE_AUTH_URL}createVerifiedUser`,
-                            data: {
-                                email,
-                                pass
-                            },
+                            data: { email, pass },
                             headers: {
                                 'Content-Type': 'application/json'
                             }
@@ -80,7 +76,7 @@ const sendToBackend = state => () => {
                 } else throw { msg: 'Link inválido, solicite um novo', customError: true };
             } catch (error) {
                 if (error.customError) throw error
-                throw { msg: 'Erro ao ao salvar usuário. Tente novamente.', customError: true }
+                throw { msg: 'Erro ao salvar usuário. Tente novamente.', customError: true }
             }
             window.location.assign('/');
         } catch (error) {
