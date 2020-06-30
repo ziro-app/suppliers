@@ -1,5 +1,5 @@
-import { post } from 'axios';
-import { auth, db } from '../../Firebase/index';
+import axios, { post } from 'axios';
+import { db } from '../../Firebase/index';
 const { formatDateUTC3 } = require('@ziro/format-date-utc3');
 
 const sendToBackend = state => () => {
@@ -32,8 +32,23 @@ const sendToBackend = state => () => {
                     // Cadastrando usuário na planilha
                     await post(url, body, config);
                     try {
+
+                        const config = {
+                            method: 'POST',
+                            url: `${process.env.FIREBASE_AUTH_URL}createVerifiedUser`,
+                            data: {
+                                email,
+                                pass
+                            },
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        }
                         // Cadastrando no Firebase Auth
-                        const { user } = await auth.createUserWithEmailAndPassword(email, pass);
+
+                        const user = await axios(config);
+                        console.log(user);
+                        //let { user } = await auth.createUserWithEmailAndPassword(email, pass);
 
                         // Atualizando o registro na collection
                         await db.collection('collaborators').doc(docId).update({

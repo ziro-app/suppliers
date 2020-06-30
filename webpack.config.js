@@ -43,7 +43,8 @@ module.exports = (env, { mode }) => {
             seller_id_ziro,
             sheet_cnpj_id,
             email_token,
-            api_email
+            api_email,
+            firebase_auth_url
         } = require('./credentials')
         config.devtool = 'cheap-module-eval-source-map'
         config.devServer = { historyApiFallback: true }
@@ -64,7 +65,8 @@ module.exports = (env, { mode }) => {
                     SELLER_ID_ZIRO: JSON.stringify(seller_id_ziro),
                     SHEET_CNPJ_ID: JSON.stringify(sheet_cnpj_id),
                     EMAIL_TOKEN: JSON.stringify(email_token),
-                    API_EMAIL: JSON.stringify(api_email)
+                    API_EMAIL: JSON.stringify(api_email),
+                    FIREBASE_AUTH_URL: JSON.stringify(firebase_auth_url)
                 }
             })
         )
@@ -102,7 +104,8 @@ module.exports = (env, { mode }) => {
                     SELLER_ID_ZIRO: JSON.stringify(process.env.SELLER_ID_ZIRO),
                     SHEET_CNPJ_ID: JSON.stringify(process.env.SHEET_CNPJ_ID),
                     EMAIL_TOKEN: JSON.stringify(process.env.EMAIL_TOKEN),
-                    API_EMAIL: JSON.stringify(process.env.API_EMAIL)
+                    API_EMAIL: JSON.stringify(process.env.API_EMAIL),
+                    FIREBASE_AUTH_URL: JSON.stringify(process.env.FIREBASE_AUTH_URL)
                 }
             })
         )

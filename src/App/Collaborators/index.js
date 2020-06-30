@@ -30,6 +30,7 @@ const Collaborators = () => {
     const deleteCollaborator = async () => {
         setIsLoading(true);
         try {
+            // TODO -> Apagar do auth e da collection users
             await db.collection('collaborators').doc(collaboratorId).delete();
             setDeleteResultStatus(true);
             setDeleteResultText('Vendedor excluído com sucesso');
