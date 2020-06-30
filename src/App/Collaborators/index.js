@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import axios, { post } from 'axios';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
 import Button from '@bit/vitorbarbosa19.ziro.button';
@@ -26,33 +27,100 @@ const Collaborators = () => {
     const setState = { setIsLoading, setErrorLoading, setCollaborators, setDataTable, setCollaboratorName, setCollaboratorEmail, setCollaboratorId, setDeleteResultText, setDeleteResultStatus, setDeleteModal };
     const state = { collaborators, dataTable, collaboratorName, collaboratorEmail, collaboratorId, deleteResultText, deleteResultStatus, deleteModal, ...setState };
     const [, setLocation] = useLocation();
+    const sheetUrl = process.env.SHEET_URL;
+    const sheetConfig = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: process.env.SHEET_TOKEN,
+        },
+    };
+
+    const findCollaboratorRow = async email => {
+        const body = {
+            apiResource: 'values',
+            apiMethod: 'get',
+            range: 'Colaboradores',
+            spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
+        };
+        let pos = 0;
+        const { data: { values }, } = await post(sheetUrl, body, sheetConfig);
+        values.map((user, index) => {
+            if (user[2] === email) {
+                pos = index + 1;
+            }
+        });
+        return pos;
+    }
+
+    const successDelete = () => {
+        setDeleteResultStatus(true);
+        setDeleteResultText('Vendedor excluído com sucesso');
+        setCollaboratorName('');
+        setCollaboratorEmail('');
+        setCollaboratorId('');
+        setIsLoading(false);
+        setTimeout(() => {
+            setDeleteResultText('');
+        }, 2500);
+    }
+
+    const failDelete = () => {
+        setDeleteResultStatus(false);
+        setDeleteResultText('Erro ao excluir vendedor');
+        setCollaboratorName('');
+        setCollaboratorEmail('');
+        setCollaboratorId('');
+        setIsLoading(false);
+        setTimeout(() => {
+            setDeleteResultText('');
+        }, 2500);
+    }
 
     const deleteCollaborator = async () => {
         setIsLoading(true);
         try {
-            // TODO -> Apagar do auth e da collection users
-            await db.collection('collaborators').doc(collaboratorId).delete();
-            setDeleteResultStatus(true);
-            setDeleteResultText('Vendedor excluído com sucesso');
-            setCollaboratorName('');
-            setCollaboratorEmail('');
-            setCollaboratorId('');
-            setIsLoading(false);
-            setTimeout(() => {
-                setDeleteResultText('');
-            }, 2500);
+            const docRefCollection = await db.collection('collaborators').doc(collaboratorId).get();
+            const { uid } = docRefCollection.data();
+            if (uid) {
+                const config = {
+                    method: 'POST',
+                    url: `${process.env.FIREBASE_AUTH_URL}deleteAuthUser`,
+                    data: { uid },
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+
+                const { data } = await axios(config);
+                if (data.ok) {
+                    const row = await findCollaboratorRow(collaboratorEmail);
+                    const body = {
+                        apiResource: 'values',
+                        apiMethod: 'update',
+                        range: `Colaboradores!E${row}`,
+                        spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
+                        resource: {
+                            values: [['Excluído']]
+                        },
+                        valueInputOption: 'raw'
+                    }
+                    await post(sheetUrl, body, sheetConfig);
+
+                    const snapUser = await db.collection('users').where('email', '==', collaboratorEmail).get();
+                    let docRefUser
+                    snapUser.forEach(doc => docRefUser = doc.ref);
+                    await docRefCollection.ref.delete();
+                    await docRefUser.delete();
+                    successDelete();
+                } else failDelete();
+            } else {
+                await db.collection('collaborators').doc(collaboratorId).delete();
+                successDelete();
+            }
         } catch (error) {
             console.log(error);
             if (error.response) console.log(error.response);
-            setDeleteResultStatus(false);
-            setDeleteResultText('Erro ao excluir vendedor!');
-            setCollaboratorName('');
-            setCollaboratorEmail('');
-            setCollaboratorId('');
-            setIsLoading(false);
-            setTimeout(() => {
-                setDeleteResultText('');
-            }, 2500);
+            failDelete();
         }
     };
 
