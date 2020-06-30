@@ -62,7 +62,7 @@ const sendToBackend = state => () => {
                         }
                         throw 'Erro ao criar usuário'
                     }
-                } else throw { msg: 'Link inválido', customError: true };
+                } else throw { msg: 'Link inválido, solicite um novo', customError: true };
             } catch (error) {
                 if (error.customError) throw error
                 throw { msg: 'Erro ao ao salvar usuário. Tente novamente.', customError: true }

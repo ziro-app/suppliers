@@ -9,7 +9,7 @@ import Modal from '@bit/vitorbarbosa19.ziro.modal';
 import { userContext } from '../appContext';
 import { db } from '../../Firebase/index';
 import fetch from './fetch';
-import { modalContainer, modalLabel, spinner, labelBody, modalBody, labelBodyContainer, containerButtons, customGrid, customCell, resultStyle } from './styles';
+import { modalContainer, outerContainer, modalLabel, spinner, labelBody, modalBody, labelBodyContainer, containerButtons, customGrid, customCell, resultStyle } from './styles';
 
 const Collaborators = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -66,7 +66,7 @@ const Collaborators = () => {
     if (errorLoading) return <Error />;
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'grid', gridTemplateRows: '1fr auto', gridRowGap: '15px' }}>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={outerContainer(dataTable && dataTable.length !== 0)}>
             <div>
                 <Modal boxStyle={modalContainer} isOpen={deleteModal} setIsOpen={() => setDeleteModal(false)}>
                     <div style={modalBody}>
