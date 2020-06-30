@@ -91,7 +91,7 @@ const Register = () => {
         cnpjValid, typeOfRegistration, cnpj, reason, fantasia, category, cep, street, number,
         complement, neighborhood, city, cityState, fname, lname, cpf, email, birthdate, fone, pass,
         bankName, bankNumber, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
-        fileCnpj, categoryName, accountTypeViewName,fantasias, ...setState
+        fileCnpj, categoryName, accountTypeViewName, fantasias, ...setState
     }
     const validations = [
         {
@@ -196,24 +196,24 @@ const Register = () => {
             message: 'Campo obrigatório'
         }, {
             name: 'idDoc',
-            validation: value => step === 3 ? value !== '' && /(\.jpg|\.png|\.pdf)$/.test(value.name) : true,
+            validation: value => step === 3 ? value !== '' && /(\.jpg|\.jpeg|\.png|\.pdf)$/.test(value.name) : true,
             value: fileDoc,
-            message: 'Formatos válidos: .png, .jpg e .pdf'
+            message: 'Formatos válidos: .png, .jpg, .jpeg e .pdf'
         }, {
             name: 'idAtv',
-            validation: value => step === 3 ? value !== '' && /(\.jpg|\.png|\.pdf)$/.test(value.name) : true,
+            validation: value => step === 3 ? value !== '' && /(\.jpg|\.jpeg|\.png|\.pdf)$/.test(value.name) : true,
             value: fileAtv,
-            message: 'Formatos válidos: .png, .jpg e .pdf'
+            message: 'Formatos válidos: .png, .jpg, .jpeg e .pdf'
         }, {
             name: 'idRes',
-            validation: value => step === 3 ? value !== '' && /(\.jpg|\.png|\.pdf)$/.test(value.name) : true,
+            validation: value => step === 3 ? value !== '' && /(\.jpg|\.jpeg|\.png|\.pdf)$/.test(value.name) : true,
             value: fileRes,
-            message: 'Formatos válidos: .png, .jpg e .pdf'
+            message: 'Formatos válidos: .png, .jpg, .jpeg e .pdf'
         }, {
             name: 'idCnpj',
-            validation: value => step === 3 ? value !== '' && /(\.jpg|\.png|\.pdf)$/.test(value.name) : true,
+            validation: value => step === 3 ? value !== '' && /(\.jpg|\.jpeg|\.png|\.pdf)$/.test(value.name) : true,
             value: fileCnpj,
-            message: 'Formatos válidos: .png, .jpg e .pdf'
+            message: 'Formatos válidos: .png, .jpg, .jpeg e .pdf'
         }, {
             name: 'bankNumber',
             validation: value => step === 4 ? banksList.includes(bankName) : true,
