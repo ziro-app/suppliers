@@ -9,7 +9,8 @@ const fetch = (setIsLoading, setErrorLoading, setCustomError, encrypted, { setFN
                 const docId = decrypt(encrypted);
                 const collaborator = await db.collection('collaborators').doc(docId).get();
                 if (collaborator.exists) {
-                    const { email, fname, lname, ownerId, role } = collaborator.data();
+                    const { email, fname, lname, ownerId, role, status } = collaborator.data();
+                    if (status !== 'Pendente') throw { msg: 'Link inválido', customError: true };
                     setEmail(email || '');
                     setFName(fname || '');
                     setLName(lname || '');

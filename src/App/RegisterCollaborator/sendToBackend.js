@@ -1,5 +1,5 @@
 import axios, { post } from 'axios';
-import { db } from '../../Firebase/index';
+import { auth, db } from '../../Firebase/index';
 const { formatDateUTC3 } = require('@ziro/format-date-utc3');
 
 const sendToBackend = state => () => {
@@ -29,6 +29,9 @@ const sendToBackend = state => () => {
             try {
                 const doc = await db.collection('collaborators').doc(docId).get();
                 if (doc.exists) {
+                    const { status } = doc.data();
+                    if (status !== 'Pendente') throw { msg: 'Link inválido, solicite um novo', customError: true };
+
                     // Cadastrando usuário na planilha
                     await post(url, body, config);
                     try {
@@ -41,10 +44,9 @@ const sendToBackend = state => () => {
                             }
                         }
                         // Cadastrando no Firebase Auth
-
-                        const user = await axios(config);
-                        console.log(user);
-                        //let { user } = await auth.createUserWithEmailAndPassword(email, pass);
+                        await axios(config);
+                        // Login
+                        const { user } = await auth.signInWithEmailAndPassword(email, pass);
 
                         // Atualizando o registro na collection
                         await db.collection('collaborators').doc(docId).update({
@@ -54,7 +56,7 @@ const sendToBackend = state => () => {
                         });
 
                         try {
-                            await db.collection('users').add({ email, app: 'suppliers' })
+                            await db.collection('users').add({ email, app: 'suppliers' });
                         } catch (error) {
                             if (error.customError) throw error
                             if (error.response) console.log(error.response)
@@ -78,7 +80,7 @@ const sendToBackend = state => () => {
                 if (error.customError) throw error
                 throw { msg: 'Erro ao salvar usuário. Tente novamente.', customError: true }
             }
-            window.location.assign('/');
+            window.location.replace('/');
         } catch (error) {
             if (error.customError) reject(error)
             else {
