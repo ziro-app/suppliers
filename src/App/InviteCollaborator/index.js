@@ -1,21 +1,27 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Form from '@bit/vitorbarbosa19.ziro.form';
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
 import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown';
+import Error from '@bit/vitorbarbosa19.ziro.error';
+import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import capitalize from '@ziro/capitalize';
 import { userContext } from '../appContext';
 import sendToBackend from './sendToBackend';
+import fetch from './fetch';
 
 const InviteCollaborator = () => {
+    const [isLoading, setIsLoading] = useState(true);
+    const [errorLoading, setErrorLoading] = useState(false);
     const [fname, setFName] = useState('');
     const [lname, setLName] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('');
     const roleList = ['Vendedor'];
+    const [emails, setEmails] = useState([]);
     const { uid, fantasy } = useContext(userContext);
-    const state = { uid, supplier: capitalize(fantasy), fname, lname, email, role, setFName, setLName, setEmail, setRole };
+    const state = { uid, supplier: capitalize(fantasy), fname, lname, email, role, setFName, setLName, setEmail, setRole, setEmails };
     const validations = [
         {
             name: 'fname',
@@ -29,9 +35,9 @@ const InviteCollaborator = () => {
             message: 'Campo obrigatório'
         }, {
             name: 'email',
-            validation: value => /^\S+@\S+\.\S+$/g.test(value),
+            validation: value => /^\S+@\S+\.\S+$/g.test(value) && !emails.includes(value),
             value: email,
-            message: 'Email inválido'
+            message: 'Email inválido ou já cadastrado'
         }, {
             name: 'role',
             validation: value => roleList.includes(value),
@@ -39,6 +45,11 @@ const InviteCollaborator = () => {
             message: 'Campo obrigatório'
         }
     ];
+
+    useEffect(() => fetch(setIsLoading, setErrorLoading, state), []);
+
+    if (isLoading) return <div style={{ display: 'grid', marginTop: '15px' }}><Spinner size='5rem' /></div>;
+    if (errorLoading) return <Error />;
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'grid', gridTemplateRows: 'auto 1rm', gridRowGap: '20px' }}>

@@ -1,5 +1,10 @@
 import { db } from '../../Firebase/index';
 
+const checkCollaborator = async docId => {
+    const collaborator = await db.collection('collaborators').doc(docId).get();
+    return collaborator.exists;
+}
+
 const sendToBackend = state => () => {
     const { seller, sellerId, charge, maxInstallments, isCollaborator, docId, fname, setCharge, setMaxInstallments } = state;
     const baseUrl = 'https://ziro.app/pagamento/';
@@ -8,16 +13,19 @@ const sendToBackend = state => () => {
             if (seller && sellerId) {
                 let docRef;
                 if (isCollaborator) {
-                    docRef = await db.collection('credit-card-payments').add({
-                        dateLinkCreated: new Date(),
-                        seller,
-                        sellerZoopId: sellerId,
-                        charge,
-                        maxInstallments,
-                        status: 'Aguardando Pagamento',
-                        collaboratorId: docId,
-                        collaboratorName: fname
-                    });
+                    const isValid = await checkCollaborator(docId);
+                    if (isValid) {
+                        docRef = await db.collection('credit-card-payments').add({
+                            dateLinkCreated: new Date(),
+                            seller,
+                            sellerZoopId: sellerId,
+                            charge,
+                            maxInstallments,
+                            status: 'Aguardando Pagamento',
+                            collaboratorId: docId,
+                            collaboratorName: fname
+                        });
+                    } else throw { msg: 'Permissão insuficiente', customError: true };
                 } else {
                     docRef = await db.collection('credit-card-payments').add({
                         dateLinkCreated: new Date(),
