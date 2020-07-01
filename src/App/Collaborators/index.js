@@ -104,7 +104,7 @@ const Collaborators = () => {
                         },
                         valueInputOption: 'raw'
                     }
-                    await post(sheetUrl, body, sheetConfig);
+                    if (row && row > 0) await post(sheetUrl, body, sheetConfig);
 
                     const snapUser = await db.collection('users').where('email', '==', collaboratorEmail).get();
                     let docRefUser
