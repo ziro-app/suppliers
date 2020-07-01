@@ -18,10 +18,11 @@ const InviteCollaborator = () => {
     const [lname, setLName] = useState('');
     const [email, setEmail] = useState('');
     const [role, setRole] = useState('');
+    const [submitCount, setSubmitCount] = useState(0);
     const roleList = ['Vendedor'];
     const [emails, setEmails] = useState([]);
     const { uid, fantasy } = useContext(userContext);
-    const state = { uid, supplier: capitalize(fantasy), fname, lname, email, role, setFName, setLName, setEmail, setRole, setEmails };
+    const state = { uid, supplier: capitalize(fantasy), fname, lname, email, role, submitCount, setFName, setLName, setEmail, setRole, setEmails, setSubmitCount };
     const validations = [
         {
             name: 'fname',
@@ -46,7 +47,7 @@ const InviteCollaborator = () => {
         }
     ];
 
-    useEffect(() => fetch(setIsLoading, setErrorLoading, state), []);
+    useEffect(() => fetch(setIsLoading, setErrorLoading, state), [submitCount]);
 
     if (isLoading) return <div style={{ display: 'grid', marginTop: '15px' }}><Spinner size='5rem' /></div>;
     if (errorLoading) return <Error />;
