@@ -5,15 +5,16 @@ import { db } from '../../Firebase/index'
 import matchStatusColor from './utils/matchStatusColor'
 
 const fetchPayments = (state) => {
-    const {setIsError, seller, setPaymentDuplicatas, setPaymentBoletos, setFinishPayments } = state
+    const {setIsError, seller, setPaymentDuplicatas, setPaymentBoletos, setFinishPayments, setIsLoading } = state
     const queryPayments = db.collection('comission-payments').where('fantasia', '==', seller)
     const source = axios.CancelToken.source()
     const run = async () => {
         try {
-            let paymentDuplicatas = []
-            let paymentBoletos = []
             queryPayments.onSnapshot(
                 async snapPayments => {
+                    const paymentDuplicatas = []
+                    const paymentBoletos = []
+                    setIsLoading(true)
                     if (!snapPayments.empty) {
                         snapPayments.forEach((doc) => {
                             const arrayReceitas = doc.data().billets.map((item) => {
@@ -53,6 +54,7 @@ const fetchPayments = (state) => {
                     }
                     setPaymentDuplicatas(paymentDuplicatas)
                     setPaymentBoletos(paymentBoletos)
+                    setIsLoading(false)
                 })
                 setFinishPayments(true)
         } catch (error) {

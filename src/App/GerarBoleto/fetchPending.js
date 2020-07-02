@@ -4,15 +4,16 @@ import { db } from '../../Firebase/index'
 import matchStatusColor from './utils/matchStatusColor'
 
 const fetchPending = (state) => {
-    const {setIsError, seller, setPendingBoletos, setPendingDuplicatas, setFinishPending } = state
+    const {setIsError, seller, setPendingBoletos, setPendingDuplicatas, setFinishPending, setIsLoading } = state
     const queryPending = db.collection('pending-commission').where('fantasia', '==', seller)
     const source = axios.CancelToken.source()
     const run = async () => {
-        let pendingDuplicatas = []
-        let pendingBoletos = []
         try {
-            queryPending.onSnapshot(
+            await queryPending.onSnapshot(
                 async snapPending => {
+                    const pendingDuplicatas = []
+                    const pendingBoletos = []
+                    await setIsLoading(true)
                     if (!snapPending.empty) {
                         snapPending.forEach((doc) => {
                             const { pending_polos } = doc.data()
@@ -83,6 +84,7 @@ const fetchPending = (state) => {
                     }
                     setPendingDuplicatas(pendingDuplicatas)
                     setPendingBoletos(pendingBoletos)
+                    setIsLoading(false)
                 })
                 setFinishPending(true)
         } catch (error) {
