@@ -124,6 +124,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                     <Details blocks={blocks} />
                         <>
                             <Table cellStyle={{
+                                maxWidth: '130px',
                                 width: '100%',
                                 height: '100%',
                                 fontSize: '1.4rem',
