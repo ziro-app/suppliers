@@ -12,7 +12,7 @@ import currencyFormat from '@ziro/currency-format'
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
 import { formatDateUTC3 } from '@ziro/format-date-utc3'
 import Sucesso from './Sucesso/index'
-import { buttonContainer } from './styles'
+import { buttonContainer, button } from './styles'
 import matchStatusColor from '../utils/matchStatusColor'
 import sendToBackend from './sendToBackend'
 import BoletoDetails from '../BoletoDetails'
@@ -144,6 +144,7 @@ const DuplicateDetails = ({transactions,boletbankId,boletId,sellerId}) => {
                             status === 'Comissões em Aberto' && url === '' ? (
                                     <div style={buttonContainer}>
                                     <Button
+                                        style={button}
                                         type="link"
                                         cta="Pagar via transferência"
                                         navigate={() => setLocation(`/relatorio/${boletbankId}/transferencia_bancaria`)}
