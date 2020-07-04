@@ -24,7 +24,7 @@ const sendToBackend = state => () => {
               status: 'Aguardando Pagamento',
               collaboratorId: docId,
               collaboratorName: fname,
-              brand,
+              onBehalfOfBrand: brand,
             });
           } else throw { msg: 'Permissão insuficiente', customError: true };
         } else {
