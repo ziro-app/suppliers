@@ -39,7 +39,7 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
             },
             {
               title: 'Total',
-              content: currencyFormat(receipt.amount * 100),
+              content: currencyFormat(Math.round(receipt.amount * 100)),
             },
             {
               title: 'Parcelas',
