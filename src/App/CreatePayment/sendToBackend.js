@@ -45,7 +45,7 @@ const sendToBackend = state => () => {
         }
         resolve('Link copiado');
         setCharge('');
-        setMaxInstallments('');
+        if (!brand) setMaxInstallments('');
       } else {
         throw { msg: 'Vendedor não encontrado', customError: true };
       }
