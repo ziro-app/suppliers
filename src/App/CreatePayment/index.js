@@ -13,6 +13,7 @@ const CreatePayment = () => {
   const [charge, setCharge] = useState('');
   const [maxInstallments, setMaxInstallments] = useState('');
   const state = { seller: capitalize(fantasy), sellerId: zoopId, charge, maxInstallments, isCollaborator: role !== '', docId, fname, brand, setCharge, setMaxInstallments };
+
   const validations = [
     {
       name: 'charge',

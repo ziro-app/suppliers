@@ -33,7 +33,7 @@ const sendToBackend = state => () => {
             status: 'Pendente',
             ownerId: uid,
             role,
-            brand,
+            brand: brand ? brand : supplier,
           });
           const link = mountLink(userDb.id);
           const body = {

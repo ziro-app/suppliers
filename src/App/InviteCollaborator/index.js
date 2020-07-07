@@ -53,7 +53,7 @@ const InviteCollaborator = () => {
     },
     {
       name: 'brands',
-      validation: value => catalogBrands.includes(value),
+      validation: value => (fantasy === 'ZIRO' ? catalogBrands.includes(value) : true),
       value: brand,
       message: 'Marca inválida',
     },
@@ -71,65 +71,97 @@ const InviteCollaborator = () => {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'grid', gridTemplateRows: 'auto 1rm', gridRowGap: '20px' }}>
-      <Form
-        validations={validations}
-        sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
-        inputs={[
-          <FormInput name="fname" label="Nome" input={<InputText value={fname} onChange={({ target: { value } }) => setFName(capitalize(value))} placeholder="Nome do vendedor" />} />,
-          <FormInput name="lname" label="Sobrenome" input={<InputText value={lname} onChange={({ target: { value } }) => setLName(capitalize(value))} placeholder="Sobrenome do vendedor" />} />,
-          <FormInput
-            name="role"
-            label="Permissão"
-            input={
-              <Dropdown
-                value={role}
-                onChange={({ target: { value } }) => setRole(value)}
-                onChangeKeyboard={element => (element ? setRole(element.value) : null)}
-                list={roleList}
-                placeholder="Nível de permissão"
-                readOnly={true}
-              />
-            }
-          />,
-          <FormInput
-            name="email"
-            label="Email"
-            input={<InputText value={email} onChange={({ target: { value } }) => setEmail(value.toLowerCase())} placeholder="ex@exemplo.com" inputMode="email" autoComplete="email" />}
-          />,
-          <FormInput
-            name="brands"
-            label="Marca"
-            input={
-              <Dropdown
-                value={brand}
-                onChange={({ target: { value } }) => {
-                  setBrand(value);
-                  if (catalogBrands.includes(value)) {
-                    const selectedBrand = catalogBrands.filter(item => item.brand === value);
-                    if (selectedBrand) {
+      <>
+        {fantasy === 'ZIRO' ? (
+          <Form
+            validations={validations}
+            sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+            inputs={[
+              <FormInput name="fname" label="Nome" input={<InputText value={fname} onChange={({ target: { value } }) => setFName(capitalize(value))} placeholder="Nome do vendedor" />} />,
+              <FormInput name="lname" label="Sobrenome" input={<InputText value={lname} onChange={({ target: { value } }) => setLName(capitalize(value))} placeholder="Sobrenome do vendedor" />} />,
+              <FormInput
+                name="role"
+                label="Permissão"
+                input={
+                  <Dropdown
+                    value={role}
+                    onChange={({ target: { value } }) => setRole(value)}
+                    onChangeKeyboard={element => (element ? setRole(element.value) : null)}
+                    list={roleList}
+                    placeholder="Nível de permissão"
+                    readOnly={true}
+                  />
+                }
+              />,
+              <FormInput
+                name="email"
+                label="Email"
+                input={<InputText value={email} onChange={({ target: { value } }) => setEmail(value.toLowerCase())} placeholder="ex@exemplo.com" inputMode="email" autoComplete="email" />}
+              />,
+              <FormInput
+                name="brands"
+                label="Vinculado a"
+                input={
+                  <Dropdown
+                    value={brand}
+                    onChange={({ target: { value } }) => {
                       setBrand(value);
-                    } else setBrand('');
-                  }
-                }}
-                onChangeKeyboard={element => {
-                  if (element) {
-                    const value = element.value;
-                    setBrand(value);
-                    if (catalogBrands.includes(value)) {
-                      const selectedBrand = catalogBrands.filter(item => item.brand === value);
-                      if (selectedBrand) {
+                      if (catalogBrands.includes(value)) {
+                        const selectedBrand = catalogBrands.filter(item => item.brand === value);
+                        if (selectedBrand) {
+                          setBrand(value);
+                        } else setBrand('');
+                      }
+                    }}
+                    onChangeKeyboard={element => {
+                      if (element) {
+                        const value = element.value;
                         setBrand(value);
-                      } else setBrand('');
-                    }
-                  } else null;
-                }}
-                list={catalogBrands.sort()}
-                placeholder="Fabricante"
-              />
-            }
-          />,
-        ]}
-      />
+                        if (catalogBrands.includes(value)) {
+                          const selectedBrand = catalogBrands.filter(item => item.brand === value);
+                          if (selectedBrand) {
+                            setBrand(value);
+                          } else setBrand('');
+                        }
+                      } else null;
+                    }}
+                    list={catalogBrands.sort()}
+                    placeholder="Fabricante"
+                  />
+                }
+              />,
+            ]}
+          />
+        ) : (
+          <Form
+            validations={validations}
+            sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+            inputs={[
+              <FormInput name="fname" label="Nome" input={<InputText value={fname} onChange={({ target: { value } }) => setFName(capitalize(value))} placeholder="Nome do vendedor" />} />,
+              <FormInput name="lname" label="Sobrenome" input={<InputText value={lname} onChange={({ target: { value } }) => setLName(capitalize(value))} placeholder="Sobrenome do vendedor" />} />,
+              <FormInput
+                name="role"
+                label="Permissão"
+                input={
+                  <Dropdown
+                    value={role}
+                    onChange={({ target: { value } }) => setRole(value)}
+                    onChangeKeyboard={element => (element ? setRole(element.value) : null)}
+                    list={roleList}
+                    placeholder="Nível de permissão"
+                    readOnly={true}
+                  />
+                }
+              />,
+              <FormInput
+                name="email"
+                label="Email"
+                input={<InputText value={email} onChange={({ target: { value } }) => setEmail(value.toLowerCase())} placeholder="ex@exemplo.com" inputMode="email" autoComplete="email" />}
+              />,
+            ]}
+          />
+        )}
+      </>
     </motion.div>
   );
 };
