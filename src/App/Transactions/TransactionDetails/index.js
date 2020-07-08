@@ -135,6 +135,12 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             content: transaction.collaboratorName,
           });
         }
+        if (transaction.onBehalfOfBrand && transaction.seller.includes('Ziro')) {
+          block[0].body.splice(1, 0, {
+            title: 'Marca',
+            content: transaction.onBehalfOfBrand,
+          });
+        }
         if (transaction.receivables) {
           const sortedTransactions = transaction.receivables.sort((a, b) => b.installment - a.installment);
           const paidRows = [];

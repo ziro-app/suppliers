@@ -15,9 +15,10 @@ import { formatDateUTC3 } from '@ziro/format-date-utc3';
 
 export default ({ receiptId, receipt, setReceipt, installments, transactionId }) => {
   const [location, setLocation] = useLocation();
+  const [transaction, setTransaction] = useState('');
   const [loading, setLoading] = useState(false);
   let block;
-  const { error } = useFetch(receiptId, setLoading, location, setReceipt, installments, receipt);
+  const { error } = useFetch(receiptId, setLoading, location, setReceipt, installments, setTransaction);
   if (!receiptId) setLocation('/pagamentos');
   else {
     if (!loading && receipt) {
@@ -65,6 +66,13 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
           ],
         },
       ];
+
+      if (transaction.onBehalfOfBrand && transaction.seller === 'Ziro') {
+        block[0].body.splice(2, 0, {
+          title: 'Marca',
+          content: transaction.onBehalfOfBrand,
+        });
+      }
     }
   }
   const backPath = `/transacoes/${transactionId}`;

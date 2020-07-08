@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { db } from '../../Firebase/index';
 
-export default (receipt_id, setLoading, location, setReceipt, installmentsDoc, receipt) => {
+export default (receipt_id, setLoading, location, setReceipt, installmentsDoc, setTransaction) => {
   const [installmentDoc, setInstallmentDoc] = useState('');
   const [status, setStatus] = useState('');
   const [error, setError] = useState(false);
@@ -21,6 +21,7 @@ export default (receipt_id, setLoading, location, setReceipt, installmentsDoc, r
 
           snapshot.forEach(doc => {
             const { installments, status } = doc.data();
+            setTransaction(doc.data());
             setStatus(status);
             setInstallmentDoc(installments);
           });
