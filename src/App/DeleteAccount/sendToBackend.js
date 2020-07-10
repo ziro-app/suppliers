@@ -2,8 +2,15 @@ import { post } from 'axios'
 import { fbauth, auth, db } from '../../Firebase/index'
 
 const sendToBackend = state => () => new Promise(async (resolve, reject) => {
+    const url = process.env.SHEET_URL;
+    const config = {
+        headers: {
+            'Content-type': 'application/json',
+            Authorization: process.env.SHEET_TOKEN,
+        },
+    };
     try {
-        const { isCollaborator, zoopId, pass } = state
+        const { userPos, isCollaborator, zoopId, pass } = state
         const user = auth.currentUser
         const credential = fbauth.EmailAuthProvider.credential(user.email, pass)
         await user.reauthenticateWithCredential(credential)
@@ -33,6 +40,18 @@ const sendToBackend = state => () => new Promise(async (resolve, reject) => {
                             Authorization: `${process.env.PAY_TOKEN}`
                         }
                     });
+                } else if (isCollaborator && userPos && userPos > 0) {
+                    const body = {
+                        apiResource: 'values',
+                        apiMethod: 'update',
+                        range: `Colaboradores!E${userPos}`,
+                        spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
+                        resource: {
+                            values: [['Excluído']]
+                        },
+                        valueInputOption: 'raw'
+                    }
+                    await post(url, body, config);
                 }
                 try {
                     await user.delete()
