@@ -12,7 +12,21 @@ const CreatePayment = () => {
   const { fantasy, zoopId, docId, role, fname, brand } = useContext(userContext);
   const [charge, setCharge] = useState('');
   const [maxInstallments, setMaxInstallments] = useState('');
-  const state = { seller: capitalize(fantasy), sellerId: zoopId, charge, maxInstallments, isCollaborator: role !== '', docId, fname, brand, setCharge, setMaxInstallments };
+  const [observations, setObservations] = useState('');
+  const state = {
+    seller: capitalize(fantasy),
+    sellerId: zoopId,
+    charge,
+    maxInstallments,
+    isCollaborator: role !== '',
+    docId,
+    fname,
+    brand,
+    setCharge,
+    setMaxInstallments,
+    observations,
+    setObservations,
+  };
 
   const validations = [
     {
@@ -23,66 +37,42 @@ const CreatePayment = () => {
     },
     {
       name: 'maxInstallments',
-      validation: value => parseInt(value) > 0 && parseInt(value) <= 10,
+      validation: value => (brand ? parseInt(value) > 0 && parseInt(value) < 5 : parseInt(value) > 0 && parseInt(value) <= 10),
       value: maxInstallments,
-      message: 'Deve ser entre 1 e 10',
+      message: brand ? 'Deve ser entre 1 e 4' : 'Deve ser entre 1 e 10',
     },
   ];
-  useEffect(() => {
-    if (brand) setMaxInstallments('4');
-  }, []);
   return (
-    <>
-      {brand ? (
-        <Form
-          validations={validations}
-          sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
-          inputs={[
-            <FormInput
-              name="charge"
-              label="Valor a cobrar"
-              input={
-                <InputText
-                  value={currencyFormat(charge)}
-                  onChange={({ target: { value } }) => {
-                    const toInteger = parseInt(value.replace(/[R$\.,]/g, ''), 10);
-                    return setCharge(maskInput(toInteger, '#######', true));
-                  }}
-                  placeholder="R$1.299,99"
-                />
-              }
-            />,
-            <FormInput name="maxInstallments" label="Parcelamento máximo" input={<InputText disabled={true} value={maxInstallments} />} />,
-          ]}
-        />
-      ) : (
-        <Form
-          validations={validations}
-          sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
-          inputs={[
-            <FormInput
-              name="charge"
-              label="Valor a cobrar"
-              input={
-                <InputText
-                  value={currencyFormat(charge)}
-                  onChange={({ target: { value } }) => {
-                    const toInteger = parseInt(value.replace(/[R$\.,]/g, ''), 10);
-                    return setCharge(maskInput(toInteger, '#######', true));
-                  }}
-                  placeholder="R$1.299,99"
-                />
-              }
-            />,
-            <FormInput
-              name="maxInstallments"
-              label="Parcelamento máximo"
-              input={<InputText value={maxInstallments} onChange={({ target: { value } }) => setMaxInstallments(maskInput(value, '##', true))} placeholder="10" />}
-            />,
-          ]}
-        />
-      )}
-    </>
+    <Form
+      validations={validations}
+      sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+      inputs={[
+        <FormInput
+          name="charge"
+          label="Valor a cobrar"
+          input={
+            <InputText
+              value={currencyFormat(charge)}
+              onChange={({ target: { value } }) => {
+                const toInteger = parseInt(value.replace(/[R$\.,]/g, ''), 10);
+                return setCharge(maskInput(toInteger, '#######', true));
+              }}
+              placeholder="R$1.299,99"
+            />
+          }
+        />,
+        <FormInput
+          name="maxInstallments"
+          label="Parcelamento máximo"
+          input={<InputText value={maxInstallments} onChange={({ target: { value } }) => setMaxInstallments(maskInput(value, '##', true))} placeholder="10" />}
+        />,
+        <FormInput
+          name="observation"
+          label="Observações (opcional)"
+          input={<InputText value={observations} onChange={({ target: { value } }) => setObservations(value)} placeholder="Romaneio, nome do cliente, etc" />}
+        />,
+      ]}
+    />
   );
 };
 

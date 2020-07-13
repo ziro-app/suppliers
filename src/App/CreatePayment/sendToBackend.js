@@ -6,7 +6,7 @@ const checkCollaborator = async docId => {
 };
 
 const sendToBackend = state => () => {
-  const { seller, sellerId, charge, maxInstallments, isCollaborator, docId, fname, brand, setCharge, setMaxInstallments } = state;
+  const { seller, sellerId, charge, maxInstallments, isCollaborator, docId, fname, brand, setCharge, setMaxInstallments, observations, setObservations } = state;
   const baseUrl = 'https://ziro.app/pagamento/';
   return new Promise(async (resolve, reject) => {
     try {
@@ -25,6 +25,7 @@ const sendToBackend = state => () => {
               collaboratorId: docId,
               collaboratorName: fname,
               onBehalfOfBrand: brand ? brand : seller,
+              observations,
             });
           } else throw { msg: 'Permissão insuficiente', customError: true };
         } else {
@@ -35,6 +36,7 @@ const sendToBackend = state => () => {
             charge,
             maxInstallments,
             status: 'Aguardando Pagamento',
+            observations,
           });
         }
         try {
@@ -45,7 +47,8 @@ const sendToBackend = state => () => {
         }
         resolve('Link copiado');
         setCharge('');
-        if (!brand) setMaxInstallments('');
+        setMaxInstallments('');
+        setObservations('');
       } else {
         throw { msg: 'Vendedor não encontrado', customError: true };
       }

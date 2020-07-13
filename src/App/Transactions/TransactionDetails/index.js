@@ -135,6 +135,12 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             content: transaction.collaboratorName,
           });
         }
+        if (transaction.observations) {
+          block[0].body.splice(transaction.collaboratorName ? 9 : 8, 0, {
+            title: 'Observações',
+            content: transaction.observations,
+          });
+        }
         if (transaction.onBehalfOfBrand && transaction.seller.includes('Ziro')) {
           block[0].body.splice(1, 0, {
             title: 'Marca',
