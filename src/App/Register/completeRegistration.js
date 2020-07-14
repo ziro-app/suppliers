@@ -18,10 +18,10 @@ const completeRegistration = state => () => {
     const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
     const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
     const telefone = fone ? `55 ${fone.trim()}` : ''
-    const fantasiaSheet = fantasias.filter(item => item.cnpj === Number(cnpj.replace('.','').replace('.','').replace('/','').replace('-','')))
+    const fantasiaSheet = fantasias.filter(item => item.cnpj === Number(cnpj.replace('.', '').replace('.', '').replace('/', '').replace('-', '')))
     const resultFantasia = fantasiaSheet[0] ? fantasiaSheet[0].fantasia : fantasia
     let cepSplit = cep.split('')
-    cepSplit.splice(2, 0, '.')  
+    cepSplit.splice(2, 0, '.')
     const dotCep = cepSplit.join('')
     const today = new Date()
     const body = {
@@ -62,11 +62,11 @@ const completeRegistration = state => () => {
         try {
             if (cnpjValid) {
                 try {
-                    // Cadastrando usuário na planilha
-                    await post(url, body, config)
+                    // Cadastrando no Firebase Auth
+                    const { user } = await auth.createUserWithEmailAndPassword(email, pass)
                     try {
-                        // Cadastrando no Firebase Auth
-                        const { user } = await auth.createUserWithEmailAndPassword(email, pass)
+                        // Cadastrando usuário na planilha
+                        await post(url, body, config)
                         // Enviando email de verificação
                         try {
                             await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })
@@ -221,20 +221,20 @@ const completeRegistration = state => () => {
                         }
                     } catch (error) {
                         if (error.customError) throw error
-                        if (error.code) {
-                            switch (error.code) {
-                                case 'auth/network-request-failed': throw { msg: 'Sem conexão com a rede', customError: true }
-                                case 'auth/invalid-email': throw { msg: 'Email inválido', customError: true }
-                                case 'auth/email-already-in-use': throw { msg: 'Email já cadastrado', customError: true }
-                                case 'auth/operation-not-allowed': throw { msg: 'Operação não permitida', customError: true }
-                                case 'auth/weak-password': throw { msg: 'Senha fraca. Mínimo 6 caracteres', customError: true }
-                            }
-                        }
-                        throw 'Erro ao criar usuário'
+                        throw { msg: 'Erro ao ao salvar usuário. Tente novamente.', customError: true }
                     }
                 } catch (error) {
                     if (error.customError) throw error
-                    throw { msg: 'Erro ao ao salvar usuário. Tente novamente.', customError: true }
+                    if (error.code) {
+                        switch (error.code) {
+                            case 'auth/network-request-failed': throw { msg: 'Sem conexão com a rede', customError: true }
+                            case 'auth/invalid-email': throw { msg: 'Email inválido', customError: true }
+                            case 'auth/email-already-in-use': throw { msg: 'Email já cadastrado', customError: true }
+                            case 'auth/operation-not-allowed': throw { msg: 'Operação não permitida', customError: true }
+                            case 'auth/weak-password': throw { msg: 'Senha fraca. Mínimo 6 caracteres', customError: true }
+                        }
+                    }
+                    throw 'Erro ao criar usuário'
                 }
                 window.location.assign('/confirmar-email')
             } else {
