@@ -3,7 +3,7 @@ import { auth, db } from '../../Firebase/index'
 const sendToBackend = state => () => new Promise(async (resolve, reject) => {
     try {
         const { email } = state
-        const userApp;
+        let userApp;
         const userRef = await db.collection('users').where('email', '==', email).get();
         userRef.forEach(user => userApp = user.data().app);
         if (userApp !== 'suppliers') throw { msg: 'Não cadastrado no app', customError: true };
