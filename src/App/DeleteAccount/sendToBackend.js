@@ -24,6 +24,7 @@ const sendToBackend = state => () => new Promise(async (resolve, reject) => {
                 docRefUser = doc.ref
             })
             if (userApp === 'admin') throw { msg: 'Não permitido para admin', customError: true }
+            if (userApp !== 'suppliers') throw { msg: 'Não cadastrado no app', customError: true }
             if (isCollaborator) {
                 snapCollection = await db.collection('collaborators').where('uid', '==', user.uid).get();
                 snapCollection.forEach(doc => docRefCollection = doc.ref);
