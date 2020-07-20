@@ -19,7 +19,7 @@ import Transactions from './Transactions/index';
 import GerarBoleto from './GerarBoleto/index';
 import Receipt from './Receipt/index';
 import UpdateUserInfo from './UpdateUserInfo/index';
-//import Receivables from './Receivables/index';
+import Receivables from './Receivables/index';
 import Collaborators from './Collaborators/index';
 import InviteCollaborator from './InviteCollaborator/index';
 import RegisterCollaborator from './RegisterCollaborator/index';
@@ -75,7 +75,7 @@ const Router = ({ isLogged }) => {
                 </motion.div>
             </Menu>
         ),
-        //[matchReceivable ? location : null]: <Receivables {...paramsReceivable} />,
+        [matchReceivable ? location : null]: <Receivables {...paramsReceivable} />,
         [match2 ? location : null]: <GerarBoleto {...params2} />,
         [matchMyReceipt ? location : null]: <Receipt {...paramsMyReceipt} receipt={receipt} setReceipt={setReceipt} />,
         [match ? location : null]: <Transactions {...params} setTransactionId={setTransactionId} />,

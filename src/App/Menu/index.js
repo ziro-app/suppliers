@@ -30,12 +30,12 @@ export const Menu = ({ title, children }) => {
                         icon: <Icon type='money' size={15} strokeWidth={2} />,
                         text: 'Criar Cobrança'
                     },
-                    // {
-                    //     path: '/recebiveis',
-                    //     onClick: () => setIsOpen(false),
-                    //     icon: <Icon type='money' size={15} strokeWidth={2} />,
-                    //     text: 'Recebíveis'
-                    // },
+                    {
+                        path: '/recebiveis',
+                        onClick: () => setIsOpen(false),
+                        icon: <Icon type='card' size={15} strokeWidth={2} />,
+                        text: 'Recebíveis'
+                    },
                     {
                         path: '/relatorio',
                         onClick: () => setIsOpen(false),
@@ -73,12 +73,12 @@ export const Menu = ({ title, children }) => {
                         icon: <Icon type='money' size={15} strokeWidth={2} />,
                         text: 'Criar Cobrança'
                     },
-                    // {
-                    //     path: '/recebiveis',
-                    //     onClick: () => setIsOpen(false),
-                    //     icon: <Icon type='money' size={15} strokeWidth={2} />,
-                    //     text: 'Recebíveis'
-                    // },
+                    {
+                        path: '/recebiveis',
+                        onClick: () => setIsOpen(false),
+                        icon: <Icon type='card' size={15} strokeWidth={2} />,
+                        text: 'Recebíveis'
+                    },
                     {
                         path: '/relatorio',
                         onClick: () => setIsOpen(false),
