@@ -11,7 +11,7 @@ const fetch = (receivables, receivableId, { setReceivableObj, setDate, setBlocks
                 setReceivableObj(receivableEffect);
                 setDate(receivableEffect.date);
                 let block = [];
-                receivableEffect.items.map(async (transac, index) => {
+                await Promise.all(receivableEffect.items.map(async (transac, index) => {
                     const { id, amount, fees, net, installment_plan: { number_installments, installment_number } } = transac;
                     block.push({
                         id,
@@ -44,12 +44,13 @@ const fetch = (receivables, receivableId, { setReceivableObj, setDate, setBlocks
                         const docRef = docsCollection.docs[0].id;
                         const { buyerRazao } = docsCollection.docs[0].data();
                         block[index]['docId'] = docRef;
-                        block[index]['body'].push({
+                        block[index]['body'].unshift({
                             title: 'Lojista',
                             content: buyerRazao ? capitalize(buyerRazao) : '-'
                         });
                     }
-                });
+                }
+                ));
                 setBlocks(block);
                 setIsLoading(false);
             } else {

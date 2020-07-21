@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
-import { createBrowserHistory } from 'history';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import TransactionsList from './TransactionsList/index';
@@ -19,7 +18,6 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
     const [totalTransactions, setTotalTransactions] = useState(-1);
     const [lastDoc, setLastDoc] = useState(null);
     const { zoopId, docId, role } = useContext(userContext);
-    const history = createBrowserHistory();
 
     useEffect(() => fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore, docId, role !== ''), []);
 

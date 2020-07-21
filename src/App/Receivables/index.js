@@ -67,7 +67,7 @@ const Receivables = ({ receivableId }) => {
                                         content: agency
                                     },
                                     {
-                                        title: 'Conta Corrente',
+                                        title: 'Conta',
                                         content: accountNumber
                                     },
                                     {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
+import { createBrowserHistory } from 'history';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Header from '@bit/vitorbarbosa19.ziro.header';
 import Error from '@bit/vitorbarbosa19.ziro.error';
@@ -18,6 +19,7 @@ const Transactions = ({ receivables, receivableId }) => {
     const [receivableObj, setReceivableObj] = useState({ 'status': '', 'statusColor': '', 'charge': '', 'date': '', 'items': [], 'id': '' });
     const [date, setDate] = useState('xxx');
     const [, setLocation] = useLocation();
+    const history = createBrowserHistory();
     const setState = { setIsError, setCustomError, setIsLoading, setBlocks, setReceivableObj, setDate };
 
     useEffect(() => fetch(receivables, receivableId, setState), []);
@@ -50,7 +52,7 @@ const Transactions = ({ receivables, receivableId }) => {
                     return (
                         <div key={index} style={{ display: 'grid', gridRowGap: '10px' }}>
                             <Details blocks={[block]} />
-                            <Button style={btn} cta='Ver detalhes' type='button' click={() => setLocation(`/transacoes/${block.docId}`)} />
+                            <Button style={btn} cta='Ver detalhes' type='button' click={() => history.push(`/transacoes/${block.docId}`, { backRoute: `/recebiveis/${receivableId}` })} />
                         </div>
                     );
                 })}
