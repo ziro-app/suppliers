@@ -12,7 +12,10 @@ const sendToBackend = state => () => new Promise(async (resolve, reject) => {
         const snapshot = await db.collection('users').where('email', '==', email).get()
         let userApp
         snapshot.forEach(doc => userApp = doc.data().app)
-        if (!(userApp === 'suppliers' || userApp === 'admin')) throw { msg: `Não cadastrado no app. Cadastrado no app ${appName[userApp]}`, customError: true }
+        if (!(userApp === 'suppliers' || userApp === 'admin')) {
+            let app = appName[userApp] || '';
+            throw { msg: app ? `Não cadastrado no app. Cadastrado no app ${app}` : 'Não cadastrado no app', customError: true }
+        }
         //
         try {
             const { user: { emailVerified } } = await auth.signInWithEmailAndPassword(email, pass)
