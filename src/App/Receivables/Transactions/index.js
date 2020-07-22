@@ -16,11 +16,10 @@ const Transactions = ({ receivables, receivableId }) => {
     const [customError, setCustomError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [blocks, setBlocks] = useState([]);
-    const [receivableObj, setReceivableObj] = useState({ 'status': '', 'statusColor': '', 'charge': '', 'date': '', 'items': [], 'id': '' });
     const [date, setDate] = useState('xxx');
     const [, setLocation] = useLocation();
     const history = createBrowserHistory();
-    const setState = { setIsError, setCustomError, setIsLoading, setBlocks, setReceivableObj, setDate };
+    const setState = { setIsError, setCustomError, setIsLoading, setBlocks, setDate };
 
     useEffect(() => fetch(receivables, receivableId, setState), []);
 

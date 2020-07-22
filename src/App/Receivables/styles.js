@@ -29,4 +29,19 @@ export const
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
+    },
+    cellStyle = {
+        maxWidth: '130px',
+        width: '100%',
+        height: '100%',
+        fontSize: '1.4rem',
+        textAlign: 'center',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        cursor: 'pointer'
+    },
+    customGrid = {
+        gridTemplateColumns: 'auto 1fr 1fr 10px',
+        gridRowGap: '15px'
     }

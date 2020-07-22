@@ -14,7 +14,10 @@ const fetch = (setIsLoading, setErrorLoading, zoopId, setTotal) => {
                     },
                 });
             const { total } = data;
-            setTotal(total);
+            if (total === 0) {
+                setTotal(0);
+                setIsLoading(false);
+            } else setTotal(total);
         } catch (error) {
             if (error.response) console.log(error.response);
             else console.log(error);

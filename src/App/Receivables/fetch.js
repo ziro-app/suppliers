@@ -4,7 +4,9 @@ import md5 from 'md5';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import currencyFormat from '@ziro/currency-format';
 
-const fetch = (setIsLoading, setErrorLoading, setReceivables, zoopId, total, setData) => {
+const reducerTotal = (accumulator, currentValue) => parseInt(accumulator) + parseInt(currentValue);
+
+const fetch = (zoopId, total, { setIsLoading, setErrorLoading, setCurrencyTotal, setReceivables, setData, setLocation }) => {
     const source = axios.CancelToken.source();
     const url = `${process.env.PAY_URL}sellers-future-releases?seller_id=${zoopId}&limit=${total}`;
     const recDocs = [];
@@ -19,35 +21,38 @@ const fetch = (setIsLoading, setErrorLoading, setReceivables, zoopId, total, set
                             Authorization: `${process.env.PAY_TOKEN}`,
                         },
                     });
-                const { has_more, items, total_amount } = data;
+                const { items, total_amount } = data;
+                const currency = currencyFormat(`${total_amount}`.replace('.', ''));
+                setCurrencyTotal(currency);
                 const rows = [];
-                // console.log(total);
-                // console.log(items);
-                // console.log(has_more);
-                // setHasMore(has_more);
+                const rowsClicks = [];
                 const keys = Object.keys(items);
                 keys.map(key => {
-                    console.log(items[key]);
                     let [ano, mes, dia] = key.split('-');
                     let date = [dia, mes, ano.substring(2)].join('/');
-                    rows.push([date, currencyFormat(items[key].total_amount.replace('.', '')).replace('R$', ''), 'Pendente', <Icon type="chevronRight" size={14} />]);
+                    let id = md5(date).substring(10);
+                    let total;
+                    if (parseInt(items[key].total_amount) > 1)
+                        total = currencyFormat(items[key].total_amount.replace('.', '')).replace('R$', '');
+                    else {
+                        let val = parseFloat(items[key].items.map(it => it.amount).reduce((a, b) => reducerTotal(a, b)) / 100);
+                        total = currencyFormat(`${val}`.replace('.', '')).replace('R$', '');
+                    }
+                    rows.push([date, total, 'Detalhes', <Icon type="chevronRight" size={14} />]);
+                    rowsClicks.push(() => setLocation(`/recebiveis/${id}`));
                     recDocs.push({
-                        status: 'Aguardando Pagamento',
-                        statusColor: '#F7BA00',
-                        charge: currencyFormat(items[key].total_amount.replace('.', '')), //Começar aqui, montando o objeto
+                        charge: currencyFormat(items[key].total_amount.replace('.', '')),
                         date,
                         items: items[key].items,
-                        id: md5(date).substring(10)
+                        id
                     });
                 });
-                // console.log(rows);
-                // console.log(recDocs);
                 setData([{
                     title: 'Recebíveis',
-                    header: ['Data', 'Valor(R$)', 'Status', ''],
+                    header: ['Data', 'Valor(R$)', '', ''],
                     rows,
-                    rowsClicks: [],
-                    totals: ['-', currencyFormat(`${total_amount}`.replace('.', '')).replace('R$', ''), '-', '-']
+                    rowsClicks,
+                    totals: ['-', currency.replace('R$', ''), '-', '-']
                 }]);
                 setReceivables(recDocs);
                 setIsLoading(false);

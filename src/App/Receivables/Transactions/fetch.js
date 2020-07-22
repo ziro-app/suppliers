@@ -3,12 +3,11 @@ import currencyFormat from '@ziro/currency-format';
 import capitalize from '@ziro/capitalize';
 
 
-const fetch = (receivables, receivableId, { setReceivableObj, setDate, setBlocks, setIsError, setCustomError, setIsLoading }) => {
+const fetch = (receivables, receivableId, { setDate, setBlocks, setIsError, setCustomError, setIsLoading }) => {
     const run = async () => {
         try {
             const receivableEffect = receivables.find(receivable => receivable.id === receivableId);
             if (receivableEffect) {
-                setReceivableObj(receivableEffect);
                 setDate(receivableEffect.date);
                 let block = [];
                 await Promise.all(receivableEffect.items.map(async (transac, index) => {
