@@ -221,7 +221,7 @@ const completeRegistration = state => () => {
                         }
                     } catch (error) {
                         if (error.customError) throw error
-                        throw { msg: 'Erro ao ao salvar usuário. Tente novamente.', customError: true }
+                        throw { msg: 'Erro ao salvar usuário. Tente novamente.', customError: true }
                     }
                 } catch (error) {
                     if (error.customError) throw error
