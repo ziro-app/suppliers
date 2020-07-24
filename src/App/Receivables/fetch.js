@@ -3,6 +3,7 @@ import axios, { post } from 'axios';
 import md5 from 'md5';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import currencyFormat from '@ziro/currency-format';
+import { round } from '../Transactions/utils';
 
 const reducerTotal = (accumulator, currentValue) => parseInt(accumulator) + parseInt(currentValue);
 
@@ -22,8 +23,8 @@ const fetch = (zoopId, total, { setIsLoading, setErrorLoading, setCurrencyTotal,
                         },
                     });
                 const { items, total_amount } = data;
-                const currency = currencyFormat(`${total_amount}`.replace('.', ''));
-                setCurrencyTotal(currency);
+                // Total à receber -> Soma do total líquido de todos os recebíveis
+                let totalAmount = 0;
                 const rows = [];
                 const rowsClicks = [];
                 const keys = Object.keys(items);
@@ -32,21 +33,24 @@ const fetch = (zoopId, total, { setIsLoading, setErrorLoading, setCurrencyTotal,
                     let date = [dia, mes, ano.substring(2)].join('/');
                     let id = md5(date).substring(10);
                     let total;
-                    if (parseInt(items[key].total_amount) > 1)
-                        total = currencyFormat(items[key].total_amount.replace('.', '')).replace('R$', '');
-                    else {
-                        let val = parseFloat(items[key].items.map(it => it.amount).reduce((a, b) => reducerTotal(a, b)) / 100);
-                        total = currencyFormat(`${val}`.replace('.', '')).replace('R$', '');
-                    }
+                    // Total do recebível -> Soma do valor líquido de todas as transações do dia
+                    let val = parseFloat(items[key].items.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2);
+                    totalAmount += parseFloat(val);
+
+                    total = currencyFormat(`${val}`.replace('.', '')).replace('R$', '');
+
                     rows.push([date, total, 'Detalhes', <Icon type="chevronRight" size={14} />]);
                     rowsClicks.push(() => setLocation(`/recebiveis/${id}`));
                     recDocs.push({
-                        charge: currencyFormat(items[key].total_amount.replace('.', '')),
+                        charge: currencyFormat(`${val}`.replace('.', '')),
                         date,
                         items: items[key].items,
                         id
                     });
                 });
+                const rounded = round(totalAmount, 2).toFixed(2);
+                const currency = currencyFormat(`${rounded}`.replace('.', ''));
+                setCurrencyTotal(currency);
                 setData([{
                     title: 'Recebíveis',
                     header: ['Data', 'Valor(R$)', '', ''],

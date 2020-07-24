@@ -4,6 +4,7 @@ import HeaderHome from '@bit/vitorbarbosa19.ziro.header-home'
 import Form from '@bit/vitorbarbosa19.ziro.form'
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input'
 import InputText from '@bit/vitorbarbosa19.ziro.input-text'
+import InputEmail from '@bit/vitorbarbosa19.ziro.input-email'
 import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown'
 import Button from '@bit/vitorbarbosa19.ziro.button'
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
@@ -377,12 +378,9 @@ const Register = () => {
                                 />
                             } />,
                             <FormInput name='email' label='Email' input={
-                                <InputText
+                                <InputEmail
                                     value={email}
-                                    onChange={({ target: { value } }) => setEmail(value.toLowerCase())}
-                                    placeholder='ex@exemplo.com'
-                                    inputMode='email'
-                                    autoComplete='email'
+                                    setValue={setEmail}
                                 />
                             } />,
                             <FormInput name='pass' label='Senha' input={
@@ -572,12 +570,9 @@ const Register = () => {
                                 />
                             } />,
                             <FormInput name='email' label='Email' input={
-                                <InputText
+                                <InputEmail
                                     value={email}
-                                    onChange={({ target: { value } }) => setEmail(value.toLowerCase())}
-                                    placeholder='ex@exemplo.com'
-                                    inputMode='email'
-                                    autoComplete='email'
+                                    setValue={setEmail}
                                 />
                             } />,
                             <FormInput name='pass' label='Senha' input={
