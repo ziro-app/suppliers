@@ -17,6 +17,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
     const [error, setError] = useState();
     const [receivable, setReceivable] = useState({});
     const [backRoute, setBackRoute] = useState('');
+    const [snapshotMemo, setSnapshotMemo] = useState({});
     const history = createBrowserHistory();
     const [, setLocation] = useLocation();
 
@@ -79,6 +80,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
         });
         const { state } = history.location;
         if (state && state.backRoute) setBackRoute(state.backRoute);
+        if (state && state.snapshot) setSnapshotMemo(state.snapshot);
     }, [transaction]);
 
     if (!transaction || !receivable)
@@ -94,7 +96,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
-            <Header type="icon" title="Detalhes do lançamento" setIsOpen={backRoute ? () => history.push(`transacoes/${transactionId}`, { backRoute }) : () => setLocation(`transacoes/${transactionId}`)} icon="back" />
+            <Header type="icon" title="Detalhes do lançamento" setIsOpen={backRoute ? () => history.push(`transacoes/${transactionId}`, { backRoute, snapshot: snapshotMemo }) : () => setLocation(`transacoes/${transactionId}`)} icon="back" />
             <div style={{ display: 'grid' }}>
                 <Details blocks={blocks} />
             </div>

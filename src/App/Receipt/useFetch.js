@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { createBrowserHistory } from 'history';
 import { db } from '../../Firebase/index';
 
-export default (receipt_id, setLoading, location, setReceipt, installmentsDoc, setTransaction, setBackRoute) => {
+export default (receipt_id, setLoading, location, setReceipt, installmentsDoc, setTransaction, setBackRoute, setSnapshot) => {
     const [installmentDoc, setInstallmentDoc] = useState('');
     const [status, setStatus] = useState('');
     const [error, setError] = useState(false);
@@ -11,6 +11,7 @@ export default (receipt_id, setLoading, location, setReceipt, installmentsDoc, s
     useEffect(() => {
         const { state } = history.location;
         if (state && state.backRoute) setBackRoute(state.backRoute);
+        if (state && state.snapshot) setSnapshot(state.snapshot);
         if (installmentDoc) setLoading(false);
         if (!installmentsDoc) {
             const paymentsRef = db.collection('credit-card-payments');

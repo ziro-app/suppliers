@@ -18,7 +18,6 @@ import mountBankInfo from './mountBankInfo';
 const BankInfo = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [blocks, setBlocks] = useState([]);
-    const [newHolderName, setNewHolderName] = useState('')
     const [bankName, setBankName] = useState('')
     const [bankNumber, setBankNumber] = useState('')
     const [newAgency, setNewAgency] = useState('')
@@ -29,20 +28,15 @@ const BankInfo = () => {
     const { zoopId, userPos, docId, cnpj, codBank, holderName, accountType, accountNumber, agency } = useContext(userContext);
     const bankData = { codBank, holderName, accountType, accountNumber, agency };
     const setState = {
-        setIsLoading, setBlocks, setNewHolderName, setBankName, setBankNumber,
+        setIsLoading, setBlocks, setBankName, setBankNumber,
         setNewAgency, setNewAccountNumber, setAccountTypeViewName, setNewAccountType
     };
     const state = {
-        newHolderName, bankName, bankNumber, newAgency, newAccountNumber,
+        holderName, bankName, bankNumber, newAgency, newAccountNumber,
         accountTypeViewName, newAccountType, zoopId, userPos, docId, cnpj, ...setState
     };
     const validations = [
         {
-            name: 'newHolderName',
-            validation: value => !!value,
-            value: newHolderName,
-            message: 'Campo obrigatório'
-        }, {
             name: 'bankNumber',
             validation: value => banksList.includes(bankName),
             value: bankNumber,
@@ -88,25 +82,10 @@ const BankInfo = () => {
                     validations={validations}
                     sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
                     inputs={[
-                        <FormInput name='accountType' label='Tipo da Conta' input={
-                            <Dropdown
-                                value={accountTypeViewName}
-                                onChange={({ target: { value } }) => {
-                                    setAccountTypeViewName(value)
-                                    if (value === 'Conta Poupança') setNewAccountType('savings')
-                                    else if (value === 'Conta Corrente') setNewAccountType('checking')
-                                    else setNewAccountType('')
-                                }}
-                                onChangeKeyboard={element => {
-                                    if (element) {
-                                        setAccountTypeViewName(element.value)
-                                        if (element.value === 'Conta Poupança') setAccountType('savings')
-                                        else if (element.value === 'Conta Corrente') setAccountType('checking')
-                                        else setAccountType('')
-                                    }
-                                }}
-                                list={accountTypeList}
-                                placeholder="Corrente"
+                        <FormInput name='newHolderName' label='Titular' input={
+                            <InputText
+                                value={holderName}
+                                onChange={() => null}
                                 readOnly={true}
                             />
                         } />,
@@ -147,11 +126,26 @@ const BankInfo = () => {
                                 inputMode='numeric'
                             />
                         } />,
-                        <FormInput name='newHolderName' label='Titular' input={
-                            <InputText
-                                value={newHolderName}
-                                onChange={({ target: { value } }) => setNewHolderName(value.toUpperCase())}
-                                placeholder="Nome do titular"
+                        <FormInput name='accountType' label='Tipo da Conta' input={
+                            <Dropdown
+                                value={accountTypeViewName}
+                                onChange={({ target: { value } }) => {
+                                    setAccountTypeViewName(value)
+                                    if (value === 'Conta Poupança') setNewAccountType('savings')
+                                    else if (value === 'Conta Corrente') setNewAccountType('checking')
+                                    else setNewAccountType('')
+                                }}
+                                onChangeKeyboard={element => {
+                                    if (element) {
+                                        setAccountTypeViewName(element.value)
+                                        if (element.value === 'Conta Poupança') setAccountType('savings')
+                                        else if (element.value === 'Conta Corrente') setAccountType('checking')
+                                        else setAccountType('')
+                                    }
+                                }}
+                                list={accountTypeList}
+                                placeholder="Corrente"
+                                readOnly={true}
                             />
                         } />
                     ]}

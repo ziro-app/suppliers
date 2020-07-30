@@ -30,6 +30,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     const [copyResultStatus, setCopyResultStatus] = useState(true);
     const [cancelModal, setCancelModal] = useState(false);
     const [backRoute, setBackRoute] = useState('');
+    const [snapshotMemo, setSnapshotMemo] = useState({});
     const { role } = useContext(userContext);
     const textAreaRef = useRef(null);
     const history = createBrowserHistory();
@@ -89,7 +90,9 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                 let liquidFormatted = transaction.fees ? currencyFormat(parseFloat(`${(stringToFloat(transaction.charge) - parseFloat(transaction.fees)).toFixed(2)}`.replace(/[R$\.,]/g, ''))) : '-';
                 const { state } = history.location;
                 const backRouteEffect = (state && state.backRoute) ? state.backRoute : '';
+                const snapshotEffect = (state && state.snapshot) ? state.snapshot : '';
                 setBackRoute(backRouteEffect);
+                setSnapshotMemo(snapshotEffect);
 
                 block = [
                     {
@@ -168,7 +171,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                             let upAm = round(parseFloat(transaction.gross_amount), 2);
                             let upAmw = round(parseFloat(transaction.amount), 2);
                             unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`, <Icon type="chevronRight" size={14} />]);
-                            if (backRouteEffect) unpaidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect }));
+                            if (backRouteEffect) unpaidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
                             else unpaidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
                             unpaidAmount += parseFloat(upAm);
                             unpaidAmountWithoutFees += parseFloat(upAmw);
@@ -176,7 +179,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                             let upAm = round(parseFloat(transaction.gross_amount), 2);
                             let upAmw = round(parseFloat(transaction.amount), 2);
                             paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.paid_at)}`, <Icon type="chevronRight" size={14} />]);
-                            if (backRouteEffect) paidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect }));
+                            if (backRouteEffect) paidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
                             else paidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
                             paidAmount += parseFloat(upAm);
                             paidAmountWithoutFees += parseFloat(upAmw);
@@ -231,7 +234,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
             <input type="text" style={{ position: 'absolute', left: '-9999px' }} value={paymentLink} ref={textAreaRef} readOnly />
-            <Header type="icon-link" title="Detalhes da venda" navigateTo={backRoute || "transacoes"} icon="back" />
+            <Header type="icon" title="Detalhes da venda" setIsOpen={backRoute ? () => history.push(backRoute, { snapshot: snapshotMemo }) : () => setLocation('/transacoes')} icon="back" />
             <div style={{ display: 'grid', gridRowGap: isApproved ? '20px' : '0' }}>
                 <Details blocks={blocks} />
                 {isApproved && role === '' && (
@@ -297,7 +300,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                 )}
                 {receipt_id ? (
                     <div style={{ marginTop: isCanceled || transaction.status === 'Atualizando' ? '20px' : '0' }}>
-                        <Button type="link" cta="Gerar comprovante" template="regular" navigate={backRoute ? () => history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, { backRoute }) : () => setLocation(`/comprovante/${transaction.transactionId}/${receipt_id}`)} />
+                        <Button type="link" cta="Gerar comprovante" template="regular" navigate={backRoute ? () => history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, { backRoute, snapshot: snapshotMemo }) : () => setLocation(`/comprovante/${transaction.transactionId}/${receipt_id}`)} />
                     </div>
                 ) : null}
             </div>

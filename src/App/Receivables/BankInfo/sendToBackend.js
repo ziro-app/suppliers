@@ -10,11 +10,10 @@ const config = {
 }
 
 const sendToBackend = state => () => {
-    const { zoopId, userPos, docId, cnpj, newHolderName, bankName, bankNumber, newAgency, newAccountNumber,
+    const { zoopId, userPos, docId, cnpj, holderName, bankName, bankNumber, newAgency, newAccountNumber,
         accountTypeViewName, newAccountType, setNewHolderName,
         setBankName, setBankNumber, setNewAgency, setNewAccountNumber,
         setAccountTypeViewName, setNewAccountType } = state;
-    const holderName = newHolderName ? newHolderName.trim() : '';
     const body = {
         apiResource: 'values',
         apiMethod: 'update',

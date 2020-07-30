@@ -11,7 +11,7 @@ import { containerWithPadding } from '@ziro/theme';
 import { spinner, btn } from './styles';
 import fetch from './fetch';
 
-const Transactions = ({ receivables, receivableId }) => {
+const Transactions = ({ receivables, receivableId, snapshot }) => {
     const [isError, setIsError] = useState(false);
     const [customError, setCustomError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +51,7 @@ const Transactions = ({ receivables, receivableId }) => {
                     return (
                         <div key={index} style={{ display: 'grid', gridRowGap: '10px' }}>
                             <Details blocks={[block]} />
-                            <Button style={btn} cta='Ver detalhes' type='button' click={() => history.push(`/transacoes/${block.docId}`, { backRoute: `/recebiveis/${receivableId}` })} />
+                            <Button style={btn} cta='Ver detalhes' type='button' click={() => history.push(`/transacoes/${block.docId}`, { backRoute: `/recebiveis/${receivableId}`, snapshot })} />
                         </div>
                     );
                 })}

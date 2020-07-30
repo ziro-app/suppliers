@@ -18,10 +18,11 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
     const [location, setLocation] = useLocation();
     const [transaction, setTransaction] = useState('');
     const [backRoute, setBackRoute] = useState('');
+    const [snapshot, setSnapshot] = useState({});
     const [loading, setLoading] = useState(false);
     const history = createBrowserHistory();
     let block;
-    const { error } = useFetch(receiptId, setLoading, location, setReceipt, installments, setTransaction, setBackRoute);
+    const { error } = useFetch(receiptId, setLoading, location, setReceipt, installments, setTransaction, setBackRoute, setSnapshot);
     if (!receiptId) setLocation('/pagamentos');
     else {
         if (!loading && receipt) {
@@ -83,7 +84,7 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
         <>
             {/* eslint-disable-next-line no-nested-ternary */}
             <div style={containerWithPadding}>
-                <Header type="icon" title="Recibo" setIsOpen={backRoute ? () => history.push(backPath, { backRoute }) : () => setLocation(backPath)} icon="back" />
+                <Header type="icon" title="Recibo" setIsOpen={backRoute ? () => history.push(backPath, { backRoute, snapshot }) : () => setLocation(backPath)} icon="back" />
                 {loading ? (
                     <SpinnerWithDiv />
                 ) : error ? (

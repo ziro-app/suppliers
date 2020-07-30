@@ -7,64 +7,102 @@ import { round } from '../Transactions/utils';
 
 const reducerTotal = (accumulator, currentValue) => parseInt(accumulator) + parseInt(currentValue);
 
-const fetch = (zoopId, total, { setIsLoading, setErrorLoading, setCurrencyTotal, setReceivables, setData, setLocation }) => {
+const getFinalDate = (today, days) => {
+    let newDate = new Date(today);
+    newDate.setDate(today.getDate() + days);
+    return newDate;
+};
+
+const formatDate = date => `${date.getFullYear()}-${date.getMonth() + 1 <= 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${date.getDate()}`;
+
+const config = {
+    headers: {
+        Authorization: `${process.env.PAY_TOKEN}`,
+    }
+};
+
+const fetch = (zoopId, initDate, totalAmount, dataTable, days, receivables, { setIsLoading, setErrorLoading, setReceivables, setData, setLocation, setFinalDate, setHasMore, setLoadingMore, setTotalAmount, setDays, setCustomError }) => {
     const source = axios.CancelToken.source();
-    const url = `${process.env.PAY_URL}sellers-future-releases?seller_id=${zoopId}&limit=${total}`;
+    const fnDate = getFinalDate(initDate, 30);
+    setFinalDate(fnDate);
+    const parsedToday = formatDate(initDate);
+    const parsedFnDay = formatDate(fnDate);
     const recDocs = [];
     const run = async () => {
-        if (total > 0) {
-            try {
-                const { data } = await post(
-                    url,
-                    {},
-                    {
-                        headers: {
-                            Authorization: `${process.env.PAY_TOKEN}`,
-                        },
-                    });
-                const { items, total_amount } = data;
-                // Total à receber -> Soma do total líquido de todos os recebíveis
-                let totalAmount = 0;
-                const rows = [];
-                const rowsClicks = [];
+        try {
+            let hasMore = true;
+            let offset = 0;
+            let arrayItems = {};
+            while (hasMore) {
+                let url = `${process.env.PAY_URL}sellers-future-releases?seller_id=${zoopId}&expected_on_range[gte]=${parsedToday}&expected_on_range[lte]=${parsedFnDay}&offset=${offset}`;
+                const { data } = await post(url, {}, config);
+                const { items, has_more } = data;
                 const keys = Object.keys(items);
-                keys.map(key => {
-                    let [ano, mes, dia] = key.split('-');
-                    let date = [dia, mes, ano.substring(2)].join('/');
-                    let id = md5(date).substring(10);
-                    let total;
-                    // Total do recebível -> Soma do valor líquido de todas as transações do dia
-                    let val = parseFloat(items[key].items.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2);
-                    totalAmount += parseFloat(val);
-
-                    total = currencyFormat(`${val}`.replace('.', '')).replace('R$', '');
-
-                    rows.push([date, total, 'Detalhes', <Icon type="chevronRight" size={14} />]);
-                    rowsClicks.push(() => setLocation(`/recebiveis/${id}`));
-                    recDocs.push({
-                        charge: currencyFormat(`${val}`.replace('.', '')),
-                        date,
-                        items: items[key].items,
-                        id
+                if (offset !== 0) {
+                    keys.map(key => {
+                        if (key in arrayItems) arrayItems[key].items = [...arrayItems[key].items, ...items[key].items];
+                        else arrayItems[key] = items[key];
                     });
+                }
+                else arrayItems = { ...arrayItems, ...items };
+                if (items.length === 0) setHasMore(false);
+                if (!(items.length === 0) && offset === 0) setDays(days + 30);
+                hasMore = has_more;
+                offset += 100;
+            }
+            let totalAmountFetch = 0;
+            const rows = [];
+            const rowsClicks = [];
+            const keys = Object.keys(arrayItems);
+            if (keys.length === 0) throw { customError: true };
+            keys.map(key => {
+                let [ano, mes, dia] = key.split('-');
+                let date = [dia, mes, ano.substring(2)].join('/');
+                let id = md5(date).substring(10);
+                let total;
+                // Total do recebível -> Soma do valor líquido de todas as transações do dia
+                let val = parseFloat(arrayItems[key].items.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2);
+                totalAmountFetch += parseFloat(val);
+
+                total = currencyFormat(`${val}`.replace('.', '')).replace('R$', '');
+
+                rows.push([date, total, arrayItems[key].items.length, <Icon type="chevronRight" size={14} />]);
+                rowsClicks.push(() => setLocation(`/recebiveis/${id}`));
+                recDocs.push({
+                    charge: currencyFormat(`${val}`.replace('.', '')),
+                    date,
+                    items: arrayItems[key].items,
+                    id
                 });
-                const rounded = round(totalAmount, 2).toFixed(2);
-                const currency = currencyFormat(`${rounded}`.replace('.', ''));
-                setCurrencyTotal(currency);
-                setData([{
-                    title: 'Recebíveis',
-                    header: ['Data', 'Valor(R$)', '', ''],
-                    rows,
-                    rowsClicks,
-                    totals: ['-', currency.replace('R$', ''), '-', '-']
-                }]);
-                setReceivables(recDocs);
+            });
+
+            const rounded = parseFloat(round(totalAmount + totalAmountFetch, 2).toFixed(2));
+            const currency = currencyFormat(`${rounded}`.replace('.', ''));
+            setTotalAmount(rounded);
+
+            setData([{
+                title: 'Recebíveis',
+                header: ['Data', 'Valor(R$)', 'Qntd vendas', ''],
+                rows: dataTable[0] && dataTable[0].rows ? [...dataTable[0].rows, ...rows] : rows,
+                rowsClicks: dataTable[0] && dataTable[0].rowsClicks ? [...dataTable[0].rowsClicks, ...rowsClicks] : rowsClicks,
+                totals: ['-', currency.replace('R$', ''), '-', '-']
+            }]);
+            setReceivables([...receivables, ...recDocs]);
+            setIsLoading(false);
+            setLoadingMore(false);
+        } catch (error) {
+            if (error.response) console.log(error.response);
+            else console.log(error);
+            if (error.customError) {
+                setErrorLoading(false);
                 setIsLoading(false);
-            } catch (error) {
-                if (error.response) console.log(error.response);
-                else console.log(error);
+                setLoadingMore(false);
+                setCustomError(true);
+            } else {
                 setErrorLoading(true);
                 setIsLoading(false);
+                setLoadingMore(false);
+                setCustomError(false);
             }
         }
     }

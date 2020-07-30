@@ -1,4 +1,4 @@
-import { fontTitle, primaryColor } from '@ziro/theme';
+import { gradient, fontTitle, primaryColor, shadow } from '@ziro/theme';
 
 export const
 
@@ -44,4 +44,24 @@ export const
     customGrid = {
         gridTemplateColumns: 'auto 1fr 1fr 10px',
         gridRowGap: '15px'
+    },
+    btn = {
+        display: 'block', // necessary for link version
+        WebkitAppearance: 'none',
+        WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+        MozAppearance: 'none',
+        outline: 'none',
+        cursor: 'pointer',
+        maxWidth: '400px',
+        width: '100%',
+        margin: '0 auto',
+        padding: '8px 0px',
+        border: 'none',
+        borderRadius: '20px',
+        fontFamily: fontTitle,
+        fontSize: '1.4rem',
+        color: '#FFF',
+        textAlign: 'center',
+        background: gradient,
+        boxShadow: `${shadow}`
     }
