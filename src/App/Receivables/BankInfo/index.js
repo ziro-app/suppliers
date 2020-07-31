@@ -10,10 +10,10 @@ import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import { containerWithPadding } from '@ziro/theme';
 import maskInput from '@ziro/mask-input';
 import { userContext } from '../../appContext';
-import { info, titleStyle } from '../styles';
 import banksList from '../../Register/banks';
 import sendToBackend from './sendToBackend';
 import mountBankInfo from './mountBankInfo';
+import { dot, headerStyle, infoBlock } from './styles';
 
 const BankInfo = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -74,8 +74,10 @@ const BankInfo = () => {
             <div style={{ display: 'grid', gridRowGap: '25px' }}>
                 <Details blocks={blocks} />
 
-                <div style={info}>
-                    <label style={titleStyle}>RECEBER EM OUTRA CONTA</label>
+                <div style={infoBlock}>
+                    <label style={headerStyle}>Receber em outra conta
+					<label style={dot}>&nbsp;.</label>
+                    </label>
                 </div>
 
                 <Form

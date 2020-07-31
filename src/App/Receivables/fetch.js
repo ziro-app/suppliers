@@ -54,7 +54,7 @@ const fetch = (zoopId, initDate, totalAmount, dataTable, days, receivables, { se
             const rows = [];
             const rowsClicks = [];
             const keys = Object.keys(arrayItems);
-            if (keys.length === 0) throw { customError: true };
+            if (keys.length === 0 && receivables.length === 0) throw { customError: true };
             keys.map(key => {
                 let [ano, mes, dia] = key.split('-');
                 let date = [dia, mes, ano.substring(2)].join('/');
