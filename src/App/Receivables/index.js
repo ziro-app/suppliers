@@ -55,7 +55,7 @@ const Receivables = ({ receivableId }) => {
             rowsClicks.push(() => setLocation(`/recebiveis/${id}`));
         });
         setData([{
-            title: 'Recebíveis',
+            title: 'Valores à receber',
             header: ['Data', 'Valor(R$)', 'Qntd vendas', ''],
             rows,
             rowsClicks,
@@ -108,8 +108,8 @@ const Receivables = ({ receivableId }) => {
         <Menu title='Recebíveis'>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <div style={{ display: 'grid', gridRowGap: '20px' }}>
-                    <Button cta="Configurar Dados Dancários" style={btn} navigate={() => setLocation('recebiveis/dados-bancarios')} type="link" />
-
+                    <Button cta="Configurar dados bancários" style={btn} navigate={() => setLocation('recebiveis/dados-bancarios')} type="link" />
+                    <div style={{marginTop: '10px'}}></div>
                     <div style={info}>
                         <label style={titleStyle}>À RECEBER EM {days} DIAS</label>
                         <label style={contentStyle}>{currencyFormat(round(totalAmount, 2).toFixed(2).replace('.', ''))}</label>

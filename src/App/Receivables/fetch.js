@@ -81,7 +81,7 @@ const fetch = (zoopId, initDate, totalAmount, dataTable, days, receivables, { se
             setTotalAmount(rounded);
 
             setData([{
-                title: 'Recebíveis',
+                title: 'Valores à receber',
                 header: ['Data', 'Valor(R$)', 'Qntd vendas', ''],
                 rows: dataTable[0] && dataTable[0].rows ? [...dataTable[0].rows, ...rows] : rows,
                 rowsClicks: dataTable[0] && dataTable[0].rowsClicks ? [...dataTable[0].rowsClicks, ...rowsClicks] : rowsClicks,

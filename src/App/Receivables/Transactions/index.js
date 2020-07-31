@@ -46,7 +46,7 @@ const Transactions = ({ receivables, receivableId, snapshot }) => {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
             <Header type="icon-link" title={date} navigateTo="recebiveis" icon="back" />
-            <div style={{ display: 'grid', gridRowGap: '20px' }}>
+            <div style={{ display: 'grid', gridRowGap: '40px' }}>
                 {blocks.map((block, index) => {
                     return (
                         <div key={index} style={{ display: 'grid', gridRowGap: '10px' }}>
