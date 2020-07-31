@@ -15,6 +15,8 @@ import BankInfo from './BankInfo/index';
 import Transactions from './Transactions/index';
 import { btn, cellStyle, contentStyle, customGrid, info, spinner, titleStyle } from './styles';
 import fetch from './fetch';
+// TODO
+// import convertCsv from './convertCsv';
 
 const Receivables = ({ receivableId }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -27,15 +29,16 @@ const Receivables = ({ receivableId }) => {
     const [initDate, setInitDate] = useState(new Date());
     const [finalDate, setFinalDate] = useState();
     const [totalAmount, setTotalAmount] = useState(0);
+    const [totalTransactions, setTotalTransactions] = useState(0);
     const [days, setDays] = useState(0);
     const [, setLocation] = useLocation();
     const history = createBrowserHistory();
     const setState = {
         setIsLoading, setErrorLoading, setReceivables, setData, setLocation,
         setHasMore, setLoadingMore, setInitDate, setFinalDate, setTotalAmount,
-        setDays, setCustomError
+        setDays, setCustomError, setTotalTransactions
     };
-    const state = { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days };
+    const state = { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days, totalTransactions };
     const { zoopId } = useContext(userContext);
 
     const handleClick = () => {
@@ -43,10 +46,10 @@ const Receivables = ({ receivableId }) => {
         let day = new Date(finalDate);
         day.setDate(finalDate.getDate() + 1);
         setInitDate(day);
-        fetch(zoopId, day, totalAmount, data, days, receivables, setState);
+        fetch(zoopId, day, totalAmount, totalTransactions, data, days, receivables, setState);
     };
 
-    const mountTable = (tableRows, total) => {
+    const mountTable = (tableRows, totalAmount, totalTransactions) => {
         let rows = [];
         let rowsClicks = [];
         tableRows.map(tableRow => {
@@ -59,26 +62,32 @@ const Receivables = ({ receivableId }) => {
             header: ['Data', 'Valor(R$)', 'Qntd vendas', ''],
             rows,
             rowsClicks,
-            totals: ['-', currencyFormat(`${total}`.replace('.', '')).replace('R$', ''), '-', '-']
+            totals: ['-', currencyFormat(`${totalAmount}`.replace('.', '')).replace('R$', ''), totalTransactions, '-']
         }]);
+    };
+
+    const useSnapshot = snapshot => {
+        const { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days, totalTransactions } = snapshot;
+        setReceivables(receivables);
+        setHasMore(hasMore);
+        setLoadingMore(loadingMore);
+        setInitDate(new Date(initDate));
+        setFinalDate(new Date(finalDate));
+        setTotalAmount(totalAmount);
+        setTotalTransactions(totalTransactions);
+        setDays(days);
+        mountTable(receivables, totalAmount, totalTransactions);
+        localStorage.removeItem('snapshot');
+        setIsLoading(false);
     };
 
     useEffect(() => {
         const { state } = history.location;
+        const localSnapshot = localStorage.getItem('snapshot') ? JSON.parse(localStorage.getItem('snapshot')) : '';
         const snapshotMemo = (state && state.snapshot) ? state.snapshot : '';
-        if (snapshotMemo) {
-            const { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days } = snapshotMemo;
-            setReceivables(receivables);
-            setHasMore(hasMore);
-            setLoadingMore(loadingMore);
-            setInitDate(initDate);
-            setFinalDate(finalDate);
-            setTotalAmount(totalAmount);
-            setDays(days);
-            mountTable(receivables, totalAmount);
-            setIsLoading(false);
-        }
-        else fetch(zoopId, initDate, totalAmount, data, days, receivables, setState);
+        if (snapshotMemo) useSnapshot(snapshotMemo);
+        else if (localSnapshot) useSnapshot(localSnapshot);
+        else fetch(zoopId, initDate, totalAmount, totalTransactions, data, days, receivables, setState);
     }, []);
 
     if (isLoading)
@@ -109,7 +118,10 @@ const Receivables = ({ receivableId }) => {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <div style={{ display: 'grid', gridRowGap: '20px' }}>
                     <Button cta="Configurar dados bancários" style={btn} navigate={() => setLocation('recebiveis/dados-bancarios')} type="link" />
-                    <div style={{marginTop: '10px'}}></div>
+
+                    {/* <Button cta="Exportar planilha" style={btn} click={() => convertCsv(receivables, 'Recebiveis.csv')} type="button" /> */}
+
+                    <div style={{ marginTop: '10px' }}></div>
                     <div style={info}>
                         <label style={titleStyle}>À RECEBER EM {days} DIAS</label>
                         <label style={contentStyle}>{currencyFormat(round(totalAmount, 2).toFixed(2).replace('.', ''))}</label>

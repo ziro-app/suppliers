@@ -93,6 +93,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                 const snapshotEffect = (state && state.snapshot) ? state.snapshot : '';
                 setBackRoute(backRouteEffect);
                 setSnapshotMemo(snapshotEffect);
+                localStorage.removeItem('snapshot');
 
                 block = [
                     {

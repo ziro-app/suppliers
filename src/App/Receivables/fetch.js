@@ -21,7 +21,7 @@ const config = {
     }
 };
 
-const fetch = (zoopId, initDate, totalAmount, dataTable, days, receivables, { setIsLoading, setErrorLoading, setReceivables, setData, setLocation, setFinalDate, setHasMore, setLoadingMore, setTotalAmount, setDays, setCustomError }) => {
+const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days, receivables, { setIsLoading, setErrorLoading, setReceivables, setData, setLocation, setFinalDate, setHasMore, setLoadingMore, setTotalAmount, setDays, setCustomError, setTotalTransactions }) => {
     const source = axios.CancelToken.source();
     const fnDate = getFinalDate(initDate, 30);
     setFinalDate(fnDate);
@@ -51,6 +51,7 @@ const fetch = (zoopId, initDate, totalAmount, dataTable, days, receivables, { se
                 offset += 100;
             }
             let totalAmountFetch = 0;
+            let totalTransactionsFetch = 0;
             const rows = [];
             const rowsClicks = [];
             const keys = Object.keys(arrayItems);
@@ -60,13 +61,15 @@ const fetch = (zoopId, initDate, totalAmount, dataTable, days, receivables, { se
                 let date = [dia, mes, ano.substring(2)].join('/');
                 let id = md5(date).substring(10);
                 let total;
+                let vendas = arrayItems[key].items.length;
                 // Total do recebível -> Soma do valor líquido de todas as transações do dia
                 let val = parseFloat(arrayItems[key].items.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2);
                 totalAmountFetch += parseFloat(val);
+                totalTransactionsFetch += vendas;
 
                 total = currencyFormat(`${val}`.replace('.', '')).replace('R$', '');
 
-                rows.push([date, total, arrayItems[key].items.length, <Icon type="chevronRight" size={14} />]);
+                rows.push([date, total, vendas, <Icon type="chevronRight" size={14} />]);
                 rowsClicks.push(() => setLocation(`/recebiveis/${id}`));
                 recDocs.push({
                     charge: currencyFormat(`${val}`.replace('.', '')),
@@ -75,17 +78,18 @@ const fetch = (zoopId, initDate, totalAmount, dataTable, days, receivables, { se
                     id
                 });
             });
-
+            const updatedTotalTransactions = totalTransactions + totalTransactionsFetch;
             const rounded = parseFloat(round(totalAmount + totalAmountFetch, 2).toFixed(2));
             const currency = currencyFormat(`${rounded}`.replace('.', ''));
             setTotalAmount(rounded);
+            setTotalTransactions(updatedTotalTransactions);
 
             setData([{
                 title: 'Valores à receber',
                 header: ['Data', 'Valor(R$)', 'Qntd vendas', ''],
                 rows: dataTable[0] && dataTable[0].rows ? [...dataTable[0].rows, ...rows] : rows,
                 rowsClicks: dataTable[0] && dataTable[0].rowsClicks ? [...dataTable[0].rowsClicks, ...rowsClicks] : rowsClicks,
-                totals: ['-', currency.replace('R$', ''), '-', '-']
+                totals: ['-', currency.replace('R$', ''), updatedTotalTransactions, '-']
             }]);
             setReceivables([...receivables, ...recDocs]);
             setIsLoading(false);

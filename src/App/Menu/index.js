@@ -27,13 +27,13 @@ export const Menu = ({ title, children }) => {
                     {
                         path: '/criar-cobranca',
                         onClick: () => setIsOpen(false),
-                        icon: <Icon type='money' size={15} strokeWidth={2} />,
+                        icon: <Icon type='link' size={15} strokeWidth={2} />,
                         text: 'Criar Cobrança'
                     },
                     {
                         path: '/recebiveis',
                         onClick: () => setIsOpen(false),
-                        icon: <Icon type='card' size={15} strokeWidth={2} />,
+                        icon: <Icon type='money' size={15} strokeWidth={2} />,
                         text: 'Recebíveis'
                     },
                     {
@@ -70,13 +70,13 @@ export const Menu = ({ title, children }) => {
                     {
                         path: '/criar-cobranca',
                         onClick: () => setIsOpen(false),
-                        icon: <Icon type='money' size={15} strokeWidth={2} />,
+                        icon: <Icon type='link' size={15} strokeWidth={2} />,
                         text: 'Criar Cobrança'
                     },
                     {
                         path: '/recebiveis',
                         onClick: () => setIsOpen(false),
-                        icon: <Icon type='card' size={15} strokeWidth={2} />,
+                        icon: <Icon type='money' size={15} strokeWidth={2} />,
                         text: 'Recebíveis'
                     },
                     {

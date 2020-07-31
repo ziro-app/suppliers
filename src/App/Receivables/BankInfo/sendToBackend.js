@@ -10,9 +10,10 @@ const config = {
 }
 
 const sendToBackend = state => () => {
-    const { zoopId, userPos, docId, cnpj, holderName, bankName, bankNumber, newAgency, newAccountNumber,
-        accountTypeViewName, newAccountType, setNewHolderName,
-        setBankName, setBankNumber, setNewAgency, setNewAccountNumber,
+    const { zoopId, userPos, docId, cnpj, holderName, bankName,
+        bankNumber, newAgency, newAccountNumber,
+        accountTypeViewName, newAccountType, setBankName,
+        setBankNumber, setNewAgency, setNewAccountNumber,
         setAccountTypeViewName, setNewAccountType } = state;
     const body = {
         apiResource: 'values',
@@ -75,7 +76,6 @@ const sendToBackend = state => () => {
                             numConta: newAccountNumber,
                             agencia: newAgency
                         });
-                        setNewHolderName('');
                         setBankName('');
                         setBankNumber('');
                         setNewAgency('');
@@ -85,6 +85,7 @@ const sendToBackend = state => () => {
                         resolve('Atualizado com sucesso');
 
                     } catch (error) {
+                        console.log(error);
                         if (error.customError) throw error
                         if (error.response) console.log(error.response)
                         throw { msg: 'Erro ao atualizar dados. Fale com seu assessor', customError: true };

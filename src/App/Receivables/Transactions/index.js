@@ -21,7 +21,10 @@ const Transactions = ({ receivables, receivableId, snapshot }) => {
     const history = createBrowserHistory();
     const setState = { setIsError, setCustomError, setIsLoading, setBlocks, setDate };
 
-    useEffect(() => fetch(receivables, receivableId, setState), []);
+    useEffect(() => {
+        localStorage.setItem('snapshot', JSON.stringify(snapshot));
+        fetch(receivables, receivableId, setState);
+    }, []);
 
     if (isLoading)
         return (
