@@ -74,13 +74,14 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
                 recDocs.push({
                     charge: currencyFormat(`${val}`.replace('.', '')),
                     date,
+                    completeDate: [dia, mes, ano].join('/'),
                     items: arrayItems[key].items,
                     id
                 });
             });
             const updatedTotalTransactions = totalTransactions + totalTransactionsFetch;
             const rounded = parseFloat(round(totalAmount + totalAmountFetch, 2).toFixed(2));
-            const currency = currencyFormat(`${rounded}`.replace('.', ''));
+            const currency = currencyFormat(rounded.toFixed(2).replace('.', ''));
             setTotalAmount(rounded);
             setTotalTransactions(updatedTotalTransactions);
 

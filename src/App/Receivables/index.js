@@ -15,8 +15,7 @@ import BankInfo from './BankInfo/index';
 import Transactions from './Transactions/index';
 import { btn, cellStyle, contentStyle, customGrid, info, spinner, titleStyle } from './styles';
 import fetch from './fetch';
-// TODO
-// import convertCsv from './convertCsv';
+import convertCsv from './convertCsv';
 
 const Receivables = ({ receivableId }) => {
     const [isLoading, setIsLoading] = useState(true);
@@ -62,7 +61,7 @@ const Receivables = ({ receivableId }) => {
             header: ['Data', 'Valor(R$)', 'Qntd vendas', ''],
             rows,
             rowsClicks,
-            totals: ['-', currencyFormat(`${totalAmount}`.replace('.', '')).replace('R$', ''), totalTransactions, '-']
+            totals: ['-', currencyFormat(round(totalAmount, 2).toFixed(2).replace('.', '')), totalTransactions, '-']
         }]);
     };
 
@@ -119,7 +118,7 @@ const Receivables = ({ receivableId }) => {
                 <div style={{ display: 'grid', gridRowGap: '20px' }}>
                     <Button cta="Configurar dados bancários" style={btn} navigate={() => setLocation('recebiveis/dados-bancarios')} type="link" />
 
-                    {/* <Button cta="Exportar planilha" style={btn} click={() => convertCsv(receivables, 'Recebiveis.csv')} type="button" /> */}
+                    <Button cta="Exportar planilha" style={btn} click={() => convertCsv(receivables, totalAmount, totalTransactions, 'Recebiveis.csv')} type="button" />
 
                     <div style={{ marginTop: '10px' }}></div>
                     <div style={info}>
