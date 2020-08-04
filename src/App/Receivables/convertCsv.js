@@ -6,8 +6,8 @@ const dowloadCsv = (data, totalAmount, totalTransactions, title) => {
     data.map(obj => {
         const { charge, completeDate, items } = obj
         dataChange.push({
-            data: completeDate || '-',
-            valor: charge.replace('R$', '') || '-',
+            Data: completeDate || '-',
+            Valor: charge.replace('R$', '') || '-',
             QntdVendas: items.length || '-'
         })
     });

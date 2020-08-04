@@ -44,7 +44,8 @@ module.exports = (env, { mode }) => {
             sheet_cnpj_id,
             email_token,
             api_email,
-            firebase_auth_url
+            firebase_auth_url,
+            homolog
         } = require('./credentials')
         config.devtool = 'cheap-module-eval-source-map'
         config.devServer = { historyApiFallback: true }
@@ -66,7 +67,8 @@ module.exports = (env, { mode }) => {
                     SHEET_CNPJ_ID: JSON.stringify(sheet_cnpj_id),
                     EMAIL_TOKEN: JSON.stringify(email_token),
                     API_EMAIL: JSON.stringify(api_email),
-                    FIREBASE_AUTH_URL: JSON.stringify(firebase_auth_url)
+                    FIREBASE_AUTH_URL: JSON.stringify(firebase_auth_url),
+                    HOMOLOG: JSON.stringify(homolog)
                 }
             })
         )
@@ -105,7 +107,8 @@ module.exports = (env, { mode }) => {
                     SHEET_CNPJ_ID: JSON.stringify(process.env.SHEET_CNPJ_ID),
                     EMAIL_TOKEN: JSON.stringify(process.env.EMAIL_TOKEN),
                     API_EMAIL: JSON.stringify(process.env.API_EMAIL),
-                    FIREBASE_AUTH_URL: JSON.stringify(process.env.FIREBASE_AUTH_URL)
+                    FIREBASE_AUTH_URL: JSON.stringify(process.env.FIREBASE_AUTH_URL),
+                    HOMOLOG: JSON.stringify(process.env.HOMOLOG)
                 }
             })
         )
