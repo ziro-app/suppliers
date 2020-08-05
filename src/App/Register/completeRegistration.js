@@ -28,7 +28,7 @@ const completeRegistration = state => () => {
         apiResource: 'values',
         apiMethod: 'append',
         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
-        range: 'Base!A1',
+        range: process.env.HOMOLOG ? 'BaseH!A1' : 'Base!A1',
         resource: {
             values: [
                 [

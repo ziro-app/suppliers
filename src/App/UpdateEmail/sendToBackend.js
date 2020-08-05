@@ -1,13 +1,19 @@
 import { fbauth, auth, db } from '../../Firebase/index'
 import { post } from 'axios'
 
+const matchRange = (isCollaborator, row) => {
+    if (process.env.HOMOLOG) return isCollaborator ? `ColaboradoresH!C${row}` : `BaseH!F${row}`;
+    else return isCollaborator ? `Colaboradores!C${row}` : `Base!F${row}`;
+};
+
 const sendToBackend = state => () => {
     const { isCollaborator, zoopId, row, pass, newEmail } = state
     const url = process.env.SHEET_URL
+    const range = matchRange(isCollaborator, row);
     const body = {
         apiResource: 'values',
         apiMethod: 'update',
-        range: isCollaborator ? `Colaboradores!C${row}` : `Base!F${row}`,
+        range,
         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
         resource: {
             values: [[newEmail.toLowerCase()]]

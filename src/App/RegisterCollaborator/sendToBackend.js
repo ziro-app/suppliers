@@ -17,7 +17,7 @@ const sendToBackend = state => () => {
         apiResource: 'values',
         apiMethod: 'append',
         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
-        range: 'Colaboradores!A1',
+        range: process.env.HOMOLOG ? 'ColaboradoresH!A1' : 'Colaboradores!A1',
         resource: {
             values: [[formatDateUTC3(today), nomeCompleto, email, supplierId, 'Aprovado', role]]
         },

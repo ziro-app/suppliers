@@ -68,6 +68,7 @@ module.exports = (env, { mode }) => {
                     EMAIL_TOKEN: JSON.stringify(email_token),
                     API_EMAIL: JSON.stringify(api_email),
                     FIREBASE_AUTH_URL: JSON.stringify(firebase_auth_url),
+                    // FOR DEV TESTS ONLY
                     HOMOLOG: JSON.stringify(homolog)
                 }
             })
@@ -107,8 +108,7 @@ module.exports = (env, { mode }) => {
                     SHEET_CNPJ_ID: JSON.stringify(process.env.SHEET_CNPJ_ID),
                     EMAIL_TOKEN: JSON.stringify(process.env.EMAIL_TOKEN),
                     API_EMAIL: JSON.stringify(process.env.API_EMAIL),
-                    FIREBASE_AUTH_URL: JSON.stringify(process.env.FIREBASE_AUTH_URL),
-                    HOMOLOG: JSON.stringify(process.env.HOMOLOG)
+                    FIREBASE_AUTH_URL: JSON.stringify(process.env.FIREBASE_AUTH_URL)
                 }
             })
         )

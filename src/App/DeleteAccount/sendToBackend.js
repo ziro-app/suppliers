@@ -45,7 +45,7 @@ const sendToBackend = state => () => new Promise(async (resolve, reject) => {
                     const body = {
                         apiResource: 'values',
                         apiMethod: 'update',
-                        range: `Colaboradores!E${userPos}`,
+                        range: process.env.HOMOLOG ? `ColaboradoresH!E${userPos}` : `Colaboradores!E${userPos}`,
                         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
                         resource: {
                             values: [['Excluído']]
