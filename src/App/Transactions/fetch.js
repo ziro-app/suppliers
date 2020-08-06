@@ -6,9 +6,9 @@ import { dateFormat } from './utils';
 const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore, docId, isCollaborator) => {
   let query;
   if (isCollaborator) {
-    query = db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).orderBy('dateLinkCreated', 'desc').limit(limit);
+    query = db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).orderBy('dateLastUpdate', 'desc').limit(limit);
   } else {
-    query = db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).orderBy('dateLinkCreated', 'desc').limit(limit);
+    query = db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).orderBy('dateLastUpdate', 'desc').limit(limit);
   }
   if (lastDoc) query = query.startAfter(lastDoc);
 
@@ -26,9 +26,9 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
           const paymentDoc = [];
           if (!snapshot.empty) {
             snapshot.forEach(doc => {
-              const { charge, date, fees, installments, dateLinkCreated, transactionZoopId, maxInstallments, sellerZoopId, status, buyerRazao, receivables, receivement, receiptId } = doc.data();
+              const { charge, date, fees, installments, dateLinkCreated, transactionZoopId, maxInstallments, sellerZoopId, status, buyerRazao, receivables, receivement, receiptId, dateLastUpdate } = doc.data();
               const chargeFormatted = currencyFormat(charge);
-              const dateFormatted = date ? dateFormat(date) : '';
+              const dateFormatted = dateLastUpdate ? dateFormat(dateLastUpdate) : '';
               paymentDoc.push({
                 transactionZoopId: transactionZoopId ? transactionZoopId : '',
                 transactionId: doc.id,
