@@ -49,7 +49,7 @@ export const App = () => {
         const body = {
             apiResource: 'values',
             apiMethod: 'get',
-            range: 'Base',
+            range: process.env.HOMOLOG ? 'BaseH' : 'Base',
             spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
         };
         let pos = 0;
@@ -68,7 +68,7 @@ export const App = () => {
         const body = {
             apiResource: 'values',
             apiMethod: 'get',
-            range: 'Colaboradores',
+            range: process.env.HOMOLOG ? 'ColaboradoresH' : 'Colaboradores',
             spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
         };
         let pos = 0;
