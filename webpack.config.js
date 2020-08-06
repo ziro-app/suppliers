@@ -28,7 +28,6 @@ module.exports = (env, { mode }) => {
         plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })]
     }
     if (mode === 'development') {
-        const { homolog } = require('./credentials');
         const {
             sheet_url,
             sheet_token,
@@ -45,8 +44,9 @@ module.exports = (env, { mode }) => {
             sheet_cnpj_id,
             email_token,
             api_email,
-            firebase_auth_url
-        } = homolog? require('./credentialsDev') : require('./credentials');
+            firebase_auth_url,
+            homolog
+        } = require('./credentials');
         config.devtool = 'cheap-module-eval-source-map'
         config.devServer = { historyApiFallback: true }
         config.plugins.push(
