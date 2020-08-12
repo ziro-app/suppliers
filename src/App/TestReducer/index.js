@@ -70,8 +70,8 @@ const TestReducer = () => {
             </div>
             <div style={{display:'flex', justifyContent:'space-around'}}>
                 <h2>estado: {supplier.estado}</h2>
-                <button type='submit'  onClick={() => dispatch({type: 'changeToRJ'})}>Change to RJ</button>
-                <button type='submit'  onClick={() => dispatch({type: 'changeToSP'})}>Change to SP</button>
+                <button type='submit'  onClick={() => dispatch({type: 'changeToRJ', payload:supplier})}>Change to RJ</button>
+                <button type='submit'  onClick={() => dispatch({type: 'changeToSP', payload:supplier})}>Change to SP</button>
             </div>
         </div>
     );
