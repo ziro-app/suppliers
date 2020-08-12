@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { Router2 as routeMatcher } from '@ziro/router';
+import TestReducer from './TestReducer'
 import Login from './Login/index';
 import Register from './Register/index';
 import LoginTrouble from '@bit/vitorbarbosa19.ziro.login-trouble';
@@ -84,6 +85,7 @@ const Router = ({ isLogged }) => {
                 <UpdateUserInfo />
             </HeaderBack>
         ),
+        '/testReducer' : <TestReducer />
     };
 
     if (role === '') {
