@@ -45,6 +45,9 @@ module.exports = (env, { mode }) => {
             email_token,
             api_email,
             firebase_auth_url,
+            zapbox_url,
+            zapbox_token,
+            zapbox_ziro_token,
             homolog
         } = require('./credentials');
         config.devtool = 'cheap-module-eval-source-map'
@@ -68,6 +71,9 @@ module.exports = (env, { mode }) => {
                     EMAIL_TOKEN: JSON.stringify(email_token),
                     API_EMAIL: JSON.stringify(api_email),
                     FIREBASE_AUTH_URL: JSON.stringify(firebase_auth_url),
+                    ZAPBOX_URL: JSON.stringify(zapbox_url),
+                    ZAPBOX_TOKEN: JSON.stringify(zapbox_token),
+                    ZAPBOX_ZIRO_TOKEN: JSON.stringify(zapbox_ziro_token),
                     // FOR DEV TESTS ONLY
                     HOMOLOG: JSON.stringify(homolog)
                 }
@@ -108,7 +114,10 @@ module.exports = (env, { mode }) => {
                     SHEET_CNPJ_ID: JSON.stringify(process.env.SHEET_CNPJ_ID),
                     EMAIL_TOKEN: JSON.stringify(process.env.EMAIL_TOKEN),
                     API_EMAIL: JSON.stringify(process.env.API_EMAIL),
-                    FIREBASE_AUTH_URL: JSON.stringify(process.env.FIREBASE_AUTH_URL)
+                    FIREBASE_AUTH_URL: JSON.stringify(process.env.FIREBASE_AUTH_URL),
+                    ZAPBOX_URL: JSON.stringify(process.env.ZAPBOX_URL),
+                    ZAPBOX_TOKEN: JSON.stringify(process.env.ZAPBOX_TOKEN),
+                    ZAPBOX_ZIRO_TOKEN: JSON.stringify(process.env.ZAPBOX_ZIRO_TOKEN)
                 }
             })
         )
