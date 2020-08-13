@@ -50,10 +50,10 @@ const reducer = (state, action) => {
 const TestReducer = () => {
     const [isError, setIsError] = useState(false)
     const [isLoading, setIsLoading] = useState(true);
-    const [supplier, setSupplier] = useState({})
-    const state = {setIsError, setIsLoading, setSupplier}
+    const [links, setLinks] = useState({})
+    const state = {setIsError, setIsLoading, setLinks}
     useEffect(() => fetch(state), [])
-    const [supplierObj, dispatch] = useReducer(reducer, {})
+    const [linksObj, dispatch] = useReducer(reducer, {})
     if (isLoading)
         return (
             <div style={spinner}>
@@ -62,6 +62,15 @@ const TestReducer = () => {
         );
     if (isError) return <Error />
     return (
+        <div style={{width:'90%', maxWidth:'500px', margin:'0 auto'}}>
+            <div style={{marginBottom:'40px'}}>
+                <h2 style={titleStyle}>Custom Hook Support</h2>
+                <div style={line}/>
+            </div>
+            <div>
+                <h2 style={subTitleStyle}>updateFirebase</h2>
+                <button type="submit" style={btnStyle} onClick={() => dispatch({type:'updateFirebase', payload:{doc:links.id,update:{status:'Aguardando Teste'}}})}>Update Firebase</button>
+            </div>
         <div>
             <div style={{display:'flex', justifyContent:'space-around'}}>
                 <h2>cpf: {supplier.cpf || supplierObj.cpf}</h2>
