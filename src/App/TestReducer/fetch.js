@@ -2,21 +2,22 @@ import axios from 'axios'
 import { db } from '../../Firebase/index'
 
 const fetch = (state) => {
-    const {setIsError, setIsLoading, setSupplier} = state
-    const query = db.collection('suppliers').where('fantasia', '==', 'LOJAS MARISA')
+    const {setIsError, setIsLoading, setLinks} = state
+    const query = db.collection('credit-card-payments-test').where('seller', '==', 'Lojas Marisa')
     const source = axios.CancelToken.source()
     const run = async () => {
         try {
             query.onSnapshot(
                 async snapShot => {
                     setIsLoading(true)
-                    const supplier = []
+                    const links = []
                     if (!snapShot.empty) {
                         snapShot.forEach((doc) => {
-                            supplier.push(doc.data())
+                            links.push({data:doc.data(), id: doc.id})
                         })
                     }
-                    setSupplier(supplier[0])
+                    setLinks(links[0])
+                    console.log(links[0])
                     setIsLoading(false)
                 })
         } catch (error) {
