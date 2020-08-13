@@ -72,10 +72,8 @@ const TestReducer = () => {
                 <button type="submit" style={btnStyle} onClick={() => dispatch({type:'updateFirebase', payload:{doc:links.id,update:{status:'Aguardando Teste'}}})}>Update Firebase</button>
             </div>
         <div>
-            <div style={{display:'flex', justifyContent:'space-around'}}>
-                <h2>cpf: {supplier.cpf || supplierObj.cpf}</h2>
-                <button type='submit' onClick={() => dispatch({type: 'changeToBatata', payload:supplier})}>Change to batata</button>
-                <button type='submit' onClick={() => dispatch({type: 'changeTo000', payload:supplier})}>Change to 000.000.000-00</button>
+                <h2 style={subTitleStyle}>sendMsg</h2>
+                <button type="submit" style={btnStyle} onClick={() => dispatch({type:'sendWhats', payload:{celular:11995643901,msg:'Olá Ahmad'}})}>Send Whats</button>
             </div>
             <div style={{display:'flex', justifyContent:'space-around'}}>
                 <h2>estado: {supplier.estado}</h2>

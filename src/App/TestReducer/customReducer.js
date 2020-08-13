@@ -12,3 +12,12 @@ const reducer = (state, action) => {
                 console.log(error)
             }
         },
+        sendWhats: async () => {
+            const {msg, celular} = action.payload
+            try {
+                await sendWhats(msg, celular)
+                return {...state}
+            } catch (error) {
+                console.log(error)
+            }
+        },
