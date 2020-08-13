@@ -75,10 +75,9 @@ const TestReducer = () => {
                 <h2 style={subTitleStyle}>sendMsg</h2>
                 <button type="submit" style={btnStyle} onClick={() => dispatch({type:'sendWhats', payload:{celular:11995643901,msg:'Olá Ahmad'}})}>Send Whats</button>
             </div>
-            <div style={{display:'flex', justifyContent:'space-around'}}>
-                <h2>estado: {supplier.estado}</h2>
-                <button type='submit'  onClick={() => dispatch({type: 'changeToRJ', payload:supplier})}>Change to RJ</button>
-                <button type='submit'  onClick={() => dispatch({type: 'changeToSP', payload:supplier})}>Change to SP</button>
+            <div>
+                <h2 style={subTitleStyle}>manualApproved</h2>
+                <button type="submit" style={btnStyle} onClick={() => dispatch({type:'manualApproved', payload:{docCatalog:'6WyC6q1Xj6Yijg1YtAHg',docCard:'wbsTBsXvKBY4rIW006sJ', update:{status:'approved'}}})}>Send Whats</button>
             </div>
         </div>
     );

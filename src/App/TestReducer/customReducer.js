@@ -21,3 +21,17 @@ const reducer = (state, action) => {
                 console.log(error)
             }
         },
+        manualApproved: async () => {
+            const {docCatalog, docCard, update} = action.payload
+            try {
+                await db.collection('catalog-user-data').doc(docCatalog).collection('cards').doc(docCard).update(update)
+                return {...state, ...update}
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
+        machine[action.type]()
+}
+
+export default reducer
