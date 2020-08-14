@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const sendWhats = async (msg, celular) => {
+const sendWhats = async (state, action) => {
+    const {msg, celular} = action.payload
     try {
         const options = {
             method:'GET',
@@ -11,11 +12,12 @@ const sendWhats = async (msg, celular) => {
                 zapBoxToken:process.env.ZAPBOX_TOKEN
             },
             headers:{
+                Origin:'https://ziro.app',
                 Authorization:process.env.ZAPBOX_ZIRO_TOKEN
             }
         }
-        const result = await axios(options)
-        return result
+        await axios(options)
+        return {...state}
     } catch (error) {
         console.log(error.response)
     }
