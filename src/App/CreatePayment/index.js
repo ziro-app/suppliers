@@ -47,11 +47,10 @@ const CreatePayment = () => {
     }
     getZoopPlan();
   }, []);
-  console.log(hasZoopPlan);
   const validations = [
     {
       name: 'insurance',
-      validation: value => value !== '' && hasZoopPlan,
+      validation: value => (hasZoopPlan ? value !== '' : true),
       value: insurenceDropdownValue,
       message: 'Por favor, selecione uma opção!',
     },
