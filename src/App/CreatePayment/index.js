@@ -1,11 +1,13 @@
-import React, { useState, useContext } from 'react';
-import maskInput from '@ziro/mask-input';
-import sendToBackend from './sendToBackend';
-import capitalize from '@ziro/capitalize';
+import React, { useContext, useState } from 'react';
+
+import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown';
 import Form from '@bit/vitorbarbosa19.ziro.form';
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
-import InputText from '@bit/vitorbarbosa19.ziro.input-text';
 import InputMoney from '@bit/vitorbarbosa19.ziro.input-money';
+import InputText from '@bit/vitorbarbosa19.ziro.input-text';
+import capitalize from '@ziro/capitalize';
+import maskInput from '@ziro/mask-input';
+import sendToBackend from './sendToBackend';
 import { userContext } from '../appContext';
 
 const CreatePayment = () => {
@@ -13,6 +15,9 @@ const CreatePayment = () => {
   const [charge, setCharge] = useState('');
   const [maxInstallments, setMaxInstallments] = useState('');
   const [observations, setObservations] = useState('');
+  const [insurance, setInsurance] = useState(null);
+  const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
+  const options = ['Sim', 'Não'];
   const state = {
     seller: capitalize(fantasy),
     sellerId: zoopId,
@@ -26,9 +31,17 @@ const CreatePayment = () => {
     setMaxInstallments,
     observations,
     setObservations,
+    insurance,
+    setInsurance,
+    setInsurenceDropdownValue,
   };
-
   const validations = [
+    {
+      name: 'insurance',
+      validation: value => value !== '',
+      value: insurenceDropdownValue,
+      message: 'Por favor, selecione uma opção!',
+    },
     {
       name: 'charge',
       validation: value => value > 9 && value <= 3000000,
@@ -42,6 +55,7 @@ const CreatePayment = () => {
       message: fantasy === 'ZIRO' ? 'Deve ser entre 1 e 4' : 'Deve ser entre 1 e 10',
     },
   ];
+
   return (
     <Form
       validations={validations}
@@ -52,6 +66,42 @@ const CreatePayment = () => {
           name="maxInstallments"
           label="Parcelamento máximo"
           input={<InputText value={maxInstallments} onChange={({ target: { value } }) => setMaxInstallments(maskInput(value, '##', true))} placeholder="10" />}
+        />,
+        <FormInput
+          name="insurance"
+          label="Adicionar seguro a transação?"
+          input={
+            <Dropdown
+              value={insurenceDropdownValue}
+              onChange={({ target: { value } }) => {
+                if (value === 'Sim') {
+                  setInsurance(true);
+                  setInsurenceDropdownValue('Sim');
+                } else if (value === 'Não') {
+                  setInsurance(false);
+                  setInsurenceDropdownValue('Não');
+                } else {
+                  setInsurance(null);
+                  setInsurenceDropdownValue('');
+                }
+              }}
+              onChangeKeyboard={element => {
+                if (element.value === 'Sim') {
+                  setInsurance(true);
+                  setInsurenceDropdownValue('Sim');
+                } else if (element.value === 'Não') {
+                  setInsurance(false);
+                  setInsurenceDropdownValue('Não');
+                } else {
+                  setInsurance(false);
+                  setInsurenceDropdownValue('');
+                }
+              }}
+              list={options}
+              placeholder="Clique para selecionar uma opção"
+              readOnly
+            />
+          }
         />,
         <FormInput
           name="observation"

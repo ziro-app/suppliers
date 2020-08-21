@@ -6,11 +6,32 @@ const checkCollaborator = async docId => {
 };
 
 const sendToBackend = state => () => {
-  const { seller, sellerId, charge, maxInstallments, isCollaborator, docId, fname, brand, setCharge, setMaxInstallments, observations, setObservations } = state;
+  const {
+    seller,
+    sellerId,
+    charge,
+    maxInstallments,
+    isCollaborator,
+    docId,
+    fname,
+    brand,
+    setCharge,
+    setMaxInstallments,
+    observations,
+    setObservations,
+    insurance,
+    setInsurance,
+    setInsurenceDropdownValue,
+  } = state;
   const baseUrl = 'https://ziro.app/pagamento/';
   return new Promise(async (resolve, reject) => {
     try {
-      const nowDate = fs.FieldValue.serverTimestamp()
+      const getSupplierData = await db.collection('suppliers').where('fantasia', '==', seller.toUpperCase()).get();
+      let zoopPlan;
+      getSupplierData.forEach(doc => {
+        zoopPlan = doc.data().zoopPlan;
+      });
+      const nowDate = fs.FieldValue.serverTimestamp();
       if (seller && sellerId) {
         let docRef;
         if (isCollaborator) {
@@ -28,6 +49,8 @@ const sendToBackend = state => () => {
               collaboratorName: fname,
               onBehalfOfBrand: brand ? brand : seller,
               observations,
+              insurance,
+              zoopPlan,
             });
           } else throw { msg: 'Permissão insuficiente', customError: true };
         } else {
@@ -40,6 +63,8 @@ const sendToBackend = state => () => {
             maxInstallments,
             status: 'Aguardando Pagamento',
             observations,
+            insurance,
+            zoopPlan,
           });
         }
         try {
@@ -52,6 +77,8 @@ const sendToBackend = state => () => {
         setCharge('');
         setMaxInstallments('');
         setObservations('');
+        setInsurance(null);
+        setInsurenceDropdownValue('');
       } else {
         throw { msg: 'Vendedor não encontrado', customError: true };
       }
@@ -60,6 +87,8 @@ const sendToBackend = state => () => {
         resolve('Link criado. Acesse na aba de Vendas');
         setCharge('');
         setMaxInstallments('');
+        setInsurance(null);
+        setInsurenceDropdownValue('');
       }
       if (error.customError) reject(error);
       else {

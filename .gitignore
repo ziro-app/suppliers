@@ -5,3 +5,11 @@ credentials.js
 credentialsDev.js
 credentialsProd.js
 yarn.lock
+.idea/codeStyles/codeStyleConfig.xml
+.idea/codeStyles/Project.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/jsLibraryMappings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/suppliers.iml
+.idea/vcs.xml

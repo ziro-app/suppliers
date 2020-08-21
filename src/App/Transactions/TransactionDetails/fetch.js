@@ -1,10 +1,11 @@
 import currencyFormat from '@ziro/currency-format';
+import { dateFormat } from '../utils';
 import { db } from '../../../Firebase/index';
 import matchStatusColor from '../matchStatusColor';
-import { dateFormat } from '../utils';
 
 const fetch = (transactionId, setTransaction, setError, transaction) => {
   const query = db.collection('credit-card-payments').doc(transactionId);
+
   const run = async () => {
     try {
       await query.onSnapshot(
@@ -34,7 +35,10 @@ const fetch = (transactionId, setTransaction, setError, transaction) => {
               collaboratorId,
               collaboratorName,
               observations,
+              insurance,
+              zoopPlan,
             } = snapshot.data();
+
             const chargeFormatted = currencyFormat(charge);
             const dateFormatted = date ? dateFormat(date) : '';
             paymentDoc.push({
@@ -62,6 +66,8 @@ const fetch = (transactionId, setTransaction, setError, transaction) => {
               collaboratorId,
               collaboratorName: collaboratorName || '',
               observations: observations || '',
+              insurance: insurance || '',
+              zoopPlan: zoopPlan || '',
             });
             if (transaction.status !== paymentDoc[0].status) setTransaction(paymentDoc[0]);
           } else {
