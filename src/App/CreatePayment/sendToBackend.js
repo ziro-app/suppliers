@@ -22,15 +22,11 @@ const sendToBackend = state => () => {
     insurance,
     setInsurance,
     setInsurenceDropdownValue,
+    hasZoopPlan,
   } = state;
   const baseUrl = 'https://ziro.app/pagamento/';
   return new Promise(async (resolve, reject) => {
     try {
-      const getSupplierData = await db.collection('suppliers').where('fantasia', '==', seller.toUpperCase()).get();
-      let zoopPlan;
-      getSupplierData.forEach(doc => {
-        zoopPlan = doc.data().zoopPlan;
-      });
       const nowDate = fs.FieldValue.serverTimestamp();
       if (seller && sellerId) {
         let docRef;
@@ -49,8 +45,8 @@ const sendToBackend = state => () => {
               collaboratorName: fname,
               onBehalfOfBrand: brand ? brand : seller,
               observations,
-              insurance,
-              zoopPlan,
+              insurance: insurance || true,
+              zoopPlan: hasZoopPlan || {},
             });
           } else throw { msg: 'Permissão insuficiente', customError: true };
         } else {
@@ -63,8 +59,8 @@ const sendToBackend = state => () => {
             maxInstallments,
             status: 'Aguardando Pagamento',
             observations,
-            insurance,
-            zoopPlan,
+            insurance: insurance || true,
+            zoopPlan: hasZoopPlan || {},
           });
         }
         try {

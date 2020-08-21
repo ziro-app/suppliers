@@ -1,4 +1,5 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { db, fs } from '../../Firebase/index';
 
 import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown';
 import Form from '@bit/vitorbarbosa19.ziro.form';
@@ -17,6 +18,7 @@ const CreatePayment = () => {
   const [observations, setObservations] = useState('');
   const [insurance, setInsurance] = useState(null);
   const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
+  const [hasZoopPlan, setHasZoopPlan] = useState('');
   const options = ['Sim', 'Não'];
   const state = {
     seller: capitalize(fantasy),
@@ -34,11 +36,22 @@ const CreatePayment = () => {
     insurance,
     setInsurance,
     setInsurenceDropdownValue,
+    hasZoopPlan,
   };
+  useEffect(() => {
+    async function getZoopPlan() {
+      const getSupplierData = await db.collection('suppliers').where('fantasia', '==', fantasy.toUpperCase()).get();
+      getSupplierData.forEach(doc => {
+        setHasZoopPlan(doc.data().zoopPlan || []);
+      });
+    }
+    getZoopPlan();
+  }, []);
+  console.log(hasZoopPlan);
   const validations = [
     {
       name: 'insurance',
-      validation: value => value !== '',
+      validation: value => value !== '' && hasZoopPlan,
       value: insurenceDropdownValue,
       message: 'Por favor, selecione uma opção!',
     },
@@ -56,7 +69,7 @@ const CreatePayment = () => {
     },
   ];
 
-  return (
+  return hasZoopPlan ? (
     <Form
       validations={validations}
       sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
@@ -72,6 +85,7 @@ const CreatePayment = () => {
           label="Adicionar seguro a transação?"
           input={
             <Dropdown
+              disabled={!hasZoopPlan}
               value={insurenceDropdownValue}
               onChange={({ target: { value } }) => {
                 if (value === 'Sim') {
@@ -102,6 +116,24 @@ const CreatePayment = () => {
               readOnly
             />
           }
+        />,
+        <FormInput
+          name="observation"
+          label="Observações (opcional)"
+          input={<InputText value={observations} onChange={({ target: { value } }) => setObservations(value)} placeholder="Romaneio, nome do cliente, etc" />}
+        />,
+      ]}
+    />
+  ) : (
+    <Form
+      validations={validations}
+      sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+      inputs={[
+        <FormInput name="charge" label="Valor a cobrar" input={<InputMoney value={charge} setValue={setCharge} />} />,
+        <FormInput
+          name="maxInstallments"
+          label="Parcelamento máximo"
+          input={<InputText value={maxInstallments} onChange={({ target: { value } }) => setMaxInstallments(maskInput(value, '##', true))} placeholder="10" />}
         />,
         <FormInput
           name="observation"
