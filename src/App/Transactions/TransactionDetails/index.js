@@ -97,7 +97,14 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         let block;
         let dataTable;
         let feesFormatted = transaction.fees ? `- ${currencyFormat(parseFloat(transaction.fees.replace('.', '')))}` : '-';
-        let insuranceValueFormatted = transaction.receivables[0].split_rule ? handleInsurance(transaction) : '-';
+
+        let insuranceValueFormatted = transaction.receivables[0]
+          ? Object.prototype.hasOwnProperty.call(transaction, 'receivables')
+            ? Object.prototype.hasOwnProperty.call(transaction.receivables[0], 'split_rule')
+              ? handleInsurance(transaction)
+              : '-'
+            : '-'
+          : '-';
 
         let liquidFormatted = transaction.fees
           ? currencyFormat(
@@ -183,7 +190,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             content: transaction.onBehalfOfBrand,
           });
         }
-        if (transaction.receivables.length > 0) {
+        if (Object.prototype.hasOwnProperty.call(transaction, 'receivables') && transaction.receivables.length > 0) {
           const sortedTransactions = Object.prototype.hasOwnProperty.call(transaction.receivables[0], 'split_rule')
             ? transaction.receivables.sort((a, b) => b.installment - a.installment).filter(item => item.split_rule === null)
             : transaction.receivables.sort((a, b) => b.installment - a.installment);
