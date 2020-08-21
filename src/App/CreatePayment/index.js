@@ -18,7 +18,7 @@ const CreatePayment = () => {
   const [observations, setObservations] = useState('');
   const [insurance, setInsurance] = useState(null);
   const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
-  const [hasZoopPlan, setHasZoopPlan] = useState('');
+  const [hasZoopPlan, setHasZoopPlan] = useState(null);
   const options = ['Sim', 'Não'];
   const state = {
     seller: capitalize(fantasy),
@@ -42,7 +42,7 @@ const CreatePayment = () => {
     async function getZoopPlan() {
       const getSupplierData = await db.collection('suppliers').where('fantasia', '==', fantasy.toUpperCase()).get();
       getSupplierData.forEach(doc => {
-        setHasZoopPlan(doc.data().zoopPlan || []);
+        setHasZoopPlan(doc.data().zoopPlan || null);
       });
     }
     getZoopPlan();
