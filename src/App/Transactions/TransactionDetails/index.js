@@ -97,7 +97,8 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         let block;
         let dataTable;
         let feesFormatted = transaction.fees ? `- ${currencyFormat(parseFloat(transaction.fees.replace('.', '')))}` : '-';
-        let insuranceValueFormatted = handleInsurance(transaction);
+        let insuranceValueFormatted = transaction.receivables[0].split_rule ? handleInsurance(transaction) : '-';
+
         let liquidFormatted = transaction.fees
           ? currencyFormat(
               parseFloat(
