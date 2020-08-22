@@ -19,7 +19,7 @@ const CreatePayment = () => {
   const [insurance, setInsurance] = useState(null);
   const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
   const [hasZoopPlan, setHasZoopPlan] = useState(null);
-  const options = ['Sim', 'Não'];
+  const options = ['Com seguro', 'Sem seguro'];
   const state = {
     seller: capitalize(fantasy),
     sellerId: zoopId,
@@ -52,7 +52,7 @@ const CreatePayment = () => {
       name: 'insurance',
       validation: value => (hasZoopPlan ? value !== '' : true),
       value: insurenceDropdownValue,
-      message: 'Por favor, selecione uma opção!',
+      message: 'Opção inválida',
     },
     {
       name: 'charge',
@@ -81,37 +81,37 @@ const CreatePayment = () => {
         />,
         <FormInput
           name="insurance"
-          label="Adicionar seguro a transação?"
+          label="Seguro antifraude na transação"
           input={
             <Dropdown
               disabled={!hasZoopPlan}
               value={insurenceDropdownValue}
               onChange={({ target: { value } }) => {
-                if (value === 'Sim') {
+                if (value === 'Com seguro') {
                   setInsurance(true);
-                  setInsurenceDropdownValue('Sim');
-                } else if (value === 'Não') {
+                  setInsurenceDropdownValue('Com seguro');
+                } else if (value === 'Sem seguro') {
                   setInsurance(false);
-                  setInsurenceDropdownValue('Não');
+                  setInsurenceDropdownValue('Sem seguro');
                 } else {
                   setInsurance(null);
                   setInsurenceDropdownValue('');
                 }
               }}
               onChangeKeyboard={element => {
-                if (element.value === 'Sim') {
+                if (element.value === 'Com seguro') {
                   setInsurance(true);
-                  setInsurenceDropdownValue('Sim');
-                } else if (element.value === 'Não') {
+                  setInsurenceDropdownValue('Com seguro');
+                } else if (element.value === 'Sem seguro') {
                   setInsurance(false);
-                  setInsurenceDropdownValue('Não');
+                  setInsurenceDropdownValue('Sem seguro');
                 } else {
                   setInsurance(false);
                   setInsurenceDropdownValue('');
                 }
               }}
               list={options}
-              placeholder="Clique para selecionar uma opção"
+              placeholder="Escolha com ou sem seguro"
               readOnly
             />
           }

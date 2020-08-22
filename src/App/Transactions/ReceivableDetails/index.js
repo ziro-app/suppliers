@@ -60,7 +60,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
                   content: feesFormatted,
                 },
                 {
-                  title: 'Tarifa Seguro Ziro',
+                  title: 'Tarifa Ziro Seguro Antifraude',
                   content: zoopSplitFormatted,
                 },
                 {

@@ -141,7 +141,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                 content: feesFormatted,
               },
               {
-                title: 'Tarifa Seguro Ziro',
+                title: 'Tarifa Ziro Seguro Antifraude',
                 content: insuranceValueFormatted,
               },
               {
