@@ -84,7 +84,9 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
   function handleInsurance(transaction) {
     if (transaction.insurance === true) {
       if (transaction.zoopPlan.percentage !== 0) {
-        return `- ${currencyFormat(parseFloat(transaction.charge.replace('R$', '').replace(',', '').replace('.', '')) / transaction.zoopPlan.percentage)}`;
+        return `- ${currencyFormat(
+          parseFloat(transaction.charge.replace('R$', '').replace(',', '').replace('.', '')) / transaction.zoopPlan.percentage - (transaction.zoopPlan.amount ? -transaction.zoopPlan.amount : 0),
+        )}`;
       }
       return `- ${currencyFormat(parseFloat(transaction.charge.replace('R$', '').replace(',', '').replace('.', '')) - transaction.zoopPlan.amount)}`;
     }
@@ -98,11 +100,9 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         let dataTable;
         let feesFormatted = transaction.fees ? `- ${currencyFormat(parseFloat(transaction.fees.replace('.', '')))}` : '-';
 
-        let insuranceValueFormatted = transaction.receivables[0]
-          ? Object.prototype.hasOwnProperty.call(transaction, 'receivables')
-            ? Object.prototype.hasOwnProperty.call(transaction.receivables[0], 'split_rule')
-              ? handleInsurance(transaction)
-              : '-'
+        let insuranceValueFormatted = Object.prototype.hasOwnProperty.call(transaction, 'receivables')
+          ? Object.prototype.hasOwnProperty.call(transaction.receivables[0], 'split_rule')
+            ? handleInsurance(transaction)
             : '-'
           : '-';
 

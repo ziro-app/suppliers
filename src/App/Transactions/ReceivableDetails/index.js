@@ -21,14 +21,13 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
   const [snapshotMemo, setSnapshotMemo] = useState({});
   const history = createBrowserHistory();
   const [, setLocation] = useLocation();
-
   async function getTransaction(transactionId, setTransaction, setError, transaction) {
-    await fetch(transactionId, setTransaction, setError, transaction);
+    //await fetch(transactionId, setTransaction, setError, transaction);
   }
 
   useEffect(() => {
     const transaction = transactions.filter(transaction => transaction.transactionId === transactionId)[0];
-    setTransaction(transaction);
+    //setTransaction(transaction);
     getTransaction(transactionId, setTransaction, setError, transaction).then(r => {
       let block = [];
       if (transaction) {
