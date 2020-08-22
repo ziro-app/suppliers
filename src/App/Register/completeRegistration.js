@@ -186,7 +186,8 @@ const completeRegistration = state => () => {
                                                 titular: reason,
                                                 numConta: accountNumber,
                                                 agencia: agency,
-                                                tipoCadastro: 'Completo'
+                                                tipoCadastro: 'Completo',
+                                                zoopPlan: null
                                             })
 
                                             await db.collection('users').add({ email, app: 'suppliers' })

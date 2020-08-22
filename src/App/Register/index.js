@@ -21,6 +21,7 @@ import fetch from './fetch'
 import completeRegistration from './completeRegistration'
 import simplifiedRegistration from './simplifiedRegistration'
 import { AtvdText, CnpjText, DocText, HolderText, HomeText } from './modals'
+import validateDocuments from './validateDocuments'
 
 const categories = {
     'Bijouterias': '09',
@@ -137,7 +138,7 @@ const Register = () => {
             message: 'Sobrenome obrigatório'
         }, {
             name: 'cpf',
-            validation: value => step === 2 ? /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)/.test(value) : true,
+            validation: value => step === 2 ? /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)/.test(value) && (process.env.HOMOLOG ? true : validateDocuments(value)) : true,
             value: cpf,
             message: 'CPF inválido'
         }, {
