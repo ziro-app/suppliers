@@ -15,6 +15,25 @@ const getFinalDate = (today, days) => {
 
 const formatDate = date => `${date.getFullYear()}-${date.getMonth() + 1 <= 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${date.getDate()}`;
 
+const splitedArray = array => {
+    let item = {};
+    array.map(it => {
+        const { id } = it;
+        if (Object.keys(item).includes(id)) {
+            const { amount, fees, net } = it;
+            if (fees == 0) item[id]['split_value'] = amount;
+            else item[id]['split_value'] = item[id]['amount'];
+            item[id]['amount'] = `${parseInt(item[id]['amount']) + parseInt(amount)}`;
+            item[id]['fees'] = `${parseInt(item[id]['fees']) + parseInt(fees)}`;
+            item[id]['net'] = `${(parseInt(item[id]['net']) + parseInt(net)) - parseInt(item[id]['split_value'])}`;
+            item[id]['split_rule'] = true;
+        }
+        else item[id] = { ...it };
+    });
+    let normalizedArray = Object.keys(item).map(it => item[it]);
+    return normalizedArray;
+}
+
 const config = {
     headers: {
         Authorization: `${process.env.PAY_TOKEN}`,
@@ -61,9 +80,11 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
                 let date = [dia, mes, ano.substring(2)].join('/');
                 let id = md5(date).substring(10);
                 let total;
-                let vendas = arrayItems[key].items.length;
+                // Array com tratamento para os splits
+                let normalizedArray = splitedArray(arrayItems[key].items);
+                let vendas = normalizedArray.length;
                 // Total do recebível -> Soma do valor líquido de todas as transações do dia
-                let val = parseFloat(arrayItems[key].items.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2);
+                let val = parseFloat(normalizedArray.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2);
                 totalAmountFetch += parseFloat(val);
                 totalTransactionsFetch += vendas;
 
@@ -75,7 +96,7 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
                     charge: currencyFormat(`${val}`.replace('.', '')),
                     date,
                     completeDate: [dia, mes, ano].join('/'),
-                    items: arrayItems[key].items,
+                    items: normalizedArray,
                     id
                 });
             });

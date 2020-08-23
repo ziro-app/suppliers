@@ -2,26 +2,6 @@ import { db } from '../../../Firebase/index';
 import currencyFormat from '@ziro/currency-format';
 import capitalize from '@ziro/capitalize';
 
-const splitedArray = array => {
-    let item = {};
-    array.map(it => {
-        const { id } = it;
-        if (Object.keys(item).includes(id)) {
-            const { amount, fees, net } = it;
-            if (fees == 0) item[id]['split_value'] = amount;
-            else item[id]['split_value'] = item[id]['amount'];
-            item[id]['amount'] = `${parseInt(item[id]['amount']) + parseInt(amount)}`;
-            item[id]['fees'] = `${parseInt(item[id]['fees']) + parseInt(fees)}`;
-            item[id]['net'] = `${parseInt(item[id]['net']) + parseInt(net)}`;
-            item[id]['split_rule'] = true;
-        }
-        else item[id] = { ...it };
-    });
-    let normalizedArray = Object.keys(item).map(it => item[it]);
-    return normalizedArray;
-}
-
-
 const fetch = (receivables, receivableId, { setDate, setBlocks, setIsError, setCustomError, setIsLoading }) => {
     const run = async () => {
         try {
@@ -29,11 +9,10 @@ const fetch = (receivables, receivableId, { setDate, setBlocks, setIsError, setC
             if (receivableEffect) {
                 setDate(receivableEffect.date);
                 let block = [];
-                const normalizedArray = splitedArray(receivableEffect.items);
-                await Promise.all(normalizedArray.map(async (transac, index) => {
+                await Promise.all(receivableEffect.items.map(async (transac, index) => {
                     const { id, amount, fees, net, installment_plan: { number_installments, installment_number }, split_rule, split_value } = transac;
                     const antiFraud = split_rule ? `- ${currencyFormat(split_value)}` : '-';
-                    const netValue = split_rule && net ? `- ${currencyFormat(`${parseInt(net) - parseInt(split_value)}`)}` : '-';
+                    const netValue = net ? `${currencyFormat(net)}` : '-';
                     block.push({
                         id,
                         header: `Venda ${index + 1}`,
@@ -52,7 +31,7 @@ const fetch = (receivables, receivableId, { setDate, setBlocks, setIsError, setC
                             },
                             {
                                 title: 'Valor líquido',
-                                content: netValue === '-' ? (net ? currencyFormat(net) : '-') : netValue,
+                                content: netValue,
                             },
                             {
                                 title: 'Total de parcelas',
