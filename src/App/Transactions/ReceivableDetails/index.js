@@ -32,7 +32,12 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
       let block = [];
       if (transaction) {
         const effectReceivable = transaction.receivables.filter(receivable => receivable.receivableZoopId === receivableId)[0];
-        const sortedSplitAmount = transaction.receivables[0].split_rule ? transaction.receivables.sort((a, b) => b.installment - a.installment).filter(item => item.split_rule !== null) : [];
+        const sortedSplitAmount = transaction.receivables[0].split_rule
+          ? transaction.receivables
+              .sort((a, b) => b.installment - a.installment)
+              .filter(item => item.split_rule !== null)
+              .reverse()
+          : [];
         setReceivable(effectReceivable);
         if (effectReceivable) {
           let feesFormatted =

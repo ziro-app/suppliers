@@ -192,7 +192,10 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
           ? transaction.receivables.sort((a, b) => b.installment - a.installment).filter(item => item.split_rule === null)
           : transaction.receivables.sort((a, b) => b.installment - a.installment);
         const sortedSplitAmount = Object.prototype.hasOwnProperty.call(transaction.receivables[0], 'split_rule')
-          ? transaction.receivables.sort((a, b) => b.installment - a.installment).filter(item => item.split_rule !== null)
+          ? transaction.receivables
+              .sort((a, b) => b.installment - a.installment)
+              .filter(item => item.split_rule !== null)
+              .reverse()
           : [];
         const paidRows = [];
         const paidClicks = [];
