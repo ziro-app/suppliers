@@ -101,7 +101,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
       let dataTable;
       let feesFormatted = transaction.fees ? `- ${currencyFormat(parseFloat(transaction.fees.replace('.', '')))}` : '-';
 
-      let insuranceValueFormatted = Object.prototype.hasOwnProperty.call(transaction, 'receivables') ? handleInsurance(transaction) : '-';
+      let insuranceValueFormatted = Object.prototype.hasOwnProperty.call(transaction, 'receivables') && feesFormatted !== '-' ? handleInsurance(transaction) : '-';
 
       let liquidFormatted = transaction.fees
         ? currencyFormat(
