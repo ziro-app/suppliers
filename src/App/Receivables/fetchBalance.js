@@ -12,13 +12,19 @@ const config = {
 
 const isNextDay = day => {
     const lastDay = localStorage.getItem('@suppliers/balanceDay') ? new Date(JSON.parse(localStorage.getItem('@suppliers/balanceDay'))) : '';
-    const nextDay = new Date(`${lastDay.getMonth() + 1}-${lastDay.getDate() + 1}-${lastDay.getFullYear()}`);
-    const currentDay = new Date(`${day.getMonth() + 1}-${day.getDate()}-${day.getFullYear()}`);
-    if (lastDay && currentDay < nextDay) return false;
-    else {
+    if (lastDay) {
+        const nextDay = new Date(`${lastDay.getMonth() + 1}-${lastDay.getDate() + 1}-${lastDay.getFullYear()}`);
+        const currentDay = new Date(`${day.getMonth() + 1}-${day.getDate()}-${day.getFullYear()}`);
+        if (currentDay < nextDay) return false;
+        else {
+            localStorage.setItem('@suppliers/balanceDay', JSON.stringify(day));
+            return true;
+        }
+    } else {
         localStorage.setItem('@suppliers/balanceDay', JSON.stringify(day));
         return true;
     }
+
 }
 
 const fetch = (zoopId, { setBalance }) => {
