@@ -6,6 +6,7 @@ import Form from '@bit/vitorbarbosa19.ziro.form';
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
 import InputMoney from '@bit/vitorbarbosa19.ziro.input-money';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
+import Spinner from '@bit/vitorbarbosa19.ziro.spinner-with-div';
 import capitalize from '@ziro/capitalize';
 import maskInput from '@ziro/mask-input';
 import sendToBackend from './sendToBackend';
@@ -19,6 +20,7 @@ const CreatePayment = () => {
   const [insurance, setInsurance] = useState(null);
   const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
   const [hasZoopPlan, setHasZoopPlan] = useState(null);
+  const [loading, setLoading] = useState(true);
   const options = ['Com seguro', 'Sem seguro'];
   const state = {
     seller: capitalize(fantasy),
@@ -44,6 +46,7 @@ const CreatePayment = () => {
       getSupplierData.forEach(doc => {
         setHasZoopPlan(doc.data().zoopPlan || null);
       });
+      setLoading(false);
     }
     getZoopPlan();
   }, []);
@@ -67,6 +70,7 @@ const CreatePayment = () => {
       message: fantasy === 'ZIRO' ? 'Deve ser entre 1 e 4' : 'Deve ser entre 1 e 10',
     },
   ];
+  if (loading) return <Spinner size="5.5rem" />;
 
   return hasZoopPlan ? (
     <Form
