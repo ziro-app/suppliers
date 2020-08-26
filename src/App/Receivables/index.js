@@ -15,6 +15,7 @@ import BankInfo from './BankInfo/index';
 import Transactions from './Transactions/index';
 import { btn, cellStyle, contentStyle, customGrid, info, spinner, titleStyle } from './styles';
 import fetch from './fetch';
+import fetchBalance from './fetchBalance';
 import convertCsv from './convertCsv';
 
 const Receivables = ({ receivableId }) => {
@@ -30,14 +31,15 @@ const Receivables = ({ receivableId }) => {
     const [totalAmount, setTotalAmount] = useState(0);
     const [totalTransactions, setTotalTransactions] = useState(0);
     const [days, setDays] = useState(0);
+    const [balance, setBalance] = useState('');
     const [, setLocation] = useLocation();
     const history = createBrowserHistory();
     const setState = {
         setIsLoading, setErrorLoading, setReceivables, setData, setLocation,
         setHasMore, setLoadingMore, setInitDate, setFinalDate, setTotalAmount,
-        setDays, setCustomError, setTotalTransactions
+        setDays, setCustomError, setTotalTransactions, setBalance
     };
-    const state = { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days, totalTransactions };
+    const state = { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days, totalTransactions, balance };
     const { zoopId } = useContext(userContext);
 
     const handleClick = () => {
@@ -66,7 +68,7 @@ const Receivables = ({ receivableId }) => {
     };
 
     const useSnapshot = snapshot => {
-        const { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days, totalTransactions } = snapshot;
+        const { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days, totalTransactions, balance } = snapshot;
         setReceivables(receivables);
         setHasMore(hasMore);
         setLoadingMore(loadingMore);
@@ -75,6 +77,7 @@ const Receivables = ({ receivableId }) => {
         setTotalAmount(totalAmount);
         setTotalTransactions(totalTransactions);
         setDays(days);
+        setBalance(balance);
         mountTable(receivables, totalAmount, totalTransactions);
         localStorage.removeItem('snapshot');
         setIsLoading(false);
@@ -86,7 +89,10 @@ const Receivables = ({ receivableId }) => {
         const snapshotMemo = (state && state.snapshot) ? state.snapshot : '';
         if (snapshotMemo) useSnapshot(snapshotMemo);
         else if (localSnapshot) useSnapshot(localSnapshot);
-        else fetch(zoopId, initDate, totalAmount, totalTransactions, data, days, receivables, setState);
+        else {
+            fetchBalance(zoopId, setState);
+            fetch(zoopId, initDate, totalAmount, totalTransactions, data, days, receivables, setState);
+        }
     }, []);
 
     if (isLoading)
@@ -121,6 +127,11 @@ const Receivables = ({ receivableId }) => {
                     <Button cta="Exportar planilha" style={btn} click={() => convertCsv(receivables, totalAmount, totalTransactions, 'Recebiveis.csv')} type="button" />
 
                     <div style={{ marginTop: '10px' }}></div>
+                    <div style={info}>
+                        <label style={titleStyle}>À RECEBER HOJE</label>
+                        <label style={contentStyle}>{balance ? currencyFormat(round(balance, 2).toFixed(2).replace('.', '')) : 'R$ 0,00'}</label>
+                    </div>
+
                     <div style={info}>
                         <label style={titleStyle}>À RECEBER EM {days} DIAS</label>
                         <label style={contentStyle}>{currencyFormat(round(totalAmount, 2).toFixed(2).replace('.', ''))}</label>

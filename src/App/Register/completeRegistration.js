@@ -187,7 +187,16 @@ const completeRegistration = state => () => {
                                                 numConta: accountNumber,
                                                 agencia: agency,
                                                 tipoCadastro: 'Completo',
-                                                zoopPlan: null
+                                                splitPaymentPlan: {
+                                                    markup: {
+                                                        amount: 0,
+                                                        percentage: 0
+                                                    },
+                                                    antiFraud: {
+                                                        amount: 0,
+                                                        percentage: 0
+                                                    }
+                                                }
                                             })
 
                                             await db.collection('users').add({ email, app: 'suppliers' })
