@@ -19,7 +19,7 @@ const CreatePayment = () => {
   const [observations, setObservations] = useState('');
   const [insurance, setInsurance] = useState(null);
   const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
-  const [hasZoopPlan, setHasZoopPlan] = useState(null);
+  const [hasSplitPaymentPlan, setHasSplitPaymentPlan] = useState(null);
   const [loading, setLoading] = useState(true);
   const options = ['Com seguro', 'Sem seguro'];
   const state = {
@@ -38,22 +38,22 @@ const CreatePayment = () => {
     insurance,
     setInsurance,
     setInsurenceDropdownValue,
-    hasZoopPlan,
+    hasSplitPaymentPlan,
   };
   useEffect(() => {
-    async function getZoopPlan() {
+    async function getSplitPaymentPlan() {
       const getSupplierData = await db.collection('suppliers').where('fantasia', '==', fantasy.toUpperCase()).get();
       getSupplierData.forEach(doc => {
-        setHasZoopPlan(doc.data().zoopPlan || null);
+        setHasSplitPaymentPlan(doc.data().splitPaymentPlan || null);
       });
       setLoading(false);
     }
-    getZoopPlan();
+    getSplitPaymentPlan();
   }, []);
   const validations = [
     {
       name: 'insurance',
-      validation: value => (hasZoopPlan ? value !== '' : true),
+      validation: value => (hasSplitPaymentPlan && (hasSplitPaymentPlan.antiFraud.amount || hasSplitPaymentPlan.antiFraud.percentage) ? value !== '' : true),
       value: insurenceDropdownValue,
       message: 'Opção inválida',
     },
@@ -72,7 +72,7 @@ const CreatePayment = () => {
   ];
   if (loading) return <Spinner size="5.5rem" />;
 
-  return hasZoopPlan ? (
+  return hasSplitPaymentPlan && (hasSplitPaymentPlan.antiFraud.amount || hasSplitPaymentPlan.antiFraud.percentage) ? (
     <Form
       validations={validations}
       sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
@@ -88,7 +88,7 @@ const CreatePayment = () => {
           label="Seguro antifraude na transação"
           input={
             <Dropdown
-              disabled={!hasZoopPlan}
+              disabled={!hasSplitPaymentPlan}
               value={insurenceDropdownValue}
               onChange={({ target: { value } }) => {
                 if (value === 'Com seguro') {
