@@ -101,15 +101,14 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
       let dataTable;
       let feesFormatted = transaction.fees ? `- ${currencyFormat(parseFloat(transaction.fees.replace('.', '')))}` : '-';
 
-      let insuranceValueFormatted = Object.prototype.hasOwnProperty.call(transaction, 'receivables') && feesFormatted !== '-' ? handleInsurance(transaction) : '-';
-
+      let insuranceValueFormatted = Object.prototype.hasOwnProperty.call(transaction, 'receivables') && feesFormatted !== '-' && transaction.zoopPlan !== '' ? handleInsurance(transaction) : '-';
       let liquidFormatted = transaction.fees
         ? currencyFormat(
             parseFloat(
               `${(
                 stringToFloat(transaction.charge) -
                 parseFloat(transaction.fees) -
-                (insuranceValueFormatted !== '-' ? stringToFloat(insuranceValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0)
+                (insuranceValueFormatted.localeCompare('-') !== 0 ? stringToFloat(insuranceValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0)
               ).toFixed(2)}`.replace(/[R$\.,]/g, ''),
             ),
           )
