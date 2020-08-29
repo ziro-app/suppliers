@@ -7,40 +7,20 @@ const config = {
     }
 };
 
-// Logic to make this request only once a day
-// -> Think better if it covers all cases
 
-const isNextDay = day => {
-    const lastDay = localStorage.getItem('@suppliers/balanceDay') ? new Date(JSON.parse(localStorage.getItem('@suppliers/balanceDay'))) : '';
-    if (lastDay) {
-        const nextDay = new Date(`${lastDay.getMonth() + 1}-${lastDay.getDate() + 1}-${lastDay.getFullYear()}`);
-        const currentDay = new Date(`${day.getMonth() + 1}-${day.getDate()}-${day.getFullYear()}`);
-        if (currentDay < nextDay) return false;
-        else {
-            localStorage.setItem('@suppliers/balanceDay', JSON.stringify(day));
-            return true;
-        }
-    } else {
-        localStorage.setItem('@suppliers/balanceDay', JSON.stringify(day));
-        return true;
-    }
+const formatDate = date => `${date.getFullYear()}-${date.getMonth() + 1 <= 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${date.getDate()}`;
 
-}
-
-const fetch = (zoopId, { setBalance }) => {
+const fetchBalance = (zoopId, { setBalance }) => {
     const source = axios.CancelToken.source();
     const run = async () => {
         try {
-            const isNext = isNextDay(new Date());
-            if (isNext) {
-                const url = `${process.env.PAY_URL}account-balance-by-seller?seller_id=${zoopId}`;
-                const { data: { items: { current_balance } } } = await post(url, {}, config);
-                const val = parseFloat(current_balance.split('.')[0]) / 100;
-                const rounded = parseFloat(round(val, 2).toFixed(2));
-                localStorage.setItem('@suppliers/balanceValue', JSON.stringify(rounded));
-                setBalance(rounded);
-            } else {
-                const rounded = localStorage.getItem('@suppliers/balanceValue') ? JSON.parse(localStorage.getItem('@suppliers/balanceValue')) : '';
+            const formatted = formatDate(new Date());
+            const url = `${process.env.PAY_URL}account-history-all?seller_id=${zoopId}&created_date_range[gte]=${formatted}&created_date_range[lte]=${formatted}`;
+            const { data: { items } } = await post(url, {}, config);
+            if (Object.prototype.hasOwnProperty.call(items, formatted)) {
+                const { amount } = items[formatted]['items'][0];
+                const val = parseFloat(amount.replace('.', '')) / 100;
+                const rounded = val < 0 ? -(parseFloat(round(val, 2).toFixed(2))) : parseFloat(round(val, 2).toFixed(2));
                 setBalance(rounded);
             }
         } catch (error) {
@@ -52,4 +32,4 @@ const fetch = (zoopId, { setBalance }) => {
     return () => source.cancel('Canceled fetch request. Component unmounted')
 };
 
-export default fetch;
+export default fetchBalance;
