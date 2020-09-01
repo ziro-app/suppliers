@@ -97,15 +97,22 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
       let block;
       let dataTable;
       let feesFormatted = transaction.fees
-        ? `- ${currencyFormat(
-            parseFloat(transaction.fees.replace('.', '')) +
-              (transaction.splitPaymentPlan && (transaction.splitPaymentPlan.markup.amount || transaction.splitPaymentPlan.markup.percentage)
-                ? parseFloat(handleMarkup(transaction).replace('R$', '').replace(',', '').replace('.', '').replace('-', ''))
-                : 0),
-          )}`
+        ? ` ${
+            transaction.splitPaymentPlan && (transaction.splitPaymentPlan.markup.amount || transaction.splitPaymentPlan.markup.percentage)
+              ? '- '.concat(
+                  parseFloat(transaction.splitPaymentPlan.markup.receivable_gross_amount)
+                    .toLocaleString('pt-br', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    })
+                    .replace(/\s/g, ''),
+                )
+              : '-'
+          }`
         : '-';
 
       let insuranceValueFormatted =
+        transaction.status !== 'Cancelado' &&
         Object.prototype.hasOwnProperty.call(transaction, 'receivables') &&
         feesFormatted !== '-' &&
         transaction.splitPaymentPlan &&
@@ -119,18 +126,18 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         (transaction.splitPaymentPlan.markup.amount || transaction.splitPaymentPlan.markup.percentage)
           ? handleMarkup(transaction)
           : '-';
-      let liquidFormatted = transaction.fees
-        ? currencyFormat(
-            parseFloat(
-              `${(
-                stringToFloat(transaction.charge) -
-                parseFloat(transaction.fees) -
-                (markupValueFormatted !== '-' ? stringToFloat(markupValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0) -
-                (insuranceValueFormatted !== '-' ? stringToFloat(insuranceValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0)
-              ).toFixed(2)}`.replace(/[R$\.,]/g, ''),
-            ),
-          )
-        : '-';
+      let liquidFormatted =
+        transaction.status !== 'Cancelado' && transaction.fees
+          ? currencyFormat(
+              parseFloat(
+                `${(
+                  stringToFloat(transaction.charge) -
+                  (markupValueFormatted !== '-' ? stringToFloat(markupValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0) -
+                  (insuranceValueFormatted !== '-' ? stringToFloat(insuranceValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0)
+                ).toFixed(2)}`.replace(/[R$\.,]/g, ''),
+              ),
+            )
+          : '-';
       const { state } = history.location;
       const backRouteEffect = state && state.backRoute ? state.backRoute : '';
       const snapshotEffect = state && state.snapshot ? state.snapshot : '';
@@ -238,7 +245,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
           if (!transaction.paid_at) {
             let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
             let index = arrayReceivablesSplitZiro.findIndex(receivable => receivable.installment === transaction.installment);
-            let upAmw = round(parseFloat(transaction.amount), 2);
+            let upAmw = round(parseFloat(transaction.gross_amount), 2);
 
             unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`, <Icon type="chevronRight" size={14} />]);
             if (backRouteEffect) unpaidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
@@ -247,7 +254,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             unpaidAmountWithoutFees += parseFloat(upAmw);
           } else {
             let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
-            let upAmw = round(parseFloat(transaction.amount), 2);
+            let upAmw = round(parseFloat(transaction.gross_amount), 2);
             paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.paid_at)}`, <Icon type="chevronRight" size={14} />]);
             if (backRouteEffect) paidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
             else paidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
