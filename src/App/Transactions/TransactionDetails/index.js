@@ -261,7 +261,6 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
             let index = arrayReceivablesSplitZiro.findIndex(receivable => receivable.installment === transaction.installment);
             let upAmw = olderTransaction ? round(parseFloat(transaction.gross_amount), 2) : round(parseFloat(transaction.amount), 2);
-            console.log(upAmw, olderTransaction);
             unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`, <Icon type="chevronRight" size={14} />]);
             if (backRouteEffect) unpaidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
             else unpaidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
@@ -269,7 +268,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             unpaidAmountWithoutFees += parseFloat(upAmw);
           } else {
             let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
-            let upAmw = olderTransaction ? round(parseFloat(transaction.amount), 2) : round(parseFloat(transaction.gross_amount), 2);
+            let upAmw = olderTransaction ? round(parseFloat(transaction.gross_amount), 2) : round(parseFloat(transaction.amount), 2);
             paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.paid_at)}`, <Icon type="chevronRight" size={14} />]);
             if (backRouteEffect) paidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
             else paidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
