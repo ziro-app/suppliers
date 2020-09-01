@@ -35,6 +35,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
   const { role } = useContext(userContext);
   const textAreaRef = useRef(null);
   const history = createBrowserHistory();
+  const [olderTransaction, setOlderTransaction] = useState(false);
   const paymentLink = `https://ziro.app/pagamento/${transactionId}/escolher-cartao?doc`;
   const deleteTransaction = async () => {
     setIsLoading(true);
@@ -80,6 +81,10 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
   };
   async function getTransaction(transactionId, setTransaction, setError, transaction) {
     await fetch(transactionId, setTransaction, setError, transaction);
+    if (Object.prototype.hasOwnProperty.call(transaction, 'splitPaymentPlan')) {
+      if (transaction.splitPaymentPlan === '' || (transaction.splitPaymentPlan.markup.percentage === 0 && transaction.splitPaymentPlan.markup.amount === 0)) setOlderTransaction(true);
+      else setOlderTransaction(false);
+    } else setOlderTransaction(false);
   }
   function handleInsurance(transaction) {
     if (transaction.insurance === true && transaction.splitPaymentPlan) {
@@ -255,8 +260,8 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
           if (!transaction.paid_at) {
             let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
             let index = arrayReceivablesSplitZiro.findIndex(receivable => receivable.installment === transaction.installment);
-            let upAmw = round(parseFloat(transaction.gross_amount), 2);
-
+            let upAmw = olderTransaction ? round(parseFloat(transaction.gross_amount), 2) : round(parseFloat(transaction.amount), 2);
+            console.log(upAmw, olderTransaction);
             unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`, <Icon type="chevronRight" size={14} />]);
             if (backRouteEffect) unpaidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
             else unpaidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
@@ -264,7 +269,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             unpaidAmountWithoutFees += parseFloat(upAmw);
           } else {
             let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
-            let upAmw = round(parseFloat(transaction.gross_amount), 2);
+            let upAmw = olderTransaction ? round(parseFloat(transaction.amount), 2) : round(parseFloat(transaction.gross_amount), 2);
             paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.paid_at)}`, <Icon type="chevronRight" size={14} />]);
             if (backRouteEffect) paidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
             else paidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
