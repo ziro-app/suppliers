@@ -14,14 +14,23 @@ const fetchBalance = (zoopId, { setBalance }) => {
     const source = axios.CancelToken.source();
     const run = async () => {
         try {
-            const formatted = formatDate(new Date());
-            const url = `${process.env.PAY_URL}account-history-all?seller_id=${zoopId}&created_date_range[gte]=${formatted}&created_date_range[lte]=${formatted}`;
-            const { data: { items } } = await post(url, {}, config);
-            if (Object.prototype.hasOwnProperty.call(items, formatted)) {
-                const { amount } = items[formatted]['items'][0];
-                const val = parseFloat(amount.replace('.', '')) / 100;
-                const rounded = val < 0 ? -(parseFloat(round(val, 2).toFixed(2))) : parseFloat(round(val, 2).toFixed(2));
+            const balanceUrl = `${process.env.PAY_URL}account-balance-by-seller?seller_id=${zoopId}`;
+            const { data: { items: { current_balance } } } = await post(balanceUrl, {}, config);
+            const parts = current_balance.split('.');
+            const parsed = parseFloat(parts[0]) / 100;
+            if (parsed !== 0) {
+                const rounded = (parseFloat(round(parsed, 2).toFixed(2)));
                 setBalance(rounded);
+            } else {
+                const formatted = formatDate(new Date());
+                const historyUrl = `${process.env.PAY_URL}account-history-all?seller_id=${zoopId}&created_date_range[gte]=${formatted}&created_date_range[lte]=${formatted}`;
+                const { data: { items } } = await post(historyUrl, {}, config);
+                if (Object.prototype.hasOwnProperty.call(items, formatted)) {
+                    const { amount } = items[formatted]['items'][0];
+                    const val = parseFloat(amount.replace('.', '')) / 100;
+                    const rounded = val < 0 ? -(parseFloat(round(val, 2).toFixed(2))) : parseFloat(round(val, 2).toFixed(2));
+                    setBalance(rounded);
+                }
             }
         } catch (error) {
             if (error.response) console.log(error.response);
