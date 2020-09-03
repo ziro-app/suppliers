@@ -36,7 +36,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
   const textAreaRef = useRef(null);
   const history = createBrowserHistory();
   const [olderTransaction, setOlderTransaction] = useState(false);
-  const paymentLink = `https://ziro.app/pagamento/${transactionId}/escolher-cartao?doc`;
+  const paymentLink = process.env.HOMOLOG ? `http://localhost:8080/pagamento/${transactionId}/escolher-cartao?doc` : `https://ziro.app/pagamento/${transactionId}/escolher-cartao?doc`;
   const deleteTransaction = async () => {
     setIsLoading(true);
     try {
@@ -182,7 +182,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             },
             {
               title: 'Valor líquido',
-              content: liquidFormatted,
+              content: transaction.status !== 'Cancelado' ? liquidFormatted : '-',
             },
             {
               title: 'Parcela máxima',

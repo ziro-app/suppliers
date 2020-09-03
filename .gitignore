@@ -1,7 +1,6 @@
 node_modules
 dist
 .DS_Store
-credentials.js
 credentialsDev.js
 credentialsProd.js
 yarn.lock
