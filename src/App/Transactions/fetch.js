@@ -1,7 +1,7 @@
 import currencyFormat from '@ziro/currency-format';
+import { dateFormat } from './utils';
 import { db } from '../../Firebase/index';
 import matchStatusColor from './matchStatusColor';
-import { dateFormat } from './utils';
 
 const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore, docId, isCollaborator) => {
   let query;
@@ -26,7 +26,23 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
           const paymentDoc = [];
           if (!snapshot.empty) {
             snapshot.forEach(doc => {
-              const { charge, date, fees, installments, dateLinkCreated, transactionZoopId, maxInstallments, sellerZoopId, status, buyerRazao, receivables, receivement, receiptId, dateLastUpdate } = doc.data();
+              const {
+                charge,
+                date,
+                fees,
+                installments,
+                dateLinkCreated,
+                transactionZoopId,
+                maxInstallments,
+                sellerZoopId,
+                status,
+                buyerRazao,
+                receivables,
+                receivement,
+                receiptId,
+                dateLastUpdate,
+                splitPaymentPlan,
+              } = doc.data();
               const chargeFormatted = currencyFormat(charge);
               const dateFormatted = dateLastUpdate ? dateFormat(dateLastUpdate) : '';
               paymentDoc.push({
@@ -46,6 +62,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                 receivables: receivables ? receivables : [],
                 receivement,
                 receiptId: receiptId ? receiptId : '',
+                splitPaymentPlan: splitPaymentPlan || '',
               });
             });
             setLastDoc(snapshot.docs[snapshot.docs.length - 1]);

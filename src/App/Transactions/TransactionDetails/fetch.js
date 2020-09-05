@@ -41,6 +41,7 @@ const fetch = (transactionId, setTransaction, setError, transaction) => {
 
             const chargeFormatted = currencyFormat(charge);
             const dateFormatted = date ? dateFormat(date) : '';
+
             paymentDoc.push({
               transactionZoopId: transactionZoopId ? transactionZoopId : '',
               transactionId: snapshot.id,
