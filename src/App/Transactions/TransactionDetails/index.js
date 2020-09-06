@@ -135,9 +135,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
           Object.prototype.hasOwnProperty.call(transaction, 'receivables') &&
           Object.prototype.hasOwnProperty.call(transaction, 'sellerZoopPlan') &&
           Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, 'antiFraud') &&
-          Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan.antiFraud.amount, 'receivable_amount') &&
           feesFormatted !== '-' &&
-          transaction.sellerZoopPlan &&
           (transaction.sellerZoopPlan.antiFraud.amount || transaction.sellerZoopPlan.antiFraud.percentage)
             ? handleInsurance(transaction)
             : '- R$0,00';
@@ -150,16 +148,19 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             : '-';
         let liquidFormatted =
           transaction.status !== 'Cancelado' && markupValueFormatted !== '-'
-            ? currencyFormat(
-                parseFloat(
-                  `${(
-                    stringToFloat(transaction.charge) -
-                    (markupValueFormatted !== '-' ? stringToFloat(markupValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0) -
-                    parseFloat(transaction.fees) -
-                    (insuranceValueFormatted !== '-' ? stringToFloat(insuranceValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0)
-                  ).toFixed(2)}`.replace(/[R$\.,]/g, ''),
-                ),
+            ? parseFloat(
+                `${
+                  stringToFloat(transaction.charge) -
+                  (markupValueFormatted !== '-' ? stringToFloat(markupValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0) -
+                  parseFloat(transaction.fees) -
+                  (insuranceValueFormatted !== '-' ? stringToFloat(insuranceValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0)
+                }`,
               )
+                .toLocaleString('pt-br', {
+                  style: 'currency',
+                  currency: 'BRL',
+                })
+                .replace(/\s/g, '')
             : transaction.fees
             ? currencyFormat(parseFloat(`${(stringToFloat(transaction.charge) - transaction.fees).toFixed(2)}`.replace(/[R$\.,]/g, '')))
             : '-';
@@ -192,7 +193,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
               },
               {
                 title: 'Valor líquido',
-                content: transaction.status !== 'Cancelado' ? liquidFormatted : '-',
+                content: transaction.status !== 'Cancelado' ? liquidFormatted : '- R$0,00',
               },
               {
                 title: 'Parcela máxima',
@@ -282,7 +283,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             unpaidAmount += parseFloat(upAm);
             unpaidAmountWithoutFees += parseFloat(upAmw);
           }*/
-            console.log(transaction);
+            //console.log(transaction);
             if (!transaction.paid_at) {
               let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
               let upAmw = round(parseFloat(transaction.amount), 2);
