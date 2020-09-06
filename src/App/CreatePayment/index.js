@@ -19,7 +19,7 @@ const CreatePayment = () => {
   const [observations, setObservations] = useState('');
   const [insurance, setInsurance] = useState(null);
   const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
-  const [hasSplitPaymentPlan, setHasSplitPaymentPlan] = useState(null);
+  const [hasSellerZoopPlan, setHasSellerZoopPlan] = useState(null);
   const [loading, setLoading] = useState(true);
   const options = ['Com seguro', 'Sem seguro'];
   const state = {
@@ -38,22 +38,22 @@ const CreatePayment = () => {
     insurance,
     setInsurance,
     setInsurenceDropdownValue,
-    hasSplitPaymentPlan,
+    hasSellerZoopPlan,
   };
   useEffect(() => {
-    async function getSplitPaymentPlan() {
+    async function getSellerZoopPlan() {
       const getSupplierData = await db.collection('suppliers').where('fantasia', '==', fantasy.toUpperCase()).get();
       getSupplierData.forEach(doc => {
-        setHasSplitPaymentPlan(doc.data().splitPaymentPlan || null);
+        setHasSellerZoopPlan(doc.data().sellerZoopPlan || null);
       });
       setLoading(false);
     }
-    getSplitPaymentPlan();
+    getSellerZoopPlan();
   }, []);
   const validations = [
     {
       name: 'insurance',
-      validation: value => (hasSplitPaymentPlan && (hasSplitPaymentPlan.antiFraud.amount || hasSplitPaymentPlan.antiFraud.percentage) ? value !== '' : true),
+      validation: value => (hasSellerZoopPlan && (hasSellerZoopPlan.antiFraud.amount || hasSellerZoopPlan.antiFraud.percentage) ? value !== '' : true),
       value: insurenceDropdownValue,
       message: 'Opção inválida',
     },
@@ -72,7 +72,7 @@ const CreatePayment = () => {
   ];
   if (loading) return <Spinner size="5.5rem" />;
 
-  return hasSplitPaymentPlan && (hasSplitPaymentPlan.antiFraud.amount || hasSplitPaymentPlan.antiFraud.percentage) ? (
+  return hasSellerZoopPlan && (hasSellerZoopPlan.antiFraud.amount || hasSellerZoopPlan.antiFraud.percentage) ? (
     <Form
       validations={validations}
       sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
@@ -88,7 +88,7 @@ const CreatePayment = () => {
           label="Seguro antifraude na transação"
           input={
             <Dropdown
-              disabled={!hasSplitPaymentPlan}
+              disabled={!hasSellerZoopPlan}
               value={insurenceDropdownValue}
               onChange={({ target: { value } }) => {
                 if (value === 'Com seguro') {

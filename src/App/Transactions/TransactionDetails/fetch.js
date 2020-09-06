@@ -36,7 +36,7 @@ const fetch = (transactionId, setTransaction, setError, transaction) => {
               collaboratorName,
               observations,
               insurance,
-              splitPaymentPlan,
+              sellerZoopPlan,
             } = snapshot.data();
 
             const chargeFormatted = currencyFormat(charge);
@@ -67,8 +67,8 @@ const fetch = (transactionId, setTransaction, setError, transaction) => {
               collaboratorId,
               collaboratorName: collaboratorName || '',
               observations: observations || '',
-              insurance: insurance || '',
-              splitPaymentPlan: splitPaymentPlan || '',
+              insurance: insurance || false,
+              sellerZoopPlan: sellerZoopPlan || '',
             });
             if (transaction.status !== paymentDoc[0].status) setTransaction(paymentDoc[0]);
           } else {

@@ -1,5 +1,6 @@
-import axios, { post } from 'axios'
 import { auth, db } from '../../Firebase/index'
+import axios, { post } from 'axios'
+
 const { formatDateUTC3 } = require('@ziro/format-date-utc3')
 
 const url = process.env.SHEET_URL
@@ -187,7 +188,7 @@ const completeRegistration = state => () => {
                                                 numConta: accountNumber,
                                                 agencia: agency,
                                                 tipoCadastro: 'Completo',
-                                                splitPaymentPlan: {
+                                                sellerZoopPlan: {
                                                     markup: {
                                                         amount: 0,
                                                         percentage: 0

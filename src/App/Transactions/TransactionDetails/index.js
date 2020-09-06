@@ -89,18 +89,18 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
   }, []);
   async function getTransaction(transactionId, setTransaction, setError, transaction) {
     await fetch(transactionId, setTransaction, setError, transaction);
-    if (Object.prototype.hasOwnProperty.call(transaction, 'splitPaymentPlan')) {
-      if (transaction.splitPaymentPlan === '' || (transaction.splitPaymentPlan.markup.percentage === 0 && transaction.splitPaymentPlan.markup.amount === 0)) setOlderTransaction(true);
+    if (Object.prototype.hasOwnProperty.call(transaction, 'sellerZoopPlan')) {
+      if (transaction.sellerZoopPlan === '' || (transaction.sellerZoopPlan.markup.percentage === 0 && transaction.sellerZoopPlan.markup.amount === 0)) setOlderTransaction(true);
       else setOlderTransaction(false);
     } else setOlderTransaction(false);
   }
   function handleInsurance(transaction) {
-    if (transaction.insurance === true && transaction.splitPaymentPlan) {
-      return `- ${parseFloat(transaction.splitPaymentPlan.antiFraud.receivable_amount).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace(/\s/g, '')}`;
+    if (transaction.insurance === true && transaction.sellerZoopPlan) {
+      return `- ${parseFloat(transaction.sellerZoopPlan.antiFraud.receivable_amount).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace(/\s/g, '')}`;
     }
   }
   function handleMarkup(transaction) {
-    return `- ${parseFloat(transaction.splitPaymentPlan.markup.receivable_amount).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}`;
+    return `- ${parseFloat(transaction.sellerZoopPlan.markup.receivable_amount).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}`;
   }
 
   useEffect(() => {
@@ -111,9 +111,9 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         let feesFormatted =
           transaction.status !== 'Cancelado' && transaction.fees
             ? ` ${
-                transaction.splitPaymentPlan && (transaction.splitPaymentPlan.markup.amount || transaction.splitPaymentPlan.markup.percentage)
+                transaction.sellerZoopPlan && (transaction.sellerZoopPlan.markup.amount || transaction.sellerZoopPlan.markup.percentage)
                   ? '- '.concat(
-                      parseFloat(parseFloat(transaction.splitPaymentPlan.markup.receivable_gross_amount) + parseFloat(transaction.fees))
+                      parseFloat(parseFloat(transaction.sellerZoopPlan.markup.receivable_gross_amount) + parseFloat(transaction.fees))
                         .toLocaleString('pt-br', {
                           style: 'currency',
                           currency: 'BRL',
@@ -133,17 +133,19 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         insuranceValueFormatted =
           transaction.status !== 'Cancelado' &&
           Object.prototype.hasOwnProperty.call(transaction, 'receivables') &&
-          Object.prototype.hasOwnProperty.call(transaction.splitPaymentPlan.antiFraud.amount, 'receivable_amount') &&
+          Object.prototype.hasOwnProperty.call(transaction, 'sellerZoopPlan') &&
+          Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, 'antiFraud') &&
+          Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan.antiFraud.amount, 'receivable_amount') &&
           feesFormatted !== '-' &&
-          transaction.splitPaymentPlan &&
-          (transaction.splitPaymentPlan.antiFraud.amount || transaction.splitPaymentPlan.antiFraud.percentage)
+          transaction.sellerZoopPlan &&
+          (transaction.sellerZoopPlan.antiFraud.amount || transaction.sellerZoopPlan.antiFraud.percentage)
             ? handleInsurance(transaction)
             : '- R$0,00';
         markupValueFormatted =
           Object.prototype.hasOwnProperty.call(transaction, 'receivables') &&
           feesFormatted !== '-' &&
-          transaction.splitPaymentPlan &&
-          (transaction.splitPaymentPlan.markup.amount || transaction.splitPaymentPlan.markup.percentage)
+          transaction.sellerZoopPlan &&
+          (transaction.sellerZoopPlan.markup.amount || transaction.sellerZoopPlan.markup.percentage)
             ? handleMarkup(transaction)
             : '-';
         let liquidFormatted =
@@ -244,14 +246,14 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                 .filter(item => item.split_rule !== null)
                 .reverse()
             : [];
-          const sumReceivablesSplitZoop =
+          /*const sumReceivablesSplitZoop =
             sortedSplitAmount.length > 0
-              ? sortedSplitAmount.filter(item => item.split_rule === transaction.splitPaymentPlan.antiFraud.id).reduce((acc, { gross_amount }) => acc + parseFloat(gross_amount), 0)
+              ? sortedSplitAmount.filter(item => item.split_rule === transaction.sellerZoopPlan.antiFraud.id).reduce((acc, { gross_amount }) => acc + parseFloat(gross_amount), 0)
               : [];
           const sumReceivablesSplitZiro =
             sortedSplitAmount.length > 0
-              ? sortedSplitAmount.filter(item => item.split_rule === transaction.splitPaymentPlan.markup.id).reduce((acc, { gross_amount }) => acc + parseFloat(gross_amount), 0)
-              : [];
+              ? sortedSplitAmount.filter(item => item.split_rule === transaction.sellerZoopPlan.markup.id).reduce((acc, { gross_amount }) => acc + parseFloat(gross_amount), 0)
+              : [];*/
           const paidRows = [];
           const paidClicks = [];
           let paidAmount = 0;
@@ -280,6 +282,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             unpaidAmount += parseFloat(upAm);
             unpaidAmountWithoutFees += parseFloat(upAmw);
           }*/
+            console.log(transaction);
             if (!transaction.paid_at) {
               let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
               let upAmw = round(parseFloat(transaction.amount), 2);

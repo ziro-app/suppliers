@@ -22,7 +22,7 @@ const sendToBackend = state => () => {
     insurance,
     setInsurance,
     setInsurenceDropdownValue,
-    hasSplitPaymentPlan,
+    hasSellerZoopPlan,
   } = state;
   const baseUrl = process.env.HOMOLOG ? 'http://localhost:8080/pagamento/' : 'https://ziro.app/pagamento/';
   return new Promise(async (resolve, reject) => {
@@ -46,7 +46,7 @@ const sendToBackend = state => () => {
               onBehalfOfBrand: brand ? brand : seller,
               observations,
               insurance: insurance !== null ? insurance : true,
-              splitPaymentPlan: hasSplitPaymentPlan || null,
+              sellerZoopPlan: hasSellerZoopPlan || null,
             });
           } else throw { msg: 'Permissão insuficiente', customError: true };
         } else {
@@ -60,7 +60,7 @@ const sendToBackend = state => () => {
             status: 'Aguardando Pagamento',
             observations,
             insurance: insurance !== null ? insurance : true,
-            splitPaymentPlan: hasSplitPaymentPlan || null,
+            sellerZoopPlan: hasSellerZoopPlan || null,
           });
         }
         try {

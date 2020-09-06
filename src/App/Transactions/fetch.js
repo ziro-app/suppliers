@@ -41,7 +41,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                 receivement,
                 receiptId,
                 dateLastUpdate,
-                splitPaymentPlan,
+                sellerZoopPlan,
               } = doc.data();
               const chargeFormatted = currencyFormat(charge);
               const dateFormatted = dateLastUpdate ? dateFormat(dateLastUpdate) : '';
@@ -62,7 +62,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                 receivables: receivables ? receivables : [],
                 receivement,
                 receiptId: receiptId ? receiptId : '',
-                splitPaymentPlan: splitPaymentPlan || '',
+                sellerZoopPlan: sellerZoopPlan || '',
               });
             });
             setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
