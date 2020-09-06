@@ -133,6 +133,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         insuranceValueFormatted =
           transaction.status !== 'Cancelado' &&
           Object.prototype.hasOwnProperty.call(transaction, 'receivables') &&
+          Object.prototype.hasOwnProperty.call(transaction.splitPaymentPlan.antiFraud.amount, 'receivable_amount') &&
           feesFormatted !== '-' &&
           transaction.splitPaymentPlan &&
           (transaction.splitPaymentPlan.antiFraud.amount || transaction.splitPaymentPlan.antiFraud.percentage)
