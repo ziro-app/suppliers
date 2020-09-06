@@ -40,16 +40,19 @@ const CreatePayment = () => {
     setInsurenceDropdownValue,
     hasSellerZoopPlan,
   };
-  useEffect(() => {
-    async function getSellerZoopPlan() {
-      const getSupplierData = await db.collection('suppliers').where('fantasia', '==', fantasy.toUpperCase()).get();
-      getSupplierData.forEach(doc => {
-        setHasSellerZoopPlan(doc.data().sellerZoopPlan || null);
-      });
-      setLoading(false);
-    }
-    getSellerZoopPlan();
-  }, []);
+    useEffect(() => {
+        async function getSellerZoopPlan() {
+            await db.collection('suppliers').where('fantasia', '==', fantasy.toUpperCase()).onSnapshot(snap => {
+                if (!snap.empty) {
+                    snap.forEach(doc => {
+                        setHasSellerZoopPlan(doc.data().sellerZoopPlan || null);
+                    });
+                    setLoading(false);
+                }
+            });
+        }
+        getSellerZoopPlan();
+    }, []);
   const validations = [
     {
       name: 'insurance',
