@@ -62,7 +62,12 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
                   parseFloat(`${round(parseFloat(effectReceivable.gross_amount) + parseFloat(sumReceivablesSplitZiro) - parseFloat(effectReceivable.amount), 2)}`.replace(/[R$\.,]/g, '')),
                 )}`
               : '-';
-          let zoopSplitFormatted = sortedSplitAmount.length > 0 ? `- ${currencyFormat(parseFloat(`${round(parseFloat(sumReceivablesSplitAntiFraud), 2)}`.replace(/[R$\.,]/g, '')))}` : '-';
+          let zoopSplitFormatted =
+            sortedSplitAmount.length > 0
+              ? `- ${parseFloat(`${round(parseFloat(sumReceivablesSplitAntiFraud), 2)}`.replace(/[R$\.,]/g, ''))
+                  .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
+                  .replace(/\s/g, '')}`
+              : '- R$0,00';
           let zoopSplitValue = zoopSplitFormatted !== '-' ? stringToFloat(zoopSplitFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0;
           block = [
             {

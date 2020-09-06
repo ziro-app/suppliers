@@ -137,7 +137,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
           transaction.splitPaymentPlan &&
           (transaction.splitPaymentPlan.antiFraud.amount || transaction.splitPaymentPlan.antiFraud.percentage)
             ? handleInsurance(transaction)
-            : '-';
+            : '- R$0,00';
         markupValueFormatted =
           Object.prototype.hasOwnProperty.call(transaction, 'receivables') &&
           feesFormatted !== '-' &&
