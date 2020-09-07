@@ -272,18 +272,6 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                       return parseFloat(acc) + parseFloat(val.gross_amount);
                     }, 0)
                 : 0;
-            /* antigo if com problema de soma
-          if (!transaction.paid_at) {
-            let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
-            let index = arrayReceivablesSplitZiro.findIndex(receivable => receivable.installment === transaction.installment);
-            let upAmw = olderTransaction ? round(parseFloat(transaction.gross_amount), 2) : round(parseFloat(transaction.amount), 2);
-            unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`, <Icon type="chevronRight" size={14} />]);
-            if (backRouteEffect) unpaidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
-            else unpaidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
-            unpaidAmount += parseFloat(upAm);
-            unpaidAmountWithoutFees += parseFloat(upAmw);
-          }*/
-            //console.log(transaction);
             if (!transaction.paid_at) {
               let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
               let upAmw = round(parseFloat(transaction.amount), 2);
@@ -292,12 +280,6 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
               else unpaidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
               unpaidAmount += parseFloat(upAm);
               unpaidAmountWithoutFees += parseFloat(upAmw);
-              /*let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
-            let upAmw = olderTransaction ? round(parseFloat(transaction.amount), 2) : round(parseFloat(transaction.gross_amount), 2);
-            unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`, <Icon type="chevronRight" size={14} />]);
-            unpaidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
-            unpaidAmount += parseFloat(upAm);
-            unpaidAmountWithoutFees += parseFloat(upAmw);*/
             } else {
               let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
               let upAmw = round(parseFloat(transaction.amount), 2);

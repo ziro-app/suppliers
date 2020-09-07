@@ -64,7 +64,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
               : '-';
           let zoopSplitFormatted =
             sortedSplitAmount.length > 0 && transaction.insurance === true
-              ? `- ${parseFloat(`${round(parseFloat(sumReceivablesSplitAntiFraud), 2)}`.replace(/[R$\.,]/g, ''))
+              ? `- ${parseFloat(`${round(parseFloat(sumReceivablesSplitAntiFraud), 2)}`)
                   .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
                   .replace(/\s/g, '')}`
               : '- R$0,00';

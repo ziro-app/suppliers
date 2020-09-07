@@ -42,6 +42,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                 receiptId,
                 dateLastUpdate,
                 sellerZoopPlan,
+                insurance,
               } = doc.data();
               const chargeFormatted = currencyFormat(charge);
               const dateFormatted = dateLastUpdate ? dateFormat(dateLastUpdate) : '';
@@ -63,6 +64,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                 receivement,
                 receiptId: receiptId ? receiptId : '',
                 sellerZoopPlan: sellerZoopPlan || '',
+                insurance: insurance || false,
               });
             });
             setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
