@@ -21,14 +21,11 @@ const splitedArray = array => {
         const { id } = it;
         if (Object.keys(item).includes(id)) {
             const { amount, fees, net } = it;
-            if (fees == 0) item[id]['split_value'] = amount;
-            else item[id]['split_value'] = item[id]['amount'];
             item[id]['amount'] = `${parseInt(item[id]['amount']) + parseInt(amount)}`;
             item[id]['fees'] = `${parseInt(item[id]['fees']) + parseInt(fees)}`;
-            item[id]['net'] = `${(parseInt(item[id]['net']) + parseInt(net)) - parseInt(item[id]['split_value'])}`;
+            item[id]['net'] = `${(parseInt(item[id]['net']) + parseInt(net))}`;
             item[id]['split_rule'] = true;
-        }
-        else item[id] = { ...it };
+        } else item[id] = { ...it };
     });
     let normalizedArray = Object.keys(item).map(it => item[it]);
     return normalizedArray;
