@@ -132,6 +132,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             : '-';
         insuranceValueFormatted =
           transaction.status !== 'Cancelado' &&
+          transaction.insurance === true &&
           Object.prototype.hasOwnProperty.call(transaction, 'receivables') &&
           Object.prototype.hasOwnProperty.call(transaction, 'sellerZoopPlan') &&
           Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, 'antiFraud') &&
