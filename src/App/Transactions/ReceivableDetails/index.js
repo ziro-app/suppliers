@@ -79,7 +79,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
                 },
                 {
                   title: 'Valor da parcela',
-                  content: transaction.charge /*`R$${parcelFormat(round(parseFloat(effectReceivable.gross_amount) + sumReceivablesSplitZiro + sumReceivablesSplitAntiFraud, 2))}`*/,
+                  content: `R$${parcelFormat(round(parseFloat(effectReceivable.gross_amount) + sumReceivablesSplitZiro + sumReceivablesSplitAntiFraud, 2))}`,
                 },
                 {
                   title: 'Tarifa Ziro Pay',
