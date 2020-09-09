@@ -148,7 +148,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             ? handleMarkup(transaction)
             : '-';
         let liquidFormatted =
-          transaction.status !== 'Cancelado' && markupValueFormatted !== '-'
+          transaction.status !== 'Cancelado' && (markupValueFormatted !== '-' || insuranceValueFormatted !== '-')
             ? parseFloat(
                 `${
                   stringToFloat(transaction.charge) -
