@@ -8,7 +8,7 @@ import ErrorBoundary from '@bit/vitorbarbosa19.ziro.error-boundary';
 import Router from './Router';
 
 export const App = () => {
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true)
     const [errorLoading, setErrorLoading] = useState(false);
     const [uid, setUid] = useState(null);
     const [zoopId, setZoopId] = useState(null);

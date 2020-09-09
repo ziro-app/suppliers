@@ -148,7 +148,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                         ? handleMarkup(transaction)
                         : '-';
                 let liquidFormatted =
-                    transaction.status !== 'Cancelado' && markupValueFormatted !== '-'
+                    transaction.status !== 'Cancelado' && (markupValueFormatted !== '-' || insuranceValueFormatted !== '-')
                         ? parseFloat(
                             `${
                             stringToFloat(transaction.charge) -
@@ -163,7 +163,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                             })
                             .replace(/\s/g, '')
                         : transaction.fees
-                            ? currencyFormat(parseFloat(`${(stringToFloat(transaction.charge) - transaction.fees - (insuranceValueFormatted !== '-' ? stringToFloat(insuranceValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0)).toFixed(2)}`.replace(/[R$\.,]/g, '')))
+                            ? currencyFormat(parseFloat(`${(stringToFloat(transaction.charge) - transaction.fees).toFixed(2)}`.replace(/[R$\.,]/g, '')))
                             : '-';
                 const { state } = history.location;
                 const backRouteEffect = state && state.backRoute ? state.backRoute : '';
