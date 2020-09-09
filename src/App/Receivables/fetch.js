@@ -4,6 +4,7 @@ import md5 from 'md5';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import currencyFormat from '@ziro/currency-format';
 import { round } from '../Transactions/utils';
+import { db } from '../../Firebase/index';
 
 const reducerTotal = (accumulator, currentValue) => parseInt(accumulator) + parseInt(currentValue);
 
@@ -15,18 +16,45 @@ const getFinalDate = (today, days) => {
 
 const formatDate = date => `${date.getFullYear()}-${date.getMonth() + 1 <= 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${date.getDate()}`;
 
-const splitedArray = array => {
+const splitedArray = async array => {
     let item = {};
-    array.map(it => {
-        const { id } = it;
-        if (Object.keys(item).includes(id)) {
-            const { amount, fees, net } = it;
-            item[id]['amount'] = `${parseInt(item[id]['amount']) + parseInt(amount)}`;
-            item[id]['fees'] = `${parseInt(item[id]['fees']) + parseInt(fees)}`;
-            item[id]['net'] = `${(parseInt(item[id]['net']) + parseInt(net))}`;
-            item[id]['split_rule'] = true;
-        } else item[id] = { ...it };
-    });
+    await Promise.all(array.map(async it => {
+        const { id, installment_plan: { number_installments, installment_number }, fees } = it;
+        if (!Object.keys(item).includes(id)) {
+            const docsCollection = await db.collection('credit-card-payments').where('transactionZoopId', '==', id).get();
+            let antiFraudValue, markupValue, netValue, ziroPayValue;
+            if (!docsCollection.empty) {
+                const { buyerRazao, sellerZoopPlan, receivables: currentReceivables } = docsCollection.docs[0].data();
+                let antiFraud = sellerZoopPlan && sellerZoopPlan.antiFraud || null;
+                let markup = sellerZoopPlan && sellerZoopPlan.markup || null;
+                let installment = installment_number || 1;
+                const filteredReceivables = currentReceivables.filter(rec => rec.split_rule && rec.installment == installment);
+                const totalAmount = currentReceivables.filter(rec => rec.installment == installment).map(rec => rec.split_rule ? rec.amount : rec.gross_amount).reduce((a, b) => parseFloat(a) + parseFloat(b));
+                const roundedTotal = round(totalAmount, 2);
+                const feesMarkup = filteredReceivables.filter(rec => markup && markup.id && rec.split_rule === markup.id);
+                const feesAntifraud = filteredReceivables.filter(rec => antiFraud && antiFraud.id && rec.split_rule === antiFraud.id);
+                antiFraudValue = (feesAntifraud && feesAntifraud.length > 0) ? parseFloat(feesAntifraud[0].amount) : 0;
+                antiFraudValue = round(antiFraudValue, 2);
+                markupValue = (feesMarkup && feesMarkup.length > 0) ? parseFloat(feesMarkup[0].amount) : 0;
+                markupValue = round(markupValue, 2);
+                ziroPayValue = markupValue ? ((parseFloat(fees) / 100) + markupValue) : parseFloat(fees) / 100;
+                netValue = antiFraudValue ? totalAmount - ziroPayValue - antiFraudValue : (totalAmount) - ziroPayValue;
+                netValue = round(netValue, 2);
+
+                item[id] = {
+                    id,
+                    docRef: docsCollection.docs[0].id,
+                    reason: buyerRazao,
+                    amount: `${roundedTotal.toFixed(2)}`.replace('.', ''),
+                    net: `${netValue.toFixed(2)}`.replace('.', ''),
+                    markup: `${markupValue.toFixed(2)}`.replace('.', ''),
+                    ziroPay: `${ziroPayValue.toFixed(2)}`.replace('.', ''),
+                    antifraud: `${antiFraudValue.toFixed(2)}`.replace('.', ''),
+                    installment_plan: { number_installments, installment_number: installment }
+                };
+            }
+        }
+    }));
     let normalizedArray = Object.keys(item).map(it => item[it]);
     return normalizedArray;
 }
@@ -72,13 +100,15 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
             const rowsClicks = [];
             const keys = Object.keys(arrayItems);
             if (keys.length === 0 && receivables.length === 0) throw { customError: true };
-            keys.map(key => {
+            await Promise.all(keys.map(async key => {
                 let [ano, mes, dia] = key.split('-');
                 let date = [dia, mes, ano.substring(2)].join('/');
                 let id = md5(date).substring(10);
                 let total;
                 // Array com tratamento para os splits
-                let normalizedArray = splitedArray(arrayItems[key].items);
+                // Todos o valores estão arredondados p/ 2 casas e em centavos
+                let normalizedArray = await splitedArray(arrayItems[key].items);
+
                 let vendas = normalizedArray.length;
                 // Total do recebível -> Soma do valor líquido de todas as transações do dia
                 let val = parseFloat(normalizedArray.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2);
@@ -96,7 +126,7 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
                     items: normalizedArray,
                     id
                 });
-            });
+            }));
             const updatedTotalTransactions = totalTransactions + totalTransactionsFetch;
             const rounded = parseFloat(round(totalAmount + totalAmountFetch, 2).toFixed(2));
             const currency = currencyFormat(rounded.toFixed(2).replace('.', ''));
