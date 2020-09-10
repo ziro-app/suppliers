@@ -3,6 +3,7 @@
 /* eslint-disable prefer-const */
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { alertColor, containerWithPadding, successColor } from '@ziro/theme';
+import { formatDateUTC3 } from '@ziro/format-date-utc3';
 import { btn, btnRed, buttonContainer, custom, illustrationContainer, modalContainer, modalLabel, spinner } from './styles';
 import { dateFormat, parcelFormat, round, stringToFloat } from '../utils';
 
@@ -274,17 +275,19 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                                     }, 0)
                                 : 0;
                         if (!transaction.paid_at) {
+                            let ufc3Formatted = formatDateUTC3(new Date(transaction.expected_on.seconds * 1000)).split(' ')[0];
                             let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
                             let upAmw = round(parseFloat(transaction.amount), 2);
-                            unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`, <Icon type="chevronRight" size={14} />]);
+                            unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, ufc3Formatted, <Icon type="chevronRight" size={14} />]);
                             if (backRouteEffect) unpaidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
                             else unpaidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
                             unpaidAmount += parseFloat(upAm);
                             unpaidAmountWithoutFees += parseFloat(upAmw);
                         } else {
+                            let ufc3Formatted = formatDateUTC3(new Date(transaction.expected_on.seconds * 1000)).split(' ')[0];
                             let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
                             let upAmw = round(parseFloat(transaction.amount), 2);
-                            paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.paid_at)}`, <Icon type="chevronRight" size={14} />]);
+                            paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, ufc3Formatted, <Icon type="chevronRight" size={14} />]);
                             if (backRouteEffect) paidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
                             else paidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
                             paidAmount += parseFloat(upAm);
