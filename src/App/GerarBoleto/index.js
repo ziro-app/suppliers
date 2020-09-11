@@ -17,7 +17,7 @@ const GerarBoleto = ({ boletbankId, boletId }) => {
     const [charge, setCharge] = useState('')
     const [url, setUrl] = useState('')
     const [urlLoad, setUrlLoad] = useState(false)
-    const [maxInstallments, setMaxInstallments] = useState('')
+    const [installmentsMax, setInstallmentsMax] = useState('')
     const [paymentDuplicatas, setPaymentDuplicatas] = useState([])
     const [paymentBoletos, setPaymentBoletos] = useState([])
     const [pendingBoletos, setPendingBoletos] = useState([])
@@ -26,7 +26,7 @@ const GerarBoleto = ({ boletbankId, boletId }) => {
     const [finishPending, setFinishPending] = useState(false)
     const [ticket, setTicket] = useState([])
     const [firstTicket, setfisrtTicket] = useState([])
-    const state = { finishPayments, setFinishPayments, finishPending, setFinishPending, paymentDuplicatas, setPaymentDuplicatas, paymentBoletos, setPaymentBoletos,pendingBoletos, setPendingBoletos,pendingDuplicatas, setPendingDuplicatas, seller:fantasy, sellerId: zoopId, razao, charge, maxInstallments, docId, url, urlLoad, email, setCharge, setMaxInstallments, setIsError, setIsLoading, setUrl, setUrlLoad, setfisrtTicket, setTicket }
+    const state = { finishPayments, setFinishPayments, finishPending, setFinishPending, paymentDuplicatas, setPaymentDuplicatas, paymentBoletos, setPaymentBoletos,pendingBoletos, setPendingBoletos,pendingDuplicatas, setPendingDuplicatas, seller:fantasy, sellerId: zoopId, razao, charge, installmentsMax, docId, url, urlLoad, email, setCharge, setInstallmentsMax, setIsError, setIsLoading, setUrl, setUrlLoad, setfisrtTicket, setTicket }
     useEffect(() => fetchPayments(state), [])
     useEffect(() => fetchPending(state), [])
     useEffect(() => fetchJoin(state), [paymentDuplicatas, paymentBoletos, pendingBoletos, pendingDuplicatas])

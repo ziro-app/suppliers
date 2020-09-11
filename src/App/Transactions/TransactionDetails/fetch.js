@@ -14,21 +14,21 @@ const fetch = (transactionId, setTransaction, setError, transaction) => {
           if (snapshot.exists) {
             const {
               charge,
-              date,
+              datePaid,
               fees,
               installments,
               dateLinkCreated,
               transactionZoopId,
-              maxInstallments,
+              installmentsMax,
               sellerZoopId,
               status,
               buyerRazao,
               receivables,
               receivement,
               seller,
-              brand,
-              firstFour,
-              lastFour,
+              cardBrand,
+              cardFirstFour,
+              cardLastFour,
               cardholder,
               receiptId,
               onBehalfOfBrand,
@@ -40,17 +40,17 @@ const fetch = (transactionId, setTransaction, setError, transaction) => {
             } = snapshot.data();
 
             const chargeFormatted = currencyFormat(charge);
-            const dateFormatted = date ? dateFormat(date) : '';
+            const dateFormatted = datePaid ? dateFormat(datePaid) : '';
 
             paymentDoc.push({
               transactionZoopId: transactionZoopId ? transactionZoopId : '',
               transactionId: snapshot.id,
               charge: chargeFormatted,
               dateLinkCreated,
-              date: dateFormatted,
+              datePaid: dateFormatted,
               fees: fees ? fees : '',
               installments: installments ? installments : '',
-              maxInstallments: maxInstallments ? maxInstallments : '',
+              installmentsMax: installmentsMax ? installmentsMax : '',
               seller: seller === 'Ziro' && onBehalfOfBrand ? `${onBehalfOfBrand} - Ziro` : seller,
               sellerZoopId: sellerZoopId ? sellerZoopId : '',
               status: status ? status : '',
@@ -58,9 +58,9 @@ const fetch = (transactionId, setTransaction, setError, transaction) => {
               buyerRazao,
               receivables: receivables ? receivables : [],
               receivement,
-              brand,
-              firstFour,
-              lastFour,
+              cardBrand,
+              cardFirstFour,
+              cardLastFour,
               cardholder,
               receiptId,
               onBehalfOfBrand,

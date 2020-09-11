@@ -10,13 +10,13 @@ const sendToBackend = state => () => {
     seller,
     sellerId,
     charge,
-    maxInstallments,
+    installmentsMax,
     isCollaborator,
     docId,
     fname,
     brand,
     setCharge,
-    setMaxInstallments,
+    setInstallmentsMax,
     observations,
     setObservations,
     insurance,
@@ -39,7 +39,7 @@ const sendToBackend = state => () => {
               seller,
               sellerZoopId: sellerId,
               charge,
-              maxInstallments,
+              installmentsMax,
               status: 'Aguardando Pagamento',
               collaboratorId: docId,
               collaboratorName: fname,
@@ -56,7 +56,7 @@ const sendToBackend = state => () => {
             seller,
             sellerZoopId: sellerId,
             charge,
-            maxInstallments,
+            installmentsMax,
             status: 'Aguardando Pagamento',
             observations,
             insurance: insurance !== null ? insurance : true,
@@ -71,7 +71,7 @@ const sendToBackend = state => () => {
         }
         resolve('Link copiado');
         setCharge('');
-        setMaxInstallments('');
+        setInstallmentsMax('');
         setObservations('');
         setInsurance(null);
         setInsurenceDropdownValue('');
@@ -82,7 +82,7 @@ const sendToBackend = state => () => {
       if (error.copyError) {
         resolve('Link criado. Acesse na aba de Vendas');
         setCharge('');
-        setMaxInstallments('');
+        setInstallmentsMax('');
         setInsurance(null);
         setInsurenceDropdownValue('');
       }

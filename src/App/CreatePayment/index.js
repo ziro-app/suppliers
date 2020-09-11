@@ -15,7 +15,7 @@ import { userContext } from '../appContext';
 const CreatePayment = () => {
   const { fantasy, zoopId, docId, role, fname, brand } = useContext(userContext);
   const [charge, setCharge] = useState('');
-  const [maxInstallments, setMaxInstallments] = useState('');
+  const [installmentsMax, setInstallmentsMax] = useState('');
   const [observations, setObservations] = useState('');
   const [insurance, setInsurance] = useState(null);
   const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
@@ -26,13 +26,13 @@ const CreatePayment = () => {
     seller: capitalize(fantasy),
     sellerId: zoopId,
     charge,
-    maxInstallments,
+      installmentsMax,
     isCollaborator: role !== '',
     docId,
     fname,
     brand,
     setCharge,
-    setMaxInstallments,
+      setInstallmentsMax,
     observations,
     setObservations,
     insurance,
@@ -67,9 +67,9 @@ const CreatePayment = () => {
       message: 'Deve ser entre 0,10 e 30mil',
     },
     {
-      name: 'maxInstallments',
+      name: 'installmentsMax',
       validation: value => (fantasy === 'ZIRO' ? parseInt(value) > 0 && parseInt(value) < 5 : parseInt(value) > 0 && parseInt(value) <= 10),
-      value: maxInstallments,
+      value: installmentsMax,
       message: fantasy === 'ZIRO' ? 'Deve ser entre 1 e 4' : 'Deve ser entre 1 e 10',
     },
   ];
@@ -82,9 +82,9 @@ const CreatePayment = () => {
       inputs={[
         <FormInput name="charge" label="Valor a cobrar" input={<InputMoney value={charge} setValue={setCharge} />} />,
         <FormInput
-          name="maxInstallments"
+          name="installmentsMax"
           label="Parcelamento máximo"
-          input={<InputText value={maxInstallments} onChange={({ target: { value } }) => setMaxInstallments(maskInput(value, '##', true))} placeholder="10" />}
+          input={<InputText value={installmentsMax} onChange={({ target: { value } }) => setInstallmentsMax(maskInput(value, '##', true))} placeholder="10" />}
         />,
         <FormInput
           name="insurance"
@@ -137,9 +137,9 @@ const CreatePayment = () => {
       inputs={[
         <FormInput name="charge" label="Valor a cobrar" input={<InputMoney value={charge} setValue={setCharge} />} />,
         <FormInput
-          name="maxInstallments"
+          name="installmentsMax"
           label="Parcelamento máximo"
-          input={<InputText value={maxInstallments} onChange={({ target: { value } }) => setMaxInstallments(maskInput(value, '##', true))} placeholder="10" />}
+          input={<InputText value={installmentsMax} onChange={({ target: { value } }) => setInstallmentsMax(maskInput(value, '##', true))} placeholder="10" />}
         />,
         <FormInput
           name="observation"
