@@ -111,7 +111,7 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
 
                 let vendas = normalizedArray.length;
                 // Total do recebível -> Soma do valor líquido de todas as transações do dia
-                let val = parseFloat(normalizedArray.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2);
+                let val = (normalizedArray.length > 0) ? parseFloat(normalizedArray.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2) : '0';
                 totalAmountFetch += parseFloat(val);
                 totalTransactionsFetch += vendas;
 
