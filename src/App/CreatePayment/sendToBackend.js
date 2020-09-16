@@ -43,7 +43,7 @@ const sendToBackend = state => () => {
               status: 'Aguardando Pagamento',
               collaboratorId: docId,
               collaboratorName: fname,
-              onBehalfOfBrand: brand ? brand : seller,
+              onBehalfOfBrand: seller === 'Ziro' ? brand : '',
               observations,
               insurance: insurance !== null ? insurance : true,
               sellerZoopPlan: hasSellerZoopPlan || null,
