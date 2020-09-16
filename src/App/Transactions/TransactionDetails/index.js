@@ -206,7 +206,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                             },
                             {
                                 title: 'Parcela máxima',
-                                content: `${transaction.installmentsMax}x`,
+                                content: `${transaction.installmentsMax}`.startsWith('0') ? `${parseInt(transaction.installmentsMax)}x` : `${transaction.installmentsMax}x`,
                             },
                             {
                                 title: 'Parcela escolhida',

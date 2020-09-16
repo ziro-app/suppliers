@@ -1,99 +1,99 @@
 import { db, fs } from '../../Firebase/index';
 
 const checkCollaborator = async docId => {
-  const collaborator = await db.collection('collaborators').doc(docId).get();
-  return collaborator.exists;
+    const collaborator = await db.collection('collaborators').doc(docId).get();
+    return collaborator.exists;
 };
 
 const sendToBackend = state => () => {
-  const {
-    seller,
-    sellerId,
-    charge,
-    installmentsMax,
-    isCollaborator,
-    docId,
-    fname,
-    brand,
-    setCharge,
-    setInstallmentsMax,
-    observations,
-    setObservations,
-    insurance,
-    setInsurance,
-    setInsurenceDropdownValue,
-    hasSellerZoopPlan,
-  } = state;
-  const baseUrl = process.env.HOMOLOG ? 'http://localhost:8080/pagamento/' : 'https://ziro.app/pagamento/';
-  return new Promise(async (resolve, reject) => {
-    try {
-      const nowDate = fs.FieldValue.serverTimestamp();
-      if (seller && sellerId) {
-        let docRef;
-        if (isCollaborator) {
-          const isValid = await checkCollaborator(docId);
-          if (isValid) {
-            docRef = await db.collection('credit-card-payments').add({
-              dateLinkCreated: nowDate,
-              dateLastUpdate: nowDate,
-              seller,
-              sellerZoopId: sellerId,
-              charge,
-              installmentsMax,
-              status: 'Aguardando Pagamento',
-              collaboratorId: docId,
-              collaboratorName: fname,
-              onBehalfOfBrand: brand ? brand : seller,
-              observations,
-              insurance: insurance !== null ? insurance : true,
-              sellerZoopPlan: hasSellerZoopPlan || null,
-            });
-          } else throw { msg: 'Permissão insuficiente', customError: true };
-        } else {
-          docRef = await db.collection('credit-card-payments').add({
-            dateLinkCreated: nowDate,
-            dateLastUpdate: nowDate,
-            seller,
-            sellerZoopId: sellerId,
-            charge,
-            installmentsMax,
-            status: 'Aguardando Pagamento',
-            observations,
-            insurance: insurance !== null ? insurance : true,
-            sellerZoopPlan: hasSellerZoopPlan || null,
-          });
-        }
+    const {
+        seller,
+        sellerId,
+        charge,
+        installmentsMax,
+        isCollaborator,
+        docId,
+        fname,
+        brand,
+        setCharge,
+        setInstallmentsMax,
+        observations,
+        setObservations,
+        insurance,
+        setInsurance,
+        setInsurenceDropdownValue,
+        hasSellerZoopPlan,
+    } = state;
+    const baseUrl = process.env.HOMOLOG ? 'http://localhost:8080/pagamento/' : 'https://ziro.app/pagamento/';
+    return new Promise(async (resolve, reject) => {
         try {
-          const doc = await docRef.get();
-          if (doc) await navigator.clipboard.writeText(`${baseUrl}${doc.id}/escolher-cartao?doc`);
+            const nowDate = fs.FieldValue.serverTimestamp();
+            if (seller && sellerId) {
+                let docRef;
+                if (isCollaborator) {
+                    const isValid = await checkCollaborator(docId);
+                    if (isValid) {
+                        docRef = await db.collection('credit-card-payments').add({
+                            dateLinkCreated: nowDate,
+                            dateLastUpdate: nowDate,
+                            seller,
+                            sellerZoopId: sellerId,
+                            charge,
+                            installmentsMax: `${parseInt(installmentsMax)}`,
+                            status: 'Aguardando Pagamento',
+                            collaboratorId: docId,
+                            collaboratorName: fname,
+                            onBehalfOfBrand: brand ? brand : seller,
+                            observations,
+                            insurance: insurance !== null ? insurance : true,
+                            sellerZoopPlan: hasSellerZoopPlan || null,
+                        });
+                    } else throw { msg: 'Permissão insuficiente', customError: true };
+                } else {
+                    docRef = await db.collection('credit-card-payments').add({
+                        dateLinkCreated: nowDate,
+                        dateLastUpdate: nowDate,
+                        seller,
+                        sellerZoopId: sellerId,
+                        charge,
+                        installmentsMax: `${parseInt(installmentsMax)}`,
+                        status: 'Aguardando Pagamento',
+                        observations,
+                        insurance: insurance !== null ? insurance : true,
+                        sellerZoopPlan: hasSellerZoopPlan || null,
+                    });
+                }
+                try {
+                    const doc = await docRef.get();
+                    if (doc) await navigator.clipboard.writeText(`${baseUrl}${doc.id}/escolher-cartao?doc`);
+                } catch (error) {
+                    throw { msg: 'Erro ao realizar a cópia', copyError: true };
+                }
+                resolve('Link copiado');
+                setCharge('');
+                setInstallmentsMax('');
+                setObservations('');
+                setInsurance(null);
+                setInsurenceDropdownValue('');
+            } else {
+                throw { msg: 'Vendedor não encontrado', customError: true };
+            }
         } catch (error) {
-          throw { msg: 'Erro ao realizar a cópia', copyError: true };
+            if (error.copyError) {
+                resolve('Link criado. Acesse na aba de Vendas');
+                setCharge('');
+                setInstallmentsMax('');
+                setInsurance(null);
+                setInsurenceDropdownValue('');
+            }
+            if (error.customError) reject(error);
+            else {
+                console.log(error);
+                if (error.response) console.log(error.response);
+                reject('Erro ao criar cobrança');
+            }
         }
-        resolve('Link copiado');
-        setCharge('');
-        setInstallmentsMax('');
-        setObservations('');
-        setInsurance(null);
-        setInsurenceDropdownValue('');
-      } else {
-        throw { msg: 'Vendedor não encontrado', customError: true };
-      }
-    } catch (error) {
-      if (error.copyError) {
-        resolve('Link criado. Acesse na aba de Vendas');
-        setCharge('');
-        setInstallmentsMax('');
-        setInsurance(null);
-        setInsurenceDropdownValue('');
-      }
-      if (error.customError) reject(error);
-      else {
-        console.log(error);
-        if (error.response) console.log(error.response);
-        reject('Erro ao criar cobrança');
-      }
-    }
-  });
+    });
 };
 
 export default sendToBackend;
