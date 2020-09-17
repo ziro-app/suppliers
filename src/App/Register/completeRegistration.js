@@ -197,7 +197,8 @@ const completeRegistration = state => () => {
                                                         amount: 0,
                                                         percentage: 0
                                                     }
-                                                }
+                                                },
+                                                maxParcelas: '10'
                                             })
 
                                             await db.collection('users').add({ email, app: 'suppliers' })

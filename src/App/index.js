@@ -37,6 +37,7 @@ export const App = () => {
     const [ownerId, setOwnerId] = useState(null);
     const [role, setRole] = useState(null);
     const [brand, setBrand] = useState(null);
+    const [maxInstallments, setMaxInstallments] = useState(null);
     const url = process.env.SHEET_URL;
     const config = {
         headers: {
@@ -84,7 +85,7 @@ export const App = () => {
     };
 
     const fillObject = data => {
-        const { cnpj, endereco, bairro, cep, cidade, estado, codBanco, titular, tipoConta, numConta, agencia, fantasia, razao, zoopId } = data;
+        const { cnpj, endereco, bairro, cep, cidade, estado, codBanco, titular, tipoConta, numConta, agencia, fantasia, razao, zoopId, maxParcelas } = data;
         setCnpj(cnpj ? cnpj : '');
         setAddress(endereco ? endereco : '');
         setNeighborhood(bairro ? bairro : '');
@@ -99,6 +100,7 @@ export const App = () => {
         setFantasy(fantasia ? fantasia : '');
         setReason(razao ? razao : '');
         setZoopId(zoopId ? zoopId : '');
+        setMaxInstallments(maxParcelas ? maxParcelas : '10');
     };
 
     const clearObject = () => {
@@ -128,6 +130,7 @@ export const App = () => {
         setOwnerId('');
         setRole('');
         setBrand('');
+        setMaxInstallments('');
     };
 
     useEffect(() => {
@@ -267,6 +270,7 @@ export const App = () => {
         ownerId,
         role,
         brand,
+        maxInstallments
     };
     if (loading) return <InitialLoader />;
     if (errorLoading) return <Error />;

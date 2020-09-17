@@ -13,7 +13,7 @@ import sendToBackend from './sendToBackend';
 import { userContext } from '../appContext';
 
 const CreatePayment = () => {
-    const { fantasy, zoopId, docId, role, fname, brand } = useContext(userContext);
+    const { fantasy, zoopId, docId, role, fname, brand, maxInstallments } = useContext(userContext);
     const [charge, setCharge] = useState('');
     const [installmentsMax, setInstallmentsMax] = useState('');
     const [observations, setObservations] = useState('');
@@ -68,9 +68,9 @@ const CreatePayment = () => {
         },
         {
             name: 'installmentsMax',
-            validation: value => (fantasy === 'ZIRO' ? parseInt(value) > 0 && parseInt(value) < 5 : parseInt(value) > 0 && parseInt(value) <= 10),
+            validation: value => parseInt(value) > 0 && parseInt(value) <= parseInt(maxInstallments),
             value: installmentsMax,
-            message: fantasy === 'ZIRO' ? 'Deve ser entre 1 e 4' : 'Deve ser entre 1 e 10',
+            message: `Deve ser entre 1 e ${maxInstallments}`
         },
     ];
     if (loading) return <Spinner size="5.5rem" />;
@@ -84,7 +84,7 @@ const CreatePayment = () => {
                 <FormInput
                     name="installmentsMax"
                     label="Parcelamento máximo"
-                    input={<InputText value={installmentsMax} onChange={({ target: { value } }) => setInstallmentsMax(maskInput(value, '##', true))} placeholder={fantasy === 'ZIRO' ? 4 : 10} inputMode='numeric' />}
+                    input={<InputText value={installmentsMax} onChange={({ target: { value } }) => setInstallmentsMax(maskInput(value, '##', true))} placeholder={parseInt(maxInstallments)} inputMode='numeric' />}
                 />,
                 <FormInput
                     name="insurance"
