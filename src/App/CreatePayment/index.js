@@ -84,7 +84,17 @@ const CreatePayment = () => {
                 <FormInput
                     name="installmentsMax"
                     label="Parcelamento máximo"
-                    input={<InputText value={installmentsMax} onChange={({ target: { value } }) => setInstallmentsMax(maskInput(value, '##', true))} placeholder={parseInt(maxInstallments)} inputMode='numeric' />}
+                    input={
+                        <InputText
+                            value={installmentsMax}
+                            onChange={({ target: { value } }) => {
+                                const toInteger = parseInt(value, 10)
+                                setInstallmentsMax(maskInput(toInteger, '##', true))
+                            }}
+                            placeholder={parseInt(maxInstallments)}
+                            inputMode='numeric'
+                        />
+                    }
                 />,
                 <FormInput
                     name="insurance"
@@ -139,7 +149,17 @@ const CreatePayment = () => {
                     <FormInput
                         name="installmentsMax"
                         label="Parcelamento máximo"
-                        input={<InputText value={installmentsMax} onChange={({ target: { value } }) => setInstallmentsMax(maskInput(value, '##', true))} placeholder={fantasy === 'ZIRO' ? 4 : 10} inputMode='numeric' />}
+                        input={
+                            <InputText
+                                value={installmentsMax}
+                                onChange={({ target: { value } }) => {
+                                    const toInteger = parseInt(value, 10)
+                                    setInstallmentsMax(maskInput(toInteger, '##', true))
+                                }}
+                                placeholder={parseInt(maxInstallments)}
+                                inputMode='numeric'
+                            />
+                        }
                     />,
                     <FormInput
                         name="observation"
