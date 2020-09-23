@@ -1,4 +1,5 @@
 import { db, fs } from '../../Firebase/index';
+import linkMessage from './utils/linkMessage';
 
 const checkCollaborator = async docId => {
   const collaborator = await db.collection('collaborators').doc(docId).get();
@@ -25,6 +26,7 @@ const sendToBackend = state => () => {
     hasSellerZoopPlan,
   } = state;
   const baseUrl = process.env.HOMOLOG ? 'http://localhost:8080/pagamento/' : 'https://ziro.app/pagamento/';
+
   return new Promise(async (resolve, reject) => {
     try {
       const nowDate = fs.FieldValue.serverTimestamp();
@@ -65,7 +67,7 @@ const sendToBackend = state => () => {
         }
         try {
           const doc = await docRef.get();
-          if (doc) await navigator.clipboard.writeText(`${baseUrl}${doc.id}/escolher-cartao?doc`);
+          if (doc) await navigator.clipboard.writeText(linkMessage(baseUrl, doc.id, seller, charge, installmentsMax));
         } catch (error) {
           throw { msg: 'Erro ao realizar a cópia', copyError: true };
         }
