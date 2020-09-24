@@ -159,19 +159,9 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             ? handleMarkup(transaction)
             : '-';
         let liquidFormatted =
-          transaction.status !== 'Cancelado' && transaction.status !== 'Pré Autorizado' && transaction.status !== 'Atualizando' && (markupValueFormatted !== '-' || insuranceValueFormatted !== '-')
-            ? parseFloat(
-                `${
-                  stringToFloat(transaction.charge) -
-                  (markupValueFormatted !== '-' ? stringToFloat(markupValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0) -
-                  parseFloat(transaction.fees) -
-                  (insuranceValueFormatted !== '-' ? stringToFloat(insuranceValueFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0)
-                }`,
-              )
-                .toLocaleString('pt-br', {
-                  style: 'currency',
-                  currency: 'BRL',
-                })
+          transaction.status !== 'Cancelado' && transaction.status !== 'Pré Autorizado' && transaction.status !== 'Atualizando' && transaction.totalFees !== '-'
+            ? parseFloat(`${stringToFloat(transaction.charge) - parseFloat(transaction.totalFees)}`)
+                .toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })
                 .replace(/\s/g, '')
             : transaction.fees
             ? currencyFormat(parseFloat(`${(stringToFloat(transaction.charge) - transaction.fees).toFixed(2)}`.replace(/[R$\.,]/g, '')))
