@@ -44,7 +44,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
 
   const baseUrl = process.env.HOMOLOG ? 'http://localhost:8080/pagamento/' : 'https://ziro.app/pagamento/';
   const seller = transaction.seller || '';
-  const charge = transaction.charge || '50';
+  const charge = transaction.charge || '';
   const installmentsMax = transaction.installmentsMax || '';
   const messageLink = linkMessage(baseUrl, transactionId, seller, charge, installmentsMax);
 
