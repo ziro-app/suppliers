@@ -1,14 +1,22 @@
-import currencyFormat from '@ziro/currency-format';
-
 const linkMessage = (baseUrl, docId, seller, charge, installmentsMax) => {
-  const formattedCharge = currencyFormat(charge);
+  const link = `${baseUrl}${docId}/escolher-cartao?doc`;
+  let message = ``;
 
-  const message = `Você recebeu uma cobrança de ${seller} no valor de ${formattedCharge} com parcelamento em até ${installmentsMax}x.
-Acesse o link abaixo para pagar:`;
+  if (seller && charge && installmentsMax) {
+    message = `Você recebeu uma cobrança de ${seller} no valor de ${charge} com parcelamento em até ${installmentsMax}x.\nAcesse o link abaixo para pagar:\n${link}`;
+  } else if (seller && charge) {
+    message = `Você recebeu uma cobrança de ${seller} no valor de ${charge}.\nAcesse o link abaixo para pagar:\n${link}`;
+  } else if (charge && installmentsMax) {
+    message = `Você recebeu uma cobrança no valor de ${charge} com parcelamento em até ${installmentsMax}x.\nAcesse o link abaixo para pagar:\n${link}`;
+  } else if (seller) {
+    message = `Você recebeu uma cobrança de ${seller}.\nAcesse o link abaixo para pagar:\n${link}`;
+  } else if (charge) {
+    message = `Você recebeu uma cobrança no valor de ${charge}.\nAcesse o link abaixo para pagar:\n${link}`;
+  } else {
+    message = `Você recebeu uma cobrança.\nAcesse o link abaixo para pagar:\n${link}`;
+  }
 
-  const link = `${message}\n${baseUrl}${docId}/escolher-cartao?doc`;
-
-  return link;
+  return message;
 };
 
 export default linkMessage;

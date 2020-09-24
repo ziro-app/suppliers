@@ -23,6 +23,7 @@ import fetch from './fetch';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
 import { userContext } from '../../appContext';
+import linkMessage from '../../CreatePayment/utils/linkMessage';
 
 const TransactionDetails = ({ transactions, transactionId, transaction, setTransaction }) => {
   const [receipt_id, setReceipt_id] = useState('');
@@ -41,9 +42,11 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
   const history = createBrowserHistory();
   const [olderTransaction, setOlderTransaction] = useState(false);
 
-  const paymentLink = process.env.HOMOLOG ? `http://localhost:8080/pagamento/${transactionId}/escolher-cartao?doc` : `https://ziro.app/pagamento/${transactionId}/escolher-cartao?doc`;
-  const messageLink = `Você recebeu uma cobrança de ${transaction.seller} no valor de ${transaction.charge} com parcelamento em até ${transaction.installmentsMax}x.
-Acesse o link abaixo para pagar:\n${paymentLink}`;
+  const baseUrl = process.env.HOMOLOG ? 'http://localhost:8080/pagamento/' : 'https://ziro.app/pagamento/';
+  const seller = transaction.seller || '';
+  const charge = transaction.charge || '50';
+  const installmentsMax = transaction.installmentsMax || '';
+  const messageLink = linkMessage(baseUrl, transactionId, seller, charge, installmentsMax);
 
   let insuranceValueFormatted = '-';
   let markupValueFormatted = '-';

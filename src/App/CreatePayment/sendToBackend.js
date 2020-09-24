@@ -1,5 +1,6 @@
 import { db, fs } from '../../Firebase/index';
 import linkMessage from './utils/linkMessage';
+import currencyFormat from '@ziro/currency-format';
 
 const checkCollaborator = async docId => {
   const collaborator = await db.collection('collaborators').doc(docId).get();
@@ -67,7 +68,8 @@ const sendToBackend = state => () => {
         }
         try {
           const doc = await docRef.get();
-          if (doc) await navigator.clipboard.writeText(linkMessage(baseUrl, doc.id, seller, charge, installmentsMax));
+          const formattedCharge = currencyFormat(charge);
+          if (doc) await navigator.clipboard.writeText(linkMessage(baseUrl, doc.id, seller, formattedCharge, installmentsMax));
         } catch (error) {
           throw { msg: 'Erro ao realizar a cópia', copyError: true };
         }
