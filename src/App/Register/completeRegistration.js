@@ -199,8 +199,8 @@ const completeRegistration = state => () => {
                                                     }
                                                 },
                                                 maxParcelas: '10',
-                                                recAutomatico: true,
-                                                idConta: responseAccount.data.id
+                                                payoutAutomatic: true,
+                                                zoopBankAccountId: responseAccount.data.id
                                             })
 
                                             await db.collection('users').add({ email, app: 'suppliers' })

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
 import { post } from 'axios';
+import { createBrowserHistory } from 'history';
 import Form from '@bit/vitorbarbosa19.ziro.form';
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
@@ -20,17 +21,19 @@ import mountBankInfo from './mountBankInfo';
 import { dot, headerStyle, infoBlock } from './styles';
 
 const BankInfo = () => {
-    const { zoopId, userPos, docId, cnpj, codBank, holderName, accountType, accountNumber, agency, payoutAuthomatic } = useContext(userContext);
-    const [activate, setActivate] = useState(payoutAuthomatic);
+    const { zoopId, userPos, docId, cnpj, codBank, holderName, accountType, accountNumber, agency, payoutAutomatic } = useContext(userContext);
+    const [activate, setActivate] = useState((payoutAutomatic != undefined && payoutAutomatic != null && payoutAutomatic === false) ? false : true);
     const [isLoading, setIsLoading] = useState(true);
     const [blocks, setBlocks] = useState([]);
-    const [bankName, setBankName] = useState('')
-    const [bankNumber, setBankNumber] = useState('')
-    const [newAgency, setNewAgency] = useState('')
-    const [newAccountNumber, setNewAccountNumber] = useState('')
-    const [accountTypeViewName, setAccountTypeViewName] = useState('')
-    const [newAccountType, setNewAccountType] = useState('')
-    const accountTypeList = ['Conta Corrente', 'Conta Poupança']
+    const [bankName, setBankName] = useState('');
+    const [bankNumber, setBankNumber] = useState('');
+    const [newAgency, setNewAgency] = useState('');
+    const [newAccountNumber, setNewAccountNumber] = useState('');
+    const [accountTypeViewName, setAccountTypeViewName] = useState('');
+    const [newAccountType, setNewAccountType] = useState('');
+    const [backRoute, setBackRoute] = useState('');
+    const history = createBrowserHistory();
+    const accountTypeList = ['Conta Corrente', 'Conta Poupança'];
     const setPromiseMessage = useMessagePromise();
     const setMessage = useMessage();
     const setState = {
@@ -139,7 +142,7 @@ const BankInfo = () => {
                         }
                     }
                     await post(url, body, config);
-                    await db.collection('suppliers').doc(docId).update({ recAutomatico: !activate });
+                    await db.collection('suppliers').doc(docId).update({ payoutAutomatic: !activate });
                     resolve('Ok');
                 } catch (error) {
                     resolve(null);
@@ -153,7 +156,12 @@ const BankInfo = () => {
     };
     const bankData = { codBank, holderName, accountType, accountNumber, agency, activate, asyncClick };
 
-    useEffect(() => mountBankInfo(setIsLoading, setBlocks, bankData), [codBank, holderName, accountType, accountNumber, agency, activate]);
+    useEffect(() => {
+        const { state } = history.location;
+        const backRouteEffect = state && state.backRoute ? state.backRoute : '';
+        setBackRoute(backRouteEffect);
+        mountBankInfo(setIsLoading, setBlocks, bankData);
+    }, [codBank, holderName, accountType, accountNumber, agency, activate]);
 
     if (isLoading)
         return (
@@ -164,7 +172,7 @@ const BankInfo = () => {
 
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
-            <Header type="icon-link" title="Dados Bancários" navigateTo="recebiveis" icon="back" />
+            <Header type="icon" title="Dados Bancários" setIsOpen={backRoute && !activate ? () => history.push('/recebiveis/resgate') : () => history.push('/recebiveis')} icon="back" />
             <div style={{ display: 'grid', gridRowGap: '25px' }}>
                 <Details blocks={blocks} />
 

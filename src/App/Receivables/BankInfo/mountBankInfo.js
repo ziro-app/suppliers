@@ -33,7 +33,7 @@ const mountBankInfo = (setIsLoading, setBlocks, { codBank, holderName, accountTy
                     },
                     {
                         title: 'Recebimento automático',
-                        content: <MessageModal><ToggleButton size={30} template="primary" styleContainer={{ marginLeft: '30%' }} active={activate} onClick={() => asyncClick()} /></MessageModal>
+                        content: <MessageModal><ToggleButton size={30} template="primary" styleContainer={{ display: 'grid', justifyContent: 'end' }} active={activate} onClick={() => asyncClick()} /></MessageModal>
                     }
                 ]
             }

@@ -1,17 +1,17 @@
 import { post } from 'axios';
 
 const sendToBackend = state => () => {
-    const { accountId, currentBalance, redeemBalance, unformattedCurrent,
-        setCurrentBalance, setRedeemBalance, setUnformattedCurrent } = state;
+    const { zoopBankAccountId, currentBalance, redeemBalance,
+        setCurrentBalance, setRedeemBalance } = state;
     const redeemParsed = parseFloat(redeemBalance) / 100;
     return new Promise(async (resolve, reject) => {
         try {
             if (redeemParsed <= currentBalance) {
-                if (accountId) {
+                if (zoopBankAccountId) {
                     try {
                         // Criando transferência
                         await post(
-                            `${process.env.PAY_URL}transfer-create/${accountId}`,
+                            `${process.env.PAY_URL}transfer-create/${zoopBankAccountId}`,
                             {
                                 amount: `${redeemBalance}.0000`
                             }, {
@@ -20,7 +20,6 @@ const sendToBackend = state => () => {
                             },
                         });
                         setCurrentBalance((currentBalance - redeemParsed).toFixed(2));
-                        setUnformattedCurrent((parseInt(unformattedCurrent) - parseInt(redeemBalance)).toString())
                         setRedeemBalance('');
                         resolve('Saque realizado com sucesso');
                     } catch (error) {

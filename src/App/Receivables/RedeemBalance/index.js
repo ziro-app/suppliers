@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
+import { createBrowserHistory } from 'history';
 import Form from '@bit/vitorbarbosa19.ziro.form';
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
 import InputMoney from '@bit/vitorbarbosa19.ziro.input-money';
@@ -17,15 +18,15 @@ import fetch from './fetch';
 import { btn, info, titleStyle, contentStyle } from '../styles';
 
 const RedeemBalance = () => {
-    const { zoopId, accountId, codBank, holderName, accountType, accountNumber, agency } = useContext(userContext);
+    const { zoopId, zoopBankAccountId, codBank, holderName, accountType, accountNumber, agency } = useContext(userContext);
     const [isLoading, setIsLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     const [currentBalance, setCurrentBalance] = useState('');
-    const [unformattedCurrent, setUnformattedCurrent] = useState('');
     const [redeemBalance, setRedeemBalance] = useState('');
     const [blocks, setBlocks] = useState([]);
-    const setState = { setCurrentBalance, setRedeemBalance, setUnformattedCurrent, setBlocks };
-    const state = { zoopId, accountId, codBank, holderName, accountType, accountNumber, agency, currentBalance, unformattedCurrent, redeemBalance, blocks, ...setState };
+    const history = createBrowserHistory();
+    const setState = { setCurrentBalance, setRedeemBalance, setBlocks };
+    const state = { zoopId, zoopBankAccountId, codBank, holderName, accountType, accountNumber, agency, currentBalance, redeemBalance, blocks, ...setState };
 
     const validations = [
         {
@@ -50,29 +51,33 @@ const RedeemBalance = () => {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
             <Header type="icon-link" title="Resgatar saldo" navigateTo="recebiveis" icon="back" />
-            <div style={{ display: 'grid', gridRowGap: '25px' }}>
-                <Details blocks={blocks} />
-
-                <div style={info}>
-                    <label style={titleStyle}>SALDO DISPONÍVEL</label>
-                    <label style={contentStyle}>{currentBalance ? currencyFormat(round(currentBalance, 2).toFixed(2).replace('.', '')) : 'R$ 0,00'}</label>
+            <div style={{ display: 'grid', gridRowGap: '35px' }}>
+                <div style={{ display: 'grid', gridRowGap: '10px' }}>
+                    <Details blocks={blocks} />
+                    <Button cta="Trocar conta" style={btn} navigate={() => history.push('/recebiveis/dados-bancarios', { backRoute: '/recebiveis/resgate' })} type="link" />
                 </div>
 
-                <Button cta="Saque total" style={btn} click={() => setRedeemBalance(unformattedCurrent)} type="button" />
+                <div style={{ display: 'grid', gridRowGap: '15px' }}>
+                    <div style={info}>
+                        <label style={titleStyle}>SALDO DISPONÍVEL</label>
+                        <label style={contentStyle}>{currentBalance ? currencyFormat(round(currentBalance, 2).toFixed(2).replace('.', '')) : 'R$ 0,00'}</label>
+                    </div>
 
-                <Form
-                    validations={validations}
-                    sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
-                    inputs={[
-                        <FormInput name='redeemBalance' label='Valor do saque' input={
-                            <InputMoney
-                                value={redeemBalance}
-                                setValue={setRedeemBalance}
-                            />
-                        } />
-                    ]}
-                />
-
+                    <Form
+                        buttonName="Efetuar saque"
+                        buttonOnTop
+                        validations={validations}
+                        sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+                        inputs={[
+                            <FormInput name='redeemBalance' label='Valor do saque' input={
+                                <InputMoney
+                                    value={redeemBalance}
+                                    setValue={setRedeemBalance}
+                                />
+                            } />
+                        ]}
+                    />
+                </div>
             </div>
         </motion.div>
     );

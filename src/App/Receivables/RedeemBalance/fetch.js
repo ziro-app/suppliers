@@ -9,14 +9,14 @@ const config = {
 };
 
 
-const fetch = (setIsLoading, setIsError, { zoopId, setCurrentBalance, setUnformattedCurrent, setBlocks, codBank, holderName, accountType, accountNumber, agency }) => {
+const fetch = (setIsLoading, setIsError, { zoopId, setCurrentBalance, setRedeemBalance, setBlocks, codBank, holderName, accountType, accountNumber, agency }) => {
     const source = axios.CancelToken.source();
     const run = async () => {
         try {
             const balanceUrl = `${process.env.PAY_URL}account-balance-by-seller?seller_id=${zoopId}`;
             const { data: { items: { current_balance } } } = await post(balanceUrl, {}, config);
             const parts = current_balance.split('.');
-            setUnformattedCurrent(parts[0]);
+            setRedeemBalance(parts[0]);
             const parsed = parseFloat(parts[0]) / 100;
             const rounded = (parseFloat(round(parsed, 2).toFixed(2)));
             setCurrentBalance(rounded);

@@ -39,8 +39,8 @@ export const App = () => {
     const [role, setRole] = useState(null);
     const [brand, setBrand] = useState(null);
     const [maxInstallments, setMaxInstallments] = useState(null);
-    const [payoutAuthomatic, setPayoutAuthomatic] = useState(null);
-    const [accountId, setAccountId] = useState(null);
+    const [payoutAutomatic, setPayoutAutomatic] = useState(null);
+    const [zoopBankAccountId, setZoopBankAccountId] = useState(null);
     const url = process.env.SHEET_URL;
     const config = {
         headers: {
@@ -88,7 +88,7 @@ export const App = () => {
     };
 
     const fillObject = data => {
-        const { cnpj, endereco, bairro, cep, cidade, estado, codBanco, titular, tipoConta, numConta, agencia, fantasia, razao, zoopId, maxParcelas, recAutomatico, idConta } = data;
+        const { cnpj, endereco, bairro, cep, cidade, estado, codBanco, titular, tipoConta, numConta, agencia, fantasia, razao, zoopId, maxParcelas, payoutAutomatic, zoopBankAccountId } = data;
         setCnpj(cnpj ? cnpj : '');
         setAddress(endereco ? endereco : '');
         setNeighborhood(bairro ? bairro : '');
@@ -104,8 +104,8 @@ export const App = () => {
         setReason(razao ? razao : '');
         setZoopId(zoopId ? zoopId : '');
         setMaxInstallments(maxParcelas ? maxParcelas : '10');
-        setPayoutAuthomatic(recAutomatico !== null ? recAutomatico : true);
-        setAccountId(idConta ? idConta : '')
+        setPayoutAutomatic(payoutAutomatic !== null ? payoutAutomatic : true);
+        setZoopBankAccountId(zoopBankAccountId ? zoopBankAccountId : '');
     };
 
     const clearObject = () => {
@@ -136,8 +136,8 @@ export const App = () => {
         setRole('');
         setBrand('');
         setMaxInstallments('');
-        setPayoutAuthomatic('');
-        setAccountId('');
+        setPayoutAutomatic('');
+        setZoopBankAccountId('');
     };
 
     useEffect(() => {
@@ -278,8 +278,8 @@ export const App = () => {
         role,
         brand,
         maxInstallments,
-        payoutAuthomatic,
-        accountId
+        payoutAutomatic,
+        zoopBankAccountId
     };
     if (loading) return <InitialLoader />;
     if (errorLoading) return <Error />;

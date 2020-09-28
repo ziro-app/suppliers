@@ -41,7 +41,7 @@ const Receivables = ({ receivableId }) => {
         setDays, setCustomError, setTotalTransactions, setBalance
     };
     const state = { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days, totalTransactions, balance };
-    const { zoopId, payoutAuthomatic } = useContext(userContext);
+    const { zoopId, payoutAutomatic } = useContext(userContext);
 
     const handleClick = () => {
         setLoadingMore(true);
@@ -127,7 +127,7 @@ const Receivables = ({ receivableId }) => {
                 <div style={{ display: 'grid', gridRowGap: '20px' }}>
                     <Button cta="Configurar dados bancários" style={btn} navigate={() => setLocation('recebiveis/dados-bancarios')} type="link" />
 
-                    {!payoutAuthomatic && <Button cta="Resgatar saldo" style={btn} navigate={() => setLocation('recebiveis/resgate')} type="link" />}
+                    {payoutAutomatic != undefined && payoutAutomatic != null && payoutAutomatic === false && <Button cta="Resgatar saldo" style={btn} navigate={() => setLocation('recebiveis/resgate')} type="link" />}
 
                     <Button cta="Exportar planilha" style={btn} click={() => convertCsv(receivables, totalAmount, totalTransactions, 'Recebiveis.csv')} type="button" />
 
