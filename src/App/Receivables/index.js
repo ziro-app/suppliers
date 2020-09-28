@@ -12,6 +12,7 @@ import { Menu } from '../Menu/index';
 import { round } from '../Transactions/utils';
 import { userContext } from '../appContext';
 import BankInfo from './BankInfo/index';
+import RedeemBalance from './RedeemBalance/index';
 import Transactions from './Transactions/index';
 import { btn, cellStyle, contentStyle, customGrid, info, spinner, titleStyle } from './styles';
 import fetch from './fetch';
@@ -40,7 +41,7 @@ const Receivables = ({ receivableId }) => {
         setDays, setCustomError, setTotalTransactions, setBalance
     };
     const state = { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days, totalTransactions, balance };
-    const { zoopId } = useContext(userContext);
+    const { zoopId, payoutAuthomatic } = useContext(userContext);
 
     const handleClick = () => {
         setLoadingMore(true);
@@ -116,6 +117,8 @@ const Receivables = ({ receivableId }) => {
 
     if (receivableId && receivableId === 'dados-bancarios') return <BankInfo />
 
+    if (receivableId && receivableId === 'resgate') return <RedeemBalance />
+
     if (receivableId && receivableId !== 'dados-bancarios') return <Transactions receivableId={receivableId} receivables={receivables} snapshot={state} />
 
     return (
@@ -123,6 +126,8 @@ const Receivables = ({ receivableId }) => {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <div style={{ display: 'grid', gridRowGap: '20px' }}>
                     <Button cta="Configurar dados bancários" style={btn} navigate={() => setLocation('recebiveis/dados-bancarios')} type="link" />
+
+                    {!payoutAuthomatic && <Button cta="Resgatar saldo" style={btn} navigate={() => setLocation('recebiveis/resgate')} type="link" />}
 
                     <Button cta="Exportar planilha" style={btn} click={() => convertCsv(receivables, totalAmount, totalTransactions, 'Recebiveis.csv')} type="button" />
 

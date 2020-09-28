@@ -5,6 +5,7 @@ import { userContext } from './appContext';
 import InitialLoader from '@bit/vitorbarbosa19.ziro.initial-loader';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import ErrorBoundary from '@bit/vitorbarbosa19.ziro.error-boundary';
+import MessageModal from "@bit/vitorbarbosa19.ziro.message-modal"
 import Router from './Router';
 
 export const App = () => {
@@ -38,6 +39,8 @@ export const App = () => {
     const [role, setRole] = useState(null);
     const [brand, setBrand] = useState(null);
     const [maxInstallments, setMaxInstallments] = useState(null);
+    const [payoutAuthomatic, setPayoutAuthomatic] = useState(null);
+    const [accountId, setAccountId] = useState(null);
     const url = process.env.SHEET_URL;
     const config = {
         headers: {
@@ -85,7 +88,7 @@ export const App = () => {
     };
 
     const fillObject = data => {
-        const { cnpj, endereco, bairro, cep, cidade, estado, codBanco, titular, tipoConta, numConta, agencia, fantasia, razao, zoopId, maxParcelas } = data;
+        const { cnpj, endereco, bairro, cep, cidade, estado, codBanco, titular, tipoConta, numConta, agencia, fantasia, razao, zoopId, maxParcelas, recAutomatico, idConta } = data;
         setCnpj(cnpj ? cnpj : '');
         setAddress(endereco ? endereco : '');
         setNeighborhood(bairro ? bairro : '');
@@ -101,6 +104,8 @@ export const App = () => {
         setReason(razao ? razao : '');
         setZoopId(zoopId ? zoopId : '');
         setMaxInstallments(maxParcelas ? maxParcelas : '10');
+        setPayoutAuthomatic(recAutomatico !== null ? recAutomatico : true);
+        setAccountId(idConta ? idConta : '')
     };
 
     const clearObject = () => {
@@ -131,6 +136,8 @@ export const App = () => {
         setRole('');
         setBrand('');
         setMaxInstallments('');
+        setPayoutAuthomatic('');
+        setAccountId('');
     };
 
     useEffect(() => {
@@ -270,15 +277,19 @@ export const App = () => {
         ownerId,
         role,
         brand,
-        maxInstallments
+        maxInstallments,
+        payoutAuthomatic,
+        accountId
     };
     if (loading) return <InitialLoader />;
     if (errorLoading) return <Error />;
     return (
         <ErrorBoundary>
-            <userContext.Provider value={userData}>
-                <Router isLogged={!!uid} />
-            </userContext.Provider>
+            <MessageModal>
+                <userContext.Provider value={userData}>
+                    <Router isLogged={!!uid} />
+                </userContext.Provider>
+            </MessageModal>
         </ErrorBoundary>
     );
 };

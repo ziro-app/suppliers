@@ -14,4 +14,5 @@ export const
     auth = init.auth(),
     fs = firebase.firestore,
     fbauth = firebase.auth,
-    storage = firebase.storage().ref
+    storage = firebase.storage().ref,
+    configFirebase = config;

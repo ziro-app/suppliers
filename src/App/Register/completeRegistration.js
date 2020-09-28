@@ -98,10 +98,10 @@ const completeRegistration = state => () => {
                                         },
                                         mcc: category
                                     }, {
-                                        headers: {
-                                            Authorization: `${process.env.PAY_TOKEN}`,
-                                        },
-                                    });
+                                    headers: {
+                                        Authorization: `${process.env.PAY_TOKEN}`,
+                                    },
+                                });
                                 try {
                                     // Criando token da conta
                                     const responseAccount = await post(
@@ -114,10 +114,10 @@ const completeRegistration = state => () => {
                                             account_number: accountNumber,
                                             type: accountType
                                         }, {
-                                            headers: {
-                                                Authorization: `${process.env.PAY_TOKEN}`,
-                                            },
-                                        });
+                                        headers: {
+                                            Authorization: `${process.env.PAY_TOKEN}`,
+                                        },
+                                    });
                                     // Associando conta ao vendedor
                                     await post(
                                         `${process.env.PAY_URL}bank-associate`,
@@ -125,10 +125,10 @@ const completeRegistration = state => () => {
                                             customer: id,
                                             token: responseAccount.data.id
                                         }, {
-                                            headers: {
-                                                Authorization: `${process.env.PAY_TOKEN}`,
-                                            },
-                                        });
+                                        headers: {
+                                            Authorization: `${process.env.PAY_TOKEN}`,
+                                        },
+                                    });
                                     try {
                                         // Upload das imagens
                                         const uploadConfig = {
@@ -198,7 +198,9 @@ const completeRegistration = state => () => {
                                                         percentage: 0
                                                     }
                                                 },
-                                                maxParcelas: '10'
+                                                maxParcelas: '10',
+                                                recAutomatico: true,
+                                                idConta: responseAccount.data.id
                                             })
 
                                             await db.collection('users').add({ email, app: 'suppliers' })

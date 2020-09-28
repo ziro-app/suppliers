@@ -81,6 +81,8 @@
         "@bit/vitorbarbosa19.ziro.timeline": "0.1.49",
         "@bit/vitorbarbosa19.ziro.update-email": "0.1.85",
         "@bit/vitorbarbosa19.ziro.update-pass": "0.1.78",
+        "@bit/vitorbarbosa19.ziro.toggle-button": "0.0.3",
+        "@bit/vitorbarbosa19.ziro.message-modal": "0.0.59",
         "@ziro/array-object": "^1.0.0",
         "@ziro/capitalize": "^1.0.0",
         "@ziro/currency-format": "1.0.2",
@@ -98,8 +100,10 @@
         "react": "^16.12.0",
         "react-dom": "^16.12.0",
         "react-lottie": "^1.2.3",
+        "reactfire": "^2.0.3",
         "text-ellipsis": "^1.0.3",
         "webfontloader": "^1.6.28",
-        "wouter": "^2.4.0"
+        "wouter": "^2.4.0",
+        "ziro-messages": "0.0.40"
     }
 }

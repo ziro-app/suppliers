@@ -51,10 +51,10 @@ const sendToBackend = state => () => {
                             account_number: newAccountNumber,
                             type: newAccountType
                         }, {
-                            headers: {
-                                Authorization: `${process.env.PAY_TOKEN}`,
-                            },
-                        });
+                        headers: {
+                            Authorization: `${process.env.PAY_TOKEN}`,
+                        },
+                    });
                     // Associando conta ao vendedor
                     await post(
                         `${process.env.PAY_URL}bank-associate`,
@@ -62,10 +62,10 @@ const sendToBackend = state => () => {
                             customer: zoopId,
                             token: responseAccount.data.id
                         }, {
-                            headers: {
-                                Authorization: `${process.env.PAY_TOKEN}`,
-                            },
-                        });
+                        headers: {
+                            Authorization: `${process.env.PAY_TOKEN}`,
+                        },
+                    });
                     try {
                         // Atualizando registro no Firestore
                         await db.collection('suppliers').doc(docId).update({
@@ -74,7 +74,8 @@ const sendToBackend = state => () => {
                             tipoConta: accountTypeViewName,
                             titular: holderName,
                             numConta: newAccountNumber,
-                            agencia: newAgency
+                            agencia: newAgency,
+                            idConta: responseAccount.data.id
                         });
                         setBankName('');
                         setBankNumber('');

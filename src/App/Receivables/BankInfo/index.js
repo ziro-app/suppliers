@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { motion } from 'framer-motion';
+import { post } from 'axios';
 import Form from '@bit/vitorbarbosa19.ziro.form';
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
@@ -7,15 +8,20 @@ import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import Header from '@bit/vitorbarbosa19.ziro.header';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
+import { useMessage, useMessagePromise } from '@bit/vitorbarbosa19.ziro.message-modal';
+import { ZiroPromptMessage, ZiroWaitingMessage } from "ziro-messages";
 import { containerWithPadding } from '@ziro/theme';
 import maskInput from '@ziro/mask-input';
 import { userContext } from '../../appContext';
 import banksList from '../../Register/banks';
+import { db } from '../../../Firebase/index';
 import sendToBackend from './sendToBackend';
 import mountBankInfo from './mountBankInfo';
 import { dot, headerStyle, infoBlock } from './styles';
 
 const BankInfo = () => {
+    const { zoopId, userPos, docId, cnpj, codBank, holderName, accountType, accountNumber, agency, payoutAuthomatic } = useContext(userContext);
+    const [activate, setActivate] = useState(payoutAuthomatic);
     const [isLoading, setIsLoading] = useState(true);
     const [blocks, setBlocks] = useState([]);
     const [bankName, setBankName] = useState('')
@@ -25,8 +31,8 @@ const BankInfo = () => {
     const [accountTypeViewName, setAccountTypeViewName] = useState('')
     const [newAccountType, setNewAccountType] = useState('')
     const accountTypeList = ['Conta Corrente', 'Conta Poupança']
-    const { zoopId, userPos, docId, cnpj, codBank, holderName, accountType, accountNumber, agency } = useContext(userContext);
-    const bankData = { codBank, holderName, accountType, accountNumber, agency };
+    const setPromiseMessage = useMessagePromise();
+    const setMessage = useMessage();
     const setState = {
         setIsLoading, setBlocks, setBankName, setBankNumber,
         setNewAgency, setNewAccountNumber, setAccountTypeViewName, setNewAccountType
@@ -59,7 +65,95 @@ const BankInfo = () => {
         }
     ];
 
-    useEffect(() => mountBankInfo(setIsLoading, setBlocks, bankData), [codBank, holderName, accountType, accountNumber, agency]);
+    const PromptMessage = new ZiroPromptMessage({
+        name: "promptReceivingPolicy",
+        type: "neutral",
+        code: "0001",
+        title: "Política de recebimento",
+        userDescription: `Seu recebimento passará de ${activate ? 'automático' : 'depósito em conta digital'} para ${!activate ? 'automático' : 'depósito em conta digital'}.`,
+        userResolution: "Deseja continuar?",
+        internalDescription: "prompt política de recebimento",
+        illustration: "profileData",
+        additionalData: undefined,
+    });
+    const WaitingMessage = new ZiroWaitingMessage({
+        name: "waitingReceivingPolicy",
+        type: "neutral",
+        code: "0002",
+        title: "Política de recebimento",
+        userDescription: "Efetuando a mudança. Aguarde enquanto finalizamos.",
+        internalDescription: "waiting política de recebimento",
+        illustration: "waiting",
+        additionalData: undefined,
+    });
+
+    const SuccessMessage = new ZiroPromptMessage({
+        name: "successReceivingPolicy",
+        type: "success",
+        code: "0003",
+        title: "Política de recebimento",
+        userDescription: "Política de recebimento atualizada com sucesso.",
+        userResolution: "Clique em ok para sair.",
+        internalDescription: "prompt de sucesso",
+        illustration: "paymentSuccess",
+        additionalData: undefined,
+    });
+
+    const FailureMessage = new ZiroPromptMessage({
+        name: "failureReceivingPolicy",
+        type: "destructive",
+        code: "0004",
+        title: "Política de recebimento",
+        userDescription: "Falha ao atualizar de política, tente novamente.",
+        userResolution: "Clique em ok para sair.",
+        internalDescription: "prompt de falha",
+        illustration: "errorLoading",
+        additionalData: undefined,
+    });
+
+    const asyncClick = async () => {
+        try {
+            await setPromiseMessage(PromptMessage);
+            const promise = new Promise(async (resolve) => {
+                try {
+                    const url = `${process.env.PAY_URL}receiving-policy-update?seller_id=${zoopId}`;
+                    const config = {
+                        headers: {
+                            'Content-type': 'application/json',
+                            Authorization: process.env.PAY_TOKEN,
+                        },
+                    };
+                    let body;
+                    if (activate) {
+                        // Desativando recebimento automático
+                        body = {
+                            transfer_enabled: false,
+                            minimum_transfer_value: "100.0000"
+                        }
+                    } else {
+                        // Ativando recebimento automático
+                        body = {
+                            transfer_enabled: true,
+                            minimum_transfer_value: "100.0000",
+                            transfer_interval: "daily"
+                        }
+                    }
+                    await post(url, body, config);
+                    await db.collection('suppliers').doc(docId).update({ recAutomatico: !activate });
+                    resolve('Ok');
+                } catch (error) {
+                    resolve(null);
+                }
+            });
+            setMessage(WaitingMessage.withPromise(promise));
+            const result = await promise;
+            setMessage(result ? SuccessMessage : FailureMessage);
+            setActivate(result ? !activate : activate);
+        } catch (error) { }
+    };
+    const bankData = { codBank, holderName, accountType, accountNumber, agency, activate, asyncClick };
+
+    useEffect(() => mountBankInfo(setIsLoading, setBlocks, bankData), [codBank, holderName, accountType, accountNumber, agency, activate]);
 
     if (isLoading)
         return (

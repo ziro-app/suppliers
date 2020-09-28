@@ -1,6 +1,9 @@
+import React from 'react';
+import MessageModal from '@bit/vitorbarbosa19.ziro.message-modal';
+import ToggleButton from '@bit/vitorbarbosa19.ziro.toggle-button';
 import banksList from '../../Register/banks';
 
-const mountBankInfo = (setIsLoading, setBlocks, { codBank, holderName, accountType, accountNumber, agency }) => {
+const mountBankInfo = (setIsLoading, setBlocks, { codBank, holderName, accountType, accountNumber, agency, activate, asyncClick }) => {
     let bank = banksList.find(bank => bank.split(' - ')[0] == codBank);
     let bankName = bank ? bank.split(' - ')[1] : '';
     setBlocks(
@@ -27,6 +30,10 @@ const mountBankInfo = (setIsLoading, setBlocks, { codBank, holderName, accountTy
                     {
                         title: 'Tipo',
                         content: accountType
+                    },
+                    {
+                        title: 'Recebimento automático',
+                        content: <MessageModal><ToggleButton size={30} template="primary" styleContainer={{ marginLeft: '30%' }} active={activate} onClick={() => asyncClick()} /></MessageModal>
                     }
                 ]
             }
