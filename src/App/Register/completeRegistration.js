@@ -156,6 +156,8 @@ const completeRegistration = state => () => {
                                                 uploadConfig.data = formData
                                                 await axios(uploadConfig)
                                             } catch (error) {
+                                                console.log('Erro no upload interno');
+                                                console.log(error);
                                                 if (error.customError) throw error
                                                 throw { msg: `Erro no upload da imagem ${index + 1}, fale com seu assessor.`, customError: true }
                                             }
@@ -208,32 +210,46 @@ const completeRegistration = state => () => {
                                             try {
                                                 await auth.signOut() // user needs to validate email before signing in to app
                                             } catch (error) {
+                                                console.log('Erro no signOut');
+                                                console.log(error);
                                                 if (error.response) console.log(error.response)
                                                 throw 'Erro ao fazer signOut'
                                             }
                                         } catch (error) {
+                                            console.log('Erro no firestore');
+                                            console.log(error);
                                             if (error.customError) throw error
                                             if (error.response) console.log(error.response)
                                             throw 'Erro ao salvar na Firestore'
                                         }
                                     } catch (error) {
+                                        console.log('Erro no upload externo');
+                                        console.log(error);
                                         if (error.customError) throw error
                                         else throw { msg: 'Erro no upload das imagens. Fale com seu assessor', customError: true }
                                     }
                                 } catch (error) {
+                                    console.log('Erro na criação da conta');
+                                    console.log(error);
                                     if (error.customError) throw error
                                     throw { msg: 'Erro ao criar conta bancária. Fale com seu assessor', customError: true }
                                 }
                             } catch (error) {
+                                console.log('Erro na criação Zoop');
+                                console.log(error);
                                 if (error.customError) throw error
                                 throw { msg: 'Erro ao criar usuário. Tente novamente', customError: true }
                             }
                         } catch (error) {
+                            console.log('Erro na email verificação');
+                            console.log(error);
                             if (error.customError) throw error
                             if (error.response) console.log(error.response)
                             throw 'Erro ao enviar email de verificação'
                         }
                     } catch (error) {
+                        console.log('Erro na planilha');
+                        console.log(error);
                         if (error.customError) throw error
                         throw { msg: 'Erro ao salvar usuário. Tente novamente.', customError: true }
                     }
