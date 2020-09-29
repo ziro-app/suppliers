@@ -119,7 +119,7 @@ const completeRegistration = state => () => {
                                         },
                                     });
                                     // Associando conta ao vendedor
-                                    await post(
+                                    const responseAssociating = await post(
                                         `${process.env.PAY_URL}bank-associate`,
                                         {
                                             customer: id,
@@ -202,7 +202,7 @@ const completeRegistration = state => () => {
                                                 },
                                                 maxParcelas: '10',
                                                 payoutAutomatic: true,
-                                                zoopBankAccountId: responseAccount.data.id
+                                                zoopBankAccountId: responseAssociating.data.id
                                             })
 
                                             await db.collection('users').add({ email, app: 'suppliers' })

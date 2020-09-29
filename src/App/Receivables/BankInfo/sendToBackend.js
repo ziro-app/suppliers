@@ -56,7 +56,7 @@ const sendToBackend = state => () => {
                         },
                     });
                     // Associando conta ao vendedor
-                    await post(
+                    const responseAssociating = await post(
                         `${process.env.PAY_URL}bank-associate`,
                         {
                             customer: zoopId,
@@ -75,7 +75,7 @@ const sendToBackend = state => () => {
                             titular: holderName,
                             numConta: newAccountNumber,
                             agencia: newAgency,
-                            zoopBankAccountId: responseAccount.data.id
+                            zoopBankAccountId: responseAssociating.data.id
                         });
                         setBankName('');
                         setBankNumber('');

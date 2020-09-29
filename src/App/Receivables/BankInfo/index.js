@@ -242,9 +242,9 @@ const BankInfo = () => {
                                 onChangeKeyboard={element => {
                                     if (element) {
                                         setAccountTypeViewName(element.value)
-                                        if (element.value === 'Conta Poupança') setAccountType('savings')
-                                        else if (element.value === 'Conta Corrente') setAccountType('checking')
-                                        else setAccountType('')
+                                        if (element.value === 'Conta Poupança') setNewAccountType('savings')
+                                        else if (element.value === 'Conta Corrente') setNewAccountType('checking')
+                                        else setNewAccountType('')
                                     }
                                 }}
                                 list={accountTypeList}
