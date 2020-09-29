@@ -75,7 +75,7 @@ const sendToBackend = state => () => {
                             titular: holderName,
                             numConta: newAccountNumber,
                             agencia: newAgency,
-                            idConta: responseAccount.data.id
+                            zoopBankAccountId: responseAccount.data.id
                         });
                         setBankName('');
                         setBankNumber('');

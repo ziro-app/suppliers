@@ -11,7 +11,7 @@ const sendToBackend = state => () => {
                     try {
                         // Criando transferência
                         await post(
-                            `${process.env.PAY_URL}transfer-create/${zoopBankAccountId}`,
+                            `${process.env.PAY_URL}transfer-create?bank_account_id=${zoopBankAccountId}`,
                             {
                                 amount: `${redeemBalance}.0000`
                             }, {
