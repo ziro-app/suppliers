@@ -19,8 +19,9 @@ const formatDate = date => `${date.getFullYear()}-${date.getMonth() + 1 <= 9 ? `
 const splitedArray = async array => {
     let item = {};
     await Promise.all(array.map(async it => {
-        const { id, installment_plan: { number_installments, installment_number }, fees } = it;
-        if (!Object.keys(item).includes(id)) {
+        const { id, installment_plan, fees } = it;
+        if (!Object.keys(item).includes(id) && installment_plan) {
+            const { number_installments, installment_number } = installment_plan;
             const docsCollection = await db.collection('credit-card-payments').where('transactionZoopId', '==', id).get();
             let antiFraudValue, markupValue, netValue, ziroPayValue;
             if (!docsCollection.empty) {
