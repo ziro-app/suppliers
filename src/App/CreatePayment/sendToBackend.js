@@ -25,6 +25,8 @@ const sendToBackend = state => () => {
     setInsurance,
     setInsurenceDropdownValue,
     hasSellerZoopPlan,
+    checkoutWithoutRegister,
+    setCheckoutWithoutRegister,
   } = state;
   const baseUrl = process.env.HOMOLOG ? 'http://localhost:8080/pagamento/' : 'https://ziro.app/pagamento/';
 
@@ -50,6 +52,7 @@ const sendToBackend = state => () => {
               observations,
               insurance: insurance !== null ? insurance : true,
               sellerZoopPlan: hasSellerZoopPlan || null,
+              checkoutWithoutRegister: checkoutWithoutRegister || false,
             });
           } else throw { msg: 'Permissão insuficiente', customError: true };
         } else {
@@ -64,6 +67,7 @@ const sendToBackend = state => () => {
             observations,
             insurance: insurance !== null ? insurance : true,
             sellerZoopPlan: hasSellerZoopPlan || null,
+            checkoutWithoutRegister: checkoutWithoutRegister || false,
           });
         }
         try {
@@ -79,6 +83,7 @@ const sendToBackend = state => () => {
         setObservations('');
         setInsurance(null);
         setInsurenceDropdownValue('');
+        setCheckoutWithoutRegister(false);
       } else {
         throw { msg: 'Vendedor não encontrado', customError: true };
       }
@@ -89,6 +94,7 @@ const sendToBackend = state => () => {
         setInstallmentsMax('');
         setInsurance(null);
         setInsurenceDropdownValue('');
+        setCheckoutWithoutRegister(false);
       }
       if (error.customError) reject(error);
       else {
