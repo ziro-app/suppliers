@@ -218,6 +218,28 @@ const CreatePayment = () => {
             label="Observações (opcional)"
             input={<InputText value={observations} onChange={({ target: { value } }) => setObservations(value)} placeholder="Romaneio, nome do cliente, etc" />}
           />,
+          <FormInput
+            name="checkoutWithoutRegister"
+            label="Deseja pagamento sem cadastro?"
+            input={
+              <div style={center}>
+                <div style={inline}>Não</div>
+                <ToggleButton
+                  size={30}
+                  template="primary"
+                  active={checkoutWithoutRegister}
+                  onClick={() => {
+                    setCheckoutWithoutRegister(!checkoutWithoutRegister);
+                    if (!checkoutWithoutRegister) {
+                      setInsurance(false);
+                      setInsurenceDropdownValue('Sem seguro');
+                    }
+                  }}
+                />
+                <div style={inline}>Sim</div>
+              </div>
+            }
+          />,
         ]}
       />
     )
