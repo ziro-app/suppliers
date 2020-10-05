@@ -84,95 +84,165 @@ const CreatePayment = () => {
   if (loading) return <Spinner size="5.5rem" />;
 
   return hasSellerZoopPlan && (hasSellerZoopPlan.antiFraud.amount || hasSellerZoopPlan.antiFraud.percentage) ? (
-    <Form
-      validations={validations}
-      sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
-      inputs={[
-        <FormInput name="charge" label="Valor a cobrar" input={<InputMoney value={charge} setValue={setCharge} />} />,
-        <FormInput
-          name="installmentsMax"
-          label="Parcelamento máximo"
-          input={
-            <InputText
-              value={installmentsMax}
-              onChange={({ target: { value } }) => {
-                const toInteger = parseInt(value, 10);
-                setInstallmentsMax(maskInput(toInteger, '##', true));
-              }}
-              placeholder={parseInt(maxInstallments)}
-              inputMode="numeric"
-            />
-          }
-        />,
-        <FormInput
-          name="insurance"
-          label="Seguro antifraude na transação"
-          input={
-            <Dropdown
-              disabled={!hasSellerZoopPlan || checkoutWithoutRegister}
-              value={insurenceDropdownValue}
-              onChange={({ target: { value } }) => {
-                if (value === 'Com seguro') {
-                  setInsurance(true);
-                  setInsurenceDropdownValue('Com seguro');
-                } else if (value === 'Sem seguro') {
-                  setInsurance(false);
-                  setInsurenceDropdownValue('Sem seguro');
-                } else if (checkoutWithoutRegister === true) {
-                  setInsurance(false);
-                  setInsurenceDropdownValue('Sem seguro');
-                } else {
-                  setInsurance(null);
-                  setInsurenceDropdownValue('');
-                }
-              }}
-              onChangeKeyboard={element => {
-                if (element.value === 'Com seguro') {
-                  setInsurance(true);
-                  setInsurenceDropdownValue('Com seguro');
-                } else if (element.value === 'Sem seguro') {
-                  setInsurance(false);
-                  setInsurenceDropdownValue('Sem seguro');
-                } else {
-                  setInsurance(false);
-                  setInsurenceDropdownValue('');
-                }
-              }}
-              list={options}
-              placeholder="Escolha com ou sem seguro"
-              readOnly
-            />
-          }
-        />,
-        <FormInput
-          name="Teste"
-          label="Deseja checkout sem cadastro?"
-          input={
-            <div style={center}>
-              <div style={inline}>Não</div>
-              <ToggleButton
-                size={30}
-                template="primary"
-                active={checkoutWithoutRegister}
-                onClick={() => {
-                  setCheckoutWithoutRegister(!checkoutWithoutRegister);
-                  if (!checkoutWithoutRegister) {
+    insurance === null || insurance ? (
+      <Form
+        validations={validations}
+        sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+        inputs={[
+          <FormInput name="charge" label="Valor a cobrar" input={<InputMoney value={charge} setValue={setCharge} />} />,
+          <FormInput
+            name="installmentsMax"
+            label="Parcelamento máximo"
+            input={
+              <InputText
+                value={installmentsMax}
+                onChange={({ target: { value } }) => {
+                  const toInteger = parseInt(value, 10);
+                  setInstallmentsMax(maskInput(toInteger, '##', true));
+                }}
+                placeholder={parseInt(maxInstallments)}
+                inputMode="numeric"
+              />
+            }
+          />,
+          <FormInput
+            name="insurance"
+            label="Seguro antifraude na transação"
+            input={
+              <Dropdown
+                disabled={!hasSellerZoopPlan || checkoutWithoutRegister}
+                value={insurenceDropdownValue}
+                onChange={({ target: { value } }) => {
+                  if (value === 'Com seguro') {
+                    setInsurance(true);
+                    setInsurenceDropdownValue('Com seguro');
+                  } else if (value === 'Sem seguro') {
                     setInsurance(false);
                     setInsurenceDropdownValue('Sem seguro');
+                  } else if (checkoutWithoutRegister === true) {
+                    setInsurance(false);
+                    setInsurenceDropdownValue('Sem seguro');
+                  } else {
+                    setInsurance(null);
+                    setInsurenceDropdownValue('');
                   }
                 }}
+                onChangeKeyboard={element => {
+                  if (element.value === 'Com seguro') {
+                    setInsurance(true);
+                    setInsurenceDropdownValue('Com seguro');
+                  } else if (element.value === 'Sem seguro') {
+                    setInsurance(false);
+                    setInsurenceDropdownValue('Sem seguro');
+                  } else {
+                    setInsurance(false);
+                    setInsurenceDropdownValue('');
+                  }
+                }}
+                list={options}
+                placeholder="Escolha com ou sem seguro"
+                readOnly
               />
-              <div style={inline}>Sim</div>
-            </div>
-          }
-        />,
-        <FormInput
-          name="observation"
-          label="Observações (opcional)"
-          input={<InputText value={observations} onChange={({ target: { value } }) => setObservations(value)} placeholder="Romaneio, nome do cliente, etc" />}
-        />,
-      ]}
-    />
+            }
+          />,
+          <FormInput
+            name="observation"
+            label="Observações (opcional)"
+            input={<InputText value={observations} onChange={({ target: { value } }) => setObservations(value)} placeholder="Romaneio, nome do cliente, etc" />}
+          />,
+        ]}
+      />
+    ) : (
+      <Form
+        validations={validations}
+        sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+        inputs={[
+          <FormInput name="charge" label="Valor a cobrar" input={<InputMoney value={charge} setValue={setCharge} />} />,
+          <FormInput
+            name="installmentsMax"
+            label="Parcelamento máximo"
+            input={
+              <InputText
+                value={installmentsMax}
+                onChange={({ target: { value } }) => {
+                  const toInteger = parseInt(value, 10);
+                  setInstallmentsMax(maskInput(toInteger, '##', true));
+                }}
+                placeholder={parseInt(maxInstallments)}
+                inputMode="numeric"
+              />
+            }
+          />,
+          <FormInput
+            name="insurance"
+            label="Seguro antifraude na transação"
+            input={
+              <Dropdown
+                disabled={!hasSellerZoopPlan || checkoutWithoutRegister}
+                value={insurenceDropdownValue}
+                onChange={({ target: { value } }) => {
+                  if (value === 'Com seguro') {
+                    setInsurance(true);
+                    setInsurenceDropdownValue('Com seguro');
+                  } else if (value === 'Sem seguro') {
+                    setInsurance(false);
+                    setInsurenceDropdownValue('Sem seguro');
+                  } else if (checkoutWithoutRegister === true) {
+                    setInsurance(false);
+                    setInsurenceDropdownValue('Sem seguro');
+                  } else {
+                    setInsurance(null);
+                    setInsurenceDropdownValue('');
+                  }
+                }}
+                onChangeKeyboard={element => {
+                  if (element.value === 'Com seguro') {
+                    setInsurance(true);
+                    setInsurenceDropdownValue('Com seguro');
+                  } else if (element.value === 'Sem seguro') {
+                    setInsurance(false);
+                    setInsurenceDropdownValue('Sem seguro');
+                  } else {
+                    setInsurance(false);
+                    setInsurenceDropdownValue('');
+                  }
+                }}
+                list={options}
+                placeholder="Escolha com ou sem seguro"
+                readOnly
+              />
+            }
+          />,
+          <FormInput
+            name="observation"
+            label="Observações (opcional)"
+            input={<InputText value={observations} onChange={({ target: { value } }) => setObservations(value)} placeholder="Romaneio, nome do cliente, etc" />}
+          />,
+          <FormInput
+            name="Teste"
+            label="Deseja checkout sem cadastro?"
+            input={
+              <div style={center}>
+                <div style={inline}>Não</div>
+                <ToggleButton
+                  size={30}
+                  template="primary"
+                  active={checkoutWithoutRegister}
+                  onClick={() => {
+                    setCheckoutWithoutRegister(!checkoutWithoutRegister);
+                    if (!checkoutWithoutRegister) {
+                      setInsurance(false);
+                      setInsurenceDropdownValue('Sem seguro');
+                    }
+                  }}
+                />
+                <div style={inline}>Sim</div>
+              </div>
+            }
+          />,
+        ]}
+      />
+    )
   ) : (
     <Form
       validations={validations}
