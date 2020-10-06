@@ -73,7 +73,7 @@ const sendToBackend = state => () => {
         try {
           const doc = await docRef.get();
           const formattedCharge = currencyFormat(charge);
-          if (doc) await navigator.clipboard.writeText(linkMessage(baseUrl, doc.id, seller, formattedCharge, installmentsMax));
+          if (doc) await navigator.clipboard.writeText(linkMessage(baseUrl, doc.id, seller, formattedCharge, installmentsMax, checkoutWithoutRegister));
         } catch (error) {
           throw { msg: 'Erro ao realizar a cópia', copyError: true };
         }
