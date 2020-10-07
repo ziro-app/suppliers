@@ -86,6 +86,7 @@ const CreatePayment = () => {
   return hasSellerZoopPlan && (hasSellerZoopPlan.antiFraud.amount || hasSellerZoopPlan.antiFraud.percentage) ? (
     insurance === null || insurance ? (
       <Form
+        buttonName="Criar Link"
         validations={validations}
         sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
         inputs={[
@@ -154,6 +155,7 @@ const CreatePayment = () => {
       />
     ) : (
       <Form
+        buttonName="Criar Link"
         validations={validations}
         sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
         inputs={[
@@ -245,6 +247,7 @@ const CreatePayment = () => {
     )
   ) : (
     <Form
+      buttonName="Criar Link"
       validations={validations}
       sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
       inputs={[
