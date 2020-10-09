@@ -3,17 +3,17 @@ const linkMessage = (baseUrl, docId, seller, charge, installmentsMax, checkoutWi
   let message = ``;
 
   if (seller && charge && installmentsMax) {
-    message = `Você recebeu uma cobrança de ${seller} no valor de ${charge} com parcelamento em até ${installmentsMax}x.\nAcesse o link abaixo para pagar:\n${link}`;
+      message = `Pague suas compras na *${seller}* no valor de *${charge}* em até *${installmentsMax}x s/ juros*. Só clicar 😎\n${link}`;
   } else if (seller && charge) {
-    message = `Você recebeu uma cobrança de ${seller} no valor de ${charge}.\nAcesse o link abaixo para pagar:\n${link}`;
+      message = `Pague suas compras na *${seller}* no valor de *${charge}*. Só clicar 😎\n${link}`;
   } else if (charge && installmentsMax) {
-    message = `Você recebeu uma cobrança no valor de ${charge} com parcelamento em até ${installmentsMax}x.\nAcesse o link abaixo para pagar:\n${link}`;
-  } else if (seller) {
-    message = `Você recebeu uma cobrança de ${seller}.\nAcesse o link abaixo para pagar:\n${link}`;
+      message = `Pague sua compra no valor de *${charge}* em até *${installmentsMax}x s/ juros*. Só clicar 😎\n${link}`;
+  } else if (seller || seller && installmentsMax) {
+      message = `Pague sua compra na *${seller}*. Só clicar 😎\n${link}`;
   } else if (charge) {
-    message = `Você recebeu uma cobrança no valor de ${charge}.\nAcesse o link abaixo para pagar:\n${link}`;
+      message = `Pague sua compra no valor de *${charge}*. Só clicar 😎\n${link}`;
   } else {
-    message = `Você recebeu uma cobrança.\nAcesse o link abaixo para pagar:\n${link}`;
+      message = `Pague sua compra. Só clicar 😎\n${link}`;
   }
 
   return message;
