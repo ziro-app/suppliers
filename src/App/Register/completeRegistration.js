@@ -202,7 +202,9 @@ const completeRegistration = state => () => {
                                                 },
                                                 maxParcelas: '10',
                                                 payoutAutomatic: true,
-                                                zoopBankAccountId: responseAssociating.data.id
+                                                zoopBankAccountId: responseAssociating.data.id,
+                                                backgroundCheckRequestsAvailable: 10,
+                                                backgroundCheckCurrentMonth: today.getMonth()
                                             })
 
                                             await db.collection('users').add({ email, app: 'suppliers' })

@@ -21,7 +21,7 @@ import fetch from './fetch'
 import completeRegistration from './completeRegistration'
 import simplifiedRegistration from './simplifiedRegistration'
 import { AtvdText, CnpjText, DocText, HolderText, HomeText } from './modals'
-import validateDocuments from './validateDocuments'
+import validateDocuments from '../utils/validateDocuments';
 
 const categories = {
     'Bijouterias': '09',

@@ -3,7 +3,12 @@ import { dateFormat } from '../utils';
 import { db } from '../../../Firebase/index';
 import matchStatusColor from '../matchStatusColor';
 
-const fetch = (transactionId, setTransaction, setError, transaction) => {
+const verifyArray = (array, transactionId) => {
+    const exists = array.filter(transaction => transaction.transactionZoopId === transactionId);
+    return exists.length > 0;
+};
+
+const fetch = (transactionId, setTransaction, setError, transaction, transactions, setPayments) => {
     const query = db.collection('credit-card-payments').doc(transactionId);
 
     const run = async () => {
@@ -72,7 +77,10 @@ const fetch = (transactionId, setTransaction, setError, transaction) => {
                             sellerZoopPlan: sellerZoopPlan || '',
                             totalFees: totalFees || '-'
                         });
-                        if (transaction.status !== paymentDoc[0].status) setTransaction(paymentDoc[0]);
+                        if (transaction.status !== paymentDoc[0].status) {
+                            setTransaction(paymentDoc[0]);
+                            if (!verifyArray(transactions, transactionZoopId)) setPayments([...transactions, paymentDoc[0]]);
+                        }
                     } else {
                         setError(true);
                     }

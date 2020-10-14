@@ -27,8 +27,8 @@ export default (receipt_id, setLoading, location, setReceipt, installmentsDoc, s
                     snapshot.forEach(doc => {
                         const { installments, status } = doc.data();
                         setTransaction(doc.data());
-                        setStatus(status);
-                        setInstallmentDoc(installments);
+                        if (status) setStatus(status);
+                        if (installments) setInstallmentDoc(installments);
                     });
                 })
                 .catch(err => {

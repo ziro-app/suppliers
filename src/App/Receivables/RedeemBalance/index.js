@@ -52,7 +52,7 @@ const RedeemBalance = () => {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
             <Header type="icon-link" title="Resgatar saldo" navigateTo="recebiveis" icon="back" />
             <div style={{ display: 'grid', gridRowGap: '35px' }}>
-                <div style={{ display: 'grid', gridRowGap: '10px' }}>
+                <div style={{ display: 'grid', gridRowGap: '15px' }}>
                     <Details blocks={blocks} />
                     <Button cta="Trocar conta" style={btn} navigate={() => history.push('/recebiveis/dados-bancarios', { backRoute: '/recebiveis/resgate' })} type="link" />
                 </div>

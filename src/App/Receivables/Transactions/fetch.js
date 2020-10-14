@@ -26,11 +26,11 @@ const fetch = (receivables, receivableId, { setDate, setBlocks, setIsError, setC
                             },
                             {
                                 title: 'Tarifa Ziro Pay',
-                                content: ziroPay ? `- ${currency(ziroPay)}` : '- R$0,00',
+                                content: ziroPay && parseInt(ziroPay) > 0 ? `- ${currency(ziroPay)}` : '-',
                             },
                             {
                                 title: 'Tarifa Ziro Seguro Antifraude',
-                                content: antifraud ? `- ${currency(antifraud)}` : '- R$0,00',
+                                content: antifraud && parseInt(antifraud) > 0 ? `- ${currency(antifraud)}` : '-',
                             },
                             {
                                 title: 'Valor líquido',
