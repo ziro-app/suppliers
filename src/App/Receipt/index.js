@@ -1,28 +1,29 @@
 import React, { useState } from 'react';
 import { createBrowserHistory } from 'history';
-import { containerWithPadding } from '@ziro/theme';
-import Header from '@bit/vitorbarbosa19.ziro.header';
-import Details from '@bit/vitorbarbosa19.ziro.details';
-import Logo from '@bit/vitorbarbosa19.ziro.logo';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
+import Header from '@bit/vitorbarbosa19.ziro.header';
+import Details from '@bit/vitorbarbosa19.ziro.details';
+import SpinnerWithDiv from '@bit/vitorbarbosa19.ziro.spinner-with-div';
+import Logo from '@bit/vitorbarbosa19.ziro.logo';
+import { containerWithPadding } from '@ziro/theme';
+import { formatDateUTC3 } from '@ziro/format-date-utc3';
 import currencyFormat from '@ziro/currency-format';
 import matchStatusColor from '../Transactions/matchStatusColor';
-import SpinnerWithDiv from '@bit/vitorbarbosa19.ziro.spinner-with-div';
+import ReceiptError from './ReceiptError/index';
 import useFetch from './useFetch';
 import { container, header, body, footer, footerText } from './styles';
-import ReceiptError from './ReceiptError/index';
-import { formatDateUTC3 } from '@ziro/format-date-utc3';
 
 export default ({ receiptId, receipt, setReceipt, installments, transactionId }) => {
     const [location, setLocation] = useLocation();
     const [transaction, setTransaction] = useState('');
     const [backRoute, setBackRoute] = useState('');
     const [snapshot, setSnapshot] = useState({});
+    const [transactionsMemo, setTransactionsMemo] = useState([]);
     const [loading, setLoading] = useState(false);
     const history = createBrowserHistory();
     let block;
-    const { error } = useFetch(receiptId, setLoading, location, setReceipt, setTransaction, setBackRoute, setSnapshot);
+    const { error } = useFetch(receiptId, setLoading, location, setReceipt, setTransaction, setBackRoute, setSnapshot, setTransactionsMemo);
     if (!receiptId) setLocation('/pagamentos');
     else {
         if (!loading && receipt) {
@@ -84,7 +85,7 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
         <>
             {/* eslint-disable-next-line no-nested-ternary */}
             <div style={containerWithPadding}>
-                <Header type="icon" title="Recibo" setIsOpen={backRoute ? () => history.push(backPath, { backRoute, snapshot }) : () => setLocation(backPath)} icon="back" />
+                <Header type="icon" title="Recibo" setIsOpen={backRoute ? () => history.push(backPath, { backRoute, snapshot }) : () => history.push(backPath, { transactionsMemo })} icon="back" />
                 {loading ? (
                     <SpinnerWithDiv />
                 ) : error ? (

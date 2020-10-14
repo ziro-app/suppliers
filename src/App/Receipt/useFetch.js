@@ -3,13 +3,14 @@ import { useEffect, useState } from 'react';
 import { createBrowserHistory } from 'history';
 import { db } from '../../Firebase/index';
 
-export default (receipt_id, setLoading, location, setReceipt, setTransaction, setBackRoute, setSnapshot) => {
+export default (receipt_id, setLoading, location, setReceipt, setTransaction, setBackRoute, setSnapshot, setTransactionsMemo) => {
     const [error, setError] = useState(false);
     const history = createBrowserHistory();
     useEffect(() => {
         const { state } = history.location;
         if (state && state.backRoute) setBackRoute(state.backRoute);
         if (state && state.snapshot) setSnapshot(state.snapshot);
+        if (state && state.transactionsMemo) setTransactionsMemo(state.transactionsMemo);
         if (receipt_id) {
             const getReceipt = async () => {
                 setLoading(true);

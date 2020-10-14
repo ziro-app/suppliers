@@ -25,7 +25,7 @@ import { useLocation } from 'wouter';
 import { userContext } from '../../appContext';
 import linkMessage from '../../CreatePayment/utils/linkMessage';
 
-const TransactionDetails = ({ transactions, transactionId, transaction, setTransaction, setPayments }) => {
+const TransactionDetails = ({ transactions, transactionId, transaction, setTransaction, setPayments, transactionsMemo }) => {
     const [receipt_id, setReceipt_id] = useState('');
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -419,7 +419,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                             navigate={
                                 backRoute
                                     ? () => history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, { backRoute, snapshot: snapshotMemo })
-                                    : () => setLocation(`/comprovante/${transaction.transactionId}/${receipt_id}`)
+                                    : () => history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, { transactionsMemo: { ...transactionsMemo, lastDoc: transactionsMemo.lastDoc.id } })
                             }
                         />
                     </div>
