@@ -22,7 +22,7 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
     const [loading, setLoading] = useState(false);
     const history = createBrowserHistory();
     let block;
-    const { error } = useFetch(receiptId, setLoading, location, setReceipt, installments, setTransaction, setBackRoute, setSnapshot);
+    const { error } = useFetch(receiptId, setLoading, location, setReceipt, setTransaction, setBackRoute, setSnapshot);
     if (!receiptId) setLocation('/pagamentos');
     else {
         if (!loading && receipt) {
