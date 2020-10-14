@@ -26,9 +26,8 @@ const fetchBalance = (zoopId, { setBalance }) => {
                 const historyUrl = `${process.env.PAY_URL}account-history-all?seller_id=${zoopId}&created_date_range[gte]=${formatted}&created_date_range[lte]=${formatted}`;
                 const { data: { items } } = await post(historyUrl, {}, config);
                 if (Object.prototype.hasOwnProperty.call(items, formatted)) {
-                    const { amount } = items[formatted]['items'][0];
-                    const val = parseFloat(amount.replace('.', '')) / 100;
-                    const rounded = val < 0 ? -(parseFloat(round(val, 2).toFixed(2))) : parseFloat(round(val, 2).toFixed(2));
+                    const floatValue = items[formatted]['items'].map(it => parseFloat(it.amount) < 0 ? -parseFloat(it.amount) : parseFloat(it.amount)).reduce((a, b) => a + b);
+                    const rounded = parseFloat(round(floatValue, 2).toFixed(2));
                     setBalance(rounded);
                 }
             }
