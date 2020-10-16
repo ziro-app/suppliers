@@ -4,8 +4,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { alertColor, containerWithPadding, successColor } from '@ziro/theme';
 import { formatDateUTC3 } from '@ziro/format-date-utc3';
-import { btn, btnRed, buttonContainer, custom, illustrationContainer, modalContainer, modalLabel, spinner } from './styles';
-import { dateFormat, parcelFormat, round, stringToFloat } from '../utils';
 
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Details from '@bit/vitorbarbosa19.ziro.details';
@@ -18,10 +16,12 @@ import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import Table from '@bit/vitorbarbosa19.ziro.table';
 import { createBrowserHistory } from 'history';
 import currencyFormat from '@ziro/currency-format';
-import { db } from '../../../Firebase/index';
-import fetch from './fetch';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
+import { db } from '../../../Firebase/index';
+import fetch from './fetch';
+import { dateFormat, parcelFormat, round, stringToFloat } from '../utils';
+import { btn, btnRed, buttonContainer, custom, illustrationContainer, modalContainer, modalLabel, spinner } from './styles';
 import { userContext } from '../../appContext';
 import linkMessage from '../../CreatePayment/utils/linkMessage';
 
@@ -46,7 +46,8 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     const seller = transaction && transaction.seller || '';
     const charge = transaction && transaction.charge || '';
     const installmentsMax = transaction && transaction.installmentsMax || '';
-    const messageLink = linkMessage(baseUrl, transactionId, seller, charge, installmentsMax);
+    const checkoutWithoutRegister = transaction && transaction.checkoutWithoutRegister || false;
+    const messageLink = linkMessage(baseUrl, transactionId, seller, charge, installmentsMax, checkoutWithoutRegister);
 
     let insuranceValueFormatted = '-';
     let markupValueFormatted = '-';
@@ -252,14 +253,14 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                             .filter(item => item.split_rule !== null)
                             .reverse()
                         : [];
-                    /*const sumReceivablesSplitZoop =
+                    /* const sumReceivablesSplitZoop =
                                           sortedSplitAmount.length > 0
                                             ? sortedSplitAmount.filter(item => item.split_rule === transaction.sellerZoopPlan.antiFraud.id).reduce((acc, { gross_amount }) => acc + parseFloat(gross_amount), 0)
                                             : [];
                                         const sumReceivablesSplitZiro =
                                           sortedSplitAmount.length > 0
                                             ? sortedSplitAmount.filter(item => item.split_rule === transaction.sellerZoopPlan.markup.id).reduce((acc, { gross_amount }) => acc + parseFloat(gross_amount), 0)
-                                            : [];*/
+                                            : []; */
                     const paidRows = [];
                     const paidClicks = [];
                     let paidAmount = 0;
@@ -316,7 +317,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                 }
 
                 setBlocks(block);
-                setData(dataTable ? dataTable : []);
+                setData(dataTable || []);
             }
         });
         if (transaction.hasOwnProperty('receiptId')) {

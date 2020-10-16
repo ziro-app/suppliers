@@ -42,27 +42,28 @@ const fetch = (transactionId, setTransaction, setError, transaction, transaction
                             observations,
                             insurance,
                             sellerZoopPlan,
-                            totalFees
+                            totalFees,
+                            checkoutWithoutRegister
                         } = snapshot.data();
 
                         const chargeFormatted = currencyFormat(charge);
                         const dateFormatted = datePaid ? dateFormat(datePaid) : '';
 
                         paymentDoc.push({
-                            transactionZoopId: transactionZoopId ? transactionZoopId : '',
+                            transactionZoopId: transactionZoopId || '',
                             transactionId: snapshot.id,
                             charge: chargeFormatted,
                             dateLinkCreated,
                             datePaid: dateFormatted,
-                            fees: fees ? fees : '',
-                            installments: installments ? installments : '',
-                            installmentsMax: installmentsMax ? installmentsMax : '',
+                            fees: fees || '',
+                            installments: installments || '',
+                            installmentsMax: installmentsMax || '',
                             seller: seller === 'Ziro' && onBehalfOfBrand ? `${onBehalfOfBrand} - Ziro` : seller,
-                            sellerZoopId: sellerZoopId ? sellerZoopId : '',
-                            status: status ? status : '',
+                            sellerZoopId: sellerZoopId || '',
+                            status: status || '',
                             statusColor: matchStatusColor(status),
                             buyerRazao,
-                            receivables: receivables ? receivables : [],
+                            receivables: receivables || [],
                             receivement,
                             cardBrand,
                             cardFirstFour,
@@ -75,7 +76,8 @@ const fetch = (transactionId, setTransaction, setError, transaction, transaction
                             observations: observations || '',
                             insurance: insurance || false,
                             sellerZoopPlan: sellerZoopPlan || '',
-                            totalFees: totalFees || '-'
+                            totalFees: totalFees || '-',
+                            checkoutWithoutRegister: checkoutWithoutRegister || false
                         });
                         if (transaction.status !== paymentDoc[0].status) {
                             setTransaction(paymentDoc[0]);
@@ -93,9 +95,9 @@ const fetch = (transactionId, setTransaction, setError, transaction, transaction
             console.log(error);
         }
     };
-    //if (Object.keys(transaction).length === 0 && transaction.constructor === Object) {
+    // if (Object.keys(transaction).length === 0 && transaction.constructor === Object) {
     run();
-    //}
+    // }
 };
 
 export default fetch;

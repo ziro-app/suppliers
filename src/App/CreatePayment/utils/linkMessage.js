@@ -1,5 +1,5 @@
 const linkMessage = (baseUrl, docId, seller, charge, installmentsMax, checkoutWithoutRegister) => {
-  const link = checkoutWithoutRegister ? `${baseUrl}${docId}/finalizar-sem-cadastro` : `${baseUrl}${docId}/resumo?doc`;
+  const link = checkoutWithoutRegister ? `${baseUrl}${docId}/resumo?doc&cwr` : `${baseUrl}${docId}/resumo?doc`;
   let message = ``;
 
   if (seller && charge && installmentsMax) {
