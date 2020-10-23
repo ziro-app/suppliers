@@ -71,7 +71,7 @@ const BankInfo = () => {
     const PromptMessage = new ZiroPromptMessage({
         name: "promptReceivingPolicy",
         type: "neutral",
-        code: "0001",
+        code: "201",
         title: "Política de recebimento",
         userDescription: `Seu recebimento passará de ${activate ? 'depósito automático' : 'resgate manual'} para ${!activate ? 'depósito automático' : 'resgate manual'}.`,
         userResolution: "Deseja continuar?",
@@ -82,7 +82,7 @@ const BankInfo = () => {
     const WaitingMessage = new ZiroWaitingMessage({
         name: "waitingReceivingPolicy",
         type: "neutral",
-        code: "0002",
+        code: "202",
         title: "Política de recebimento",
         userDescription: "Efetuando a mudança. Aguarde enquanto finalizamos.",
         internalDescription: "waiting política de recebimento",
@@ -93,9 +93,9 @@ const BankInfo = () => {
     const SuccessMessage = new ZiroPromptMessage({
         name: "successReceivingPolicy",
         type: "success",
-        code: "0003",
+        code: "203",
         title: "Sucesso",
-        userDescription: activate ? "Agora você receberá depósitos automáticos em sua conta bancária" : "Agora você precisará fazer resgates manuais para receber seu dinheiro",
+        userDescription: !activate ? "Agora você receberá depósitos automáticos em sua conta bancária." : "Agora você precisará fazer resgates manuais para receber seu dinheiro.",
         userResolution: "Clique em ok para sair.",
         internalDescription: "prompt de sucesso",
         illustration: "paymentSuccess",
@@ -105,7 +105,7 @@ const BankInfo = () => {
     const FailureMessage = new ZiroPromptMessage({
         name: "failureReceivingPolicy",
         type: "destructive",
-        code: "0004",
+        code: "204",
         title: "Falha",
         userDescription: "Falha ao atualizar de política de recebimento, tente novamente.",
         userResolution: "Clique em ok para sair.",
