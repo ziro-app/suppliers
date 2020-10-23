@@ -83,7 +83,7 @@ const CreatePayment = () => {
   ];
   if (loading) return <Spinner size="5.5rem" />;
 
-  return hasSellerZoopPlan && (hasSellerZoopPlan.antiFraud.amount || hasSellerZoopPlan.antiFraud.percentage) ? (
+  return hasSellerZoopPlan && (Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'amount') || Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'percentage')) ? (
     insurance === null || insurance ? (
       <Form
         buttonName="Criar Link"
