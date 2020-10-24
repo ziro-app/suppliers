@@ -68,7 +68,7 @@ const config = {
 
 const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days, receivables, { setIsLoading, setErrorLoading, setReceivables, setData, setLocation, setFinalDate, setHasMore, setLoadingMore, setTotalAmount, setDays, setCustomError, setTotalTransactions }) => {
     const source = axios.CancelToken.source();
-    const fnDate = getFinalDate(initDate, 30);
+    const fnDate = getFinalDate(initDate, 34);
     setFinalDate(fnDate);
     const parsedToday = formatDate(initDate);
     const parsedFnDay = formatDate(fnDate);
