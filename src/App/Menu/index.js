@@ -36,6 +36,12 @@ export const Menu = ({ title, children }) => {
                         icon: <Icon type='money' size={15} strokeWidth={2} />,
                         text: 'Recebíveis'
                     },
+                    // {
+                    //     path: '/consulta',
+                    //     onClick: () => setIsOpen(false),
+                    //     icon: <Icon type='search' size={15} strokeWidth={2} />,
+                    //     text: 'Consultar documento'
+                    // },
                     {
                         path: '/relatorio',
                         onClick: () => setIsOpen(false),
@@ -79,6 +85,12 @@ export const Menu = ({ title, children }) => {
                         icon: <Icon type='money' size={15} strokeWidth={2} />,
                         text: 'Recebíveis'
                     },
+                    // {
+                    //     path: '/consulta',
+                    //     onClick: () => setIsOpen(false),
+                    //     icon: <Icon type='search' size={15} strokeWidth={2} />,
+                    //     text: 'Consultar documento'
+                    // },
                     {
                         path: '/relatorio',
                         onClick: () => setIsOpen(false),
