@@ -76,7 +76,7 @@ const BankInfo = () => {
         userDescription: `Seu recebimento passará de ${activate ? 'depósito automático' : 'resgate manual'} para ${!activate ? 'depósito automático' : 'resgate manual'}.`,
         userResolution: "Deseja continuar?",
         internalDescription: "prompt política de recebimento",
-        illustration: "profileData",
+        illustration: "cnhPhoto",
         additionalData: undefined,
     });
     const WaitingMessage = new ZiroWaitingMessage({
