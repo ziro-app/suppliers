@@ -48,6 +48,7 @@ module.exports = (env, { mode }) => {
             homolog,
             nextcode_email,
             nextcode_password,
+            nextcode_auth
         } = require('./credentials');
         config.devtool = 'cheap-module-eval-source-map';
         config.devServer = { historyApiFallback: true, port: 7070 };
@@ -74,6 +75,7 @@ module.exports = (env, { mode }) => {
                     HOMOLOG: JSON.stringify(homolog),
                     NEXTCODE_EMAIL: JSON.stringify(nextcode_email),
                     NEXTCODE_PASSWORD: JSON.stringify(nextcode_password),
+                    NEXTCODE_AUTH: JSON.stringify(nextcode_auth),
                 },
             }),
         );
@@ -113,6 +115,7 @@ module.exports = (env, { mode }) => {
                     EMAIL_TOKEN: JSON.stringify(process.env.EMAIL_TOKEN),
                     API_EMAIL: JSON.stringify(process.env.API_EMAIL),
                     FIREBASE_AUTH_URL: JSON.stringify(process.env.FIREBASE_AUTH_URL),
+                    NEXTCODE_AUTH: JSON.stringify(process.env.NEXTCODE_AUTH),
                 },
             }),
         );
