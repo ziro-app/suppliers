@@ -95,6 +95,11 @@ const Register = () => {
         bankName, bankNumber, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
         fileCnpj, categoryName, accountTypeViewName, fantasias, ...setState
     }
+    const validateFile = file => {
+        const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+        const { name, type } = file;
+        return /(\.jpg|\.jpeg|\.png|\.pdf)$/.test(name.toLowerCase()) && validTypes.includes(type);
+    };
     const validations = [
         {
             name: 'cnpjValid',
@@ -198,17 +203,17 @@ const Register = () => {
             message: 'Campo obrigatório'
         }, {
             name: 'idDoc',
-            validation: value => step === 3 ? value !== '' && /(\.jpg|\.jpeg|\.png|\.pdf)$/.test(value.name) : true,
+            validation: value => step === 3 ? value !== '' && validateFile(value) : true,
             value: fileDoc,
             message: 'Formatos válidos: .png, .jpg, .jpeg e .pdf'
         }, {
             name: 'idAtv',
-            validation: value => step === 3 ? value !== '' && /(\.jpg|\.jpeg|\.png|\.pdf)$/.test(value.name) : true,
+            validation: value => step === 3 ? value !== '' && validateFile(value) : true,
             value: fileAtv,
             message: 'Formatos válidos: .png, .jpg, .jpeg e .pdf'
         }, {
             name: 'idRes',
-            validation: value => step === 3 ? value !== '' && /(\.jpg|\.jpeg|\.png|\.pdf)$/.test(value.name) : true,
+            validation: value => step === 3 ? value !== '' && validateFile(value) : true,
             value: fileRes,
             message: 'Formatos válidos: .png, .jpg, .jpeg e .pdf'
         }, {

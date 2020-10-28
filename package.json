@@ -108,6 +108,6 @@
         "text-ellipsis": "^1.0.3",
         "webfontloader": "^1.6.28",
         "wouter": "^2.4.0",
-        "ziro-messages": "0.0.58"
+        "ziro-messages": "0.0.61"
     }
 }
