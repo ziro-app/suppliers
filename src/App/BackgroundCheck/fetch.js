@@ -6,15 +6,15 @@ const fetch = (setIsLoading, setErrorLoading, docId, { setFreeRequests }) => {
             const doc = await db.collection('suppliers').doc(docId).get();
             let reqFree = 0;
             if (doc.exists) {
-                const { freeRequests, currentFreeMonth } = doc.data();
+                const { backgroundCheckRequestsAvailable, backgroundCheckCurrentMonth } = doc.data();
                 const now = new Date();
                 // Requisição no mês corrente ainda
-                if (now.getMonth() <= currentFreeMonth) {
-                    reqFree = freeRequests;
+                if (now.getMonth() <= backgroundCheckCurrentMonth) {
+                    reqFree = backgroundCheckRequestsAvailable;
                 }
                 // Requisição no mês diferente do corrente
                 else {
-                    await db.collection('suppliers').doc(docId).update({ freeRequests: 10, currentFreeMonth: now.getMonth() });
+                    await db.collection('suppliers').doc(docId).update({ backgroundCheckRequestsAvailable: 10, backgroundCheckCurrentMonth: now.getMonth() });
                     reqFree = 10;
                 }
             }

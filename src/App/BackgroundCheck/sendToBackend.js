@@ -8,9 +8,9 @@ import mountBlocks from './mountBlocks';
 const getInfo = async (docId) => {
     const doc = await db.collection('suppliers').doc(docId).get();
     if (doc.exists) {
-        const { freeRequests, currentFreeMonth } = doc.data();
+        const { backgroundCheckRequestsAvailable, backgroundCheckCurrentMonth } = doc.data();
         const now = new Date();
-        if (now.getMonth() <= currentFreeMonth) return [freeRequests, currentFreeMonth];
+        if (now.getMonth() <= backgroundCheckCurrentMonth) return [backgroundCheckRequestsAvailable, backgroundCheckCurrentMonth];
         else return [10, now.getMonth()];
     } else return [null, null];
 };
@@ -175,9 +175,13 @@ const sendToBackend = state => () => {
                         };
                     }
                     console.log(obj);
+                    const updated = freeRequests - 1;
                     await db.collection('backgroundCheck').add({ date: new Date(), ...obj });
-                    await db.collection('suppliers').doc(docId).update({ freeRequests: freeRequests - 1, currentFreeMonth });
-                    setFreeRequests(freeRequests - 1);
+                    await db.collection('suppliers').doc(docId).update({
+                        backgroundCheckRequestsAvailable: updated,
+                        currentFreeMonth
+                    });
+                    setFreeRequests(updated);
                     const block = mountBlocks(document, obj);
                     if (field === 'cpf') {
                         setScoreValue(obj?.scoreInfo?.score || 0);

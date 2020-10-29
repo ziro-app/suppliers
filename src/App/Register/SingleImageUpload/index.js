@@ -22,11 +22,13 @@ const ImageUpload = ({ setFile, indexOfFile, persistFilename }) => {
         e.preventDefault()
         e.stopPropagation()
         const file = e.dataTransfer.files[0]
+        console.log(file)
         setFilename(file.name)
         setFile(file)
     }
     const handleChange = async e => {
         const file = e.target.files[0]
+        console.log(file)
         setFilename(file.name)
         setFile(file)
     }

@@ -86,10 +86,10 @@ const simplifiedRegistration = state => () => {
                                             country_code: 'BR'
                                         }
                                     }, {
-                                        headers: {
-                                            Authorization: `${process.env.PAY_TOKEN}`,
-                                        },
-                                    });
+                                    headers: {
+                                        Authorization: `${process.env.PAY_TOKEN}`,
+                                    },
+                                });
 
                                 try {
                                     // Adicionando usuário no Firestore
@@ -108,7 +108,9 @@ const simplifiedRegistration = state => () => {
                                         bairro: neighborhood,
                                         cidade: city,
                                         estado: cityState,
-                                        tipoCadastro: 'Simplificado'
+                                        tipoCadastro: 'Simplificado',
+                                        backgroundCheckRequestsAvailable: 10,
+                                        backgroundCheckCurrentMonth: today.getMonth()
                                     })
                                     // Adicionando usuário nos users
                                     await db.collection('users').add({ email, app: 'suppliers' })
