@@ -41,7 +41,7 @@ const fetch = (receivables, receivableId, { setDate, setBlocks, setIsError, setC
                                 content: number_installments
                             },
                             {
-                                title: 'Parcela à pagar',
+                                title: 'Parcela(s) à pagar',
                                 content: installment_number ? installment_number : '1'
                             }
                         ],

@@ -14,7 +14,7 @@ const getFinalDate = (today, days) => {
     return newDate;
 };
 
-const formatDate = date => `${date.getFullYear()}-${date.getMonth() + 1 <= 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${date.getDate()}`;
+const formatDate = date => `${date.getFullYear()}-${date.getMonth() + 1 <= 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate()}`;
 
 const splitedArray = async array => {
     let item = {};
@@ -42,17 +42,27 @@ const splitedArray = async array => {
                 netValue = antiFraudValue ? totalAmount - ziroPayValue - antiFraudValue : (totalAmount) - ziroPayValue;
                 netValue = round(netValue, 2);
 
-                item[id] = {
-                    id,
-                    docRef: docsCollection.docs[0].id,
-                    reason: buyerRazao,
-                    amount: `${roundedTotal.toFixed(2)}`.replace('.', ''),
-                    net: `${netValue.toFixed(2)}`.replace('.', ''),
-                    markup: `${markupValue.toFixed(2)}`.replace('.', ''),
-                    ziroPay: `${ziroPayValue.toFixed(2)}`.replace('.', ''),
-                    antifraud: `${antiFraudValue.toFixed(2)}`.replace('.', ''),
-                    installment_plan: { number_installments, installment_number: installment }
-                };
+                if (item[id]) {
+                    item[id]['amount'] = `${parseInt(item[id]['amount']) + parseInt(`${roundedTotal.toFixed(2)}`.replace('.', ''))}`;
+                    item[id]['antifraud'] = `${parseInt(item[id]['antifraud']) + parseInt(`${antiFraudValue.toFixed(2)}`.replace('.', ''))}`;
+                    item[id]['installment_plan']['installment_number'] = `${item[id]['installment_plan']['installment_number']}, ${installment}`;
+                    item[id]['markup'] = `${parseInt(item[id]['markup']) + parseInt(`${markupValue.toFixed(2)}`.replace('.', ''))}`;
+                    item[id]['net'] = `${parseInt(item[id]['net']) + parseInt(`${netValue.toFixed(2)}`.replace('.', ''))}`;
+                    item[id]['ziroPay'] = `${parseInt(item[id]['ziroPay']) + parseInt(`${ziroPayValue.toFixed(2)}`.replace('.', ''))}`;
+                }
+                else {
+                    item[id] = {
+                        id,
+                        docRef: docsCollection.docs[0].id,
+                        reason: buyerRazao,
+                        amount: `${roundedTotal.toFixed(2)}`.replace('.', ''),
+                        net: `${netValue.toFixed(2)}`.replace('.', ''),
+                        markup: `${markupValue.toFixed(2)}`.replace('.', ''),
+                        ziroPay: `${ziroPayValue.toFixed(2)}`.replace('.', ''),
+                        antifraud: `${antiFraudValue.toFixed(2)}`.replace('.', ''),
+                        installment_plan: { number_installments, installment_number: installment }
+                    };
+                }
             }
         }
     }));
@@ -101,7 +111,7 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
             const rowsClicks = [];
             const keys = Object.keys(arrayItems);
             if (keys.length === 0 && receivables.length === 0) throw { customError: true };
-            await Promise.all(keys.map(async key => {
+            await Promise.all(keys.map(async (key, index) => {
                 let [ano, mes, dia] = key.split('-');
                 let date = [dia, mes, ano.substring(2)].join('/');
                 let id = md5(date).substring(10);
@@ -118,9 +128,9 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
 
                 total = currencyFormat(`${val}`.replace('.', '')).replace('R$', '');
 
-                rows.push([date, total, vendas, <Icon type="chevronRight" size={14} />]);
-                rowsClicks.push(() => setLocation(`/recebiveis/${id}`));
-                recDocs.push({
+                rows.splice(index, 0, [date, total, vendas, <Icon type="chevronRight" size={14} />]);
+                rowsClicks.splice(index, 0, () => setLocation(`/recebiveis/${id}`));
+                recDocs.splice(index, 0, {
                     charge: currencyFormat(`${val}`.replace('.', '')),
                     date,
                     completeDate: [dia, mes, ano].join('/'),
@@ -145,6 +155,7 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
             setIsLoading(false);
             setLoadingMore(false);
         } catch (error) {
+            console.log(error)
             if (error.response) console.log(error.response);
             else console.log(error);
             if (error.customError) {
