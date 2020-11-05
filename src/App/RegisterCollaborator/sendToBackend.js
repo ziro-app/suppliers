@@ -73,6 +73,11 @@ const sendToBackend = state => () => {
                                 case 'auth/weak-password': throw { msg: 'Senha fraca. Mínimo 6 caracteres', customError: true }
                             }
                         }
+                        if (error.response && error.response.data && error.response.data.erro) {
+                            const { erro, message } = error.response.data;
+                            console.log(message);
+                            throw { msg: erro, customError: true };
+                        }
                         throw 'Erro ao criar usuário'
                     }
                 } else throw { msg: 'Link inválido, solicite um novo', customError: true };
