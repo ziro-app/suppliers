@@ -51,6 +51,7 @@ const sendToBackend = state => () => {
               //onBehalfOfBrand: brand ? brand : seller,
               observations,
               insurance: insurance !== null ? insurance : true,
+              isNewPlan: false,
               sellerZoopPlan: hasSellerZoopPlan || null,
               checkoutWithoutRegister: checkoutWithoutRegister || false,
             });
@@ -67,6 +68,7 @@ const sendToBackend = state => () => {
             observations,
             insurance: insurance !== null ? insurance : true,
             sellerZoopPlan: hasSellerZoopPlan || null,
+            isNewPlan: false,
             checkoutWithoutRegister: checkoutWithoutRegister || false,
           });
         }
