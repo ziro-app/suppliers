@@ -3,10 +3,12 @@ import { auth, db } from '../../Firebase/index'
 const { formatDateUTC3 } = require('@ziro/format-date-utc3')
 
 const simplifiedRegistration = state => () => {
-    const { fname, lname, email, cnpj, cnpjValid, pass, reason, fantasia,
-        cep, street, number, complement, neighborhood, city, cityState, fantasias } = state
+    const { fname, lname, whatsApp, email, cnpj, cnpjValid, pass, reason, fantasia,
+        cep, street, number, complement, neighborhood, city, cityState, fone, fantasias } = state
     const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
     const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
+    const telefone = fone ? `55 ${fone.trim()}` : ''
+    const whats = whatsApp ? `55 ${whatsApp.trim()}` : ''
     const today = new Date()
     let cepSplit = cep.split('')
     cepSplit.splice(2, 0, '.')
@@ -30,9 +32,7 @@ const simplifiedRegistration = state => () => {
                 [
                     formatDateUTC3(today),
                     nomeCompleto,
-                    ,
-                    ,
-                    ,
+                    whats,
                     email,
                     cnpj,
                     reason,
@@ -41,7 +41,8 @@ const simplifiedRegistration = state => () => {
                     endereco,
                     neighborhood,
                     city,
-                    cityState
+                    cityState,
+                    telefone
                 ]
             ]
         },
@@ -72,7 +73,8 @@ const simplifiedRegistration = state => () => {
                                         owner: {
                                             first_name: fname ? fname.trim() : '',
                                             last_name: lname ? lname.trim() : '',
-                                            email
+                                            email,
+                                            phone_number: telefone
                                         },
                                         business_name: reason,
                                         business_address: {
@@ -99,6 +101,7 @@ const simplifiedRegistration = state => () => {
                                         zoopId: id,
                                         nome: fname ? fname.trim() : '',
                                         sobrenome: lname ? lname.trim() : '',
+                                        whatsapp: whats,
                                         email,
                                         cnpj,
                                         razao: reason,
@@ -108,6 +111,7 @@ const simplifiedRegistration = state => () => {
                                         bairro: neighborhood,
                                         cidade: city,
                                         estado: cityState,
+                                        telefone: fone,
                                         tipoCadastro: 'Simplificado',
                                         backgroundCheckRequestsAvailable: 10,
                                         backgroundCheckCurrentMonth: today.getMonth()

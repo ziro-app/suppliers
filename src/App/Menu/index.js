@@ -10,7 +10,7 @@ import { containerWithPadding } from '@ziro/theme'
 
 export const Menu = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false)
-    const { fname, cnpj, role } = useContext(userContext)
+    const { fname, cnpj, role, typeRegister } = useContext(userContext)
 
     const mountDrawerpanel = () => {
         if (role) {
@@ -43,12 +43,6 @@ export const Menu = ({ title, children }) => {
                     //     text: 'Consultar documento'
                     // },
                     {
-                        path: '/relatorio',
-                        onClick: () => setIsOpen(false),
-                        icon: <Icon type='file' size={15} strokeWidth={2} />,
-                        text: 'Relatórios'
-                    },
-                    {
                         path: '/minha-conta',
                         onClick: () => setIsOpen(false),
                         icon: <Icon type='gear' size={15} strokeWidth={2} />,
@@ -63,7 +57,63 @@ export const Menu = ({ title, children }) => {
                 ]}
             />);
         } else return (
-            <DrawerPanel
+            <>
+                {typeRegister && typeRegister === "Simplificado" ?
+                    <DrawerPanel
+                        username={fname || 'Usuário'}
+                        userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
+                        options={[
+                            {
+                                path: '/upgrade',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='rocket' size={15} strokeWidth={2} />,
+                                text: 'Fazer Upgrade'
+                            },
+                            {
+                                path: '/transacoes',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='trending' size={15} strokeWidth={2} />,
+                                text: 'Vendas'
+                            },
+                            {
+                                path: '/criar-cobranca',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='link' size={15} strokeWidth={2} />,
+                                text: 'Criar Cobrança'
+                            },
+                            {
+                                path: '/recebiveis',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='money' size={15} strokeWidth={2} />,
+                                text: 'Recebíveis'
+                            },
+                            // {
+                            //     path: '/consulta',
+                            //     onClick: () => setIsOpen(false),
+                            //     icon: <Icon type='search' size={15} strokeWidth={2} />,
+                            //     text: 'Consultar documento'
+                            // },
+                            {
+                                path: '/colaboradores',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='user' size={15} strokeWidth={2} />,
+                                text: 'Vendedores'
+                            },
+                            {
+                                path: '/minha-conta',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='gear' size={15} strokeWidth={2} />,
+                                text: 'Minha Conta'
+                            },
+                            {
+                                path: '/login',
+                                onClick: () => auth.signOut(),
+                                icon: <Icon type='logout' size={15} strokeWidth={3} />,
+                                text: 'Sair'
+                            },
+                        ]}
+                    />
+                : <DrawerPanel
                 username={fname || 'Usuário'}
                 userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
                 options={[
@@ -85,18 +135,6 @@ export const Menu = ({ title, children }) => {
                         icon: <Icon type='money' size={15} strokeWidth={2} />,
                         text: 'Recebíveis'
                     },
-                    // {
-                    //     path: '/consulta',
-                    //     onClick: () => setIsOpen(false),
-                    //     icon: <Icon type='search' size={15} strokeWidth={2} />,
-                    //     text: 'Consultar documento'
-                    // },
-                    {
-                        path: '/relatorio',
-                        onClick: () => setIsOpen(false),
-                        icon: <Icon type='file' size={15} strokeWidth={2} />,
-                        text: 'Relatórios'
-                    },
                     {
                         path: '/colaboradores',
                         onClick: () => setIsOpen(false),
@@ -116,7 +154,8 @@ export const Menu = ({ title, children }) => {
                         text: 'Sair'
                     },
                 ]}
-            />
+            />}
+        </>
         );
     }
 

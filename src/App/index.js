@@ -53,7 +53,7 @@ export const App = () => {
         const body = {
             apiResource: 'values',
             apiMethod: 'get',
-            range: 'Base',
+            range: 'Base!E:E',
             spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
         };
         let pos = 0;
@@ -61,7 +61,7 @@ export const App = () => {
             data: { values },
         } = await post(url, body, config);
         values.map((user, index) => {
-            if (user[6] === cnpj) {
+            if (user[0] === cnpj) {
                 pos = index + 1;
             }
         });
@@ -74,6 +74,7 @@ export const App = () => {
             apiMethod: 'get',
             range: 'Colaboradores',
             spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
+            // spreadsheetId: "1YlNSmVrawtxeKyy-tDdmI9B0bgSIIQswBnl3CEgdRRo"
         };
         let pos = 0;
         const {
