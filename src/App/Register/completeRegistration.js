@@ -13,12 +13,13 @@ const config = {
 
 const completeRegistration = state => () => {
     const { cnpjValid, cnpj, reason, fantasia, category, cep, bankName,
-        street, number, complement, neighborhood, city, cityState, fname, lname, cpf, email,
+        street, number, complement, neighborhood, city, cityState, fname, lname, whatsApp, cpf, email,
         birthdate, fone, pass, bankNumber, accountNumber, agency, accountType,
         fileDoc, fileAtv, fileRes, fileCnpj, categoryName, accountTypeViewName, fantasias } = state
     const nomeCompleto = (fname && lname) ? `${fname.trim()} ${lname.trim()}` : ''
     const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`
     const telefone = fone ? `55 ${fone.trim()}` : ''
+    const whats = whatsApp ? `55 ${whatsApp.trim()}` : ''
     const fantasiaSheet = fantasias.filter(item => item.cnpj === Number(cnpj.replace('.', '').replace('.', '').replace('/', '').replace('-', '')))
     const resultFantasia = fantasiaSheet[0] ? fantasiaSheet[0].fantasia : fantasia
     let cepSplit = cep.split('')
@@ -35,9 +36,7 @@ const completeRegistration = state => () => {
                 [
                     formatDateUTC3(today),
                     nomeCompleto,
-                    cpf,
-                    birthdate,
-                    telefone,
+                    whats,
                     email,
                     cnpj,
                     reason,
@@ -47,6 +46,9 @@ const completeRegistration = state => () => {
                     neighborhood,
                     city,
                     cityState,
+                    telefone,
+                    cpf,
+                    birthdate,
                     categoryName,
                     accountTypeViewName,
                     bankNumber.startsWith('0') ? `'${bankNumber}` : bankNumber,
@@ -170,6 +172,7 @@ const completeRegistration = state => () => {
                                                 zoopId: id,
                                                 nome: fname ? fname.trim() : '',
                                                 sobrenome: lname ? lname.trim() : '',
+                                                whatsapp: whats,
                                                 cpf,
                                                 nascimento: birthdate,
                                                 telefone: fone,

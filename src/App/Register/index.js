@@ -5,22 +5,26 @@ import Form from '@bit/vitorbarbosa19.ziro.form'
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input'
 import InputText from '@bit/vitorbarbosa19.ziro.input-text'
 import InputEmail from '@bit/vitorbarbosa19.ziro.input-email'
+import InputPhone from '@bit/vitorbarbosa19.ziro.input-phone'
 import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown'
 import Button from '@bit/vitorbarbosa19.ziro.button'
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner'
 import Error from '@bit/vitorbarbosa19.ziro.error'
 import GetCnpj from '@bit/vitorbarbosa19.ziro.get-cnpj'
+import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
+import ToggleButton from '@bit/vitorbarbosa19.ziro.toggle-button';
+import TooltipHelp from '@bit/vitorbarbosa19.ziro.tooltip-help';
 import maskInput from '@ziro/mask-input'
 import capitalize from '@ziro/capitalize'
-import { containerWithPadding } from '@ziro/theme'
+import { containerWithPadding, fontTitle } from '@ziro/theme'
 import SingleImageUpload from './SingleImageUpload/index'
 import fetchFantasia from './fetchFantasia'
-import { welcome, marker } from './styles'
+import { welcome, marker, listItemStyle } from './styles'
 import banksList from './banks'
 import fetch from './fetch'
 import completeRegistration from './completeRegistration'
 import simplifiedRegistration from './simplifiedRegistration'
-import { AtvdText, CnpjText, DocText, HolderText, HomeText } from './modals'
+import { AtvdText, CnpjText, DocText, HolderText, HomeText, supportModalTitle, supportModalBody, supportModalTitleRegister, supportModalBodyRegister } from './modals'
 import validateDocuments from '../utils/validateDocuments';
 
 const categories = {
@@ -34,13 +38,14 @@ const Register = () => {
     const [isError, setIsError] = useState(false)
     const [isLoading, setIsLoading] = useState(true)
     const [step, setStep] = useState(0)
+    const [formToggle, setFormToggle] = useState(false);
     const [suppliers, setSuppliers] = useState([])
     const [fantasias, setFantasias] = useState([])
     const [cnpjValid, setCnpjValid] = useState(false)
     // mixed form field
     const [cnpj, setCnpj] = useState('')
     // form fields 0
-    const [typeOfRegistration, setTypeOfRegistration] = useState('')
+    const [typeOfRegistration, setTypeOfRegistration] = useState('Simplificado')
     const typeOfRegistrationList = ['Simplificado', 'Completo']
     // form fields 1
     const [reason, setReason] = useState('')
@@ -61,6 +66,7 @@ const Register = () => {
     const [fname, setFName] = useState('')
     const [lname, setLName] = useState('')
     const [cpf, setCpf] = useState('')
+    const [whatsApp, setWhatsApp] = useState('')
     const [email, setEmail] = useState('')
     const [birthdate, setBirthdate] = useState('')
     const [fone, setFone] = useState('')
@@ -85,12 +91,12 @@ const Register = () => {
 
     const setState = {
         setTypeOfRegistration, setCnpj, setCnpjValid, setReason, setFantasia, setCategory,
-        setFName, setLName, setCpf, setEmail, setBirthdate, setFone, setStreet, setNumber, setComplement,
+        setFName, setLName, setCpf, setWhatsApp, setEmail, setBirthdate, setFone, setStreet, setNumber, setComplement,
         setNeighborhood, setCep, setCity, setCityState, setPass, setBankNumber, setAccountNumber,
         setAgency, setAccountType, setFileDoc, setFileAtv, setFileRes, setFileCnpj, cnpjUrl, cnpjToken, setFantasias
     }
     const state = {
-        cnpjValid, typeOfRegistration, cnpj, reason, fantasia, category, cep, street, number,
+        cnpjValid, typeOfRegistration, cnpj, reason, fantasia, category, cep, whatsApp, street, number,
         complement, neighborhood, city, cityState, fname, lname, cpf, email, birthdate, fone, pass,
         bankName, bankNumber, accountNumber, agency, accountType, fileDoc, fileAtv, fileRes,
         fileCnpj, categoryName, accountTypeViewName, fantasias, ...setState
@@ -156,6 +162,11 @@ const Register = () => {
             validation: value => step === 2 ? /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(value) : true,
             value: fone,
             message: 'Telefone inválido'
+        }, {
+            name: 'whatsapp',
+            validation: value => step === 2 ? /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(value) : true,
+            value: whatsApp,
+            message: 'WhatsApp inválido'
         }, {
             name: 'email',
             validation: value => ((typeOfRegistration === 'Simplificado' && step === 1) || step === 2) ? /^\S+@\S+\.\S+$/g.test(value) : true,
@@ -254,6 +265,7 @@ const Register = () => {
         setFName('')
         setLName('')
         setCpf('')
+        setWhatsApp('')
         setEmail('')
         setBirthdate('')
         setFone('')
@@ -297,8 +309,14 @@ const Register = () => {
         }
     }
 
+    function handleFormToggle() {
+        setFormToggle(!formToggle);
+        typeOfRegistration === 'Simplificado' ? setTypeOfRegistration('Completo') : setTypeOfRegistration('Simplificado');
+    };
+
     useEffect(() => fetch(setIsLoading, setIsError, setSuppliers), [])
     useEffect(() => fetchFantasia(setFantasias, setIsLoading, setIsError), [])
+    // useEffect(() => console.log("formToggle:", formToggle, "tipo:", typeOfRegistration, "step:", step), [step])
 
     if (isLoading) return <div style={{ display: 'grid', marginTop: '15px' }}><Spinner size='5rem' /></div>
     if (isError) return <Error />
@@ -306,66 +324,53 @@ const Register = () => {
     return (
         <div style={containerWithPadding}>
             <HeaderHome linkPath='/login' linkText='Tem cadastro? LOGIN' />
-            <h1 style={welcome}>
-                Crie sua conta de <span style={marker}>Fabricante</span>,
-			</h1>
-            {step === 0 &&
-                <Form
-                    buttonName="Avançar"
-                    validations={validations}
-                    sendToBackend={() => setStep(step + 1)}
-                    inputs={[
-                        <FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
-                            <Dropdown
-                                value={typeOfRegistration}
-                                onChange={({ target: { value } }) => {
-                                    clearFields()
-                                    setTypeOfRegistration(value)
-                                    if (value === '') setStep(0)
-                                    else setStep(1)
-                                }}
-                                onChangeKeyboard={element => {
-                                    if (element) {
-                                        clearFields()
-                                        setTypeOfRegistration(element.value)
-                                        if (element.value === '') setStep(0)
-                                        else setStep(1)
-                                    }
-                                }}
-                                list={typeOfRegistrationList}
-                                placeholder="Completo ou Simplificado"
-                                readOnly={true}
+
+            {step === 0 ?
+                <div style={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+                    <div style={{ textAlign: 'center' }}>
+                        <Illustration type="onlinePosts" size={220} />
+                    </div>
+                    <h1 style={{ fontFamily: 'Rubik', textTransform: 'uppercase', color: 'rgb(45, 156, 219)', textAlign: 'center', paddingTop: '30px', margin: '0' }}>Crie sua conta na Ziro</h1>
+
+                    <label style={{ fontSize: '1.5rem', color: 'rgb(34, 34, 34)', marginTop: '10px' }}>
+                        Comece agora a fazer consultas gratuitas no SERASA e evite fraudes e inadimplência. São 10 consultas gratuitas por mês!
+                    </label>
+                    
+                    <label style={{ fontSize: '1.5rem', color: 'rgb(34, 34, 34)', marginTop: '10px' }}>
+                        Você também pode se cadastrar para criar links de pagamento e vender online via WhatsApp.
+                    </label>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '10px 0px' }}>
+                        <p style={{ fontSize: '16px', fontWeight: 'bold', paddingTop: '30px', textAlign: 'center' }}>Além do SERASA, deseja habilitar vendas online? <TooltipHelp illustration='upgradePlan' illustrationSize={180} title={supportModalTitle} body={supportModalBody} iconColor='#2D9CDB' iconSize={18} supportButton={false} /></p>
+                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingTop: '8px' }}>
+                            <span style={{ fontSize: '16px', paddingRight: '10px' }}>Não</span>
+                            <ToggleButton
+                                active={formToggle}
+                                onClick={handleFormToggle}
+                                size={20}
                             />
-                        } />
-                    ]}
-                />
-            }
-            {typeOfRegistration === 'Simplificado' && step === 1 &&
-                <>
-                    <FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
-                        <Dropdown
-                            value={typeOfRegistration}
-                            onChange={({ target: { value } }) => {
-                                clearFields()
-                                setTypeOfRegistration(value)
-                                if (value === '') setStep(0)
-                                else setStep(1)
-                            }}
-                            onChangeKeyboard={element => {
-                                if (element) {
-                                    clearFields()
-                                    setTypeOfRegistration(element.value)
-                                    if (element.value === '') setStep(0)
-                                    else setStep(1)
-                                }
-                            }}
-                            list={typeOfRegistrationList}
-                            placeholder="Escolha Completo ou Simplificado"
-                            readOnly={true}
+                            <span style={{ fontSize: '16px', paddingLeft: '10px' }}>Sim</span>
+                        </div>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', marginTop: '20px', opacity: '1' }}>
+                        <Button
+                        type='button'
+                        cta='Criar conta'
+                        template='regular'
+                        click={() => setStep(step + 1)}
                         />
-                    } />
+                    </div>
+                </div>
+            : undefined}
+            
+            {typeOfRegistration === 'Simplificado' && step === 1 && formToggle === false &&
+                <>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '20px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+
                     <GetCnpj cnpj={cnpj} setState={setState} baseCnpj={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
                     <Form
+                        buttonName="Cadastrar"
                         validations={validations}
                         sendToBackend={simplifiedRegistration ? simplifiedRegistration(state) : () => null}
                         inputs={[
@@ -381,6 +386,18 @@ const Register = () => {
                                     value={lname}
                                     onChange={({ target: { value } }) => setLName(capitalize(value))}
                                     placeholder='Seu sobrenome'
+                                />
+                            } />,
+                            <FormInput name='whatsapp' label='WhatsApp' input={
+                                // <InputText
+                                //     value={whatsApp}
+                                //     onChange={({ target: { value } }) => setWhatsApp(maskInput(value, '(##) #####-####', true))}
+                                //     placeholder='(11) 99999-9999'
+                                //     inputMode='numeric'
+                                // />
+                                <InputPhone 
+                                    value={whatsApp}
+                                    setValue={setWhatsApp}
                                 />
                             } />,
                             <FormInput name='email' label='Email' input={
@@ -408,32 +425,28 @@ const Register = () => {
                             <FormInput name='cnpjValid' label='' input={<></>} />
                         ]}
                     />
+                    <div style={{ paddingTop: '15px' }} >
+                        <Button
+                            type="button"
+                            cta="Voltar"
+                            template="light"
+                            click={() => setStep(step - 1)}
+                        />
+                    </div>
                 </>
             }
-            {typeOfRegistration === 'Completo' && step === 1 &&
+            {typeOfRegistration === 'Completo' && step === 1 && formToggle === true && 
                 <>
-                    <FormInput name='typeOfRegistration' label='Tipo de Cadastro' input={
-                        <Dropdown
-                            value={typeOfRegistration}
-                            onChange={({ target: { value } }) => {
-                                clearFields()
-                                setTypeOfRegistration(value)
-                                if (value === '') setStep(0)
-                                else setStep(1)
-                            }}
-                            onChangeKeyboard={element => {
-                                if (element) {
-                                    clearFields()
-                                    setTypeOfRegistration(element.value)
-                                    if (element.value === '') setStep(0)
-                                    else setStep(1)
-                                }
-                            }}
-                            list={typeOfRegistrationList}
-                            placeholder="Escolha Completo ou Simplificado"
-                            readOnly={true}
-                        />
-                    } />
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+
+                    <div style={{ textAlign: 'center', padding: '20px 0px 20px' }}>
+                        <label style={{
+                            fontFamily: fontTitle,
+                            textTransform: 'uppercase',
+                            fontWeight: 'bold'
+                        }}>Dados básicos</label>
+                    </div>
+
                     <GetCnpj cnpj={cnpj} setState={setState} baseCnpj={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
                     <Form
                         buttonName="Avançar"
@@ -529,10 +542,28 @@ const Register = () => {
                             <FormInput name='cnpjValid' label='' input={<></>} />
                         ]}
                     />
+                    <div style={{ paddingTop: '15px' }} >
+                        <Button
+                            type="button"
+                            cta="Voltar"
+                            template="light"
+                            click={() => setStep(step - 1)}
+                        />
+                    </div>
                 </>
             }
-            {typeOfRegistration === 'Completo' && step === 2 &&
+            {typeOfRegistration === 'Completo' && step === 2 && formToggle === true && 
                 <>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+
+                    <div style={{ textAlign: 'center', padding: '20px 0px 20px' }}>
+                        <label style={{
+                            fontFamily: fontTitle,
+                            textTransform: 'uppercase',
+                            fontWeight: 'bold'
+                        }}>Dados Pessoais</label>
+                    </div>
+                    
                     <Form
                         buttonName="Avançar"
                         validations={validations}
@@ -568,11 +599,21 @@ const Register = () => {
                                 />
                             } />,
                             <FormInput name='fone' label='Telefone' input={
-                                <InputText
+                                <InputPhone
                                     value={fone}
-                                    onChange={({ target: { value } }) => setFone(maskInput(value, '(##) #####-####', true))}
-                                    placeholder='(11) 99999-9999'
-                                    inputMode='numeric'
+                                    setValue={setFone}
+                                />
+                            } />,
+                            <FormInput name='whatsapp' label='WhatsApp' input={
+                                // <InputText
+                                //     value={whatsApp}
+                                //     onChange={({ target: { value } }) => setWhatsApp(maskInput(value, '(##) #####-####', true))}
+                                //     placeholder='(11) 99999-9999'
+                                //     inputMode='numeric'
+                                // />
+                                <InputPhone
+                                    value={whatsApp}
+                                    setValue={setWhatsApp}
                                 />
                             } />,
                             <FormInput name='email' label='Email' input={
@@ -609,8 +650,18 @@ const Register = () => {
                     </div>
                 </>
             }
-            {typeOfRegistration === 'Completo' && step === 3 &&
+            {typeOfRegistration === 'Completo' && step === 3 && formToggle === true &&
                 <>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+
+                    <div style={{ textAlign: 'center', padding: '20px 0px 20px' }}>
+                        <label style={{
+                            fontFamily: fontTitle,
+                            textTransform: 'uppercase',
+                            fontWeight: 'bold'
+                        }}>Documentos</label>
+                    </div>
+
                     <Form
                         buttonName="Avançar"
                         validations={validations}
@@ -656,9 +707,20 @@ const Register = () => {
                     </div>
                 </>
             }
-            {typeOfRegistration === 'Completo' && step === 4 &&
+            {typeOfRegistration === 'Completo' && step === 4 && formToggle === true && 
                 <>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+
+                    <div style={{ textAlign: 'center', padding: '20px 0px 20px' }}>
+                        <label style={{
+                            fontFamily: fontTitle,
+                            textTransform: 'uppercase',
+                            fontWeight: 'bold'
+                        }}>Dados Bancários</label>
+                    </div>
+
                     <Form
+                        buttonName="Cadastrar"
                         validations={validations}
                         sendToBackend={completeRegistration ? completeRegistration(state) : () => null}
                         inputs={[
@@ -747,7 +809,7 @@ const Register = () => {
                     </div>
                 </>
             }
-            {typeOfRegistration && <p style={{ textAlign: "center", fontWeight: "bold", paddingTop: "20px", fontSize: "15px" }}>Página {step === 0 ? step + 1 : step} de {typeOfRegistration === 'Completo' ? 4 : 1}.</p>}
+            {typeOfRegistration && step >= 1 && <p style={{ textAlign: "center", fontWeight: "bold", paddingTop: "20px", fontSize: "15px" }}>Página {step === 0 ? step + 1 : step} de {typeOfRegistration === 'Completo' ? 4 : 1}.</p>}
         </div>
     )
 }

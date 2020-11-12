@@ -1,6 +1,16 @@
 import { fontTitle, fontSizeSmall } from '@ziro/theme'
 
 export const
+	titleStyle = {
+		maxWidth: '500px',
+		fontFamily: fontTitle,
+		fontSize: '1.5rem',
+		textAlign: 'start',
+		overflow: 'hidden',
+		textOverflow: 'ellipsis',
+		whiteSpace: 'nowrap',
+		textTransform: 'uppercase'
+	},
 
 	welcome = {
 		fontFamily: fontTitle,

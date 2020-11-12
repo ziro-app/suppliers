@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import Modal from '@bit/vitorbarbosa19.ziro.modal';
-import { modalContainer, modalLabel, modalBox, advantagesDiv, advantagesLabel, innerAdvantagesDiv, advantagesContainer } from './styles';
+import { modalContainer, modalLabel, modalBox } from './styles';
 
 export const DocText = () => {
     const [modalDoc, setModalDoc] = useState(false);
@@ -76,64 +76,3 @@ export const HolderText = () => {
     );
 
 }
-
-export const supportModalTitle = (
-    <div>
-        <label style={{ fontSize: '16px', color: '#323232' }}>Venda online com a Ziro</label>
-    </div>
-);
-
-export const supportModalBody = (
-    <div style={{ height: '50vh', overflowY: 'scroll' }}>
-        <label style={{ fontWeight: 'normal', paddingBottom: '20px' }}>Você pode criar uma conta já habilitada para vendas online marcando 'Sim'. Veja as vantagens:</label>
-
-        <div style={advantagesContainer}>
-            <div style={advantagesDiv}>
-              <div style={innerAdvantagesDiv}>
-                <Icon type='whats' size={15} strokeWidth={2} />
-              </div>
-              <label style={advantagesLabel}>Links compartilháveis via WhatsApp;</label>
-            </div>
-            
-            <div style={advantagesDiv}>
-              <div style={innerAdvantagesDiv}>
-                <Icon type='check' size={15} strokeWidth={2} />
-              </div>
-              <label style={advantagesLabel}>Transação aprovada em tempo real;</label>
-            </div>
-            
-            <div style={advantagesDiv}>
-              <div style={innerAdvantagesDiv}>
-                <Icon type='lock' size={15} strokeWidth={2} />
-              </div>
-              <label style={advantagesLabel}>Seguro integral contra fraudes;</label>
-            </div>
-            
-            <div style={advantagesDiv}>
-              <div style={innerAdvantagesDiv}>
-                <Icon type='card' size={15} strokeWidth={2} />
-              </div>
-              <label style={advantagesLabel}>Antecipação de recebíveis D+14;</label>
-            </div>
-            
-            <div style={advantagesDiv}>
-              <div style={innerAdvantagesDiv}>
-                <Icon type='money' size={15} strokeWidth={2} />
-              </div>
-              <label style={advantagesLabel}>Seu dinheiro cai direto na sua conta sem passar por nós.</label>
-            </div>
-          </div>
-    </div>
-);
-
-export const supportModalTitleRegister = (
-    <div>
-        <p style={{ color: '#323232' }}>Precisa de suporte?</p>
-    </div>
-);
-
-export const supportModalBodyRegister = (
-    <div>
-        <p style={{ paddingTop: '0px', paddingBottom: '10px' }}>Qualquer dúvida acerca do cadastro, basta falar conosco via WhatsApp que vamos te ajudar!</p>
-    </div>
-);

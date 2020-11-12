@@ -22,6 +22,7 @@ import ResendEmail from './ResendEmail/index';
 import ResetPass from './ResetPass/index';
 import Submenu from '@bit/vitorbarbosa19.ziro.submenu';
 import Transactions from './Transactions/index';
+import Upgrade from './Upgrade/index';
 import UpdateEmail from './UpdateEmail/index';
 import UpdatePass from './UpdatePass/index';
 import UpdateUserInfo from './UpdateUserInfo/index';
@@ -53,6 +54,13 @@ const Router = ({ isLogged }) => {
     const privateRoutes = {
         // Menu can't be put inside the components because then it'll unmount on transition
         '/': <Transactions {...params} />,
+        '/upgrade': (
+            <Menu title="Fazer Upgrade">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <Upgrade />
+                </motion.div>
+            </Menu>
+        ),
         '/minha-conta': (
             <Menu title="Minha Conta">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
