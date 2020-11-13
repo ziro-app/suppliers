@@ -62,7 +62,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                                 statusColor: matchStatusColor(status),
                                 buyerRazao,
                                 receivables: receivables ? receivables : [],
-                                receivement,
+                                receivement: receivement ? receivement : 'Fluxo',
                                 receiptId: receiptId ? receiptId : '',
                                 sellerZoopPlan: sellerZoopPlan || '',
                                 insurance: insurance || false,

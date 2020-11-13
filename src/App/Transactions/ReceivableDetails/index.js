@@ -95,7 +95,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
                                 },
                                 {
                                     title: 'Recebimento',
-                                    content: transaction.receivement ? transaction.receivement : 'D+30',
+                                    content: transaction.receivement,
                                 },
                                 {
                                     title: 'Data recebimento',
