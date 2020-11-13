@@ -81,7 +81,7 @@ const fetch = (transactionId, setTransaction, setError, transaction, transaction
                         });
                         if (transaction.status !== paymentDoc[0].status) {
                             setTransaction(paymentDoc[0]);
-                            if (!verifyArray(transactions, transactionZoopId)) setPayments([...transactions, paymentDoc[0]]);
+                            if (paymentDoc[0].status !== 'Aguardando Pagamento' && !verifyArray(transactions, transactionZoopId)) setPayments([...transactions, paymentDoc[0]]);
                         }
                     } else {
                         setError(true);
