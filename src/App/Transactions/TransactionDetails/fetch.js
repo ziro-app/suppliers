@@ -64,7 +64,7 @@ const fetch = (transactionId, setTransaction, setError, transaction, transaction
                             statusColor: matchStatusColor(status),
                             buyerRazao,
                             receivables: receivables || [],
-                            receivement,
+                            receivement: receivement || 'Fluxo',
                             cardBrand,
                             cardFirstFour,
                             cardLastFour,
