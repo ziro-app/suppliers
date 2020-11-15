@@ -332,15 +332,15 @@ const Register = () => {
                     </div>
                     <h1 style={{ fontFamily: 'Rubik', textTransform: 'uppercase', color: 'rgb(45, 156, 219)', textAlign: 'center', paddingTop: '30px', margin: '0' }}>Crie sua conta na Ziro</h1>
 
-                    <label style={{ fontSize: '1.5rem', color: 'rgb(34, 34, 34)', marginTop: '10px' }}>
+                    <label style={{ color: 'rgb(34, 34, 34)', marginTop: '10px' }}>
                         Comece agora a fazer consultas gratuitas no SERASA e evite fraudes e inadimplência. São 10 consultas gratuitas por mês!
                     </label>
                     
-                    <label style={{ fontSize: '1.5rem', color: 'rgb(34, 34, 34)', marginTop: '10px' }}>
+                    <label style={{ color: 'rgb(34, 34, 34)', marginTop: '10px' }}>
                         Você também pode se cadastrar para criar links de pagamento e vender online via WhatsApp.
                     </label>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '10px 0px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <p style={{ fontSize: '16px', fontWeight: 'bold', paddingTop: '30px', textAlign: 'center' }}>Além do SERASA, deseja habilitar vendas online? <TooltipHelp illustration='upgradePlan' illustrationSize={180} title={supportModalTitle} body={supportModalBody} iconColor='#2D9CDB' iconSize={18} supportButton={false} /></p>
                         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingTop: '8px' }}>
                             <span style={{ fontSize: '16px', paddingRight: '10px' }}>Não</span>
@@ -439,7 +439,7 @@ const Register = () => {
                 <>
                     <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
-                    <div style={{ textAlign: 'center', padding: '20px 0px 20px' }}>
+                    <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{
                             fontFamily: fontTitle,
                             textTransform: 'uppercase',
@@ -556,7 +556,7 @@ const Register = () => {
                 <>
                     <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
-                    <div style={{ textAlign: 'center', padding: '20px 0px 20px' }}>
+                    <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{
                             fontFamily: fontTitle,
                             textTransform: 'uppercase',
@@ -654,7 +654,7 @@ const Register = () => {
                 <>
                     <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
-                    <div style={{ textAlign: 'center', padding: '20px 0px 20px' }}>
+                    <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{
                             fontFamily: fontTitle,
                             textTransform: 'uppercase',
@@ -711,7 +711,7 @@ const Register = () => {
                 <>
                     <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
-                    <div style={{ textAlign: 'center', padding: '20px 0px 20px' }}>
+                    <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{
                             fontFamily: fontTitle,
                             textTransform: 'uppercase',

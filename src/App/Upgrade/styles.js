@@ -37,7 +37,7 @@ export const
 		maxWidth: '500px',
 		width: '90%',
 		margin: '0 auto',
-		padding: '5%',
+		padding: '20px',
 		boxSizing: 'border-box',
 		borderRadius: '3px',
 		background: 'white',
@@ -51,7 +51,7 @@ export const
 		marginTop: '20px',
 		backgroundColor: '#f4f4f4',
 		borderRadius: '5px',
-		padding: '10px 10px'
+		padding: '10px 20px'
 	},
 	advantagesDiv = {
 		display: 'grid',
@@ -65,7 +65,8 @@ export const
 		boxShadow: 'rgba(34, 34, 34, 0.7) 0px 3px 11px -4px',
 		borderRadius: '100%',
 		width: '30px',
-		height: '30px'
+		height: '30px',
+		background: 'white'
 	},
 	advantagesLabel = {
 		fontSize: '1.6rem',

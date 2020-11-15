@@ -27,7 +27,7 @@ export const
 		maxWidth: '500px',
 		width: '90%',
 		margin: '0 auto',
-		padding: '5%',
+		padding: '20px',
 		boxSizing: 'border-box',
 		borderRadius: '3px',
 		background: 'white',
