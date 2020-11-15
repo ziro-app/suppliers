@@ -180,10 +180,10 @@ function Upgrade() {
       {typeRegister === "Completo" ? 
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
           <Illustration type="paymentSuccess" size={200} />
-          <h1 style={{ fontFamily: 'Rubik', textTransform: 'uppercase', color: 'rgb(45, 156, 219)', textAlign: 'center' }}>Você já fez upgrade</h1>
+          <h1 style={{ fontFamily: 'Rubik', textTransform: 'uppercase', color: 'rgb(45, 156, 219)', textAlign: 'center' }}>UPGRADE FOI REALIZADO</h1>
 
           <label style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px' }}>
-            Sua conta já fez upgrade e está pronta para gerar links e vender online.
+            O upgrade foi realizado na sua conta e você já pode gerar links para vender online.
           </label>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', marginTop: '20px', opacity: '1' }}>
