@@ -43,7 +43,7 @@
         "@babel/runtime": "^7.7.7",
         "@bit/vitorbarbosa19.ziro.about": "0.0.58",
         "@bit/vitorbarbosa19.ziro.camera-button": "0.1.60",
-        "@bit/vitorbarbosa19.ziro.confirm-email": "0.1.65",
+        "@bit/vitorbarbosa19.ziro.confirm-email": "0.1.83",
         "@bit/vitorbarbosa19.ziro.delete-account": "0.1.92",
         "@bit/vitorbarbosa19.ziro.details": "0.0.24",
         "@bit/vitorbarbosa19.ziro.drawer": "0.1.16",
