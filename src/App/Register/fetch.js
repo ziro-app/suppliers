@@ -11,7 +11,7 @@ const fetch = (setIsLoading, setIsError, setSuppliers) => {
                 apiResource: 'values',
                 apiMethod: 'get',
                 spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
-                range: 'Base!G:G'
+                range: 'Base!E:E'
             },
             headers: {
                 'Authorization': process.env.SHEET_TOKEN,

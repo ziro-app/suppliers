@@ -7,7 +7,7 @@ const sendToBackend = state => () => {
     const body = {
         apiResource: 'values',
         apiMethod: 'update',
-        range: isCollaborator ? `Colaboradores!C${row}` : `Base!F${row}`,
+        range: isCollaborator ? `Colaboradores!C${row}` : `Base!D${row}`,
         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
         resource: {
             values: [[newEmail.toLowerCase()]]
@@ -56,10 +56,10 @@ const sendToBackend = state => () => {
                                     email: newEmail.toLowerCase()
                                 }
                             }, {
-                                headers: {
-                                    Authorization: `${process.env.PAY_TOKEN}`,
-                                },
-                            });
+                            headers: {
+                                Authorization: `${process.env.PAY_TOKEN}`,
+                            },
+                        });
                     }
                     try {
                         await user.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` })

@@ -19,7 +19,7 @@ const sendToBackend = state => () => {
         apiResource: 'values',
         apiMethod: 'update',
         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
-        range: `Base!P${userPos}:T${userPos}`,
+        range: `Base!Q${userPos}:U${userPos}`,
         resource: {
             values: [
                 [
