@@ -116,8 +116,8 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     useEffect(() => {
         getTransaction(transactionId, setTransaction, setError, transaction, transactions, setPayments).then(r => {
             if (Object.prototype.hasOwnProperty.call(transaction, 'dateLinkCreated')) {
-                markupTransaction = transaction.splitTransaction.markup ?? transaction.sellerZoopPlan.markup;
-                antiFraudTransaction = transaction.splitTransaction.antiFraud ?? transaction.sellerZoopPlan.antiFraud;
+                markupTransaction = transaction.splitTransaction?.markup ?? transaction.sellerZoopPlan.markup;
+                antiFraudTransaction = transaction.splitTransaction?.antiFraud ?? transaction.sellerZoopPlan.antiFraud;
                 console.log('transaction', transaction);
                 console.log('markupTransaction', markupTransaction);
                 console.log('antiFraudTransaction', antiFraudTransaction);

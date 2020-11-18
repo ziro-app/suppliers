@@ -21,6 +21,8 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
     const [snapshotMemo, setSnapshotMemo] = useState({});
     const history = createBrowserHistory();
     const [, setLocation] = useLocation();
+    let markupTransaction = {};
+    let antiFraudTransaction = {};
     async function getTransaction(transactionId, setTransaction, setError, transaction) {
         //await fetch(transactionId, setTransaction, setError, transaction);
     }
@@ -31,6 +33,8 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
         getTransaction(transactionId, setTransaction, setError, transaction).then(r => {
             let block = [];
             if (transaction) {
+                markupTransaction = transaction.splitTransaction?.markup ?? transaction.sellerZoopPlan.markup;
+                antiFraudTransaction = transaction.splitTransaction?.antiFraud ?? transaction.sellerZoopPlan.antiFraud;
                 const effectReceivable = transaction.receivables.filter(receivable => receivable.receivableZoopId === receivableId)[0];
                 const sortedSplitAmount = transaction.receivables[0].split_rule
                     ? transaction.receivables
@@ -42,7 +46,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
                 const sumReceivablesSplitAntiFraud =
                     sortedSplitAmount.length > 0
                         ? sortedSplitAmount
-                            .filter(item => item.split_rule === transaction.sellerZoopPlan.antiFraud.id)
+                            .filter(item => item.split_rule === antiFraudTransaction.id)
                             .filter(item => item.installment === effectReceivable.installment)
                             .reduce((acc, { gross_amount }) => acc + parseFloat(gross_amount), 0)
                         : 0;
@@ -50,7 +54,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
                 const sumReceivablesSplitZiro =
                     sortedSplitAmount.length > 0
                         ? sortedSplitAmount
-                            .filter(item => item.split_rule === transaction.sellerZoopPlan.markup.id)
+                            .filter(item => item.split_rule === markupTransaction.id)
                             .filter(item => item.installment === effectReceivable.installment)
                             .reduce((acc, { gross_amount }) => acc + parseFloat(gross_amount), 0)
                         : 0;
