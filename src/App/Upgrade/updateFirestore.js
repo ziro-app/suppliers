@@ -1,9 +1,10 @@
 import { db } from '../../Firebase/index';
 
-const updateFirestore = async (docId, categoryName, bankName, bankNumber, tipoConta, reason, accountNumber, agency) => {
+const updateFirestore = async (docId, categoryName, bankName, bankNumber, tipoConta, reason, accountNumber, agency, cpf) => {
   
   const update = async () => {
     await db.collection('suppliers').doc(docId).update({
+      cpf,
       categoria: categoryName,
       nomeBanco: bankName.includes(' - ') ? bankName.split(' - ')[1] : bankName,
       codBanco: bankNumber,

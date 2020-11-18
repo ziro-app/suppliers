@@ -159,12 +159,12 @@ const Register = () => {
             message: 'Data inválida'
         }, {
             name: 'fone',
-            validation: value => step === 2 ? /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(value) : true,
+            validation: value => step === 1 && value.length <= 14 && value !== "" ? /(^\(\d{2}\) \d{4}\-\d{4}$)/.test(value) : step === 1 && value.length === 15 ? /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(value) : true,
             value: fone,
             message: 'Telefone inválido'
         }, {
-            name: 'whatsapp',
-            validation: value => step === 2 ? /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(value) : true,
+            name: 'whatsApp',
+            validation: value => step === 1 && typeOfRegistration === 'Completo' && value === "" ? true : /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(value),
             value: whatsApp,
             message: 'WhatsApp inválido'
         }, {
@@ -316,7 +316,7 @@ const Register = () => {
 
     useEffect(() => fetch(setIsLoading, setIsError, setSuppliers), [])
     useEffect(() => fetchFantasia(setFantasias, setIsLoading, setIsError), [])
-    // useEffect(() => console.log("formToggle:", formToggle, "tipo:", typeOfRegistration, "step:", step), [step])
+    useEffect(() => console.log("formToggle:", formToggle, "tipo:", typeOfRegistration, "step:", step, "whatsapp:", whatsApp, "fone:", fone), [step])
 
     if (isLoading) return <div style={{ display: 'grid', marginTop: '15px' }}><Spinner size='5rem' /></div>
     if (isError) return <Error />
@@ -366,9 +366,10 @@ const Register = () => {
             
             {typeOfRegistration === 'Simplificado' && step === 1 && formToggle === false &&
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '20px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '20px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <GetCnpj cnpj={cnpj} setState={setState} baseCnpj={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
+                    <div style={{ marginTop: '-15px' }}>
                     <Form
                         buttonName="Cadastrar"
                         validations={validations}
@@ -388,7 +389,7 @@ const Register = () => {
                                     placeholder='Seu sobrenome'
                                 />
                             } />,
-                            <FormInput name='whatsapp' label='WhatsApp' input={
+                            <FormInput name='whatsApp' label='WhatsApp' input={
                                 // <InputText
                                 //     value={whatsApp}
                                 //     onChange={({ target: { value } }) => setWhatsApp(maskInput(value, '(##) #####-####', true))}
@@ -425,6 +426,7 @@ const Register = () => {
                             <FormInput name='cnpjValid' label='' input={<></>} />
                         ]}
                     />
+                    </div>
                     <div style={{ paddingTop: '15px' }} >
                         <Button
                             type="button"
@@ -437,7 +439,7 @@ const Register = () => {
             }
             {typeOfRegistration === 'Completo' && step === 1 && formToggle === true && 
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{
@@ -520,6 +522,12 @@ const Register = () => {
                                     placeholder='SP'
                                 />
                             } />,
+                            <FormInput name='fone' label='Telefone (opcional)' input={
+                                <InputPhone
+                                    value={fone}
+                                    setValue={setFone}
+                                />
+                            } />,
                             <FormInput name='category' label='Categoria' input={
                                 <Dropdown
                                     value={categoryName}
@@ -554,7 +562,7 @@ const Register = () => {
             }
             {typeOfRegistration === 'Completo' && step === 2 && formToggle === true && 
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{
@@ -567,7 +575,10 @@ const Register = () => {
                     <Form
                         buttonName="Avançar"
                         validations={validations}
-                        sendToBackend={() => setStep(step + 1)}
+                        sendToBackend={() => { 
+                            console.log(step)
+                            setStep(step + 1)
+                         }}
                         inputs={[
                             <FormInput name='fname' label='Nome' input={
                                 <InputText
@@ -598,13 +609,7 @@ const Register = () => {
                                     inputMode='numeric'
                                 />
                             } />,
-                            <FormInput name='fone' label='Telefone' input={
-                                <InputPhone
-                                    value={fone}
-                                    setValue={setFone}
-                                />
-                            } />,
-                            <FormInput name='whatsapp' label='WhatsApp' input={
+                            <FormInput name='whatsApp' label='WhatsApp' input={
                                 // <InputText
                                 //     value={whatsApp}
                                 //     onChange={({ target: { value } }) => setWhatsApp(maskInput(value, '(##) #####-####', true))}
@@ -652,7 +657,7 @@ const Register = () => {
             }
             {typeOfRegistration === 'Completo' && step === 3 && formToggle === true &&
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{
@@ -665,7 +670,10 @@ const Register = () => {
                     <Form
                         buttonName="Avançar"
                         validations={validations}
-                        sendToBackend={() => setStep(step + 1)}
+                        sendToBackend={() => {
+                            console.log(step)
+                            setStep(step + 1)
+                        }}
                         inputs={[
                             <FormInput name='idDoc' label='' LabelComponent={<DocText />} input={
                                 <SingleImageUpload
@@ -709,7 +717,7 @@ const Register = () => {
             }
             {typeOfRegistration === 'Completo' && step === 4 && formToggle === true && 
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{

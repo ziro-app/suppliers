@@ -53,7 +53,7 @@ const sendToBackend = (state) => () => {
 
       // Atualizando na collection suppliers no Firestore
       try{
-        await updateFirestore(docId, categoryName, bankName, bankNumber, tipoConta, reason, accountNumber, agency);
+        await updateFirestore(docId, categoryName, bankName, bankNumber, tipoConta, reason, accountNumber, agency, cpf);
         
         window.location.assign('/upgrade');
         

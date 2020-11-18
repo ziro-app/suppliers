@@ -111,7 +111,7 @@ const Router = ({ isLogged }) => {
         [matchMyReceipt ? location : null]: <Receipt {...paramsMyReceipt} receipt={receipt} setReceipt={setReceipt} />,
         [match ? location : null]: <Transactions {...params} setTransactionId={setTransactionId} />,
         '/update': (
-            <HeaderBack title="Atualizar informações" navigateTo="/login">
+            <HeaderBack title="Meus dados" navigateTo="/login">
                 <UpdateUserInfo />
             </HeaderBack>
         ),
