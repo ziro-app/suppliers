@@ -26,7 +26,7 @@ const updateSheets = async (userPos, cpf, nascimento, categoria, tipoConta, codB
             },
           ]
         },
-        'valueInputOption': 'user_entered'
+        'valueInputOption': 'raw'
       }
     });
   };

@@ -19,6 +19,7 @@ export default ({ transactions, btnMoreClick, hasMore, loadingMore, setTransacti
           btnMoreClick={btnMoreClick}
           hasMore={hasMore}
           isSearching={loadingMore}
+          messageEmptyTransactions={"Você ainda não realizou transações."}
         />
       </motion.div>
     </Menu>

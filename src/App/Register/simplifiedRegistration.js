@@ -46,7 +46,7 @@ const simplifiedRegistration = state => () => {
                 ]
             ]
         },
-        valueInputOption: 'user_entered'
+        valueInputOption: 'raw'
     }
 
     return new Promise(async (resolve, reject) => {
