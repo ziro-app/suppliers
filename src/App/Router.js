@@ -10,6 +10,7 @@ import { HeaderBack } from './HeaderBack/index';
 import InviteCollaborator from './InviteCollaborator/index';
 import Login from './Login/index';
 import LoginTrouble from '@bit/vitorbarbosa19.ziro.login-trouble';
+import LoginSupportPage from "./LoginSupportPage";
 import { Menu } from './Menu/index';
 import MyAccount from '@bit/vitorbarbosa19.ziro.my-account';
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found';
@@ -46,6 +47,7 @@ const Router = ({ isLogged }) => {
         '/login': <Login />,
         '/cadastrar': <Register />,
         '/problemas-acesso': <LoginTrouble navigateTo="/login" />,
+        '/pagina-suporte': <LoginSupportPage />,
         '/reenviar-email': <ResendEmail />,
         '/resetar-senha': <ResetPass />,
         '/confirmar-email': <ConfirmEmail />,
