@@ -77,62 +77,6 @@ const config = {
     }
 };
 
-const updateFirebase = async () => await db.collection('credit-card-payments').doc('kH54IbWjLx3q2w0ZvU4v').update({
-    status: "Pré Autorizado",
-    installments: "3",
-    datePaid: new Date("2020-11-17 15:40:00"),
-    dateLastUpdate: new Date("2020-11-17 15:40:00"),
-    cardBrand: "MasterCard",
-    cardholder: "tamara c l oliveira",
-    cardFirstFour: "5536",
-    cardLastFour: "8799",
-    transactionZoopId: "4fdc9a3583874df19e53560558101503",
-    receiptId: "fcf7bd54919a476eb446646414d6db85",
-    splitTransaction: {
-        antiFraud: { amount: 0, percentage: 0 },
-        markup: { amount: 0, percentage: 0 },
-    },
-    authorizer: "rede",
-    onBehalfOfBrand: "",
-    buyerStoreownerId: "naldrbxUCq5NGpbLIZQb",
-    buyerRazao: "TMOLIVEIRA COMERCIO DE ROUPAS LTDA"
-});
-
-const updateSheet = async () => {
-    const url = process.env.SHEET_URL;
-    const config = {
-        headers: {
-            'Content-type': 'application/json',
-            'Authorization': process.env.SHEET_TOKEN
-        }
-    };
-    const body = {
-        apiResource: 'values',
-        apiMethod: 'append',
-        spreadsheetId: "1FxCECEMVa66vpHsmucgFow6DVPpCGHgOiIfthEzJwPc",
-        range: 'Transacoes!A1',
-        resource: {
-            values: [
-                [
-                    "4fdc9a3583874df19e53560558101503",
-                    formatDateUTC3(new Date("2020-11-17T18:40:20+00:00")),
-                    "Pré Autorizado",
-                    "crédito",
-                    "3",
-                    "Closet Deluxe",
-                    "TMOLIVEIRA COMERCIO DE ROUPAS LTDA",
-                    "tamara c l oliveira",
-                    "MasterCard",
-                    `5536...8799`,
-                    "9.616,70"
-                ]
-            ]
-        },
-        valueInputOption: 'user_entered'
-    };
-    return await post(url, body, config);
-};
-
 const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days, receivables, { setIsLoading, setErrorLoading, setReceivables, setData, setLocation, setFinalDate, setHasMore, setLoadingMore, setTotalAmount, setDays, setCustomError, setTotalTransactions }) => {
     const source = axios.CancelToken.source();
     const fnDate = getFinalDate(initDate, 34);
@@ -195,9 +139,6 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
                     id
                 });
             }));
-
-            // await updateFirebase();
-            // await updateSheet();
 
             const updatedTotalTransactions = totalTransactions + totalTransactionsFetch;
             const rounded = parseFloat(round(totalAmount + totalAmountFetch, 2).toFixed(2));
