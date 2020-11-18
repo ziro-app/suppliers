@@ -69,6 +69,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
                                 .replace(/\s/g, '')}`
                             : '-';
                     let zoopSplitValue = zoopSplitFormatted !== '-' ? stringToFloat(zoopSplitFormatted.replace(/[R$\.,]/g, '').replace('-', '')) : 0;
+                    const { sellerZoopPlan: { activePlan } } = transaction;
                     block = [
                         {
                             header: 'Informações adicionais',
@@ -95,7 +96,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
                                 },
                                 {
                                     title: 'Recebimento',
-                                    content: transaction.receivement,
+                                    content: activePlan ?? 'Fluxo',
                                 },
                                 {
                                     title: 'Data recebimento',
