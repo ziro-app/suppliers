@@ -366,7 +366,7 @@ const Register = () => {
             
             {typeOfRegistration === 'Simplificado' && step === 1 && formToggle === false &&
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '20px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <GetCnpj cnpj={cnpj} setState={setState} baseCnpj={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
                     <div style={{ marginTop: '-15px' }}>
@@ -439,7 +439,7 @@ const Register = () => {
             }
             {typeOfRegistration === 'Completo' && step === 1 && formToggle === true && 
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{
@@ -562,7 +562,7 @@ const Register = () => {
             }
             {typeOfRegistration === 'Completo' && step === 2 && formToggle === true && 
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{
@@ -657,7 +657,7 @@ const Register = () => {
             }
             {typeOfRegistration === 'Completo' && step === 3 && formToggle === true &&
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{
@@ -717,7 +717,7 @@ const Register = () => {
             }
             {typeOfRegistration === 'Completo' && step === 4 && formToggle === true && 
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{

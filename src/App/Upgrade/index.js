@@ -265,7 +265,7 @@ function Upgrade() {
       
       {typeRegister === "Simplificado" && step === 1 &&
         <>
-        <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitle} body={supportModalBody} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+        <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitle} body={supportModalBody} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
         
         <div style={{ textAlign: 'center', padding: '20px 0px 15px' }}>
           <label style={{
@@ -350,7 +350,7 @@ function Upgrade() {
       }
       {step === 2 && 
         <>
-        <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitle} body={supportModalBody} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+        <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitle} body={supportModalBody} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
         <div style={{ textAlign: 'center', padding: '20px 0px 15px' }}>
           <label style={{
@@ -445,7 +445,7 @@ function Upgrade() {
       }
       {step === 3 && 
         <>
-        <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitle} body={supportModalBody} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+        <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitle} body={supportModalBody} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
         
         <div style={{ textAlign: 'center', padding: '20px 0px 15px' }}>
           <label style={{
