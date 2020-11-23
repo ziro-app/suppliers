@@ -18,7 +18,8 @@ import sendToBackend from './sendToBackend';
 import { AtvdText, CnpjText, DocText, HomeText } from './modals';
 import { userContext } from '../appContext';
 import { getSteps } from './getSteps';
-import { advantagesDiv, iconStyle, advantagesLabel, innerAdvantagesDiv, advantagesContainer } from './styles';
+import { advantagesDiv, advantagesLabel, innerAdvantagesDiv, advantagesContainer } from './styles';
+import validateDocuments from '../utils/validateDocuments';
 
 const categories = {
     'Bijouterias': '09',
@@ -86,7 +87,7 @@ function Upgrade() {
     },
     {
       name: 'cpf',
-      validation: value => /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)/.test(value),
+      validation: value => /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)/.test(value) && validateDocuments(value),
       value: cpf,
       message: 'CPF inválido'
     },
@@ -211,35 +212,35 @@ function Upgrade() {
           <div style={advantagesContainer}>
             <div style={advantagesDiv}>
               <div style={innerAdvantagesDiv}>
-                <Icon type='whats' size={15} strokeWidth={2} />
+                <Icon type='whats' size={15} strokeWidth={2} style={{ background: 'white' }}/>
               </div>
               <label style={advantagesLabel}>Links compartilháveis via WhatsApp;</label>
             </div>
             
             <div style={advantagesDiv}>
               <div style={innerAdvantagesDiv}>
-                <Icon type='check' size={15} strokeWidth={2} />
+                <Icon type='check' size={15} strokeWidth={2} style={{ background: 'white' }} />
               </div>
               <label style={advantagesLabel}>Transação aprovada em tempo real;</label>
             </div>
             
             <div style={advantagesDiv}>
               <div style={innerAdvantagesDiv}>
-                <Icon type='lock' size={15} strokeWidth={2} />
+                <Icon type='lock' size={15} strokeWidth={2} style={{ background: 'white' }} />
               </div>
               <label style={advantagesLabel}>Seguro integral contra fraudes;</label>
             </div>
             
             <div style={advantagesDiv}>
               <div style={innerAdvantagesDiv}>
-                <Icon type='card' size={15} strokeWidth={2} />
+                <Icon type='card' size={15} strokeWidth={2} style={{ background: 'white' }} />
               </div>
               <label style={advantagesLabel}>Antecipação de recebíveis D+14;</label>
             </div>
             
             <div style={advantagesDiv}>
               <div style={innerAdvantagesDiv}>
-                <Icon type='money' size={15} strokeWidth={2} />
+                <Icon type='money' size={15} strokeWidth={2} style={{ background: 'white' }} />
               </div>
               <label style={advantagesLabel}>Seu dinheiro cai direto na sua conta sem passar por nós.</label>
             </div>
