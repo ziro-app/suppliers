@@ -22,11 +22,20 @@ const updateSheets = async (userPos, cpf, nascimento, categoria, tipoConta, codB
           'data': [
             {
               'range': `Base!N${userPos}:U${userPos}`,
-              'values': [[`${cpf}`, `${nascimento}`, `${categoria}`, `${tipoConta}`, `${codBanco}`, `${titular}`, `${agencia}`, `${numConta}`]]
+              'values': [[
+                `${cpf}`,
+                `${nascimento}`,
+                `${categoria}`,
+                `${tipoConta}`,
+                codBanco.startsWith('0') ? `'${codBanco}` : codBanco,
+                `${titular}`,
+                agencia.startsWith('0') ? `'${agencia}` : agencia,
+                numConta.startsWith('0') ? `'${numConta}` : numConta,
+              ]]
             },
           ]
         },
-        'valueInputOption': 'raw'
+        'valueInputOption': 'user_entered'
       }
     });
   };

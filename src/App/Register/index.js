@@ -316,7 +316,7 @@ const Register = () => {
 
     useEffect(() => fetch(setIsLoading, setIsError, setSuppliers), [])
     useEffect(() => fetchFantasia(setFantasias, setIsLoading, setIsError), [])
-    useEffect(() => console.log("formToggle:", formToggle, "tipo:", typeOfRegistration, "step:", step, "whatsapp:", whatsApp, "fone:", fone), [step])
+    // useEffect(() => console.log("formToggle:", formToggle, "tipo:", typeOfRegistration, "step:", step, "whatsapp:", whatsApp, "fone:", fone), [step])
 
     if (isLoading) return <div style={{ display: 'grid', marginTop: '15px' }}><Spinner size='5rem' /></div>
     if (isError) return <Error />

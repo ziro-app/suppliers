@@ -84,7 +84,7 @@ export const supportModalTitle = (
 );
 
 export const supportModalBody = (
-    <div style={{ height: '50vh', overflowY: 'scroll' }}>
+    <div>
         <label style={{ fontWeight: 'normal', paddingBottom: '20px' }}>Você pode criar uma conta já habilitada para vendas online marcando 'Sim'. Veja as vantagens:</label>
 
         <div style={advantagesContainer}>

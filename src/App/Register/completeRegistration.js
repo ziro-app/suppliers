@@ -53,8 +53,8 @@ const completeRegistration = state => () => {
                     accountTypeViewName,
                     bankNumber.startsWith('0') ? `'${bankNumber}` : bankNumber,
                     reason,
-                    `'${agency}`,
-                    accountNumber
+                    agency.startsWith('0') ? `'${agency}` : agency,
+                    accountNumber.startsWith('0') ? `'${accountNumber}` : accountNumber
                 ]
             ]
         },
