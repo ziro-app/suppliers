@@ -21,6 +21,11 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
     const [snapshotMemo, setSnapshotMemo] = useState({});
     const history = createBrowserHistory();
     const [, setLocation] = useLocation();
+    const matchPlan = {
+        'standard': 'Fluxo',
+        'financed30': 'D+30',
+        'financed14': 'D+14'
+    }
     let markupTransaction = {};
     let antiFraudTransaction = {};
     async function getTransaction(transactionId, setTransaction, setError, transaction) {
@@ -100,7 +105,7 @@ const ReceivableDetails = ({ transactions, transactionId, receivableId, transact
                                 },
                                 {
                                     title: 'Recebimento',
-                                    content: activePlan ?? 'Fluxo',
+                                    content: matchPlan[activePlan] ?? 'Fluxo',
                                 },
                                 {
                                     title: 'Data recebimento',
