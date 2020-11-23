@@ -287,6 +287,7 @@ function Upgrade() {
                     value={cpf}
                     onChange={({ target: { value } }) => setCpf(maskInput(value, '###.###.###-##', true))}
                     placeholder='000.000.000-00'
+                    inputMode="numeric"
                   />
                 }
               />,
