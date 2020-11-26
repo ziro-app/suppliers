@@ -85,7 +85,7 @@ const Register = () => {
     const [accountTypeViewName, setAccountTypeViewName] = useState('')
     const [accountType, setAccountType] = useState('')
     const accountTypeList = ['Conta Corrente', 'Conta Poupança']
-    const validCnaes = ['47.81-4-00', '14.12-6-01', '14.12-6-03', '46.41-9-01', '46.42-7-01', '14.12-6-02'];
+    const validCnaes = ['47.81-4-00', '14.12-6-01', '14.12-6-03', '46.41-9-01', '46.42-7-01', '14.12-6-02', '15.31-9-01', '15.33-5-00', '15.39-4-00', '15.40-8-00'];
     const cnpjUrl = process.env.CNPJ_URL || '';
     const cnpjToken = process.env.CNPJ_TOKEN || '';
 
@@ -335,7 +335,7 @@ const Register = () => {
                     <label style={{ color: 'rgb(34, 34, 34)', marginTop: '10px' }}>
                         Comece agora a fazer consultas gratuitas no SERASA e evite fraudes e inadimplência. São 10 consultas gratuitas por mês!
                     </label>
-                    
+
                     <label style={{ color: 'rgb(34, 34, 34)', marginTop: '10px' }}>
                         Você também pode se cadastrar para criar links de pagamento e vender online via WhatsApp.
                     </label>
@@ -355,77 +355,77 @@ const Register = () => {
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', marginTop: '20px', opacity: '1' }}>
                         <Button
-                        type='button'
-                        cta='Criar conta'
-                        template='regular'
-                        click={() => setStep(step + 1)}
+                            type='button'
+                            cta='Criar conta'
+                            template='regular'
+                            click={() => setStep(step + 1)}
                         />
                     </div>
                 </div>
-            : undefined}
-            
+                : undefined}
+
             {typeOfRegistration === 'Simplificado' && step === 1 && formToggle === false &&
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150} illustrationSize={150} illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <GetCnpj cnpj={cnpj} setState={setState} baseCnpj={suppliers} setCnpjValid={setCnpjValid} validCnaes={validCnaes} />
                     <div style={{ marginTop: '-15px' }}>
-                    <Form
-                        buttonName="Cadastrar"
-                        validations={validations}
-                        sendToBackend={simplifiedRegistration ? simplifiedRegistration(state) : () => null}
-                        inputs={[
-                            <FormInput name='fname' label='Nome' input={
-                                <InputText
-                                    value={fname}
-                                    onChange={({ target: { value } }) => setFName(capitalize(value))}
-                                    placeholder='Seu nome'
-                                />
-                            } />,
-                            <FormInput name='lname' label='Sobrenome' input={
-                                <InputText
-                                    value={lname}
-                                    onChange={({ target: { value } }) => setLName(capitalize(value))}
-                                    placeholder='Seu sobrenome'
-                                />
-                            } />,
-                            <FormInput name='whatsApp' label='WhatsApp' input={
-                                // <InputText
-                                //     value={whatsApp}
-                                //     onChange={({ target: { value } }) => setWhatsApp(maskInput(value, '(##) #####-####', true))}
-                                //     placeholder='(11) 99999-9999'
-                                //     inputMode='numeric'
-                                // />
-                                <InputPhone 
-                                    value={whatsApp}
-                                    setValue={setWhatsApp}
-                                />
-                            } />,
-                            <FormInput name='email' label='Email' input={
-                                <InputEmail
-                                    value={email}
-                                    setValue={setEmail}
-                                />
-                            } />,
-                            <FormInput name='pass' label='Senha' input={
-                                <InputText
-                                    value={pass}
-                                    onChange={({ target: { value } }) => setPass(value)}
-                                    placeholder='Mínimo 6 caracteres'
-                                    type='password'
-                                />
-                            } />,
-                            <FormInput name='confirmPass' label='Confirme a senha' input={
-                                <InputText
-                                    value={confirmPass}
-                                    onChange={({ target: { value } }) => setConfirmPass(value)}
-                                    placeholder='Igual ao campo anterior'
-                                    type='password'
-                                />
-                            } />,
-                            <FormInput name='cnpjValid' label='' input={<></>} />
-                        ]}
-                    />
+                        <Form
+                            buttonName="Cadastrar"
+                            validations={validations}
+                            sendToBackend={simplifiedRegistration ? simplifiedRegistration(state) : () => null}
+                            inputs={[
+                                <FormInput name='fname' label='Nome' input={
+                                    <InputText
+                                        value={fname}
+                                        onChange={({ target: { value } }) => setFName(capitalize(value))}
+                                        placeholder='Seu nome'
+                                    />
+                                } />,
+                                <FormInput name='lname' label='Sobrenome' input={
+                                    <InputText
+                                        value={lname}
+                                        onChange={({ target: { value } }) => setLName(capitalize(value))}
+                                        placeholder='Seu sobrenome'
+                                    />
+                                } />,
+                                <FormInput name='whatsApp' label='WhatsApp' input={
+                                    // <InputText
+                                    //     value={whatsApp}
+                                    //     onChange={({ target: { value } }) => setWhatsApp(maskInput(value, '(##) #####-####', true))}
+                                    //     placeholder='(11) 99999-9999'
+                                    //     inputMode='numeric'
+                                    // />
+                                    <InputPhone
+                                        value={whatsApp}
+                                        setValue={setWhatsApp}
+                                    />
+                                } />,
+                                <FormInput name='email' label='Email' input={
+                                    <InputEmail
+                                        value={email}
+                                        setValue={setEmail}
+                                    />
+                                } />,
+                                <FormInput name='pass' label='Senha' input={
+                                    <InputText
+                                        value={pass}
+                                        onChange={({ target: { value } }) => setPass(value)}
+                                        placeholder='Mínimo 6 caracteres'
+                                        type='password'
+                                    />
+                                } />,
+                                <FormInput name='confirmPass' label='Confirme a senha' input={
+                                    <InputText
+                                        value={confirmPass}
+                                        onChange={({ target: { value } }) => setConfirmPass(value)}
+                                        placeholder='Igual ao campo anterior'
+                                        type='password'
+                                    />
+                                } />,
+                                <FormInput name='cnpjValid' label='' input={<></>} />
+                            ]}
+                        />
                     </div>
                     <div style={{ paddingTop: '15px' }} >
                         <Button
@@ -437,9 +437,9 @@ const Register = () => {
                     </div>
                 </>
             }
-            {typeOfRegistration === 'Completo' && step === 1 && formToggle === true && 
+            {typeOfRegistration === 'Completo' && step === 1 && formToggle === true &&
                 <>
-                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150}illustrationSize={150}  title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
+                    <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150} illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
                     <div style={{ textAlign: 'center', padding: '0px 0px 20px' }}>
                         <label style={{
@@ -560,7 +560,7 @@ const Register = () => {
                     </div>
                 </>
             }
-            {typeOfRegistration === 'Completo' && step === 2 && formToggle === true && 
+            {typeOfRegistration === 'Completo' && step === 2 && formToggle === true &&
                 <>
                     <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' illustrationSize={150} illustrationSize={150} title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
@@ -571,14 +571,14 @@ const Register = () => {
                             fontWeight: 'bold'
                         }}>Dados Pessoais</label>
                     </div>
-                    
+
                     <Form
                         buttonName="Avançar"
                         validations={validations}
-                        sendToBackend={() => { 
+                        sendToBackend={() => {
                             console.log(step)
                             setStep(step + 1)
-                         }}
+                        }}
                         inputs={[
                             <FormInput name='fname' label='Nome' input={
                                 <InputText
@@ -716,7 +716,7 @@ const Register = () => {
                     </div>
                 </>
             }
-            {typeOfRegistration === 'Completo' && step === 4 && formToggle === true && 
+            {typeOfRegistration === 'Completo' && step === 4 && formToggle === true &&
                 <>
                     <p style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-10px', marginBottom: '10px' }}>Preencha os dados abaixo e<br /> qualquer dúvida fale conosco. <TooltipHelp illustration='chatting' title={supportModalTitleRegister} body={supportModalBodyRegister} iconColor='#2D9CDB' iconSize={20} supportButton /></p>
 
