@@ -2,48 +2,43 @@ import React, { useContext, useEffect, useState } from 'react';
 import { createBrowserHistory } from 'history';
 import { motion } from 'framer-motion';
 import Error from '@bit/vitorbarbosa19.ziro.error';
-import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
+import Spinner from '@bit/vitorbarbosa19.ziro.spinner-with-div'
 import { userContext } from '../appContext';
 import ReceivableDetails from './ReceivableDetails/index';
 import TransactionDetails from './TransactionDetails/index';
 import TransactionsList from './TransactionsList/index';
-import getDoc from './getDoc';
 import fetch from './fetch';
-import { spinner } from './styles';
 
 const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
+    const storageFilterStatus = localStorage.getItem('statusFilter')
+    const storageFilterMonth = localStorage.getItem('monthFilter')
+    const storageFilterClient = localStorage.getItem('clientFilter')
+    const [statusFilter, setStatusFilter] = useState(storageFilterStatus || '');
+    const [monthFilter, setMonthFilter] = useState(storageFilterMonth || '');
+    const [clientFilter, setClientFilter] = useState(storageFilterClient || '')
+    const [clientList, setClientList] = useState([])
+    const [limitFetch, setLimitFetch] = useState(20);
     const [transaction, setTransaction] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
     const [loadingMore, setLoadingMore] = useState(false);
     const [payments, setPayments] = useState([]);
+    const [firstDate, setFirstDate] = useState(new Date())
+    const [isLoadingResults, setIsLoadingResults] = useState(false)
     const [totalTransactions, setTotalTransactions] = useState(-1);
     const [lastDoc, setLastDoc] = useState(null);
     const snap = { payments, totalTransactions, lastDoc };
     const { zoopId, docId, role } = useContext(userContext);
-    const history = createBrowserHistory();
+    const isCollaborator = role !== ''
+    const state = {limitFetch, setLimitFetch, isLoadingResults, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, payments, setPayments, zoopId, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore, docId, isCollaborator, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction}
 
     useEffect(() => {
-        const { state } = history.location;
-
-        const useTransactionsMemo = async transactionsMemo => {
-            const { payments, totalTransactions, lastDoc } = transactionsMemo;
-            const ref = await getDoc(lastDoc);
-            setPayments(payments);
-            setTotalTransactions(totalTransactions);
-            setLastDoc(ref);
-            setIsLoading(false);
-        };
-
-        if (state && state.transactionsMemo) useTransactionsMemo(state.transactionsMemo);
-        else fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore, docId, role !== '');
-    }, []);
+        fetch(state);
+    }, [isLoadingResults]);
 
     if (isLoading)
         return (
-            <div style={spinner}>
-                <Spinner size="5rem" />
-            </div>
+            <Spinner size="5rem" />
         );
 
     if (errorLoading) return <Error />;
@@ -63,14 +58,13 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <TransactionsList
-                transactions={payments}
                 btnMoreClick={() => {
                     setLoadingMore(true);
-                    fetch(setIsLoading, setErrorLoading, payments, setPayments, zoopId, 10, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore, docId, role !== '');
+                    setLimitFetch(limitFetch + 20)
+                    fetch({...state, limitFetch:limitFetch + 20});
                 }}
                 hasMore={!(payments.length === totalTransactions)}
-                loadingMore={loadingMore}
-                setTransaction={setTransaction}
+                state={state}
             />
         </motion.div>
     );

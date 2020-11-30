@@ -1,16 +1,19 @@
 import currencyFormat from '@ziro/currency-format';
-import { dateFormat } from './utils';
-import { db } from '../../Firebase/index';
+import { dateFormat, removeDuplicates, getFilterQuery } from './utils';
 import matchStatusColor from './matchStatusColor';
 
-const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, limit, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore, docId, isCollaborator) => {
+const fetch = (state) => {
+    const {limitFetch:limit, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, payments, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator} = state
+    const storageFilterClient = localStorage.getItem('clientFilter')
+    const storageFilterStatus = localStorage.getItem('statusFilter')
+    const storageFilterMonth = localStorage.getItem('monthFilter')
+    console.log(limit)
     let query;
     if (isCollaborator) {
-        query = db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).orderBy('dateLastUpdate', 'desc').limit(limit);
+        query = getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).limit(limit);
     } else {
-        query = db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).orderBy('dateLastUpdate', 'desc').limit(limit);
+        query = getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).limit(limit);;
     }
-    if (lastDoc) query = query.startAfter(lastDoc);
 
     const run = async () => {
         try {
@@ -18,12 +21,23 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                 async snapshot => {
                     let collectionData;
                     if (isCollaborator) {
-                        collectionData = await db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).get();
+                        collectionData = await getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).get();
                     } else {
-                        collectionData = await db.collection('credit-card-payments').where('sellerZoopId', '==', zoopId).get();
+                        collectionData = await getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).get();
                     }
+                    const listClients = []
+                    const listDates = []
+                    collectionData.forEach(doc => {
+                        listClients.push(doc.data().buyerRazao)
+                        listDates.push(doc.data().dateLastUpdate.toDate())
+                    })
+                    setClientList(removeDuplicates(listClients.filter(Boolean)))
                     setTotalTransactions(collectionData.docs.length);
+                    const minDate = new Date(Math.min.apply(null,listDates));
+                    setFirstDate(minDate)
                     const paymentDoc = [];
+                    const datesList = [];
+                    const clientsList = [];
                     if (!snapshot.empty) {
                         snapshot.forEach(doc => {
                             const {
@@ -47,41 +61,44 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
                             } = doc.data();
                             const chargeFormatted = currencyFormat(charge);
                             const dateFormatted = dateLastUpdate ? dateFormat(dateLastUpdate) : '';
+                            clientsList.push(buyerRazao)
+                            datesList.push(dateLinkCreated)
                             paymentDoc.push({
-                                transactionZoopId: transactionZoopId ? transactionZoopId : '',
+                                transactionZoopId: transactionZoopId || '',
                                 transactionId: doc.id,
                                 charge: chargeFormatted,
                                 dateLinkCreated,
                                 date: dateFormatted,
-                                fees: fees ? fees : '',
-                                installments: installments ? installments : '',
-                                installmentsMax: installmentsMax ? installmentsMax : '',
-                                seller: buyerRazao ? buyerRazao : '-',
-                                sellerZoopId: sellerZoopId ? sellerZoopId : '',
-                                status: status ? status : '',
+                                fees: fees || '',
+                                installments: installments || '',
+                                installmentsMax: installmentsMax || '',
+                                seller: buyerRazao || '-',
+                                sellerZoopId: sellerZoopId || '',
+                                status: status || '',
                                 statusColor: matchStatusColor(status),
                                 buyerRazao,
-                                receivables: receivables ? receivables : [],
-                                receiptId: receiptId ? receiptId : '',
+                                receivables: receivables || [],
+                                receiptId: receiptId || '',
                                 sellerZoopPlan: sellerZoopPlan || '',
                                 insurance: insurance || false,
                                 observations,
                                 splitTransaction
                             });
                         });
-                        setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
-                        setPayments([...payments, ...paymentDoc]);
+                        setPayments([...paymentDoc]);
+                        setIsLoadingResults(false)
                     } else {
-                        setLastDoc(null);
                         setPayments([]);
                     }
                     setIsLoading(false);
                     setLoadingMore(false);
+                    setIsLoadingResults(false)
                 },
                 error => {
                     console.log(error);
                     setIsLoading(false);
                     setLoadingMore(false);
+                    setIsLoadingResults(false)
                 },
             );
         } catch (error) {
@@ -89,6 +106,7 @@ const fetch = (setIsLoading, setErrorLoading, payments, setPayments, zoopId, lim
             setErrorLoading(true);
             setIsLoading(false);
             setLoadingMore(false);
+            setIsLoadingResults(false)
         }
     };
     run();
