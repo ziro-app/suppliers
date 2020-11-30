@@ -55,7 +55,8 @@ export const
 		boxShadow: 'rgba(34, 34, 34, 0.7) 0px 3px 11px -4px',
 		borderRadius: '100%',
 		width: '30px',
-		height: '30px'
+		height: '30px',
+		background: 'white'
 	},
 	advantagesLabel = {
 		fontSize: '1.6rem',
