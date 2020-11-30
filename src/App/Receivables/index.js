@@ -41,14 +41,14 @@ const Receivables = ({ receivableId }) => {
         setDays, setCustomError, setTotalTransactions, setBalance
     };
     const state = { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days, totalTransactions, balance };
-    const { zoopId, payoutAutomatic } = useContext(userContext);
+    const { zoopId, payoutAutomatic, fantasy } = useContext(userContext);
 
     const handleClick = () => {
         setLoadingMore(true);
         let day = new Date(finalDate);
         day.setDate(finalDate.getDate() + 1);
         setInitDate(day);
-        fetch(zoopId, day, totalAmount, totalTransactions, data, days, receivables, setState);
+        fetch(zoopId, day, totalAmount, totalTransactions, data, days, receivables, fantasy, setState);
     };
 
     const mountTable = (tableRows, totalAmount, totalTransactions) => {
@@ -92,7 +92,7 @@ const Receivables = ({ receivableId }) => {
         else if (localSnapshot) useSnapshot(localSnapshot);
         else {
             fetchBalance(zoopId, setState);
-            fetch(zoopId, initDate, totalAmount, totalTransactions, data, days, receivables, setState);
+            fetch(zoopId, initDate, totalAmount, totalTransactions, data, days, receivables, fantasy, setState);
         }
     }, []);
 
