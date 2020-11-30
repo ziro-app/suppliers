@@ -16,7 +16,8 @@ export const btnClearAll = {
     outline:'none',
     border:'none',
     background:'none',
-    textAlign:'rigth'
+    textAlign:'rigth',
+    marginBottom:'20px'
 }
 
 export const textClearAll = {
