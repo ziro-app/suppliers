@@ -95,7 +95,7 @@ export const getListMonth = (dataEntrada) => {
 
 export const getRangeMonth = (date) => {
     const [mes, ano] = date.split('/')
-    return [new Date(ano, mes-1, 1), new Date(ano, mes, 0)]
+    return [new Date(ano, mes-1, 1), new Date(ano, mes, 0, 23, 59, 59)]
 }
 
 function filterName({storageFilterClient, storageFilterStatus, storageFilterMonth}){
@@ -112,6 +112,7 @@ function filterName({storageFilterClient, storageFilterStatus, storageFilterMont
 export function getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}) {
     const newFilterMonth = toMMYYYY(storageFilterMonth)
     const [dataInicio, dataFim] = newFilterMonth ? getRangeMonth(newFilterMonth) : [null, null]
+    console.log(dataFim)
     const type = filterName({storageFilterClient, storageFilterStatus, storageFilterMonth})
         switch (type) {
             case 'allFilters':

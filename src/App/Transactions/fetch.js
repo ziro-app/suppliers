@@ -3,11 +3,11 @@ import { dateFormat, removeDuplicates, getFilterQuery } from './utils';
 import matchStatusColor from './matchStatusColor';
 
 const fetch = (state) => {
-    const {limitFetch:limit, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, payments, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator} = state
-    const storageFilterClient = localStorage.getItem('clientFilter')
-    const storageFilterStatus = localStorage.getItem('statusFilter')
-    const storageFilterMonth = localStorage.getItem('monthFilter')
-    console.log(limit)
+    const {statusFilter, monthFilter, clientFilter, limitFetch:limit, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, payments, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator} = state
+    console.log(monthFilter)
+    const storageFilterClient = clientFilter || localStorage.getItem('clientFilter')
+    const storageFilterStatus = statusFilter || localStorage.getItem('statusFilter')
+    const storageFilterMonth = monthFilter || localStorage.getItem('monthFilter')
     let query;
     if (isCollaborator) {
         query = getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).limit(limit);
