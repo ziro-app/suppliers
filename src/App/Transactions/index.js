@@ -26,11 +26,10 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
     const [firstDate, setFirstDate] = useState(new Date())
     const [isLoadingResults, setIsLoadingResults] = useState(false)
     const [totalTransactions, setTotalTransactions] = useState(-1);
-    const [lastDoc, setLastDoc] = useState(null);
-    const snap = { payments, totalTransactions, lastDoc };
+    const snap = { payments, totalTransactions };
     const { zoopId, docId, role } = useContext(userContext);
     const isCollaborator = role !== ''
-    const state = {limitFetch, setLimitFetch, isLoadingResults, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, payments, setPayments, zoopId, lastDoc, setLastDoc, setTotalTransactions, setLoadingMore, docId, isCollaborator, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction}
+    const state = { limitFetch, setLimitFetch, isLoadingResults, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, payments, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction }
 
     useEffect(() => {
         fetch(state);
@@ -61,7 +60,7 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
                 btnMoreClick={() => {
                     setLoadingMore(true);
                     setLimitFetch(limitFetch + 20)
-                    fetch({...state, limitFetch:limitFetch + 20});
+                    fetch({ ...state, limitFetch: limitFetch + 20 });
                 }}
                 hasMore={!(payments.length === totalTransactions)}
                 state={state}
