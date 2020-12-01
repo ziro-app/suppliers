@@ -1,6 +1,7 @@
 import capitalize from '@ziro/capitalize';
 
 const currency = value => (parseFloat(value) / 100).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace(/\s/g, '');
+const parcelFormat = array => array.sort().toLocaleString();
 
 const fetch = (receivables, receivableId, { setDate, setBlocks, setIsError, setCustomError, setIsLoading }) => {
     const run = async () => {
@@ -42,7 +43,7 @@ const fetch = (receivables, receivableId, { setDate, setBlocks, setIsError, setC
                             },
                             {
                                 title: 'Parcela(s) à pagar',
-                                content: installment_number ? installment_number : '1'
+                                content: installment_number ? parcelFormat(installment_number) : '1'
                             }
                         ],
                     });

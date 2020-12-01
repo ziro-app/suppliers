@@ -79,7 +79,7 @@ const sendToBackend = state => () => {
                 } catch (error) {
                     throw { msg: 'Erro ao realizar a cópia', copyError: true };
                 }
-                resolve('Link copiado');
+                resolve('Link copiado. Só usar CTRL+V');
                 setCharge('');
                 setInstallmentsMax('');
                 setObservations('');
