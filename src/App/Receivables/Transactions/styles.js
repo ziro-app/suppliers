@@ -1,4 +1,4 @@
-import { fontTitle, gradient, shadow } from '@ziro/theme';
+import { fontTitle, fontSizeSmall, gradient, shadow } from '@ziro/theme';
 
 export const
     spinner = {
@@ -24,4 +24,11 @@ export const
         textAlign: 'center',
         background: gradient,
         boxShadow: `${shadow}`
+    },
+    statusText = {
+        textAlign: 'center',
+        maxWidth: '500px',
+        fontFamily: fontTitle,
+        fontSize: fontSizeSmall,
+        textTransform: 'uppercase'
     }

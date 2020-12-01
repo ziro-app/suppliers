@@ -17,7 +17,7 @@ import Transactions from './Transactions/index';
 import { btn, cellStyle, contentStyle, customGrid, info, spinner, titleStyle } from './styles';
 import fetch from './fetch';
 import fetchBalance from './fetchBalance';
-import convertCsv from './convertCsv';
+import convertCsv from './utils/convertCsv';
 
 const Receivables = ({ receivableId }) => {
     const [isLoading, setIsLoading] = useState(true);
