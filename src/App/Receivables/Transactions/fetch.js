@@ -11,109 +11,42 @@ const fetch = (receivables, receivableId, { setDate, setBlocks, setIsError, setC
                 setDate(receivableEffect.date);
                 let block = [];
                 receivableEffect.items.map((transac, index) => {
-                    const { id, docRef, reason, amount, net, ziroPay, antifraud, installment_plan, commission, split, fees } = transac;
-                    let blockBody = {};
-                    if (commission) {
-                        blockBody = {
-                            id,
-                            header: `Venda ${index + 1}`,
-                            body: [
-                                {
-                                    title: 'Tipo de recebimento',
-                                    content: 'Comissão',
-                                },
-                                {
-                                    title: 'Valor',
-                                    content: amount ? currency(amount) : 'R$0,00',
-                                },
-                                {
-                                    title: 'Tarifas Zoop',
-                                    content: fees && parseInt(fees) > 0 ? `- ${currency(fees)}` : '-',
-                                },
-                                {
-                                    title: 'Valor líquido',
-                                    content: net ? `${currency(net)}` : 'R$0,00',
-                                }
-                            ],
-                            commission
-                        };
-                    } else if (split) {
-                        const { number_installments, installment_number } = installment_plan;
-                        blockBody = {
-                            id,
-                            // docId: docRef,
-                            header: `Venda ${index + 1}`,
-                            body: [
-                                {
-                                    title: 'Tipo de recebimento',
-                                    content: 'Split',
-                                },
-                                {
-                                    title: 'Lojista',
-                                    content: reason ? capitalize(reason) : '-',
-                                },
-                                {
-                                    title: 'Tarifa Ziro Pay',
-                                    content: ziroPay && parseInt(ziroPay) > 0 ? currency(ziroPay) : '-',
-                                },
-                                {
-                                    title: 'Tarifa Ziro Seguro Antifraude',
-                                    content: antifraud && parseInt(antifraud) > 0 ? currency(antifraud) : '-',
-                                },
-                                {
-                                    title: 'Valor total',
-                                    content: net ? `${currency(net)}` : 'R$0,00',
-                                },
-                                {
-                                    title: 'Total de parcelas',
-                                    content: number_installments
-                                },
-                                {
-                                    title: 'Parcela(s) à pagar',
-                                    content: installment_number ? parcelFormat(installment_number) : '1'
-                                }
-                            ],
-                            split: true
-                        };
-                    } else {
-                        const { number_installments, installment_number } = installment_plan;
-                        blockBody = {
-                            id,
-                            docId: docRef,
-                            header: `Venda ${index + 1}`,
-                            body: [
-                                {
-                                    title: 'Lojista',
-                                    content: reason ? capitalize(reason) : '-',
-                                },
-                                {
-                                    title: 'Valor à pagar',
-                                    content: amount ? currency(amount) : 'R$0,00',
-                                },
-                                {
-                                    title: 'Tarifa Ziro Pay',
-                                    content: ziroPay && parseInt(ziroPay) > 0 ? `- ${currency(ziroPay)}` : '-',
-                                },
-                                {
-                                    title: 'Tarifa Ziro Seguro Antifraude',
-                                    content: antifraud && parseInt(antifraud) > 0 ? `- ${currency(antifraud)}` : '-',
-                                },
-                                {
-                                    title: 'Valor líquido',
-                                    content: net ? `${currency(net)}` : 'R$0,00',
-                                },
-                                {
-                                    title: 'Total de parcelas',
-                                    content: number_installments
-                                },
-                                {
-                                    title: 'Parcela(s) à pagar',
-                                    content: installment_number ? parcelFormat(installment_number) : '1'
-                                }
-                            ]
-                        };
-                    }
-                    block.push(blockBody);
+                    const { id, docRef, reason, amount, net, ziroPay, antifraud, installment_plan: { number_installments, installment_number } } = transac;
+                    block.push({
+                        id,
+                        docId: docRef,
+                        header: `Venda ${index + 1}`,
+                        body: [
+                            {
+                                title: 'Lojista',
+                                content: reason ? capitalize(reason) : '-',
+                            },
+                            {
+                                title: 'Valor à pagar',
+                                content: amount ? currency(amount) : 'R$0,00',
+                            },
+                            {
+                                title: 'Tarifa Ziro Pay',
+                                content: ziroPay && parseInt(ziroPay) > 0 ? `- ${currency(ziroPay)}` : '-',
+                            },
+                            {
+                                title: 'Tarifa Ziro Seguro Antifraude',
+                                content: antifraud && parseInt(antifraud) > 0 ? `- ${currency(antifraud)}` : '-',
+                            },
+                            {
+                                title: 'Valor líquido',
+                                content: net ? `${currency(net)}` : 'R$0,00',
+                            },
+                            {
+                                title: 'Total de parcelas',
+                                content: number_installments
+                            },
+                            {
+                                title: 'Parcela(s) à pagar',
+                                content: installment_number ? parcelFormat(installment_number) : '1'
+                            }
+                        ]
+                    });
                 });
                 setBlocks(block);
                 setIsLoading(false);

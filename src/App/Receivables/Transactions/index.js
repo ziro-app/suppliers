@@ -8,7 +8,7 @@ import Error from '@bit/vitorbarbosa19.ziro.error';
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import { containerWithPadding } from '@ziro/theme';
-import { spinner, btn, statusText } from './styles';
+import { spinner, btn } from './styles';
 import fetch from './fetch';
 
 const Transactions = ({ receivables, receivableId, snapshot }) => {
@@ -62,9 +62,7 @@ const Transactions = ({ receivables, receivableId, snapshot }) => {
                     return (
                         <div key={index} style={{ display: 'grid', gridRowGap: '10px' }}>
                             <Details blocks={[block]} />
-                            {block.commission && !block.split && !block.docId && <label style={statusText}>Comissão à receber</label>}
-                            {block.split && !block.commission && !block.docId && <label style={statusText}>Split à receber</label>}
-                            {block.docId && <Button style={btn} cta='Ver detalhes' type='button' click={() => history.push(`/transacoes/${block.docId}`, { backRoute: `/recebiveis/${receivableId}`, snapshot })} />}
+                            <Button style={btn} cta='Ver detalhes' type='button' click={() => history.push(`/transacoes/${block.docId}`, { backRoute: `/recebiveis/${receivableId}`, snapshot })} />
                         </div>
                     );
                 })}
