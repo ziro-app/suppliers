@@ -175,7 +175,7 @@ const completeRegistration = state => () => {
                                                 whatsapp: whats,
                                                 cpf,
                                                 nascimento: birthdate,
-                                                telefone: fone,
+                                                telefone: telefone,
                                                 email,
                                                 cnpj,
                                                 razao: reason,
