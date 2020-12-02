@@ -3,8 +3,7 @@ import { dateFormat, removeDuplicates, getFilterQuery } from './utils';
 import matchStatusColor from './matchStatusColor';
 
 const fetch = (state) => {
-    const {statusFilter, monthFilter, clientFilter, limitFetch:limit, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, payments, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator} = state
-    console.log(monthFilter)
+    const {statusFilter, monthFilter, clientFilter, limitFetch:limit, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator, setLastDate} = state
     const storageFilterClient = clientFilter || localStorage.getItem('clientFilter')
     const storageFilterStatus = statusFilter || localStorage.getItem('statusFilter')
     const storageFilterMonth = monthFilter || localStorage.getItem('monthFilter')
@@ -34,7 +33,9 @@ const fetch = (state) => {
                     setClientList(removeDuplicates(listClients.filter(Boolean)))
                     setTotalTransactions(collectionData.docs.length);
                     const minDate = new Date(Math.min.apply(null,listDates));
+                    const maxDate = new Date(Math.max.apply(null,listDates));
                     setFirstDate(minDate)
+                    setLastDate(maxDate)
                     const paymentDoc = [];
                     const datesList = [];
                     const clientsList = [];

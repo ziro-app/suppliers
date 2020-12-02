@@ -9,9 +9,9 @@ import {getListMonth} from '../utils'
 import {containerClearAll, btnClearAll,textClearAll} from '../styles'
 
 export default ({ btnMoreClick, hasMore, state }) => {
-  const {isLoadingResults, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction, payments:transactions, setIsLoadingResults} = state
+  const {lastDate, isLoadingResults, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction, payments:transactions, setIsLoadingResults} = state
   const listStatus = ['Aprovado', 'Aguardando Pagamento', 'Cancelado', 'Pré Autorizado']
-  const listMonth = getListMonth(firstDate)
+  const listMonth = getListMonth(firstDate, lastDate)
   const [, setLocation] = useLocation();
   const hadleClearAll = () => {
     setIsLoadingResults(true);

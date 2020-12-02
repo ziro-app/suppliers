@@ -60,23 +60,22 @@ export const getMonthFullYear = (data) => {
     return [data.getMonth() + 1, data.getFullYear()];
   };
 
-export const getListMonth = (dataEntrada) => {
+export const getListMonth = (dataInicio, dataFim) => {
     const result = [];
-    const [monthEntrada, yearEntrada] = getMonthFullYear(dataEntrada);
-    const nowMonth = new Date().getMonth() + 1;
-    const nowYear = new Date().getFullYear();
-    for (let year = yearEntrada; year <= nowYear; year++) {
-      if (year === nowYear) {
-        if (yearEntrada === nowYear) {
-          for (let month = monthEntrada; month <= nowMonth; month++) {
+    const [monthEntrada, yearEntrada] = getMonthFullYear(dataInicio);
+    const [monthFim, yearFim] = getMonthFullYear(dataFim);
+    for (let year = yearEntrada; year <= yearFim; year++) {
+      if (year === yearFim) {
+        if (yearEntrada === yearFim) {
+          for (let month = monthEntrada; month <= monthFim; month++) {
             result.push(`${month}/${year}`);
           }
         } else {
-          for (let month = 1; month <= nowMonth; month++) {
+          for (let month = 1; month <= monthFim; month++) {
             result.push(`${month}/${year}`);
           }
         }
-      } else if (yearEntrada === nowYear) {
+      } else if (yearEntrada === yearFim) {
         for (let month = 1; month <= monthEntrada; month++) {
           result.push(`${month}/${year}`);
         }
@@ -112,7 +111,6 @@ function filterName({storageFilterClient, storageFilterStatus, storageFilterMont
 export function getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}) {
     const newFilterMonth = toMMYYYY(storageFilterMonth)
     const [dataInicio, dataFim] = newFilterMonth ? getRangeMonth(newFilterMonth) : [null, null]
-    console.log(dataFim)
     const type = filterName({storageFilterClient, storageFilterStatus, storageFilterMonth})
         switch (type) {
             case 'allFilters':

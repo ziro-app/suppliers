@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { createBrowserHistory } from 'history';
 import { motion } from 'framer-motion';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner-with-div'
@@ -17,6 +16,7 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
     const [monthFilter, setMonthFilter] = useState(storageFilterMonth || '');
     const [clientFilter, setClientFilter] = useState(storageFilterClient || '')
     const [clientList, setClientList] = useState([])
+    const [lastDate, setLastDate] = useState('')
     const [limitFetch, setLimitFetch] = useState(20);
     const [transaction, setTransaction] = useState({});
     const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +29,7 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
     const snap = { payments, totalTransactions };
     const { zoopId, docId, role } = useContext(userContext);
     const isCollaborator = role !== ''
-    const state = { limitFetch, setLimitFetch, isLoadingResults, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, payments, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction }
+    const state = { lastDate, setLastDate, limitFetch, setLimitFetch, isLoadingResults, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, payments, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction }
 
     useEffect(() => {
         fetch(state);
