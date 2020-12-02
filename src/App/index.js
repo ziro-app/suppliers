@@ -18,6 +18,7 @@ export const App = () => {
     const [cpf, setCpf] = useState(null);
     const [cnpj, setCnpj] = useState(null);
     const [birthdate, setBirthdate] = useState(null);
+    const [whatsApp, setWhatsApp] = useState(null);
     const [phone, setPhone] = useState(null);
     const [address, setAddress] = useState(null);
     const [neighborhood, setNeighborhood] = useState(null);
@@ -117,6 +118,7 @@ export const App = () => {
         setCpf('');
         setCnpj('');
         setBirthdate('');
+        setWhatsApp('');
         setPhone('');
         setAddress('');
         setNeighborhood('');
@@ -204,13 +206,14 @@ export const App = () => {
                     const docRef = await db.collection('suppliers').where('uid', '==', uid).get();
                     if (!docRef.empty) {
                         docRef.forEach(async doc => {
-                            const { nome, sobrenome, cpf, cnpj, nascimento, telefone, email, tipoCadastro } = doc.data();
+                            const { nome, sobrenome, cpf, cnpj, nascimento, whatsapp, telefone, email, tipoCadastro } = doc.data();
 
                             setDocId(doc.id);
                             setFName(nome ? nome : '');
                             setLName(sobrenome ? sobrenome : '');
                             setCpf(cpf ? cpf : '');
                             setBirthdate(nascimento ? nascimento : '');
+                            setWhatsApp(whatsapp ? whatsapp : '');
                             setPhone(telefone ? telefone : '');
                             setEmail(email ? email : '');
                             setTypeRegister(tipoCadastro ? tipoCadastro : '');
@@ -231,6 +234,7 @@ export const App = () => {
                             setLName(lname ? lname : '');
                             setCpf('');
                             setBirthdate('');
+                            setWhatsApp('');
                             setPhone('');
                             setTypeRegister('');
                             setOwnerId(ownerId);
@@ -280,7 +284,8 @@ export const App = () => {
         brand,
         maxInstallments,
         payoutAutomatic,
-        zoopBankAccountId
+        zoopBankAccountId,
+        whatsApp
     };
     if (loading) return <InitialLoader />;
     if (errorLoading) return <Error />;
