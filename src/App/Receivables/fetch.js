@@ -57,25 +57,28 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
                 let total;
                 // Array com tratamento para os splits
                 // Todos o valores estão arredondados p/ 2 casas e em centavos
-                let normalizedArray = await splitedArray(arrayItems[key].items, fantasy, zoopId);
+                let normalizedArray = await splitedArray(arrayItems[key].items, fantasy);
 
                 let vendas = normalizedArray.length;
-                // Total do recebível -> Soma do valor líquido de todas as transações do dia
-                let val = (normalizedArray.length > 0) ? parseFloat(normalizedArray.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2) : '0';
-                totalAmountFetch += parseFloat(val);
-                totalTransactionsFetch += vendas;
+                // Check to add only days with postings
+                if (vendas > 0) {
+                    // Total do recebível -> Soma do valor líquido de todas as transações do dia
+                    let val = (normalizedArray.length > 0) ? parseFloat(normalizedArray.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2) : '0';
+                    totalAmountFetch += parseFloat(val);
+                    totalTransactionsFetch += vendas;
 
-                total = parseFloat(val).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
+                    total = parseFloat(val).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
 
-                rows.splice(index, 0, [date, total.replace(/R\$\s/g, ''), vendas, <Icon type="chevronRight" size={14} />]);
-                rowsClicks.splice(index, 0, () => setLocation(`/recebiveis/${id}`));
-                recDocs.splice(index, 0, {
-                    charge: total.replace(/\s/g, ''),
-                    date,
-                    completeDate: [dia, mes, ano].join('/'),
-                    items: normalizedArray,
-                    id
-                });
+                    rows.splice(index, 0, [date, total.replace(/R\$\s/g, ''), vendas, <Icon type="chevronRight" size={14} />]);
+                    rowsClicks.splice(index, 0, () => setLocation(`/recebiveis/${id}`));
+                    recDocs.splice(index, 0, {
+                        charge: total.replace(/\s/g, ''),
+                        date,
+                        completeDate: [dia, mes, ano].join('/'),
+                        items: normalizedArray,
+                        id
+                    });
+                }
             }));
 
             const updatedTotalTransactions = totalTransactions + totalTransactionsFetch;
