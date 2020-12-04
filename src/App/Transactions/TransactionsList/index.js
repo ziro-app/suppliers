@@ -1,17 +1,16 @@
 import React   from 'react';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
-import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown'
 import Timeline from '@bit/vitorbarbosa19.ziro.timeline';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner-with-div'
+import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown'
 import { Menu } from '../../Menu/index';
 import {getListMonth} from '../utils'
 import {containerClearAll, btnClearAll,textClearAll} from '../styles'
 
 export default ({ btnMoreClick, hasMore, state }) => {
-  const {lastDate, isLoadingResults, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction, payments:transactions, setIsLoadingResults} = state
-  const listStatus = ['Aprovado', 'Aguardando Pagamento', 'Cancelado', 'Pré Autorizado']
-  const listMonth = getListMonth(firstDate, lastDate)
+  const {listStatus, isLoadingResults, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction, payments:transactions, setIsLoadingResults} = state
+  const listMonth = getListMonth(firstDate)
   const [, setLocation] = useLocation();
   const hadleClearAll = () => {
     setIsLoadingResults(true);
