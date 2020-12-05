@@ -28,7 +28,7 @@ export default ({ btnMoreClick, hasMore, state }) => {
           <label aria-label='filtro por clientes'/>
           <Dropdown
               value={clientFilter || ''}
-              list={clientList}
+              list={clientList.sort()}
               placeholder="Filtrar Clientes"
               onChange={({ target: { value } }) => {
                   if (clientList.includes(value) || value === '') {

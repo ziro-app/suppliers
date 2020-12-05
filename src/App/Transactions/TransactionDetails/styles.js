@@ -5,7 +5,7 @@ export const custom = (fontSize, color) => ({
     justifyItems: 'center',
     fontSize: `${(fontSize + 2) / 10}rem`,
     fontWeight: '500',
-    color: color
+    color
 }),
 illustrationContainer = {
     display: 'grid',
