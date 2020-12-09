@@ -110,7 +110,7 @@ function filterName({storageFilterClient, storageFilterStatus, storageFilterMont
 }
 
 export function getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}) {
-    const newFilterMonth = toMMYYYY(storageFilterMonth)
+    const newFilterMonth = storageFilterMonth ? toMMYYYY(storageFilterMonth.toUpperCase()) : 'null'
     const [dataInicio, dataFim] = newFilterMonth ? getRangeMonth(newFilterMonth) : [null, null]
     const type = filterName({storageFilterClient, storageFilterStatus, storageFilterMonth})
         switch (type) {

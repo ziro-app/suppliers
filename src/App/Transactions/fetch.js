@@ -1,5 +1,5 @@
 import currencyFormat from '@ziro/currency-format';
-import { dateFormat, removeDuplicates, getFilterQuery } from './utils';
+import { dateFormat, getFilterQuery } from './utils';
 import matchStatusColor from './matchStatusColor';
 
 const fetch = (state) => {

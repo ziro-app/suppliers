@@ -79,7 +79,7 @@ export default ({ btnMoreClick, hasMore, state }) => {
                 list={listMonth}
                 placeholder="Filtrar mês"
                 onChange={({ target: { value } }) => {
-                    if (listMonth.includes(value) || value === '') {
+                    if (listMonth.includes(value.toUpperCase()) || value.toUpperCase() === '') {
                         setIsLoadingResults(true);
                         localStorage.setItem('monthFilter', value);
                     }
@@ -87,7 +87,7 @@ export default ({ btnMoreClick, hasMore, state }) => {
                 }}
                 onChangeKeyboard={e => {
                     if(e){
-                        if (listMonth.includes(e.value) || e.value === '') {
+                        if (listMonth.includes(e.value.toUpperCase() || e.value.toUpperCase() === '')) {
                             setIsLoadingResults(true);
                             localStorage.setItem('monthFilter', e.value);
                         }

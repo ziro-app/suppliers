@@ -2,12 +2,13 @@ import {db} from '../../Firebase'
 import {removeDuplicates} from './utils'
 
 const fetchList = (state) => {
-    const {setListStatus, setClientList, setFirstDate, setErrorLoading} = state
+    const {setListStatus, setClientList, setFirstDate, setErrorLoading,zoopId} = state
     const run = async () => {
         try {
             const query = db
         .collection('credit-card-payments')
         .orderBy('dateLastUpdate', 'desc')
+        .where('sellerZoopId', '==', zoopId)
         const listClients = []
         const listDates = []
         const listStatus = []
