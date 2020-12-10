@@ -72,7 +72,7 @@ export default ({ btnMoreClick, hasMore, state }) => {
                 }}
             />
             </form>
-            <form style={{marginBottom:'20px'}}>
+            <form style={{marginBottom:'10px'}}>
             <label aria-label='filtro por mês e ano'/>
             <Dropdown
                 value={monthFilter || ''}
