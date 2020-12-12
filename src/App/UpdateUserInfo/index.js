@@ -247,12 +247,12 @@ const UpdateUserInfo = () => {
       style={{
         display: 'grid',
         gridTemplateRows: '1fr auto',
-        gridRowGap: '20px',
+        gridRowGap: '5px',
         justifyContent: 'center',
         alignContent: 'center',
       }}
     >
-      <label>Você pode atualizar dados do seu CNPJ automaticamente pelo botão abaixo, caso já estejam na Receita Federal</label>
+      <label style={{ fontSize: '1.5rem', marginBottom: '10px', textAlign: 'center' }}>Você pode atualizar dados do seu CNPJ pelo botão abaixo, caso já estejam na Receita Federal</label>
 
       <div style={{ marginBottom: '20px' }}>
         <GetCnpj cnpj={cnpj} setState={setNewStates} setErrorMsg={setErrorMsg} zoopId={zoopId} />
@@ -420,16 +420,16 @@ const UpdateUserInfo = () => {
       />
 
       <div>
-        <div style={{ padding: '15px 0px' }}>
-          <label style={help}>Para atualizar o CNPJ, <label onClick={() => window.open(`https://api.whatsapp.com/send?phone=${supportNumber.supportPhoneNumber.replace(/\+|\s|\(|\)|-/g, "")}`, "_blank")}style={helpLink}>fale com suporte</label>.</label>
+        <div style={{ padding: '10px 0px', textAlign: 'left' }}>
+          <label style={help}>Atualizar o CNPJ, <label onClick={() => window.open(`https://api.whatsapp.com/send?phone=${supportNumber.supportPhoneNumber.replace(/\+|\s|\(|\)|-/g, "")}`, "_blank")}style={helpLink}>fale com suporte</label>.</label>
         </div>
 
-        <div style={{ padding: '15px 0px' }}>
-          <label style={help}>Para atualizar email/senha, <label onClick={() => setLocation('/minha-conta')} style={helpLink}>acesse aqui</label>.</label>
+        <div style={{ padding: '10px 0px', textAlign: 'left' }}>
+          <label style={help}>Atualizar email/senha, <label onClick={() => setLocation('/minha-conta')} style={helpLink}>acesse aqui</label>.</label>
         </div>
 
-        <div style={{ paddingTop: '15px' }}>
-          <label style={help}>Para atualizar dados bancários, <label onClick={() => setLocation('/recebiveis/dados-bancarios')}style={helpLink}>acesse aqui</label>.</label>
+        <div style={{ padding: '10px 0px', textAlign: 'left' }}>
+          <label style={help}>Atualizar dados bancários, <label onClick={() => setLocation('/recebiveis/dados-bancarios')}style={helpLink}>acesse aqui</label>.</label>
         </div>
       </div>
 
