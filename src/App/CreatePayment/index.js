@@ -24,6 +24,7 @@ const CreatePayment = () => {
   const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
   const [hasSellerZoopPlan, setHasSellerZoopPlan] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isNewPlan, setIsNewPlan] = useState(false);
   const options = ['Com seguro', 'Sem seguro'];
   const state = {
     seller: capitalize(fantasy),
@@ -39,6 +40,7 @@ const CreatePayment = () => {
     observations,
     setObservations,
     insurance,
+    isNewPlan,
     setInsurance,
     setInsurenceDropdownValue,
     hasSellerZoopPlan,
@@ -53,7 +55,13 @@ const CreatePayment = () => {
         .onSnapshot(snap => {
           if (!snap.empty) {
             snap.forEach(doc => {
-              setHasSellerZoopPlan(doc.data().sellerZoopPlan || null);
+              //apenas novos cadastros terão o plano novo
+              if (doc.data().cadastro.seconds >= 1607880636) {
+                setHasSellerZoopPlan(doc.data().sellerZoopPlan || null);
+                setIsNewPlan(true);
+              } else {
+                setHasSellerZoopPlan(doc.data().sellerZoopPlan || null);
+              }
             });
             setLoading(false);
           }
@@ -64,7 +72,7 @@ const CreatePayment = () => {
   const validations = [
     {
       name: 'insurance',
-      validation: value => (hasSellerZoopPlan && (hasSellerZoopPlan.antiFraud.amount || hasSellerZoopPlan.antiFraud.percentage) ? value !== '' : true),
+      validation: value => (hasSellerZoopPlan && (isNewPlan ? true : hasSellerZoopPlan.antiFraud.amount || hasSellerZoopPlan.antiFraud.percentage) ? value !== '' : true),
       value: insurenceDropdownValue,
       message: 'Opção inválida',
     },
@@ -83,7 +91,8 @@ const CreatePayment = () => {
   ];
   if (loading) return <Spinner size="5.5rem" />;
 
-  return hasSellerZoopPlan && (Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'amount') || Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'percentage')) ? (
+  return hasSellerZoopPlan &&
+    (isNewPlan ? true : Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'amount') || Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'percentage')) ? (
     insurance === null || insurance ? (
       <Form
         buttonName="Criar Link"
