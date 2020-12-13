@@ -165,6 +165,11 @@ const completeRegistration = state => () => {
                                             }
                                         }));
                                         try {
+                                            let sellerZoopPlan = {};
+                                            const fetchedStandardPlan = db.collection('utilities').doc(process.env.DOCUMENT_ID_FOR_UTILITIES_MAIN);
+                                            const doc = await fetchedStandardPlan.get()
+                                            sellerZoopPlan = doc.data().main.standardPlans;
+                                            sellerZoopPlan.activePlan = 'standard';
                                             // Adicionando registro ao Firestore
                                             await db.collection('suppliers').doc(user.uid).set({
                                                 cadastro: today,
@@ -193,16 +198,7 @@ const completeRegistration = state => () => {
                                                 numConta: accountNumber,
                                                 agencia: agency,
                                                 tipoCadastro: 'Completo',
-                                                sellerZoopPlan: {
-                                                    markup: {
-                                                        amount: 0,
-                                                        percentage: 0
-                                                    },
-                                                    antiFraud: {
-                                                        amount: 0,
-                                                        percentage: 0
-                                                    }
-                                                },
+                                                sellerZoopPlan,
                                                 maxParcelas: '10',
                                                 payoutAutomatic: true,
                                                 zoopBankAccountId: responseAssociating.data.id,
