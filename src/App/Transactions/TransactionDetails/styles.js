@@ -12,12 +12,12 @@ illustrationContainer = {
     gridTemplateRows: '1fr',
     gridRowGap: '20px',
     alignContent: 'start',
-    justifyItems: 'center'
+    justifyItems: 'center',
+    marginTop: '-20px'
 },
 buttonContainer = {
     display: 'grid',
     gridRowGap: '15px',
-    marginTop: '-30px'
 },
 modalContainer = {
     zIndex: '999',

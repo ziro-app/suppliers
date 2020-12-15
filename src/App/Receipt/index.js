@@ -85,7 +85,7 @@ export default ({ receiptId, receipt, setReceipt, installments, transactionId })
         <>
             {/* eslint-disable-next-line no-nested-ternary */}
             <div style={containerWithPadding}>
-                <Header type="icon" title="Recibo" setIsOpen={backRoute ? () => history.push(backPath, { backRoute, snapshot }) : () => history.push(backPath, { transactionsMemo })} icon="back" />
+                <Header type="icon" title="Comprovante" setIsOpen={backRoute ? () => history.push(backPath, { backRoute, snapshot }) : () => history.push(backPath, { transactionsMemo })} icon="back" />
                 {loading ? (
                     <SpinnerWithDiv />
                 ) : error ? (
