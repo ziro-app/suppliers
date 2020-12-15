@@ -39,6 +39,11 @@ const sendToBackend = state => () => {
         if (isCollaborator) {
           const isValid = await checkCollaborator(docId);
           if (isValid) {
+            let sellerZoopPlan = null;
+            if (hasSellerZoopPlan) {
+              const fetchedStandardPlan = await db.collection('suppliers').where('fantasia', '==', seller.toUpperCase()).get();
+              fetchedStandardPlan.forEach(supplier => (sellerZoopPlan = supplier.data().sellerZoopPlan));
+            }
             docRef = await db.collection('credit-card-payments').add({
               dateLinkCreated: nowDate,
               dateLastUpdate: nowDate,
@@ -53,11 +58,16 @@ const sendToBackend = state => () => {
               observations,
               insurance: insurance !== null ? insurance : true,
               isNewPlan,
-              sellerZoopPlan: hasSellerZoopPlan || null,
+              sellerZoopPlan: sellerZoopPlan || null,
               checkoutWithoutRegister: checkoutWithoutRegister || false,
             });
           } else throw { msg: 'Permissão insuficiente', customError: true };
         } else {
+          let sellerZoopPlan = null;
+          if (hasSellerZoopPlan) {
+            const fetchedStandardPlan = await db.collection('suppliers').where('fantasia', '==', seller.toUpperCase()).get();
+            fetchedStandardPlan.forEach(supplier => (sellerZoopPlan = supplier.data().sellerZoopPlan));
+          }
           docRef = await db.collection('credit-card-payments').add({
             dateLinkCreated: nowDate,
             dateLastUpdate: nowDate,
@@ -68,7 +78,7 @@ const sendToBackend = state => () => {
             status: 'Aguardando Pagamento',
             observations,
             insurance: insurance !== null ? insurance : true,
-            sellerZoopPlan: hasSellerZoopPlan || null,
+            sellerZoopPlan: sellerZoopPlan || null,
             isNewPlan,
             checkoutWithoutRegister: checkoutWithoutRegister || false,
           });
