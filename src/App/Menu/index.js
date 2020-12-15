@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
-import { userContext } from '../appContext'
-import { auth } from '../../Firebase/index'
 import Header from '@bit/vitorbarbosa19.ziro.header'
 import Drawer from '@bit/vitorbarbosa19.ziro.drawer'
 import DrawerPanel from '@bit/vitorbarbosa19.ziro.drawer-panel'
 import Icon from '@bit/vitorbarbosa19.ziro.icon'
 import { containerWithPadding } from '@ziro/theme'
+import { auth } from '../../Firebase/index'
+import { userContext } from '../appContext'
 
 export const Menu = ({ title, children }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -37,6 +37,12 @@ export const Menu = ({ title, children }) => {
                         text: 'Recebíveis'
                     },
                     // {
+                    //     path: '/tarifas',
+                    //     onClick: () => setIsOpen(false),
+                    //     icon: <Icon type='percent' size={15} strokeWidth={3} />,
+                    //     text: 'Tarifas'
+                    // },
+                    // {
                     //     path: '/consulta',
                     //     onClick: () => setIsOpen(false),
                     //     icon: <Icon type='search' size={15} strokeWidth={2} />,
@@ -56,7 +62,7 @@ export const Menu = ({ title, children }) => {
                     },
                 ]}
             />);
-        } else return (
+        } return (
             <>
                 {typeRegister && typeRegister === "Simplificado" ?
                     <DrawerPanel
@@ -87,6 +93,12 @@ export const Menu = ({ title, children }) => {
                                 icon: <Icon type='money' size={15} strokeWidth={2} />,
                                 text: 'Recebíveis'
                             },
+                            // {
+                            //     path: '/tarifas',
+                            //     onClick: () => setIsOpen(false),
+                            //     icon: <Icon type='percent' size={15} strokeWidth={3} />,
+                            //     text: 'Tarifas'
+                            // },
                             // {
                             //     path: '/consulta',
                             //     onClick: () => setIsOpen(false),
@@ -141,6 +153,12 @@ export const Menu = ({ title, children }) => {
                         icon: <Icon type='user' size={15} strokeWidth={2} />,
                         text: 'Vendedores'
                     },
+                    // {
+                    //     path: '/tarifas',
+                    //     onClick: () => setIsOpen(false),
+                    //     icon: <Icon type='percent' size={15} strokeWidth={3} />,
+                    //     text: 'Tarifas'
+                    // },
                     {
                         path: '/minha-conta',
                         onClick: () => setIsOpen(false),
