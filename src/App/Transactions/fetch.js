@@ -7,23 +7,25 @@ const fetch = (state) => {
     const storageFilterClient = clientFilter || localStorage.getItem('clientFilter')
     const storageFilterStatus = statusFilter || localStorage.getItem('statusFilter')
     const storageFilterMonth = monthFilter || localStorage.getItem('monthFilter')
-    let query;
-    if (isCollaborator) {
-        query = getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).limit(limit);
-    } else {
-        query = getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).limit(limit);;
+    const query = () => {
+        if(isCollaborator){
+            return  getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).limit(limit);
+        }
+        return getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).limit(limit);;
     }
 
     const run = async () => {
         try {
-            await query.onSnapshot(
+            await query().onSnapshot(
                 async snapshot => {
-                    let collectionData;
-                    if (isCollaborator) {
-                        collectionData = await getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).get();
-                    } else {
-                        collectionData = await getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).get();
+                    const getCollection = () => {
+                        if(isCollaborator){
+                            return getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).get();
+                        }
+                           return getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).get();
+                        
                     }
+                    const collectionData = await getCollection()
                     setTotalTransactions(collectionData.docs.length);
                     const paymentDoc = [];
                     const datesList = [];
