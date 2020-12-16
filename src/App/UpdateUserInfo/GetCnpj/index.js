@@ -7,10 +7,10 @@ import searchCnpj from './searchCnpj'
 import { modalBox, container, title, svg } from './styles'
 
 const GetCnpj = ({ cnpj, setState , setErrorMsg, zoopId }) => {
-    const validCnaes = ['47.81-4-00', '14.12-6-01', '14.12-6-03', '46.41-9-01', '46.42-7-01', '14.12-6-02'];
+    // const validCnaes = ['47.81-4-00', '14.12-6-01', '14.12-6-03', '46.41-9-01', '46.42-7-01', '14.12-6-02'];
     const [isOpen, setIsOpen] = useState(false)
     const [firstLabel, setFirstLabel] = useState(true)
-    const state = { cnpj, setFirstLabel, setIsOpen, setErrorMsg,validCnaes }
+    const state = { cnpj, setFirstLabel, setIsOpen, setErrorMsg }
     return (
         <>
             <Modal boxStyle={modalBox} isOpen={isOpen} setIsOpen={() => { }}>

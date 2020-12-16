@@ -1,4 +1,9 @@
-import { post } from 'axios'
+import axios, { post } from 'axios'
+import arrayToObject from '@ziro/array-object';
+
+import dataPostBatch from './GetCnpj/utils/dataPostBatch';
+import getSheet from './GetCnpj/utils/getSheet';
+import postSheet from './GetCnpj/utils/postSheet';
 import { db } from '../../Firebase'
 
 const sendToBackend = (cnpj, column, row, obj, newProp, setIsLoading, setError, zoopId, newFName, newLName, newCpf, newBirthdate, newPhone, zoopParams) => () => {
@@ -26,6 +31,12 @@ const sendToBackend = (cnpj, column, row, obj, newProp, setIsLoading, setError, 
   return new Promise(async (resolve, reject) => {
     setIsLoading(true)
     try {
+      // const requestSheet = await axios(getSheet(['Base!A:U']))
+      // const dataSheet = arrayToObject(requestSheet.data.valueRanges[0])
+      // const objectPost = dataPostBatch(dataSheet, 'cnpj', cnpj, obj, 'Base')
+      // await axios(postSheet(objectPost))
+      // console.log('dataSheet:', dataSheet);
+
       if (row) await post(url, body, config)      
       
       // Updates Firestore

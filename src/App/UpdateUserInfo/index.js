@@ -98,21 +98,12 @@ const UpdateUserInfo = () => {
     setNewReason, setNewFantasy, setNewCep, setNewAddress, setNewNeighborhood, setNewCity, setNewCityState
   };
 
-  const state = { cnpj, setIsLoading, setIsError, setNewReason, setNewFantasy, setNewCep, setNewAddress, setNewNeighborhood, setNewCity, setNewCityState };
+  const state = { cnpj, setIsLoading, setIsError, setNewReason, setNewFantasy, setNewCep, setNewAddress, setNewNeighborhood, setNewCity, setNewCityState, setNewPhone, setNewFName, setNewLName, setNewCpf, setNewBirthdate, setNewWhatsApp };
   
   useEffect(() => {
     fetch(state);
   }, []);
 
-  const validateCnpj = () => {
-    if (newCnpj !== '') {
-      setErrorCnpj('');
-      return true;
-    } else {
-      setErrorCnpj('Valor inválido');
-      return false;
-    }
-  };
   const validateReason = () => {
     if (newReason !== '') {
       setErrorReason('');
@@ -232,8 +223,8 @@ const UpdateUserInfo = () => {
   };
 
   useEffect(() => {
-    setNewAddress(!complement ? `${street}, ${number}` : `${street}, ${number}, ${complement}`)
-  }, [complement, street, number]);
+    setNewAddress(!complement ? `${street},${number}` : `${street},${number},${complement}`)
+  }, [complement,street,number]);
 
   const zoopParams = { newReason, street, number, complement, newNeighborhood, newCity, newCityState, newCep };
 
@@ -304,7 +295,7 @@ const UpdateUserInfo = () => {
       />
       <InputEdit
         name="Número"
-        value={newAddress.split(',')[1]}
+        value={number.startsWith(' ') ? newAddress.split(',')[1].trim() : newAddress.split(',')[1]}
         setError={() => { }}
         error={errorNumber}
         editable={false}
@@ -312,7 +303,7 @@ const UpdateUserInfo = () => {
       />
       <InputEdit
         name="Complemento"
-        value={newAddress.split(',')[2]}
+        value={complement.startsWith(' ') ? newAddress.split(',')[2].trim() : newAddress.split(',')[2]}
         setError={() => { }}
         error={errorComplement}
         editable={false}
@@ -351,7 +342,7 @@ const UpdateUserInfo = () => {
       <InputEdit
         name="Telefone"
         value={newPhone}
-        onChange={({ target: { value } }) => setNewPhone(capitalize(value))}
+        onChange={({ target: { value } }) => setNewPhone(maskInput(value, value.length <= 14 ? '(##) ####-####' : '(##) #####-####', true))}
         validateInput={validatePhone}
         submit={sendToBackend(cnpj, 'M', userPos, { telefone: newPhone.startsWith('55 ') || newPhone === "" ? newPhone : `55 ${newPhone}` }, newPhone.startsWith('55 ') || newPhone === "" ? `${newPhone}` : `55 ${newPhone}`, setLoadingPhone, setErrorPhone, zoopId, fname, lname, cpf, birthdate, newPhone.startsWith('55 ') || newPhone === "" ? `${newPhone}` : `55 ${newPhone}`, zoopParams)}
         setError={() => { }}
@@ -410,7 +401,7 @@ const UpdateUserInfo = () => {
       <InputEdit
         name="WhatsApp"
         value={newWhatsApp}
-        onChange={({ target: { value } }) => setNewWhatsApp(capitalize(value))}
+        onChange={({ target: { value } }) => setNewWhatsApp(maskInput(value, '(##) #####-####', true))}
         validateInput={validateWhatsApp}
         submit={sendToBackend(cnpj, 'C', userPos, { whatsapp: newWhatsApp.startsWith('55 ') ? newWhatsApp : `55 ${newWhatsApp}` }, newWhatsApp.startsWith('55 ') ? `${newWhatsApp}` : `55 ${newWhatsApp}`, setLoadingWhatsApp, setErrorWhatsApp, zoopId, fname, lname, cpf, birthdate, phone, zoopParams)}
         setError={() => { }}
