@@ -102,7 +102,7 @@ const sendToBackend = (backendParams, zoopParams) => () => {
                   Authorization: `${process.env.PAY_TOKEN}`,
                 },
               }
-          // );
+          );
         }catch(error){
           console.log(error);
         };
