@@ -110,6 +110,7 @@ const UpdateUserInfo = () => {
     newWhatsApp,
     zoopId,
     setIsLoading,
+    typeRegister
   } 
 
   useEffect(() => {
@@ -356,7 +357,7 @@ const UpdateUserInfo = () => {
         value={newPhone}
         onChange={({ target: { value } }) => setNewPhone(maskInput(value, value.length <= 14 ? '(##) ####-####' : '(##) #####-####', true))}
         validateInput={validatePhone}
-        submit={sendToBackend({...backendParams, setErrorPhone}, zoopParams)}
+        submit={sendToBackend({...backendParams, setError: setErrorPhone}, zoopParams)}
         setError={() => { }}
         error={errorPhone}
         editable
@@ -367,7 +368,7 @@ const UpdateUserInfo = () => {
         value={newFName}
         onChange={({ target: { value } }) => setNewFName(capitalize(value))}
         validateInput={validateFName}
-        submit={sendToBackend({...backendParams, setErrorFName}, zoopParams)}
+        submit={sendToBackend({...backendParams, setError: setErrorFName}, zoopParams)}
         setError={() => { }}
         error={errorFName}
         editable
@@ -378,7 +379,7 @@ const UpdateUserInfo = () => {
         value={newLName}
         onChange={({ target: { value } }) => setNewLName(capitalize(value))}
         validateInput={validateLName}
-        submit={sendToBackend({...backendParams, setErrorLName}, zoopParams)}
+        submit={sendToBackend({...backendParams, setError: setErrorLName}, zoopParams)}
         setError={() => { }}
         error={errorLName}
         editable
@@ -391,7 +392,7 @@ const UpdateUserInfo = () => {
             value={newCpf}
             onChange={({ target: { value } }) => setNewCpf(maskInput(value, '###.###.###-##', true))}
             validateInput={validateCpf}
-            submit={sendToBackend({...backendParams, setErrorCpf}, zoopParams)}
+            submit={sendToBackend({...backendParams, setError: setErrorCpf}, zoopParams)}
             setError={() => { }}
             error={errorCpf}
             editable
@@ -402,7 +403,7 @@ const UpdateUserInfo = () => {
             value={newBirthdate}
             onChange={({ target: { value } }) => setNewBirthdate(maskInput(value, '##/##/####', true))}
             validateInput={validateBirthdate}
-            submit={sendToBackend({...backendParams, setErrorBirthdate}, zoopParams)}
+            submit={sendToBackend({...backendParams, setError: setErrorBirthdate}, zoopParams)}
             setError={() => { }}
             error={errorBirthdate}
             editable
@@ -415,7 +416,7 @@ const UpdateUserInfo = () => {
         value={newWhatsApp}
         onChange={({ target: { value } }) => setNewWhatsApp(maskInput(value, '(##) #####-####', true))}
         validateInput={validateWhatsApp}
-        submit={sendToBackend({...backendParams, setErrorWhatsApp}, zoopParams)}
+        submit={sendToBackend({...backendParams, setError: setErrorWhatsApp}, zoopParams)}
         setError={() => { }}
         error={errorWhatsApp}
         editable

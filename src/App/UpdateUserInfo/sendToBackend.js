@@ -19,6 +19,7 @@ const sendToBackend = (backendParams, zoopParams) => () => {
     zoopId,
     setError,
     setIsLoading,
+    typeRegister
   } = backendParams
 
   return new Promise(async (resolve, reject) => {
@@ -27,26 +28,33 @@ const sendToBackend = (backendParams, zoopParams) => () => {
       // updateSheets
 
       const objSheet = {
-        fone: newPhone || '',
+        fone: newPhone ? `55 ${newPhone}` : '',
         nome: newFName && newLName ? `${newFName} ${newLName}` : '',
         cpf: newCpf || '',
         nascimento: newBirthdate || '',
-        whatsapp: newWhatsApp || ''
+        whatsapp: newWhatsApp ? `55 ${newWhatsApp}` : ''
       }
+
+      const objSheetSimplified = {
+        fone: newPhone ? `55 ${newPhone}` : '',
+        nome: newFName && newLName ? `${newFName} ${newLName}` : '',
+        whatsapp: newWhatsApp ? `55 ${newWhatsApp}` : ''
+      }
+
       const requestSheet = await axios(getSheet(['Base!A:U']))
       const dataSheet = arrayToObject(requestSheet.data.valueRanges[0])
-      const objectPost = dataPostBatch(dataSheet, 'cnpj', cnpj, objSheet, 'Base')
+      const objectPost = dataPostBatch(dataSheet, 'cnpj', cnpj, typeRegister === 'Completo' ? objSheet : objSheetSimplified, 'Base')
       await axios(postSheet(objectPost))
 
       
       // Updates Firestore
       const objFirebase = {
-        telefone: newPhone || '',
+        telefone: newPhone ? `55 ${newPhone}` : '',
         nome: newFName || '',
         sobrenome: newLName || '',
         cpf: newCpf || '',
         nascimento: newBirthdate || '',
-        whatsapp: newWhatsApp || ''
+        whatsapp: newWhatsApp ? `55 ${newWhatsApp}` : ''
       }
       try {
         const snapCollection = await db.collection('suppliers').where('cnpj', '==', cnpj).get()
@@ -69,7 +77,7 @@ const sendToBackend = (backendParams, zoopParams) => () => {
               last_name: newLName || undefined,
               taxpayer_id: newCpf || undefined,
               birthdate: newBirthdate ? newBirthdate.split('/').reverse().join('-') : undefined,
-              phone_number: newPhone === "" ? newPhone === "" : newPhone || undefined
+              phone_number: newPhone ? `55 ${newPhone}` : ''
             },
           },
           {
