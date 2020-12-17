@@ -214,6 +214,10 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                                 content: transaction.insurance ? 'Sim' : 'Não',
                             },
                             {
+                                title: 'Transação com cadastro',
+                                content: transaction.checkoutWithoutRegister ? 'Não' : 'Sim',
+                            },
+                            {
                                 title: 'Parcela máxima',
                                 content: `${transaction.installmentsMax}`.startsWith('0') ? `${parseInt(transaction.installmentsMax)}x` : `${transaction.installmentsMax}x`,
                             },
@@ -230,6 +234,14 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                                 content: transaction.dateLinkCreated ? `${dateFormat(transaction.dateLinkCreated)}` : '-',
                             },
                             {
+                                title: 'Link criado por',
+                                content: transaction.collaboratorName ? `${transaction.collaboratorName}` : 'Admin',
+                            },
+                            {
+                                title: 'Observações',
+                                content: transaction.observations ? `${transaction.observations}` : '-',
+                            },
+                            {
                                 title: 'Status',
                                 content: transaction.status,
                                 color: transaction.statusColor,
@@ -237,21 +249,10 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                         ],
                     },
                 ];
-                if (transaction.collaboratorName) {
-                    block[0].body.splice(8, 0, {
-                        title: 'Link criado por',
-                        content: transaction.collaboratorName,
-                    });
-                }
-                if (transaction.observations) {
-                    block[0].body.splice(transaction.collaboratorName ? 9 : 8, 0, {
-                        title: 'Observações',
-                        content: transaction.observations,
-                    });
-                }
+
                 if (transaction.onBehalfOfBrand && transaction.seller && transaction.seller.includes('Ziro')) {
                     block[0].body.splice(1, 0, {
-                        title: 'Marca',
+                        title: 'Fabricante',
                         content: transaction.onBehalfOfBrand,
                     });
                 }
@@ -343,7 +344,8 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                 <Spinner size="5.5rem" />
             </div>
         );
-    if (!transaction)
+
+    if (!transaction.hasOwnProperty('transactionId'))
         return (
             <Error
                 message="Transação inválida ou não encontrada, retorne e tente novamente."
@@ -360,7 +362,63 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
             <textarea type="text" style={{ position: 'absolute', left: '-9999px' }} value={messageLink} ref={textAreaRef} readOnly />
             <Header type="icon" title="Detalhes da venda" setIsOpen={backRoute ? () => history.push(backRoute, { snapshot: snapshotMemo }) : () => setLocation('/transacoes')} icon="back" />
-            <div style={{ display: 'grid', gridRowGap: isApproved ? '20px' : '0' }}>
+
+            <div style={{ display: 'grid', gridRowGap: '20px' }}>
+                {isWaiting && (
+                  <>
+                    <div style={{...buttonContainer, marginTop: '-25px'}}>
+                      <div>
+                        {copyResultText ? (
+                          <div
+                            style={{
+                                padding: '0 0 5px',
+                                height: '24px',
+                                fontSize: '1.6rem',
+                                color: copyResultStatus ? successColor : alertColor,
+                                textAlign: 'center',
+                            }}
+                          >
+                            <span>{copyResultText}</span>
+                          </div>
+                        ) : (<div style={{ padding: '0 0 5px', height: '24px' }}>&nbsp;</div>)
+                        }
+
+                        <Button style={btn} type="button" cta="Copiar link" click={copyToClipboard} template="regular" />
+                      </div>
+
+                      <div>
+                        <Modal boxStyle={modalContainer} isOpen={cancelModal} setIsOpen={() => setCancelModal(false)}>
+                          <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gridRowGap: '20px' }}>
+                            <label style={modalLabel}>Deseja realmente cancelar o link ?</label>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridColumnGap: '20px' }}>
+                              <Button type="button" cta="Sim" click={deleteTransaction} template="regular" />
+                              <Button type="button" cta="Não" click={() => setCancelModal(false)} template="light" />
+                            </div>
+                          </div>
+                        </Modal>
+
+                        <Button style={btnRed} type="button" cta="Cancelar link" click={() => setCancelModal(true)} template="destructive" />
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {receipt_id ? (
+                  <div style={{ marginTop: isCanceled || transaction.status === 'Atualizando' ? '20px' : '0' }}>
+                    <Button
+                      type="link"
+                      cta="Gerar comprovante"
+                      template="regular"
+                      navigate={
+                          backRoute
+                              ? () => history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, { backRoute, snapshot: snapshotMemo })
+                              : () => history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, { transactionsMemo: { ...transactionsMemo } })
+                      }
+                    />
+                  </div>
+                ) : null}
+
                 <Details blocks={blocks} />
                 {isApproved && role === '' && (
                     <>
@@ -389,54 +447,8 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                                 <Illustration type="waiting" size={200} />
                             </div>
                         </div>
-                        <div style={buttonContainer}>
-                            <div>
-                                {copyResultText ? (
-                                    <div
-                                        style={{
-                                            padding: '0 0 5px',
-                                            height: '24px',
-                                            fontSize: '1.6rem',
-                                            color: copyResultStatus ? successColor : alertColor,
-                                            textAlign: 'center',
-                                        }}
-                                    >
-                                        <span>{copyResultText}</span>
-                                    </div>
-                                ) : (
-                                        <div style={{ padding: '0 0 5px', height: '24px' }}>&nbsp;</div>
-                                    )}
-                                <Button style={btn} type="button" cta="Copiar link" click={copyToClipboard} template="regular" />
-                            </div>
-                            <div>
-                                <Modal boxStyle={modalContainer} isOpen={cancelModal} setIsOpen={() => setCancelModal(false)}>
-                                    <div style={{ display: 'grid', gridTemplateRows: '1fr auto', gridRowGap: '20px' }}>
-                                        <label style={modalLabel}>Deseja realmente cancelar o link ?</label>
-                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gridColumnGap: '20px' }}>
-                                            <Button type="button" cta="Sim" click={deleteTransaction} template="regular" />
-                                            <Button type="button" cta="Não" click={() => setCancelModal(false)} template="light" />
-                                        </div>
-                                    </div>
-                                </Modal>
-                                <Button style={btnRed} type="button" cta="Cancelar link" click={() => setCancelModal(true)} template="destructive" />
-                            </div>
-                        </div>
                     </>
                 )}
-                {receipt_id ? (
-                    <div style={{ marginTop: isCanceled || transaction.status === 'Atualizando' ? '20px' : '0' }}>
-                        <Button
-                            type="link"
-                            cta="Gerar comprovante"
-                            template="regular"
-                            navigate={
-                                backRoute
-                                    ? () => history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, { backRoute, snapshot: snapshotMemo })
-                                    : () => history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, { transactionsMemo: { ...transactionsMemo } })
-                            }
-                        />
-                    </div>
-                ) : null}
             </div>
         </motion.div>
     );

@@ -1,35 +1,36 @@
 import React, { useContext, useState } from 'react';
 import { useLocation, useRoute } from 'wouter';
 
-import Collaborators from './Collaborators/index';
 import ConfirmEmail from '@bit/vitorbarbosa19.ziro.confirm-email';
-import CreatePayment from './CreatePayment/index';
-import DeleteAccount from './DeleteAccount/index';
-import GerarBoleto from './GerarBoleto/index';
-import { HeaderBack } from './HeaderBack/index';
-import InviteCollaborator from './InviteCollaborator/index';
-import Login from './Login/index';
 import LoginTrouble from '@bit/vitorbarbosa19.ziro.login-trouble';
-import LoginSupportPage from "./LoginSupportPage";
-import { Menu } from './Menu/index';
 import MyAccount from '@bit/vitorbarbosa19.ziro.my-account';
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found';
 import PropTypes from 'prop-types';
+import Submenu from '@bit/vitorbarbosa19.ziro.submenu';
+import { motion } from 'framer-motion';
+import { Router2 as routeMatcher } from '@ziro/router';
+import Collaborators from './Collaborators/index';
+import CreatePayment from './CreatePayment/index';
+import DeleteAccount from './DeleteAccount/index';
+import GerarBoleto from './GerarBoleto/index';
+import Rates from './Rates'
+import { HeaderBack } from './HeaderBack/index';
+import InviteCollaborator from './InviteCollaborator/index';
+import Login from './Login/index';
+import LoginSupportPage from "./LoginSupportPage";
+import { Menu } from './Menu/index';
 import Receipt from './Receipt/index';
 import Receivables from './Receivables/index';
 import Register from './Register/index';
 import RegisterCollaborator from './RegisterCollaborator/index';
 import ResendEmail from './ResendEmail/index';
 import ResetPass from './ResetPass/index';
-import Submenu from '@bit/vitorbarbosa19.ziro.submenu';
 import Transactions from './Transactions/index';
 import Upgrade from './Upgrade/index';
 import UpdateEmail from './UpdateEmail/index';
 import UpdatePass from './UpdatePass/index';
 import UpdateUserInfo from './UpdateUserInfo/index';
 import BackgroundCheck from './BackgroundCheck/index';
-import { motion } from 'framer-motion';
-import { Router2 as routeMatcher } from '@ziro/router';
 import { userContext } from './appContext';
 
 const Router = ({ isLogged }) => {
@@ -103,6 +104,13 @@ const Router = ({ isLogged }) => {
             <Menu title="Consultar documento">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <BackgroundCheck />
+                </motion.div>
+            </Menu>
+        ),
+        '/tarifas': (
+            <Menu title="Tarifas">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <Rates />
                 </motion.div>
             </Menu>
         ),

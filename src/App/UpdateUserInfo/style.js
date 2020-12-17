@@ -13,6 +13,6 @@ helpLink = {
 	fontSize: '1.4rem',
 	color: primaryColor,
 	textAlign: 'center',
-  textDecoration: 'underline',
-  cursor: 'pointer'
+	textDecoration: 'underline',
+	cursor: 'pointer'
 };

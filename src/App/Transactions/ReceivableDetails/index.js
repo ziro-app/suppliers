@@ -6,15 +6,12 @@ import Error from '@bit/vitorbarbosa19.ziro.error';
 import Header from '@bit/vitorbarbosa19.ziro.header';
 import { containerWithPadding } from '@ziro/theme';
 import { createBrowserHistory } from 'history';
-import currencyFormat from '@ziro/currency-format';
-import fetch from '../TransactionDetails/fetch';
 import matchStatusColor from '../matchStatusColor';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
 
 const ReceivableDetails = ({ transactions, transactionId, receivableId, transaction, setTransaction }) => {
     const [blocks, setBlocks] = useState([]);
-    //const [transaction, setTransaction] = useState({});
     const [error, setError] = useState();
     const [receivable, setReceivable] = useState({});
     const [backRoute, setBackRoute] = useState('');

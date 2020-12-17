@@ -40,7 +40,6 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
                 }
                 else arrayItems = { ...arrayItems, ...items };
                 if (items.length === 0) setHasMore(false);
-                if (!(items.length === 0) && offset === 0) setDays(days + 30);
                 hasMore = has_more;
                 offset += 100;
             }
@@ -80,21 +79,23 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
                     });
                 }
             }));
+            if (recDocs.length > 0) {
+                const updatedTotalTransactions = totalTransactions + totalTransactionsFetch;
+                const rounded = parseFloat(round(totalAmount + totalAmountFetch, 2).toFixed(2));
+                const currency = currencyFormat(rounded.toFixed(2).replace('.', ''));
+                setTotalAmount(rounded);
+                setTotalTransactions(updatedTotalTransactions);
 
-            const updatedTotalTransactions = totalTransactions + totalTransactionsFetch;
-            const rounded = parseFloat(round(totalAmount + totalAmountFetch, 2).toFixed(2));
-            const currency = currencyFormat(rounded.toFixed(2).replace('.', ''));
-            setTotalAmount(rounded);
-            setTotalTransactions(updatedTotalTransactions);
-
-            setData([{
-                title: 'Valores à receber',
-                header: ['Data', 'Valor(R$)', 'Qntd vendas', ''],
-                rows: dataTable[0] && dataTable[0].rows ? [...dataTable[0].rows, ...rows] : rows,
-                rowsClicks: dataTable[0] && dataTable[0].rowsClicks ? [...dataTable[0].rowsClicks, ...rowsClicks] : rowsClicks,
-                totals: ['-', currency.replace('R$', ''), updatedTotalTransactions, '-']
-            }]);
-            setReceivables([...receivables, ...recDocs]);
+                setData([{
+                    title: 'Valores à receber',
+                    header: ['Data', 'Valor(R$)', 'Qntd vendas', ''],
+                    rows: dataTable[0] && dataTable[0].rows ? [...dataTable[0].rows, ...rows] : rows,
+                    rowsClicks: dataTable[0] && dataTable[0].rowsClicks ? [...dataTable[0].rowsClicks, ...rowsClicks] : rowsClicks,
+                    totals: ['-', currency.replace('R$', ''), updatedTotalTransactions, '-']
+                }]);
+                setReceivables([...receivables, ...recDocs]);
+                setDays(days + 30);
+            } else setHasMore(false);
             setIsLoading(false);
             setLoadingMore(false);
         } catch (error) {
