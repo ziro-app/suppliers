@@ -5,7 +5,7 @@ const configGet = (ranges) => {
         data: {
             'apiResource': 'values',
             'apiMethod': 'batchGet',
-            'spreadsheetId': "1YlNSmVrawtxeKyy-tDdmI9B0bgSIIQswBnl3CEgdRRo",
+            'spreadsheetId': process.env.SHEET_SUPPLIERS_ID,
             'ranges': ranges
         },
         headers: {
