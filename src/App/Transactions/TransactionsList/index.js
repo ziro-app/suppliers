@@ -1,17 +1,16 @@
 import React   from 'react';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
-import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown'
 import Timeline from '@bit/vitorbarbosa19.ziro.timeline';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner-with-div'
+import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown'
 import { Menu } from '../../Menu/index';
 import {getListMonth} from '../utils'
 import {containerClearAll, btnClearAll,textClearAll} from '../styles'
 
 export default ({ btnMoreClick, hasMore, state }) => {
-  const {lastDate, isLoadingResults, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction, payments:transactions, setIsLoadingResults} = state
-  const listStatus = ['Aprovado', 'Aguardando Pagamento', 'Cancelado', 'Pré Autorizado']
-  const listMonth = getListMonth(firstDate, lastDate)
+  const {listStatus, isLoadingResults, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction, payments:transactions, setIsLoadingResults} = state
+  const listMonth = getListMonth(firstDate)
   const [, setLocation] = useLocation();
   const hadleClearAll = () => {
     setIsLoadingResults(true);
@@ -29,7 +28,7 @@ export default ({ btnMoreClick, hasMore, state }) => {
           <label aria-label='filtro por clientes'/>
           <Dropdown
               value={clientFilter || ''}
-              list={clientList}
+              list={clientList.sort()}
               placeholder="Filtrar Clientes"
               onChange={({ target: { value } }) => {
                   if (clientList.includes(value) || value === '') {
@@ -73,14 +72,14 @@ export default ({ btnMoreClick, hasMore, state }) => {
                 }}
             />
             </form>
-            <form style={{marginBottom:'20px'}}>
+            <form style={{marginBottom:'10px'}}>
             <label aria-label='filtro por mês e ano'/>
             <Dropdown
                 value={monthFilter || ''}
                 list={listMonth}
                 placeholder="Filtrar mês"
                 onChange={({ target: { value } }) => {
-                    if (listMonth.includes(value) || value === '') {
+                    if (listMonth.includes(value.toUpperCase()) || value.toUpperCase() === '') {
                         setIsLoadingResults(true);
                         localStorage.setItem('monthFilter', value);
                     }
@@ -88,7 +87,7 @@ export default ({ btnMoreClick, hasMore, state }) => {
                 }}
                 onChangeKeyboard={e => {
                     if(e){
-                        if (listMonth.includes(e.value) || e.value === '') {
+                        if (listMonth.includes(e.value.toUpperCase() || e.value.toUpperCase() === '')) {
                             setIsLoadingResults(true);
                             localStorage.setItem('monthFilter', e.value);
                         }

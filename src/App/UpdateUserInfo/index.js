@@ -4,17 +4,17 @@ import { motion } from 'framer-motion';
 import InputEdit from '@bit/vitorbarbosa19.ziro.input-edit';
 import capitalize from '@ziro/capitalize';
 import maskInput from '@ziro/mask-input';
+import Error from '@bit/vitorbarbosa19.ziro.error';
+import Spinner from '@bit/vitorbarbosa19.ziro.spinner-with-div';
 import { userContext } from '../appContext';
 import sendToBackend from './sendToBackend';
 import GetCnpj from './GetCnpj'
 import { help, helpLink } from './style';
 import fetch from './fetch';
-import Error from '@bit/vitorbarbosa19.ziro.error';
-import Spinner from '@bit/vitorbarbosa19.ziro.spinner-with-div';
 
 const UpdateUserInfo = () => {
 
-  const { fname, lname, cpf, cnpj, birthdate, whatsApp, phone, address, neighborhood, cep, city, cityState, userPos, fantasy, reason, zoopId, typeRegister } = useContext(userContext);
+  const {fname, lname, cpf, cnpj, birthdate, whatsApp, phone, address, neighborhood, cep, city, cityState, userPos, fantasy, reason, zoopId, typeRegister } = useContext(userContext);
 
   // Part 1
   const [newCnpj, setNewCnpj] = useState(cnpj !== 'undefined' ? cnpj : '');
@@ -62,7 +62,7 @@ const UpdateUserInfo = () => {
   const [loadingCityState, setLoadingCityState] = useState(false);
 
   // const [newPhone, setNewPhone] = useState(phone !== 'undefined' ? phone : '');
-  const [newPhone, setNewPhone] = useState(phone.startsWith('55 ') ? phone.replace('55 ', '') : phone);
+  const [newPhone, setNewPhone] = useState(phone && phone.startsWith('55 ') ? phone.replace('55 ', '') : phone);
   const [errorPhone, setErrorPhone] = useState('');
   const [loadingPhone, setLoadingPhone] = useState(false);
   
@@ -83,7 +83,7 @@ const UpdateUserInfo = () => {
   const [errorBirthdate, setErrorBirthdate] = useState('');
   const [loadingBirthdate, setLoadingBirthdate] = useState(false);
 
-  const [newWhatsApp, setNewWhatsApp] = useState(whatsApp.startsWith('55 ') ? whatsApp.replace('55 ', '') : whatsApp);
+  const [newWhatsApp, setNewWhatsApp] = useState(whatsApp && whatsApp.startsWith('55 ') ? whatsApp.replace('55 ', '') : whatsApp);
   const [errorWhatsApp, setErrorWhatsApp] = useState('');
   const [loadingWhatsApp, setLoadingWhatsApp] = useState(false);
 
@@ -98,142 +98,146 @@ const UpdateUserInfo = () => {
     setNewReason, setNewFantasy, setNewCep, setNewAddress, setNewNeighborhood, setNewCity, setNewCityState
   };
 
-  const state = { cnpj, setIsLoading, setIsError, setNewReason, setNewFantasy, setNewCep, setNewAddress, setNewNeighborhood, setNewCity, setNewCityState };
+  const state = { cnpj, setIsLoading, setIsError, setNewReason, setNewFantasy, setNewCep, setNewAddress, setNewNeighborhood, setNewCity, setNewCityState, setNewPhone, setNewFName, setNewLName, setNewCpf, setNewBirthdate, setNewWhatsApp };
   
+  const backendParams = {
+    newPhone,
+    cnpj,
+    newCpf,
+    newLName,
+    newFName,
+    newBirthdate,
+    newWhatsApp,
+    zoopId,
+    setIsLoading,
+    typeRegister
+  } 
+
   useEffect(() => {
     fetch(state);
   }, []);
 
-  const validateCnpj = () => {
-    if (newCnpj !== '') {
-      setErrorCnpj('');
-      return true;
-    } else {
-      setErrorCnpj('Valor inválido');
-      return false;
-    }
-  };
   const validateReason = () => {
     if (newReason !== '') {
       setErrorReason('');
       return true;
-    } else {
+    } 
       setErrorReason('Valor inválido');
       return false;
-    }
+    
   };
   const validateFantasy = () => {
     if (newFantasy !== '') {
       setErrorFantasy('');
       return true;
-    } else {
+    } 
       setErrorFantasy('Valor inválido');
       return false;
-    }
+    
   };
   const validateCep = () => {
     if (/(^\d{5}\-\d{3}$)/.test(newCep)) {
       setErrorCep('');
       return true;
-    } else {
+    } 
       setErrorCep('Valor inválido');
       return false;
-    }
+    
   };
   const validateAddress = () => {
     if (newAddress !== '') {
       setErrorAddress('');
       return true;
-    } else {
+    } 
       setErrorAddress('Valor inválido');
       return false;
-    }
+    
   };
   const validateNeighborhood = () => {
     if (newNeighborhood !== '') {
       setErrorNeighborhood('');
       return true;
-    } else {
+    } 
       setErrorNeighborhood('Valor inválido');
       return false;
-    }
+    
   };
   const validateCity = () => {
     if (newCity !== '') {
       setErrorCity('');
       return true;
-    } else {
+    } 
       setErrorCity('Valor inválido');
       return false;
-    }
+    
   };
   const validateCityState = () => {
     if (newCityState !== '') {
       setErrorCityState('');
       return true;
-    } else {
+    } 
       setErrorCityState('Valor inválido');
       return false;
-    }
+    
   };
   const validatePhone = () => {
     if (newPhone.length <= 14 && newPhone !== "" ? /(^\(\d{2}\) \d{4}\-\d{4}$)/.test(newPhone) : newPhone.length === 15 ? /(^\(\d{2}\) \d{5}\-\d{4}$)/.test(newPhone) : true) {
       setErrorPhone('');
       return true;
-    } else {
+    } 
       setErrorPhone('Valor inválido');
       return false;
-    }
+    
   };
   const validateFName = () => {
     if (newFName !== '') {
       setErrorFName('');
       return true;
-    } else {
+    } 
       setErrorFName('Valor inválido');
       return false;
-    }
+    
   };
   const validateLName = () => {
     if (newLName !== '') {
       setErrorLName('');
       return true;
-    } else {
+    } 
       setErrorLName('Valor inválido');
       return false;
-    }
+    
   };
   const validateCpf = () => {
     if (/(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)/.test(newCpf)) {
       setErrorCpf('');
       return true;
-    } else {
+    } 
       setErrorCpf('Valor inválido');
       return false;
-    }
+    
   };
   const validateBirthdate = () => {
     if (/^(?:(?:31(\/)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(newBirthdate)) {
       setErrorBirthdate('');
       return true;
-    } else {
+    } 
       setErrorBirthdate('Valor inválido');
       return false;
-    }
+    
   };
   const validateWhatsApp = () => {
     if (/(^\(\d{2}\) \d{5}\-\d{4}$)/.test(newWhatsApp)) {
       setErrorWhatsApp('');
       return true;
-    } else {
+    } 
       setErrorWhatsApp('Valor inválido');
       return false;
-    }
+    
   };
 
   useEffect(() => {
-    setNewAddress(!complement ? `${street}, ${number}` : `${street}, ${number}, ${complement}`)
-  }, [complement, street, number]);
+    setNewAddress(!complement ? `${street},${number}` : `${street},${number},${complement}`)
+  }, [complement,street,number]);
 
   const zoopParams = { newReason, street, number, complement, newNeighborhood, newCity, newCityState, newCep };
 
@@ -247,12 +251,12 @@ const UpdateUserInfo = () => {
       style={{
         display: 'grid',
         gridTemplateRows: '1fr auto',
-        gridRowGap: '20px',
+        gridRowGap: '5px',
         justifyContent: 'center',
         alignContent: 'center',
       }}
     >
-      <label>Você pode atualizar dados do seu CNPJ automaticamente pelo botão abaixo, caso já estejam na Receita Federal</label>
+      <label style={{ fontSize: '1.5rem', marginBottom: '10px', textAlign: 'center' }}>Você pode atualizar dados do seu CNPJ pelo botão abaixo, caso já estejam na Receita Federal</label>
 
       <div style={{ marginBottom: '20px' }}>
         <GetCnpj cnpj={cnpj} setState={setNewStates} setErrorMsg={setErrorMsg} zoopId={zoopId} />
@@ -304,7 +308,7 @@ const UpdateUserInfo = () => {
       />
       <InputEdit
         name="Número"
-        value={newAddress.split(',')[1]}
+        value={number && number.startsWith(' ') ? newAddress.split(',')[1].trim() : newAddress.split(',')[1]}
         setError={() => { }}
         error={errorNumber}
         editable={false}
@@ -312,7 +316,7 @@ const UpdateUserInfo = () => {
       />
       <InputEdit
         name="Complemento"
-        value={newAddress.split(',')[2]}
+        value={complement && complement.startsWith(' ') ? newAddress.split(',')[2].trim() : newAddress.split(',')[2]}
         setError={() => { }}
         error={errorComplement}
         editable={false}
@@ -351,9 +355,9 @@ const UpdateUserInfo = () => {
       <InputEdit
         name="Telefone"
         value={newPhone}
-        onChange={({ target: { value } }) => setNewPhone(capitalize(value))}
+        onChange={({ target: { value } }) => setNewPhone(maskInput(value, value.length <= 14 ? '(##) ####-####' : '(##) #####-####', true))}
         validateInput={validatePhone}
-        submit={sendToBackend(cnpj, 'M', userPos, { telefone: newPhone.startsWith('55 ') || newPhone === "" ? newPhone : `55 ${newPhone}` }, newPhone.startsWith('55 ') || newPhone === "" ? `${newPhone}` : `55 ${newPhone}`, setLoadingPhone, setErrorPhone, zoopId, fname, lname, cpf, birthdate, newPhone.startsWith('55 ') || newPhone === "" ? `${newPhone}` : `55 ${newPhone}`, zoopParams)}
+        submit={sendToBackend({...backendParams, setError: setErrorPhone}, zoopParams)}
         setError={() => { }}
         error={errorPhone}
         editable
@@ -364,7 +368,7 @@ const UpdateUserInfo = () => {
         value={newFName}
         onChange={({ target: { value } }) => setNewFName(capitalize(value))}
         validateInput={validateFName}
-        submit={sendToBackend(cnpj, 'B', userPos, { nome: newFName }, `${newFName} ${newLName}`, setLoadingFName, setErrorFName, zoopId, newFName, lname, cpf, birthdate, phone, zoopParams)}
+        submit={sendToBackend({...backendParams, setError: setErrorFName}, zoopParams)}
         setError={() => { }}
         error={errorFName}
         editable
@@ -375,7 +379,7 @@ const UpdateUserInfo = () => {
         value={newLName}
         onChange={({ target: { value } }) => setNewLName(capitalize(value))}
         validateInput={validateLName}
-        submit={sendToBackend(cnpj, 'B', userPos, { sobrenome: newLName }, `${newFName} ${newLName}`, setLoadingLName, setErrorLName, zoopId, fname, newLName, cpf, birthdate, phone, zoopParams)}
+        submit={sendToBackend({...backendParams, setError: setErrorLName}, zoopParams)}
         setError={() => { }}
         error={errorLName}
         editable
@@ -388,7 +392,7 @@ const UpdateUserInfo = () => {
             value={newCpf}
             onChange={({ target: { value } }) => setNewCpf(maskInput(value, '###.###.###-##', true))}
             validateInput={validateCpf}
-            submit={sendToBackend(cnpj, 'N', userPos, { cpf: newCpf }, `${newCpf}`, setLoadingCpf, setErrorCpf, zoopId, fname, lname, newCpf, birthdate, phone, zoopParams)}
+            submit={sendToBackend({...backendParams, setError: setErrorCpf}, zoopParams)}
             setError={() => { }}
             error={errorCpf}
             editable
@@ -399,7 +403,7 @@ const UpdateUserInfo = () => {
             value={newBirthdate}
             onChange={({ target: { value } }) => setNewBirthdate(maskInput(value, '##/##/####', true))}
             validateInput={validateBirthdate}
-            submit={sendToBackend(cnpj, 'O', userPos, { nascimento: newBirthdate }, `${newBirthdate}`, setLoadingBirthdate, setErrorBirthdate, zoopId, fname, lname, cpf, newBirthdate, phone, zoopParams)}
+            submit={sendToBackend({...backendParams, setError: setErrorBirthdate}, zoopParams)}
             setError={() => { }}
             error={errorBirthdate}
             editable
@@ -410,9 +414,9 @@ const UpdateUserInfo = () => {
       <InputEdit
         name="WhatsApp"
         value={newWhatsApp}
-        onChange={({ target: { value } }) => setNewWhatsApp(capitalize(value))}
+        onChange={({ target: { value } }) => setNewWhatsApp(maskInput(value, '(##) #####-####', true))}
         validateInput={validateWhatsApp}
-        submit={sendToBackend(cnpj, 'C', userPos, { whatsapp: newWhatsApp.startsWith('55 ') ? newWhatsApp : `55 ${newWhatsApp}` }, newWhatsApp.startsWith('55 ') ? `${newWhatsApp}` : `55 ${newWhatsApp}`, setLoadingWhatsApp, setErrorWhatsApp, zoopId, fname, lname, cpf, birthdate, phone, zoopParams)}
+        submit={sendToBackend({...backendParams, setError: setErrorWhatsApp}, zoopParams)}
         setError={() => { }}
         error={errorWhatsApp}
         editable
@@ -420,16 +424,16 @@ const UpdateUserInfo = () => {
       />
 
       <div>
-        <div style={{ padding: '15px 0px' }}>
-          <label style={help}>Para atualizar o CNPJ, <label onClick={() => window.open(`https://api.whatsapp.com/send?phone=${supportNumber.supportPhoneNumber.replace(/\+|\s|\(|\)|-/g, "")}`, "_blank")}style={helpLink}>fale com suporte</label>.</label>
+        <div style={{ padding: '10px 0px', textAlign: 'left' }}>
+          <label style={help}>Atualizar o CNPJ, <label onClick={() => window.open(`https://api.whatsapp.com/send?phone=${supportNumber.supportPhoneNumber.replace(/\+|\s|\(|\)|-/g, "")}`, "_blank")}style={helpLink}>fale com suporte</label>.</label>
         </div>
 
-        <div style={{ padding: '15px 0px' }}>
-          <label style={help}>Para atualizar email/senha, <label onClick={() => setLocation('/minha-conta')} style={helpLink}>acesse aqui</label>.</label>
+        <div style={{ padding: '10px 0px', textAlign: 'left' }}>
+          <label style={help}>Atualizar email/senha, <label onClick={() => setLocation('/minha-conta')} style={helpLink}>acesse aqui</label>.</label>
         </div>
 
-        <div style={{ paddingTop: '15px' }}>
-          <label style={help}>Para atualizar dados bancários, <label onClick={() => setLocation('/recebiveis/dados-bancarios')}style={helpLink}>acesse aqui</label>.</label>
+        <div style={{ padding: '10px 0px', textAlign: 'left' }}>
+          <label style={help}>Atualizar dados bancários, <label onClick={() => setLocation('/recebiveis/dados-bancarios')}style={helpLink}>acesse aqui</label>.</label>
         </div>
       </div>
 

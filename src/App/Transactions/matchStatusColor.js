@@ -2,7 +2,7 @@ import capitalize from '@ziro/capitalize';
 import { successColor, warningColor, alertColor, otherColor } from '@ziro/theme';
 
 const matchStatusColor = (status) => {
-    let standardized = capitalize(status);
+    const standardized = capitalize(status);
     if (standardized === 'Aprovado' ||
         standardized === 'Pago' ||
         standardized === 'Paid') return successColor;

@@ -7,6 +7,7 @@ import ReceivableDetails from './ReceivableDetails/index';
 import TransactionDetails from './TransactionDetails/index';
 import TransactionsList from './TransactionsList/index';
 import fetch from './fetch';
+import fetchList from './fetchList'
 
 const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
     const storageFilterStatus = localStorage.getItem('statusFilter')
@@ -16,7 +17,7 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
     const [monthFilter, setMonthFilter] = useState(storageFilterMonth || '');
     const [clientFilter, setClientFilter] = useState(storageFilterClient || '')
     const [clientList, setClientList] = useState([])
-    const [lastDate, setLastDate] = useState('')
+    const [listStatus, setListStatus] = useState([])
     const [limitFetch, setLimitFetch] = useState(20);
     const [transaction, setTransaction] = useState({});
     const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +30,11 @@ const Transactions = ({ transactionId, receivableId, setTransactionId }) => {
     const snap = { payments, totalTransactions };
     const { zoopId, docId, role } = useContext(userContext);
     const isCollaborator = role !== ''
-    const state = { lastDate, setLastDate, limitFetch, setLimitFetch, isLoadingResults, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, payments, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction }
+    const state = { listStatus, setListStatus, limitFetch, setLimitFetch, isLoadingResults, setIsLoadingResults, setFirstDate, setClientList, setIsLoading, setErrorLoading, payments, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator, firstDate, clientList, clientFilter, setClientFilter, statusFilter, setStatusFilter, monthFilter, setMonthFilter, loadingMore, setTransaction }
+
+    useEffect(() => {
+        fetchList(state)
+    },[])
 
     useEffect(() => {
         fetch(state);
