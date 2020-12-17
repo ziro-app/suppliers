@@ -1,7 +1,7 @@
 import { db } from '../../Firebase';
 
 const fetch = (state) => {
-  const { cnpj, setIsLoading, setIsError, setNewReason, setNewFantasy, setNewCep, setNewAddress, setNewNeighborhood, setNewCity, setNewCityState } = state;
+  const { cnpj, setIsLoading, setIsError, setNewReason, setNewFantasy, setNewCep, setNewAddress, setNewNeighborhood, setNewCity, setNewCityState, setNewPhone, setNewFName, setNewLName, setNewCpf, setNewBirthdate, setNewWhatsApp } = state;
 
   const run = async () => {
       const query = db.collection('suppliers').where('cnpj', '==', cnpj)
@@ -12,7 +12,7 @@ const fetch = (state) => {
 
             if(!snapshot.empty){
               snapshot.forEach(doc => {
-                const { razao, fantasia, cep, endereco, bairro, cidade, estado } = doc.data();
+                const {razao, fantasia, cep, endereco, bairro, cidade, estado, telefone, nome, sobrenome, cpf, nascimento, whatsapp } = doc.data();
                 setNewReason(razao);
                 setNewFantasy(fantasia);
                 setNewCep(cep);
@@ -20,6 +20,12 @@ const fetch = (state) => {
                 setNewNeighborhood(bairro);
                 setNewCity(cidade);
                 setNewCityState(estado);
+                setNewPhone(telefone.split('55 ')[1]);
+                setNewFName(nome);
+                setNewLName(sobrenome);
+                setNewCpf(cpf);
+                setNewBirthdate(nascimento);
+                setNewWhatsApp(whatsapp.split('55 ')[1]);
               })
             }
             setIsLoading(false);

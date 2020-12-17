@@ -2,11 +2,11 @@ import consultCnpj from './utils/consultCnpj';
 import checkResult from './utils/checkResult';
 import updateReceita from './utils/updateReceita';
 
-const lastReq = async (config, cnpj, setErrorMsg, validCnaes, setStoreowner, zoopId) => {
+const lastReq = async (config, cnpj, setErrorMsg, setStoreowner, zoopId) => {
     let result = {};
     try {
         const [status, result] = await consultCnpj(config)
-        const objResult = checkResult(status, result, false, validCnaes)
+        const objResult = checkResult(status, result, false)
         updateReceita(cnpj, objResult, setErrorMsg, setStoreowner, zoopId)
         result['ok'] = true
         result['error'] = false
@@ -18,7 +18,7 @@ const lastReq = async (config, cnpj, setErrorMsg, validCnaes, setStoreowner, zoo
 }
 const searchCnpj = (state,setStoreowner, zoopId) => () =>
     new Promise(async (resolve, reject) => {
-        const { cnpj, setFirstLabel, setIsOpen, setErrorMsg,validCnaes } = state;
+        const { cnpj, setFirstLabel, setIsOpen, setErrorMsg } = state;
         let config = {
             method: 'POST',
             url: process.env.CNPJ_URL,
@@ -34,7 +34,7 @@ const searchCnpj = (state,setStoreowner, zoopId) => () =>
                 throw { msg: 'Deve ter 14 números', customError: true }
             }
             const [status, result] = await consultCnpj(config)
-            const objResult = checkResult(status, result, false, validCnaes);
+            const objResult = checkResult(status, result, false);
             console.log('HERE')
             updateReceita(cnpj, objResult, setErrorMsg, setStoreowner, zoopId)
             setIsOpen(false);
@@ -45,7 +45,7 @@ const searchCnpj = (state,setStoreowner, zoopId) => () =>
                 setFirstLabel(false);
                 await setTimeout(async () => {
                     config['data']['ignore_db'] = false;
-                    let resultado = await lastReq(config, cnpj, setErrorMsg, validCnaes, setStoreowner, zoopId);
+                    let resultado = await lastReq(config, cnpj, setErrorMsg, setStoreowner, zoopId);
                     setIsOpen(false);
                     setFirstLabel(true);
                     if (resultado.error) {
