@@ -4,16 +4,15 @@ import Spinner from '@bit/vitorbarbosa19.ziro.spinner-with-div'
 import Error from '@bit/vitorbarbosa19.ziro.error'
 import Table from '@bit/vitorbarbosa19.ziro.table';
 
-import useGetRates from './hooks/useGetRates'
+import useLoadRates from './hooks/useLoadRates'
 
 const Rates = () => {
-
     const {
         blockDetails,
         dataRows,
         isLoading,
         isError
-    } = useGetRates()
+    } = useLoadRates()
 
     const dataTable = (data, title) => ([
         {

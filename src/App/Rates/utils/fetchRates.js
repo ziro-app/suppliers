@@ -1,4 +1,5 @@
 import { db } from '../../../Firebase'
+import { FailureMessage } from './promptMessages'
 import getDataFees from './getDataFees'
 import planName from './planName'
 
@@ -8,7 +9,8 @@ const fetch = async(
     setError,
     setDataRows,
     brands,
-    setBlockDetails
+    setBlockDetails,
+    setMessage,
 ) => {  
     try {
         setLoading(true)
@@ -18,40 +20,45 @@ const fetch = async(
                 if (!snapshot.empty) {
                     snapshot.forEach(doc => {
                         const data = doc.data().sellerZoopPlan2
-                        const { activePlan } = data
-                        const details = [
-                            {
-                                header: 'Informações Gerais',
-                                body: [
-                                    {
-                                        title: 'Plano ativo',
-                                        content: planName(activePlan).name
-                                    },
-                                    {
-                                        title: 'Condição de recebimento',
-                                        content: planName(activePlan).description
-                                    },
-                                    {
-                                        title: 'Parcelamento máx',
-                                        content: `${doc.data().maxParcelas}x`
-                                    },
-                                    {
-                                        title: 'Parcelamento máx sem juros',
-                                        content: `${doc.data().maxParcelas}x`
-                                    },
-                                ]
-                            }
-                        ]
-                        setBlockDetails(details)
-                        const dataPlan = data[activePlan]
-                        const arrayDatas = getDataFees(dataPlan, brands, activePlan)
-                        setDataRows(arrayDatas)
+                        if(data && data.activePlan){
+                            const { activePlan } = data
+                            const details = [
+                                {
+                                    header: 'Informações Gerais',
+                                    body: [
+                                        {
+                                            title: 'Plano ativo',
+                                            content: planName(activePlan).name
+                                        },
+                                        {
+                                            title: 'Recebimento',
+                                            content: planName(activePlan).description
+                                        },
+                                        {
+                                            title: 'Parcelamento máx',
+                                            content: `${doc.data().maxParcelas}x`
+                                        },
+                                        {
+                                            title: 'Parcelamento máx sem juros',
+                                            content: `${doc.data().maxParcelas}x`
+                                        },
+                                    ]
+                                }
+                            ]
+                            setBlockDetails(details)
+                            const dataPlan = data[activePlan]
+                            const arrayDatas = getDataFees(dataPlan, brands, activePlan)
+                            setDataRows(arrayDatas)
+                        }else{
+                            setMessage(FailureMessage('Não encontramos nenhum plano cadastrado.'))
+                        }
                     })
                 }
             }
         )
         setLoading(false)
     } catch (error) {
+        setMessage(FailureMessage('Ocorreu um erro inesperado.'))
         setError(true)
         setLoading(false)
     }

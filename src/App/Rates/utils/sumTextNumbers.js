@@ -8,7 +8,11 @@ const sumTextNumbers = (arrayTextNumbers) => {
         if(num === 0){
             return '0,00%'
         }
-        return `${String(num).replace('.',',')}%`
+        const result = `${String(num).replace('.',',')}`
+        if(result.split(',')[1].length === 2){
+            return `${result}%`
+        }
+        return `${result}0%`
     }
     return transformToPorcentText(roundSum)
 }
