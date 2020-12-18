@@ -19,7 +19,7 @@ const fetch = async(
             async snapshot => {
                 if (!snapshot.empty) {
                     snapshot.forEach(doc => {
-                        const data = doc.data().sellerZoopPlan2
+                        const data = doc.data().sellerZoopPlan
                         if(data && data.activePlan){
                             const { activePlan } = data
                             const details = [
