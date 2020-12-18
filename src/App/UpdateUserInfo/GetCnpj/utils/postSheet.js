@@ -5,8 +5,7 @@ const configPost = (arrayUpdate) => {
         data:{
             "apiResource": "values",
             "apiMethod": "batchUpdate",
-            // "spreadsheetId": process.env.SHEET_STOREOWNERS_ID,
-            "spreadsheetId": "1YlNSmVrawtxeKyy-tDdmI9B0bgSIIQswBnl3CEgdRRo",
+            "spreadsheetId": process.env.SHEET_SUPPLIERS_ID,
             "resource": {
                 "data": arrayUpdate
             },

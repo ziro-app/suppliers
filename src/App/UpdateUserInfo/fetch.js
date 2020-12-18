@@ -12,7 +12,7 @@ const fetch = (state) => {
 
             if(!snapshot.empty){
               snapshot.forEach(doc => {
-                const { razao, fantasia, cep, endereco, bairro, cidade, estado, telefone, nome, sobrenome, cpf, nascimento, whatsapp } = doc.data();
+                const {razao, fantasia, cep, endereco, bairro, cidade, estado, telefone, nome, sobrenome, cpf, nascimento, whatsapp } = doc.data();
                 setNewReason(razao);
                 setNewFantasy(fantasia);
                 setNewCep(cep);
