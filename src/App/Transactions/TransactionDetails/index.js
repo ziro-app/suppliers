@@ -28,7 +28,8 @@ import linkMessage from '../../CreatePayment/utils/linkMessage';
 const TransactionDetails = ({ transactions, transactionId, transaction, setTransaction, setPayments, transactionsMemo }) => {
     const [receipt_id, setReceipt_id] = useState('');
     const [error, setError] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [nothing, setNothing] = useState(false)
     const [data, setData] = useState([]);
     const [blocks, setBlocks] = useState([]);
     const [, setLocation] = useLocation();
@@ -95,11 +96,13 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             }, 2500);
         }
     };
+
     useEffect(() => {
         setTransaction({});
     }, []);
+
     async function getTransaction(transactionId, setTransaction, setError, transaction, transactions, setPayments) {
-        await fetch(transactionId, setTransaction, setError, transaction, transactions, setPayments);
+        await fetch(transactionId, setTransaction, setError, transaction, transactions, setPayments, setIsLoading, setNothing);
         if (Object.prototype.hasOwnProperty.call(transaction, 'sellerZoopPlan')) {
             if (transaction.sellerZoopPlan === '' || (markupTransaction.percentage === 0 && markupTransaction.amount === 0)) setOlderTransaction(true);
             else setOlderTransaction(false);
@@ -345,7 +348,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             </div>
         );
 
-    if (!transaction.hasOwnProperty('transactionId'))
+    if (nothing)
         return (
             <Error
                 message="Transação inválida ou não encontrada, retorne e tente novamente."

@@ -8,7 +8,7 @@ const verifyArray = (array, transactionId) => {
     return exists.length > 0;
 };
 
-const fetch = (transactionId, setTransaction, setError, transaction, transactions, setPayments) => {
+const fetch = (transactionId, setTransaction, setError, transaction, transactions, setPayments, setIsLoading, setNothing) => {
     const query = db.collection('credit-card-payments').doc(transactionId);
 
     const run = async () => {
@@ -83,12 +83,16 @@ const fetch = (transactionId, setTransaction, setError, transaction, transaction
                             fee_details: fee_details || '-',
                             checkoutWithoutRegister: checkoutWithoutRegister || false,
                         });
+                        setIsLoading(false)
+
                         if (transaction.status !== paymentDoc[0].status) {
                             setTransaction(paymentDoc[0]);
                             if (paymentDoc[0].status !== 'Aguardando Pagamento' && !verifyArray(transactions, transactionZoopId)) setPayments([...transactions, paymentDoc[0]]);
                         }
                     } else {
                         setError(true);
+                        setNothing(true);
+                        setIsLoading(false);
                     }
                 },
                 error => {
