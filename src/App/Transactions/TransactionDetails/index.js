@@ -23,7 +23,6 @@ import fetch from './fetch';
 import { dateFormat, parcelFormat, round, stringToFloat } from '../utils';
 import { btn, btnRed, buttonContainer, custom, illustrationContainer, modalContainer, modalLabel, spinner } from './styles';
 import { userContext } from '../../appContext';
-import linkMessage from '../../CreatePayment/utils/linkMessage';
 
 const TransactionDetails = ({ transactions, transactionId, transaction, setTransaction, setPayments, transactionsMemo }) => {
     const [receipt_id, setReceipt_id] = useState('');
@@ -48,10 +47,10 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     const paymentLink = process.env.HOMOLOG
     ? transaction.checkoutWithoutRegister
       ? `http://localhost:8080/pagamento/${transactionId}/finalizar-sem-cadastro`
-      : `http://localhost:8080/pagamento/${transactionId}/escolher-cartao?doc`
+      : `http://localhost:8080/pagamento/${transactionId}/escolher-cartao`
     : transaction.checkoutWithoutRegister
     ? `https://ziro.app/pagamento/${transactionId}/finalizar-sem-cadastro`
-    : `https://ziro.app/pagamento/${transactionId}/escolher-cartao?doc`
+    : `https://ziro.app/pagamento/${transactionId}/escolher-cartao`
 
     let insuranceValueFormatted = '-';
     let markupValueFormatted = '-';
@@ -433,7 +432,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                                 gridRowGap: '15px',
                             }}
                         />
-                        <span style={{ marginTop: '20px', fontFamily: 'Rubik', fontSize: '12px' }}>* Valores arredondados para a segunda casa decimal</span>
+                        <span style={{ fontFamily: 'Rubik', fontSize: '12px' }}>* Valores arredondados para a segunda casa decimal</span>
                     </>
                 )}
                 {isCanceled && (
