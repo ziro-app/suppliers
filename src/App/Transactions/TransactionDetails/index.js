@@ -410,10 +410,10 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                 {receipt_id ? (
                   <div style={{ marginTop: isCanceled || transaction.status === 'Atualizando' ? '20px' : '0' }}>
                     <Button
-                      type="link"
+                      type="button"
                       cta="Gerar comprovante"
                       template="regular"
-                      navigate={
+                      click={
                           backRoute
                               ? () => history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, { backRoute, snapshot: snapshotMemo })
                               : () => history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, { transactionsMemo: { ...transactionsMemo } })
