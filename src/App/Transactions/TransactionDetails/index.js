@@ -45,12 +45,13 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     let markupTransaction = {};
     let antiFraudTransaction = {};
 
-    const baseUrl = process.env.HOMOLOG ? 'http://localhost:8080/pagamento/' : 'https://ziro.app/pagamento/';
-    const seller = (transaction && transaction.seller) || '';
-    const charge = (transaction && transaction.charge) || '';
-    const installmentsMax = (transaction && transaction.installmentsMax) || '';
-    const checkoutWithoutRegister = (transaction && transaction.checkoutWithoutRegister) || false;
-    const messageLink = linkMessage(baseUrl, transactionId, seller, charge, installmentsMax, checkoutWithoutRegister);
+    const paymentLink = process.env.HOMOLOG
+    ? transaction.checkoutWithoutRegister
+      ? `http://localhost:8080/pagamento/${transactionId}/finalizar-sem-cadastro`
+      : `http://localhost:8080/pagamento/${transactionId}/escolher-cartao?doc`
+    : transaction.checkoutWithoutRegister
+    ? `https://ziro.app/pagamento/${transactionId}/finalizar-sem-cadastro`
+    : `https://ziro.app/pagamento/${transactionId}/escolher-cartao?doc`
 
     let insuranceValueFormatted = '-';
     let markupValueFormatted = '-';
@@ -363,7 +364,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     const isWaiting = transaction.status === 'Aguardando Pagamento' || transaction.status === 'Aprovação Pendente';
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
-            <textarea type="text" style={{ position: 'absolute', left: '-9999px' }} value={messageLink} ref={textAreaRef} readOnly />
+            <textarea type="text" style={{ position: 'absolute', left: '-9999px' }} value={paymentLink} ref={textAreaRef} readOnly />
             <Header type="icon" title="Detalhes da venda" setIsOpen={backRoute ? () => history.push(backRoute, { snapshot: snapshotMemo }) : () => setLocation('/transacoes')} icon="back" />
 
             <div style={{ display: 'grid', gridRowGap: '20px' }}>
