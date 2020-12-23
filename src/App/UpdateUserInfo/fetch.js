@@ -20,12 +20,14 @@ const fetch = (state) => {
                 setNewNeighborhood(bairro || '');
                 setNewCity(cidade || '');
                 setNewCityState(estado || '');
-                setNewPhone(telefone?.split('55 ')[1] || '');
+                // setNewPhone(telefone?.split('55 ')[1] || '');
+                setNewPhone(telefone && telefone.startsWith('55 ') ? telefone.split('55 ')[1] : telefone || '');
                 setNewFName(nome || '');
                 setNewLName(sobrenome || '');
                 setNewCpf(cpf || '');
                 setNewBirthdate(nascimento || '');
-                setNewWhatsApp(whatsapp?.split('55 ')[1] || '');
+                // setNewWhatsApp(whatsapp?.split('55 ')[1] || '');
+                setNewWhatsApp(whatsapp && whatsapp.startsWith('55 ') ? whatsapp.split('55 ')[1] : whatsapp || '');
               })
             }
             setIsLoading(false);
