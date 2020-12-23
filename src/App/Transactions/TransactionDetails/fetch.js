@@ -83,6 +83,7 @@ const fetch = (transactionId, setTransaction, setError, transaction, transaction
                             fee_details: fee_details || '-',
                             checkoutWithoutRegister: checkoutWithoutRegister || false,
                         });
+                        setNothing(false)
                         setIsLoading(false)
 
                         if (transaction.status !== paymentDoc[0].status) {

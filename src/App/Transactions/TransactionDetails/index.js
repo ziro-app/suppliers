@@ -3,7 +3,6 @@
 /* eslint-disable prefer-const */
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { alertColor, containerWithPadding, successColor } from '@ziro/theme';
-import { formatDateUTC3 } from '@ziro/format-date-utc3';
 
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Details from '@bit/vitorbarbosa19.ziro.details';
@@ -29,7 +28,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     const [receipt_id, setReceipt_id] = useState('');
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [nothing, setNothing] = useState(false)
+    const [nothing, setNothing] = useState(true)
     const [data, setData] = useState([]);
     const [blocks, setBlocks] = useState([]);
     const [, setLocation] = useLocation();
@@ -54,8 +53,10 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
 
     let insuranceValueFormatted = '-';
     let markupValueFormatted = '-';
+
     const deleteTransaction = async () => {
         setIsLoading(true);
+
         try {
             await db.collection('credit-card-payments').doc(transactionId).delete();
             setLocation('/transacoes');
@@ -116,6 +117,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     function handleMarkup(transaction) {
         return markupTransaction ? `- ${parseFloat(markupTransaction.receivable_amount).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}` : '-';
     }
+
     useEffect(() => {
         getTransaction(transactionId, setTransaction, setError, transaction, transactions, setPayments).then(r => {
             if (Object.prototype.hasOwnProperty.call(transaction, 'dateLinkCreated')) {
@@ -295,19 +297,17 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                                     }, 0)
                                 : 0;
                         if (!transaction.paid_at) {
-                            let ufc3Formatted = formatDateUTC3(new Date(transaction.expected_on.seconds * 1000)).split(' ')[0];
                             let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
                             let upAmw = round(parseFloat(transaction.amount), 2);
-                            unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, ufc3Formatted, <Icon type="chevronRight" size={14} />]);
+                            unpaidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.expected_on)}`, <Icon type="chevronRight" size={14} />]);
                             if (backRouteEffect) unpaidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
                             else unpaidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
                             unpaidAmount += parseFloat(upAm);
                             unpaidAmountWithoutFees += parseFloat(upAmw);
                         } else {
-                            let ufc3Formatted = formatDateUTC3(new Date(transaction.expected_on.seconds * 1000)).split(' ')[0];
                             let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2);
                             let upAmw = round(parseFloat(transaction.amount), 2);
-                            paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, ufc3Formatted, <Icon type="chevronRight" size={14} />]);
+                            paidRows.push([`${transaction.installment}`, `${parcelFormat(upAm)}`, `${parcelFormat(upAmw)}`, `${dateFormat(transaction.paid_at)}`, <Icon type="chevronRight" size={14} />]);
                             if (backRouteEffect) paidClicks.push(() => history.push(`/transacoes/${transactionId}/${transaction.receivableZoopId}`, { backRoute: backRouteEffect, snapshot: snapshotEffect }));
                             else paidClicks.push(() => setLocation(`/transacoes/${transactionId}/${transaction.receivableZoopId}`));
                             paidAmount += parseFloat(upAm);
@@ -348,7 +348,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
             </div>
         );
 
-    if (nothing)
+    if (nothing && !isLoading)
         return (
             <Error
                 message="Transação inválida ou não encontrada, retorne e tente novamente."
