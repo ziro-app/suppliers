@@ -121,7 +121,7 @@ const mountBlockPJ = (data, setPendency, setPartner) => {
                 },
                 {
                     title: 'Sócios',
-                    content: (socios && socios.count > 0) ? <div style={{ cursor: 'pointer' }} onClick={() => setPartner({ ...socios, nome: 'Quadro de Sócios' })}>Informações Societárias <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (socios && socios.count > 0) ? <div style={{ cursor: 'pointer' }} onClick={() => setPartner({ ...socios, nome: 'Quadro de Sócios' })}>Detalhes <Icon type="chevronRight" size={14} /></div> : 'Não informado'
                 },
                 {
                     title: 'Tipo de Sociedade',

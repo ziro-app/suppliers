@@ -4,7 +4,6 @@ import Header from '@bit/vitorbarbosa19.ziro.header';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import { containerWithPadding } from '@ziro/theme';
 import capitalize from '@ziro/capitalize';
-import { functionSort } from '../utils/sort';
 
 const PartnersDetails = ({ partners, setPartners }) => {
     const title = partners.nome ?? 'Sócios';
@@ -17,9 +16,8 @@ const PartnersDetails = ({ partners, setPartners }) => {
         data.map((it, index) => {
             Object.keys(it).map(key => {
                 const title = capitalize(key);
-                bodyEffect.push({ title, content });
+                bodyEffect.push({ title, content: it[key] });
             });
-            bodyEffect.sort((a, b) => functionSort(a.nome, b.nome));
             blockEffect.push({
                 header: `Sócio ${index + 1}`,
                 body: bodyEffect
