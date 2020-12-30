@@ -1,4 +1,4 @@
-export const container = { 
+export const container = {
     display: 'grid',
     gridGap: '8px',
     marginBottom: '25px'
@@ -17,7 +17,6 @@ export const btnClearAll = {
     border:'none',
     background:'none',
     textAlign:'rigth',
-    marginBottom:'20px'
 }
 
 export const textClearAll = {
