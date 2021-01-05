@@ -203,7 +203,8 @@ const completeRegistration = state => () => {
                                                 payoutAutomatic: true,
                                                 zoopBankAccountId: responseAssociating.data.id,
                                                 backgroundCheckRequestsAvailable: 10,
-                                                backgroundCheckCurrentMonth: today.getMonth()
+                                                backgroundCheckCurrentMonth: today.getMonth(),
+                                                backgroundCheckCurrentYear: today.getFullYear()
                                             })
 
                                             await db.collection('users').add({ email, app: 'suppliers' })

@@ -8,6 +8,7 @@ import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import ScoreCircle from '@bit/vitorbarbosa19.ziro.score-circle';
 import maskInput from '@ziro/mask-input';
+import { alertColor } from '@ziro/theme';
 import validateDocuments from '../utils/validateDocuments';
 import { userContext } from '../appContext';
 import { Menu } from '../Menu';
@@ -21,6 +22,7 @@ const BackgroundCheck = () => {
     const { docId } = useContext(userContext);
     const [isLoading, setIsLoading] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
+    const [apiError, setApiError] = useState(false);
     const [document, setDocument] = useState('');
     const [freeRequests, setFreeRequests] = useState(0);
     const [pendency, setPendency] = useState(null);
@@ -29,7 +31,7 @@ const BackgroundCheck = () => {
     const [blockPF, setBlockPF] = useState([]);
     const [blockPJ, setBlockPJ] = useState([]);
     const DEFAULT_STEP_COLORS = ['#a50a0a', '#bc0b0b', '#eb0e0e', '#e68c06', '#ff9b07', '#f8d823', '#ebeb09', '#5deb3e', '#35e60e', '#2fcc0c'];
-    const setState = { setDocument, setFreeRequests, setScoreValue, setBlockPF, setBlockPJ, setPendency, setPartner };
+    const setState = { setDocument, setFreeRequests, setScoreValue, setBlockPF, setBlockPJ, setPendency, setPartner, setApiError };
     const state = { docId, document, freeRequests, ...setState };
     const validations = [
         {
@@ -55,15 +57,23 @@ const BackgroundCheck = () => {
         );
     if (errorLoading) return <Error />;
 
+    if (apiError) return <Error
+        title="Erro na API"
+        backRoute='/consulta'
+        backRouteFunction={() => setApiError(false)}
+        btnMsg="Voltar"
+        message="Ocorreu um erro ao consultar o documento na API, tente novamente"
+        type="paymentError" />;
+
     if (pendency) return <PendencyDetails pendency={pendency} setPendency={setPendency} />;
 
     if (partner) return <PartnersDetails partners={partner} setPartners={setPartner} />
 
     return (
-        <Menu title="Consultar documento">
+        <Menu title="Consultar CPF ou CNPJ">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <div style={{ display: 'grid', justifyContent: 'center', paddingBottom: '10px' }}>
-                    <strong style={{ fontSize: '1.5rem', fontFamily: 'Rubik' }} >{freeRequests ? `${freeRequests} consultas gratuitas restantes` : 'Consultas gratuitas esgotadas'}</strong>
+                    <strong style={{ fontSize: '1.5rem', fontFamily: 'Rubik', color: freeRequests ? '#000' : alertColor }} >{freeRequests ? `${freeRequests} consultas gratuitas restantes` : 'Consultas gratuitas esgotadas'}</strong>
                 </div>
 
                 <Form
