@@ -19,8 +19,8 @@ const Rates = () => {
             title,
             header: [
                 'Parcela',
-                'C/ Seguro',
-                'S/ Seguro',
+                'Sem Seguro',
+                'Com Seguro',
             ],
             rows: data,
             totals: [],
@@ -28,7 +28,7 @@ const Rates = () => {
     ])
 
     if(isLoading) <Spinner />
-    
+
     if(isError) <Error />
 
     return (
@@ -37,23 +37,23 @@ const Rates = () => {
             {
                 dataRows.map(data => (
                     <div
-                        aria-label= 'table' 
+                        aria-label= 'table'
                         key={data.brand}
                         style={{marginTop:'20px'}}
                     >
-                        <Table 
+                        <Table
                             data={
                                 dataTable(
-                                    data.content, 
-                                    data.brand === 'americanexpress' 
-                                    ? 'american express' 
+                                    data.content,
+                                    data.brand === 'americanexpress'
+                                    ? 'american express'
                                     : data.brand
                                     )
                             }
                             customGrid={{
                                 gridTemplateColumns: '1fr 1fr 1fr',
                                 gridRowGap: '5px',
-                            }} 
+                            }}
                         />
                     </div>
                 ))
