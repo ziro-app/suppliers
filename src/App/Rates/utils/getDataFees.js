@@ -10,13 +10,13 @@ const arrayDatas = (dataPlan, brands, activePlan) => {
         for(let i = 0; i <= 12; i++){
             const fullNameFluxo = {
                 0: 'débito',
-                1: 'à vista',
-                2: '2x à 6x',
-                7: '7x à 12x'
+                1: 'a vista',
+                2: '2x a 6x',
+                7: '7x a 12x'
             }
             const fullNameNormal = {
                 0: 'débito',
-                1: 'à vista'
+                1: 'a vista'
             }
             const conditionalFluxo = i === 0 || i === 1 ||  i === 2 || i === 7
             const conditionalAntecipado = true
@@ -33,10 +33,10 @@ const arrayDatas = (dataPlan, brands, activePlan) => {
             if(isFluxo ? conditionalFluxo : conditionalAntecipado)
             dataFees.push([
                 isFluxo
-                ? fullNameFluxo[i] 
+                ? fullNameFluxo[i]
                 : fullNameNormal[i] || `${i}x` ,
-                feeSeg,
                 fee,
+                feeSeg,
             ])
         }
         return {
