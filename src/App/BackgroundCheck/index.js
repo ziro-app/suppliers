@@ -72,7 +72,7 @@ const BackgroundCheck = () => {
     return (
         <Menu title="Consultar CPF ou CNPJ">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <div style={{ display: 'grid', justifyContent: 'center', paddingBottom: '10px' }}>
+                <div style={{ display: 'grid', justifyContent: 'center', paddingBottom: '20px' }}>
                     <strong style={{ fontSize: '1.5rem', fontFamily: 'Rubik', color: freeRequests ? '#000' : alertColor }} >{freeRequests ? `${freeRequests} consultas gratuitas restantes` : 'Consultas gratuitas esgotadas'}</strong>
                 </div>
 
