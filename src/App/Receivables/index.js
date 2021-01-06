@@ -7,6 +7,7 @@ import Error from '@bit/vitorbarbosa19.ziro.error';
 import Table from '@bit/vitorbarbosa19.ziro.table';
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
+import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import currencyFormat from '@ziro/currency-format';
 import { Menu } from '../Menu/index';
 import { round } from '../Transactions/utils';
@@ -14,7 +15,7 @@ import { userContext } from '../appContext';
 import BankInfo from './BankInfo/index';
 import RedeemBalance from './RedeemBalance/index';
 import Transactions from './Transactions/index';
-import { btn, cellStyle, contentStyle, customGrid, info, spinner, titleStyle } from './styles';
+import { btn, cellStyle, contentStyle, customGrid, illustrationContainer, illustrationTitle, info, spinner, titleStyle } from './styles';
 import fetch from './fetch';
 import fetchBalance from './fetchBalance';
 import convertCsv from './utils/convertCsv';
@@ -22,7 +23,6 @@ import convertCsv from './utils/convertCsv';
 const Receivables = ({ receivableId }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
-    const [customError, setCustomError] = useState(false);
     const [receivables, setReceivables] = useState([]);
     const [data, setData] = useState([]);
     const [hasMore, setHasMore] = useState(true);
@@ -38,7 +38,7 @@ const Receivables = ({ receivableId }) => {
     const setState = {
         setIsLoading, setErrorLoading, setReceivables, setData, setLocation,
         setHasMore, setLoadingMore, setInitDate, setFinalDate, setTotalAmount,
-        setDays, setCustomError, setTotalTransactions, setBalance
+        setDays, setTotalTransactions, setBalance
     };
     const state = { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days, totalTransactions, balance };
     const { zoopId, payoutAutomatic, fantasy } = useContext(userContext);
@@ -50,6 +50,8 @@ const Receivables = ({ receivableId }) => {
         setInitDate(day);
         fetch(zoopId, day, totalAmount, totalTransactions, data, days, receivables, fantasy, setState);
     };
+
+    const moneyFormat = value => value ? currencyFormat(round(value, 2).toFixed(2).replace('.', '')) : 'R$ 0,00';
 
     const mountTable = (tableRows, totalAmount, totalTransactions) => {
         let rows = [];
@@ -105,16 +107,6 @@ const Receivables = ({ receivableId }) => {
 
     if (errorLoading) return <Error />;
 
-    if (customError) return (
-        <Error
-            message="Nenhum recebível cadastrado até o momento"
-            type="noData"
-            title="Recebíveis"
-            backRoute="/transacoes"
-            backRouteFunction={route => setLocation(route)}
-        />
-    );
-
     if (receivableId && receivableId === 'dados-bancarios') return <BankInfo />
 
     if (receivableId && receivableId === 'resgate') return <RedeemBalance />
@@ -129,18 +121,30 @@ const Receivables = ({ receivableId }) => {
 
                     {payoutAutomatic != undefined && payoutAutomatic != null && payoutAutomatic === false && <Button cta="Resgatar saldo" style={btn} navigate={() => setLocation('recebiveis/resgate')} type="link" />}
 
-                    <Button cta="Exportar planilha" style={btn} click={() => convertCsv(receivables, totalAmount, totalTransactions, 'Recebiveis.csv')} type="button" />
+                    {(receivables.length > 0 && totalAmount > 0 && totalTransactions > 0) && <Button cta="Exportar planilha" style={btn} click={() => convertCsv(receivables, totalAmount, totalTransactions, 'Recebiveis.csv')} type="button" />}
 
                     <div style={{ marginTop: '10px' }}></div>
                     <div style={info}>
                         <label style={titleStyle}>À RECEBER HOJE</label>
-                        <label style={contentStyle}>{balance ? currencyFormat(round(balance, 2).toFixed(2).replace('.', '')) : 'R$ 0,00'}</label>
+                        <label style={contentStyle}>{moneyFormat(balance)}</label>
                     </div>
 
-                    <div style={info}>
-                        <label style={titleStyle}>À RECEBER EM {days} DIAS</label>
-                        <label style={contentStyle}>{currencyFormat(round(totalAmount, 2).toFixed(2).replace('.', ''))}</label>
-                    </div>
+                    {data.length > 0 &&
+                        <div style={info}>
+                            <label style={titleStyle}>À RECEBER EM {days} DIAS</label>
+                            <label style={contentStyle}>{moneyFormat(totalAmount)}</label>
+                        </div>
+                    }
+
+                    {data.length === 0 &&
+                        <div style={illustrationContainer}>
+                            <div style={{ justifySelf: 'center' }}>
+                                <Illustration type="noData" />
+                            </div>
+                            <label style={illustrationTitle}>Sem recebíveis futuros</label>
+                            <label>Nenhum recebível cadastrado para datas posteriores até o momento.</label>
+                        </div>
+                    }
 
                     <Table
                         data={data}

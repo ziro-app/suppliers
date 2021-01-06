@@ -15,7 +15,7 @@ const config = {
     }
 };
 
-const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days, receivables, fantasy, { setIsLoading, setErrorLoading, setReceivables, setData, setLocation, setFinalDate, setHasMore, setLoadingMore, setTotalAmount, setDays, setCustomError, setTotalTransactions }) => {
+const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days, receivables, fantasy, { setIsLoading, setErrorLoading, setReceivables, setData, setLocation, setFinalDate, setHasMore, setLoadingMore, setTotalAmount, setDays, setTotalTransactions }) => {
     const source = axios.CancelToken.source();
     const fnDate = getFinalDate(initDate, 34);
     setFinalDate(fnDate);
@@ -48,7 +48,6 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
             const rows = [];
             const rowsClicks = [];
             const keys = Object.keys(arrayItems);
-            if (keys.length === 0 && receivables.length === 0) throw { customError: true };
             await Promise.all(keys.map(async (key, index) => {
                 let [ano, mes, dia] = key.split('-');
                 let date = [dia, mes, ano.substring(2)].join('/');
@@ -101,18 +100,9 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
         } catch (error) {
             console.log(error)
             if (error.response) console.log(error.response);
-            else console.log(error);
-            if (error.customError) {
-                setErrorLoading(false);
-                setIsLoading(false);
-                setLoadingMore(false);
-                setCustomError(true);
-            } else {
-                setErrorLoading(true);
-                setIsLoading(false);
-                setLoadingMore(false);
-                setCustomError(false);
-            }
+            setErrorLoading(true);
+            setIsLoading(false);
+            setLoadingMore(false);
         }
     }
     run();

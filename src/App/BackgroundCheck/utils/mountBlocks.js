@@ -1,5 +1,4 @@
 import React from 'react';
-import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import { alertColor, successColor } from '@ziro/theme';
 import capitalize from '@ziro/capitalize';
 import maskInput from '@ziro/mask-input';
@@ -69,27 +68,27 @@ const mountBlockPF = (data, setPendency) => {
             body: [
                 {
                     title: 'Dívidas vencidas',
-                    content: (dividas_vencidas && dividas_vencidas.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Dividas Vencidas' })}>Pendências <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (dividas_vencidas && dividas_vencidas.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Dividas Vencidas' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: 'Cheque',
-                    content: (cheque && cheque.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Cheque' })}>Pendências <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (cheque && cheque.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Cheque' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: 'Protestos',
-                    content: (protestos && protestos.count > 0) ? <div style={details} onClick={() => setPendency({ ...protestos, nome: 'Protestos' })}>Pendências <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (protestos && protestos.count > 0) ? <div style={details} onClick={() => setPendency({ ...protestos, nome: 'Protestos' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: 'PEFIN',
-                    content: (pefin && pefin.count > 0) ? <div style={details} onClick={() => setPendency({ ...pefin, nome: 'PEFIN' })}>Pendências <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (pefin && pefin.count > 0) ? <div style={details} onClick={() => setPendency({ ...pefin, nome: 'PEFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: 'REFIN',
-                    content: (refin && refin.count > 0) ? <div style={details} onClick={() => setPendency({ ...refin, nome: 'REFIN' })}>Pendências <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (refin && refin.count > 0) ? <div style={details} onClick={() => setPendency({ ...refin, nome: 'REFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: 'CCF',
-                    content: (ccf && ccf.count > 0) ? <div style={details} onClick={() => setPendency({ ...ccf, nome: 'CCF' })}>Pendências <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (ccf && ccf.count > 0) ? <div style={details} onClick={() => setPendency({ ...ccf, nome: 'CCF' })}>Pendências</div> : 'Nada consta'
                 }
             ]
         }
@@ -122,7 +121,7 @@ const mountBlockPJ = (data, setPendency, setPartner) => {
                 },
                 {
                     title: 'Sócios',
-                    content: (socios && socios.count > 0) ? <div style={details} onClick={() => setPartner({ ...socios, nome: 'Quadro de Sócios' })}>Detalhes <Icon type="chevronRight" size={14} /></div> : 'Não informado'
+                    content: (socios && socios.count > 0) ? <div style={details} onClick={() => setPartner({ ...socios, nome: 'Quadro de Sócios' })}>Detalhes</div> : 'Não informado'
                 },
                 {
                     title: 'Tipo de Sociedade',
@@ -144,23 +143,23 @@ const mountBlockPJ = (data, setPendency, setPartner) => {
             body: [
                 {
                     title: 'Dívidas vencidas',
-                    content: (dividas_vencidas && dividas_vencidas.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Dividas Vencidas' })}>Pendências <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (dividas_vencidas && dividas_vencidas.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Dividas Vencidas' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: 'Protestos',
-                    content: (protestos && protestos.count > 0) ? <div style={details} onClick={() => setPendency({ ...protestos, nome: 'Protestos' })}>Pendências <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (protestos && protestos.count > 0) ? <div style={details} onClick={() => setPendency({ ...protestos, nome: 'Protestos' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: 'PEFIN',
-                    content: (pefin && pefin.count > 0) ? <div style={details} onClick={() => setPendency({ ...pefin, nome: 'PEFIN' })}>Pendências <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (pefin && pefin.count > 0) ? <div style={details} onClick={() => setPendency({ ...pefin, nome: 'PEFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: 'REFIN',
-                    content: (refin && refin.count > 0) ? <div style={details} onClick={() => setPendency({ ...refin, nome: 'REFIN' })}>Pendências <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (refin && refin.count > 0) ? <div style={details} onClick={() => setPendency({ ...refin, nome: 'REFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: 'CCF',
-                    content: (ccf && ccf.count > 0) ? <div style={details} onClick={() => setPendency({ ...ccf, nome: 'CCF' })}>Pendências <Icon type="chevronRight" size={14} /></div> : 'Nada consta'
+                    content: (ccf && ccf.count > 0) ? <div style={details} onClick={() => setPendency({ ...ccf, nome: 'CCF' })}>Pendências</div> : 'Nada consta'
                 }
             ]
         }

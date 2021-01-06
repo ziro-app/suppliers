@@ -17,7 +17,7 @@ export const wrapper = {
         gridRowStart: 2,
         gridRowEnd: 2,
         marginTop: '55px',
-        height: '900px'
+        height: '400px'
     },
     details = {
         cursor: 'pointer',
