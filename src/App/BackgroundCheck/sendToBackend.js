@@ -38,14 +38,14 @@ const sendToBackend = state => () => {
             let block, scoreValue = 0;
             clearInfo();
             // BUSCANDO DOCUMENTO NA BASE
-            const query = await db.collection('backgroundCheckMock').where(field, '==', document).get();
+            const query = await db.collection('backgroundCheck').where(field, '==', document).get();
             if (query.empty) {
                 const [freeRequests, currentFreeMonth, currentFreeYear] = await getInfo(docId);
                 if (freeRequests > 0) {
                     const { data: { backgroundCheck } } = await post(url, {}, config);
                     console.log(backgroundCheck);
                     const updated = freeRequests - 1;
-                    await db.collection('backgroundCheckMock').add({ date: new Date(), ...backgroundCheck });
+                    await db.collection('backgroundCheck').add({ date: new Date(), ...backgroundCheck });
                     await db.collection('suppliers').doc(docId).update({
                         backgroundCheckRequestsAvailable: updated,
                         backgroundCheckCurrentYear: currentFreeYear,

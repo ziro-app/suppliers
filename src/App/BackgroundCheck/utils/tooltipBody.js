@@ -1,35 +1,43 @@
 import React from 'react';
 
-export const tooltipBody = (
-    <>
+export const cadastralSituationBody = (
+    <div style={{ display: 'grid', gap: 10 }}>
+        <label style={{ marginTop: 10 }}>
+            Situação do CPF ou CNPJ junto à Receita Federal
+        </label>
+    </div>
+),
+    protestsBody = (
         <div style={{ display: 'grid', gap: 10 }}>
             <label style={{ marginTop: 10 }}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Habitant morbi tristique
-                senectus et netus. Molestie nunc non blandit massa enim nec. Venenatis tellus
-                in metus vulputate eu scelerisque felis. Nisi vitae suscipit tellus mauris a
-                diam maecenas sed. Sed felis eget velit aliquet sagittis id consectetur.
-                Donec ac odio tempor orci dapibus ultrices in. Ullamcorper morbi tincidunt
-                ornare massa eget egestas purus viverra. Aenean euismod elementum nisi quis.
-                Enim tortor at auctor urna nunc id. Sed risus pretium quam vulputate.
-                Dolor purus non enim praesent elementum facilisis leo vel. Volutpat ac
-                tincidunt vitae semper quis. Scelerisque felis imperdiet proin fermentum leo
-                vel orci porta. Amet mauris commodo quis imperdiet massa tincidunt nunc
-                pulvinar sapien. Nunc faucibus a pellentesque sit. Id faucibus nisl tincidunt
-                eget nullam non.
-            </label>
-
-            <label>
-                Sem et tortor consequat id porta nibh venenatis cras. Massa tincidunt dui ut
-                ornare lectus sit amet. Aenean vel elit scelerisque mauris pellentesque
-                pulvinar. Commodo nulla facilisi nullam vehicula ipsum a arcu. Accumsan tortor
-                posuere ac ut consequat semper. Risus at ultrices mi tempus imperdiet nulla.
-                Tortor dignissim convallis aenean et. Gravida rutrum quisque non tellus orci ac.
-                Massa sapien faucibus et molestie ac feugiat. Eget lorem dolor sed viverra ipsum
-                nunc aliquet. Rhoncus dolor purus non enim praesent elementum. Duis at consectetur
-                lorem donec massa sapien faucibus et molestie. Orci dapibus ultrices in iaculis
-                nunc sed augue.
+                Um protesto é quando uma pessoa ou empresa deixa de pagar algum título e o credor registra essa dívida com cartório
             </label>
         </div>
-    </>
-)
+    ),
+    pefinBody = (
+        <div style={{ display: 'grid', gap: 10 }}>
+            <label style={{ marginTop: 10 }}>
+                O PEFIN é um serviço da Serasa Experian onde empresas podem consultar e incluir informações sobre pendências financeiras de um cliente pessoa física ou jurídica.
+            </label>
+            <label>
+                Os dados visualizados são fornecidos por instituições de diferentes segmentos da economia, como varejo, indústria, prestação de serviço, entre outros.
+            </label>
+        </div>
+    ),
+    refinBody = (
+        <div style={{ display: 'grid', gap: 10 }}>
+            <label style={{ marginTop: 10 }}>
+                O REFIN é um sistema semelhante ao PEFIN. Enquanto o PEFIN envolve a inclusão e consulta a informações sobre dívidas que pessoas físicas ou jurídicas possam ter em diferentes setores da economia, o REFIN está relacionado a débitos com bancos e outras instituições financeiras.
+            </label>
+        </div>
+    ),
+    ccfBody = (
+        <div style={{ display: 'grid', gap: 10 }}>
+            <label style={{ marginTop: 10 }}>
+                Se você passar um cheque sem ter dinheiro na conta para o pagamento, seu nome vai para o CCF. A sigla significa Cadastro de Emitentes de Cheque sem Fundo.
+            </label>
+            <label>
+                É um registro do Banco Central que pode ser consultado por qualquer banco e empresas que concedem crédito.
+            </label>
+        </div>
+    )
