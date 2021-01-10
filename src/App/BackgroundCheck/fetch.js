@@ -1,9 +1,10 @@
 import { db } from '../../Firebase/index';
 
-const fetch = (setIsLoading, setErrorLoading, docId, { setFreeRequests }) => {
+const fetch = (setIsLoading, setErrorLoading, docId, isCollaborator, ownerId, { setFreeRequests }) => {
     const run = async () => {
         try {
-            const doc = await db.collection('suppliers').doc(docId).get();
+            const refId = isCollaborator ? ownerId : docId;
+            const doc = await db.collection('suppliers').doc(refId).get();
             let reqFree = 0;
             if (doc.exists) {
                 const { backgroundCheckRequestsAvailable, backgroundCheckCurrentMonth, backgroundCheckCurrentYear } = doc.data();
@@ -14,7 +15,7 @@ const fetch = (setIsLoading, setErrorLoading, docId, { setFreeRequests }) => {
                 }
                 // Requisição no mês diferente do corrente
                 else {
-                    await db.collection('suppliers').doc(docId).update({ backgroundCheckRequestsAvailable: 10, backgroundCheckCurrentMonth: now.getMonth(), backgroundCheckCurrentYear: now.getFullYear() });
+                    await db.collection('suppliers').doc(refId).update({ backgroundCheckRequestsAvailable: 10, backgroundCheckCurrentMonth: now.getMonth(), backgroundCheckCurrentYear: now.getFullYear() });
                     reqFree = 10;
                 }
             }

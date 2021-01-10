@@ -10,7 +10,7 @@ export const cadastralSituationBody = (
     protestsBody = (
         <div style={{ display: 'grid', gap: 10 }}>
             <label style={{ marginTop: 10 }}>
-                Um protesto é quando uma pessoa ou empresa deixa de pagar algum título e o credor registra essa dívida com cartório
+                Um protesto é quando uma pessoa ou empresa deixa de pagar algum título e o credor registra essa dívida em cartório
             </label>
         </div>
     ),

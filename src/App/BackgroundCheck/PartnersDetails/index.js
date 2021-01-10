@@ -4,6 +4,7 @@ import Header from '@bit/vitorbarbosa19.ziro.header';
 import Details from '@bit/vitorbarbosa19.ziro.details';
 import { containerWithPadding } from '@ziro/theme';
 import capitalize from '@ziro/capitalize';
+import { functionSort } from '../utils/sort';
 
 const PartnersDetails = ({ partners, setPartners }) => {
     const title = partners.nome ?? 'Sócios';
@@ -20,7 +21,7 @@ const PartnersDetails = ({ partners, setPartners }) => {
             });
             blockEffect.push({
                 header: `Sócio ${index + 1}`,
-                body: bodyEffect
+                body: bodyEffect.sort((a, b) => functionSort(a.title, b.title))
             });
             bodyEffect = [];
         });
