@@ -56,7 +56,7 @@ const CreatePayment = () => {
           if (!snap.empty) {
             snap.forEach(doc => {
               //apenas novos cadastros terão o plano novo
-              if (doc.data().cadastro.seconds >= 1607880636 || fantasy.toUpperCase() === 'CRISFAEL') {
+              if (doc.data().cadastro.seconds >= 1607880636 || fantasy.toUpperCase() === 'CRISFAEL' || fantasy.toUpperCase() === 'HAUT') {
                 setHasSellerZoopPlan(doc.data().sellerZoopPlan || null);
                 setIsNewPlan(true);
               } else {
