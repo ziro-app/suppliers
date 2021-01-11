@@ -42,12 +42,12 @@ export const Menu = ({ title, children }) => {
                     //     icon: <Icon type='percent' size={15} strokeWidth={3} />,
                     //     text: 'Tarifas'
                     // },
-                    // {
-                    //     path: '/consulta',
-                    //     onClick: () => setIsOpen(false),
-                    //     icon: <Icon type='search' size={15} strokeWidth={2} />,
-                    //     text: 'Consultar documento'
-                    // },
+                    {
+                        path: '/consulta',
+                        onClick: () => setIsOpen(false),
+                        icon: <Icon type='search' size={15} strokeWidth={2} />,
+                        text: 'Consultar CPF/CNPJ'
+                    },
                     {
                         path: '/minha-conta',
                         onClick: () => setIsOpen(false),
@@ -99,12 +99,12 @@ export const Menu = ({ title, children }) => {
                             //     icon: <Icon type='percent' size={15} strokeWidth={3} />,
                             //     text: 'Tarifas'
                             // },
-                            // {
-                            //     path: '/consulta',
-                            //     onClick: () => setIsOpen(false),
-                            //     icon: <Icon type='search' size={15} strokeWidth={2} />,
-                            //     text: 'Consultar documento'
-                            // },
+                            {
+                                path: '/consulta',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='search' size={15} strokeWidth={2} />,
+                                text: 'Consultar CPF/CNPJ'
+                            },
                             {
                                 path: '/colaboradores',
                                 onClick: () => setIsOpen(false),
@@ -125,55 +125,61 @@ export const Menu = ({ title, children }) => {
                             },
                         ]}
                     />
-                : <DrawerPanel
-                username={fname || 'Usuário'}
-                userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
-                options={[
-                    {
-                        path: '/transacoes',
-                        onClick: () => setIsOpen(false),
-                        icon: <Icon type='trending' size={15} strokeWidth={2} />,
-                        text: 'Vendas'
-                    },
-                    {
-                        path: '/criar-cobranca',
-                        onClick: () => setIsOpen(false),
-                        icon: <Icon type='link' size={15} strokeWidth={2} />,
-                        text: 'Criar Cobrança'
-                    },
-                    {
-                        path: '/recebiveis',
-                        onClick: () => setIsOpen(false),
-                        icon: <Icon type='money' size={15} strokeWidth={2} />,
-                        text: 'Recebíveis'
-                    },
-                    {
-                        path: '/colaboradores',
-                        onClick: () => setIsOpen(false),
-                        icon: <Icon type='user' size={15} strokeWidth={2} />,
-                        text: 'Vendedores'
-                    },
-                    // {
-                    //     path: '/tarifas',
-                    //     onClick: () => setIsOpen(false),
-                    //     icon: <Icon type='percent' size={15} strokeWidth={3} />,
-                    //     text: 'Tarifas'
-                    // },
-                    {
-                        path: '/minha-conta',
-                        onClick: () => setIsOpen(false),
-                        icon: <Icon type='gear' size={15} strokeWidth={2} />,
-                        text: 'Minha Conta'
-                    },
-                    {
-                        path: '/login',
-                        onClick: () => auth.signOut(),
-                        icon: <Icon type='logout' size={15} strokeWidth={3} />,
-                        text: 'Sair'
-                    },
-                ]}
-            />}
-        </>
+                    : <DrawerPanel
+                        username={fname || 'Usuário'}
+                        userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
+                        options={[
+                            {
+                                path: '/transacoes',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='trending' size={15} strokeWidth={2} />,
+                                text: 'Vendas'
+                            },
+                            {
+                                path: '/criar-cobranca',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='link' size={15} strokeWidth={2} />,
+                                text: 'Criar Cobrança'
+                            },
+                            {
+                                path: '/recebiveis',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='money' size={15} strokeWidth={2} />,
+                                text: 'Recebíveis'
+                            },
+                            {
+                                path: '/consulta',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='search' size={15} strokeWidth={2} />,
+                                text: 'Consultar CPF/CNPJ'
+                            },
+                            {
+                                path: '/colaboradores',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='user' size={15} strokeWidth={2} />,
+                                text: 'Vendedores'
+                            },
+                            // {
+                            //     path: '/tarifas',
+                            //     onClick: () => setIsOpen(false),
+                            //     icon: <Icon type='percent' size={15} strokeWidth={3} />,
+                            //     text: 'Tarifas'
+                            // },
+                            {
+                                path: '/minha-conta',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='gear' size={15} strokeWidth={2} />,
+                                text: 'Minha Conta'
+                            },
+                            {
+                                path: '/login',
+                                onClick: () => auth.signOut(),
+                                icon: <Icon type='logout' size={15} strokeWidth={3} />,
+                                text: 'Sair'
+                            },
+                        ]}
+                    />}
+            </>
         );
     }
 

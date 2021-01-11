@@ -24,10 +24,11 @@ const fillValues = (field, scoreValue, block, { setScoreValue, setBlockPF, setBl
 };
 
 const sendToBackend = state => () => {
-    const { docId, document, setFreeRequests, clearInfo, setPendency, setPartner, setApiError, setDocument } = state;
+    const { docId, isCollaborator, ownerId, document, setFreeRequests, clearInfo, setPendency, setPartner, setApiError, setDocument } = state;
     const field = document.length === 14 ? 'cpf' : 'cnpj';
     const onlyNumbers = document.replace(/[\D]*/g, '');
     const url = `${process.env.PAY_URL}buy2b-bc?document=${onlyNumbers}`;
+    const refId = isCollaborator ? ownerId : docId;
     const config = {
         headers: {
             Authorization: `${process.env.PAY_TOKEN}`
@@ -38,15 +39,15 @@ const sendToBackend = state => () => {
             let block, scoreValue = 0;
             clearInfo();
             // BUSCANDO DOCUMENTO NA BASE
-            const query = await db.collection('backgroundCheckMock').where(field, '==', document).get();
+            const query = await db.collection('backgroundCheck').where(field, '==', document).get();
             if (query.empty) {
-                const [freeRequests, currentFreeMonth, currentFreeYear] = await getInfo(docId);
+                const [freeRequests, currentFreeMonth, currentFreeYear] = await getInfo(refId);
                 if (freeRequests > 0) {
                     const { data: { backgroundCheck } } = await post(url, {}, config);
                     console.log(backgroundCheck);
                     const updated = freeRequests - 1;
-                    await db.collection('backgroundCheckMock').add({ date: new Date(), ...backgroundCheck });
-                    await db.collection('suppliers').doc(docId).update({
+                    await db.collection('backgroundCheck').add({ date: new Date(), ...backgroundCheck });
+                    await db.collection('suppliers').doc(refId).update({
                         backgroundCheckRequestsAvailable: updated,
                         backgroundCheckCurrentYear: currentFreeYear,
                         backgroundCheckCurrentMonth: currentFreeMonth
@@ -67,7 +68,6 @@ const sendToBackend = state => () => {
             fillValues(field, scoreValue, block, state);
             resolve();
         } catch (error) {
-            if (error.customError) reject(error);
             if (error.response) {
                 console.log(error.response);
                 if (error.response.data.customError) {
@@ -79,10 +79,7 @@ const sendToBackend = state => () => {
                     setApiError(true);
                 }
             }
-            else {
-                setDocument('');
-                setApiError(true);
-            }
+            else reject(error);
         }
     });
 };

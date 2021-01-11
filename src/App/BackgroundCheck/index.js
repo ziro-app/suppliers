@@ -7,6 +7,8 @@ import Details from '@bit/vitorbarbosa19.ziro.details';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import ScoreCircle from '@bit/vitorbarbosa19.ziro.score-circle';
+import Button from '@bit/vitorbarbosa19.ziro.button';
+import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import maskInput from '@ziro/mask-input';
 import { alertColor } from '@ziro/theme';
 import validateDocuments from '../utils/validateDocuments';
@@ -16,10 +18,10 @@ import PendencyDetails from './PendencyDetails';
 import PartnersDetails from './PartnersDetails';
 import fetch from './fetch';
 import sendToBackend from './sendToBackend';
-import { box1, box2, wrapper } from './styles';
+import { apiErrorContainer, box1, box2, header, wrapper } from './styles';
 
 const BackgroundCheck = () => {
-    const { docId } = useContext(userContext);
+    const { docId, role, ownerId } = useContext(userContext);
     const [isLoading, setIsLoading] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
     const [apiError, setApiError] = useState(false);
@@ -30,9 +32,10 @@ const BackgroundCheck = () => {
     const [scoreValue, setScoreValue] = useState(0);
     const [blockPF, setBlockPF] = useState([]);
     const [blockPJ, setBlockPJ] = useState([]);
+    const isCollaborator = role !== '';
     const DEFAULT_STEP_COLORS = ['#a50a0a', '#bc0b0b', '#eb0e0e', '#e68c06', '#ff9b07', '#f8d823', '#ebeb09', '#5deb3e', '#35e60e', '#2fcc0c'];
     const setState = { setDocument, setFreeRequests, setScoreValue, setBlockPF, setBlockPJ, setPendency, setPartner, setApiError };
-    const state = { docId, document, freeRequests, ...setState };
+    const state = { docId, isCollaborator, ownerId, document, freeRequests, ...setState };
     const validations = [
         {
             name: 'document',
@@ -47,7 +50,7 @@ const BackgroundCheck = () => {
         setBlockPJ([]);
     };
 
-    useEffect(() => fetch(setIsLoading, setErrorLoading, docId, setState), []);
+    useEffect(() => fetch(setIsLoading, setErrorLoading, docId, isCollaborator, ownerId, setState), []);
 
     if (isLoading)
         return (
@@ -57,13 +60,14 @@ const BackgroundCheck = () => {
         );
     if (errorLoading) return <Error />;
 
-    if (apiError) return <Error
-        title="Erro na API"
-        backRoute='/consulta'
-        backRouteFunction={() => setApiError(false)}
-        btnMsg="Voltar"
-        message="Ocorreu um erro ao consultar o documento na API, tente novamente"
-        type="paymentError" />;
+    if (apiError) return <div style={apiErrorContainer}>
+        <div style={{ justifySelf: 'center' }}>
+            <Illustration type='paymentError' />
+        </div>
+        <label style={header}>Erro na API</label>
+        <label>Ocorreu um erro ao consultar o documento. Tente novamente ou contate suporte</label>
+        <Button type='button' cta='Voltar' click={() => setApiError(false)} />
+    </div>
 
     if (pendency) return <PendencyDetails pendency={pendency} setPendency={setPendency} />;
 
