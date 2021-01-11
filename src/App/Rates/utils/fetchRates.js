@@ -11,7 +11,7 @@ const fetch = async(
     brands,
     setBlockDetails,
     setMessage,
-) => {  
+) => {
     try {
         setLoading(true)
         const query = db.collection('suppliers').where('zoopId', '==', zoopId)
@@ -50,7 +50,7 @@ const fetch = async(
                             const arrayDatas = getDataFees(dataPlan, brands, activePlan)
                             setDataRows(arrayDatas)
                         }else{
-                            setMessage(FailureMessage('Não encontramos nenhum plano cadastrado.'))
+                            setError(true)
                         }
                     })
                 }

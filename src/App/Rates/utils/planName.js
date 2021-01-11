@@ -2,7 +2,7 @@ const planName = (plan) => {
     if(plan === 'standard'){
         return {
             name: 'Fluxo',
-            description: 'De acordo com as parcelas'
+            description: 'Seguindo as parcelas'
         }
     }
     if(plan.includes('30')){

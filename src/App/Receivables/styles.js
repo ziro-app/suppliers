@@ -1,4 +1,4 @@
-import { gradient, fontTitle, primaryColor, shadow } from '@ziro/theme';
+import { fontTitle, gradient, primaryColor, shadow } from '@ziro/theme';
 
 export const
 
@@ -63,4 +63,15 @@ export const
         textAlign: 'center',
         background: gradient,
         boxShadow: `${shadow}`
+    },
+    illustrationContainer = {
+        display: 'grid',
+        alignContent: 'start',
+        gridRowGap: '10px',
+        color: primaryColor,
+        textAlign: 'center'
+    },
+    illustrationTitle = {
+        fontFamily: fontTitle,
+        textTransform: 'uppercase'
     }

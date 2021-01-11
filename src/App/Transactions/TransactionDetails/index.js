@@ -29,6 +29,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     const [error, setError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [nothing, setNothing] = useState(true)
+    const [isDeleting, setIsDeleting] = useState(false)
     const [data, setData] = useState([]);
     const [blocks, setBlocks] = useState([]);
     const [, setLocation] = useLocation();
@@ -56,6 +57,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
 
     const deleteTransaction = async () => {
         setIsLoading(true);
+        setIsDeleting(true)
 
         try {
             await db.collection('credit-card-payments').doc(transactionId).delete();
@@ -102,7 +104,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         setTransaction({});
     }, []);
 
-    async function getTransaction(transactionId, setTransaction, setError, transaction, transactions, setPayments) {
+    async function getTransaction(transactionId, setTransaction, setError, transaction, transactions, setPayments, setIsLoading, setNothing) {
         await fetch(transactionId, setTransaction, setError, transaction, transactions, setPayments, setIsLoading, setNothing);
         if (Object.prototype.hasOwnProperty.call(transaction, 'sellerZoopPlan')) {
             if (transaction.sellerZoopPlan === '' || (markupTransaction.percentage === 0 && markupTransaction.amount === 0)) setOlderTransaction(true);
@@ -119,7 +121,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     }
 
     useEffect(() => {
-        getTransaction(transactionId, setTransaction, setError, transaction, transactions, setPayments).then(r => {
+        getTransaction(transactionId, setTransaction, setError, transaction, transactions, setPayments, setIsLoading, setNothing).then(r => {
             if (Object.prototype.hasOwnProperty.call(transaction, 'dateLinkCreated')) {
                 markupTransaction = transaction.splitTransaction?.markup ?? transaction.sellerZoopPlan.markup;
                 antiFraudTransaction = transaction.splitTransaction?.antiFraud ?? transaction.sellerZoopPlan.antiFraud;
@@ -341,14 +343,15 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         }
     }, [transaction]);
 
-    if (isLoading)
+    if (isLoading) {
         return (
             <div style={spinner}>
                 <Spinner size="5.5rem" />
             </div>
         );
+    }
 
-    if (nothing && !isLoading)
+    if (nothing && !isLoading && !isDeleting) {
         return (
             <Error
                 message="Transação inválida ou não encontrada, retorne e tente novamente."
@@ -358,6 +361,8 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                 backRouteFunction={route => setLocation(route)}
             />
         );
+    }
+
     const isApproved = transaction.status === 'Aprovado' || transaction.status === 'Pago' || transaction.status === 'Pré Autorizado';
     const isCanceled = transaction.status === 'Cancelado' || transaction.status === 'Falhado';
     const isWaiting = transaction.status === 'Aguardando Pagamento' || transaction.status === 'Aprovação Pendente';

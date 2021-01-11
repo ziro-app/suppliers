@@ -3,10 +3,13 @@ import Details from '@bit/vitorbarbosa19.ziro.details';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner-with-div'
 import Error from '@bit/vitorbarbosa19.ziro.error'
 import Table from '@bit/vitorbarbosa19.ziro.table';
+import { useLocation } from 'wouter';
+import { supportPhoneNumber } from "@bit/vitorbarbosa19.ziro.utils.support-phone-number";
 
 import useLoadRates from './hooks/useLoadRates'
 
 const Rates = () => {
+    const [, setLocation] = useLocation();
     const {
         blockDetails,
         dataRows,
@@ -19,8 +22,8 @@ const Rates = () => {
             title,
             header: [
                 'Parcela',
-                'C/ Seguro',
-                'S/ Seguro',
+                'Sem Seguro',
+                'Com Seguro',
             ],
             rows: data,
             totals: [],
@@ -28,8 +31,21 @@ const Rates = () => {
     ])
 
     if(isLoading) <Spinner />
-    
-    if(isError) <Error />
+
+    if(isError) return (
+        <Error
+            title="Plano não encontrado"
+            message="Você ainda não possui um plano de vendas cadastrado e não
+                    pode gerar links de pagamento. Entre em contato com o suporte para cadastrar seu plano."
+            type="noData"
+            btnMsg="Falar com suporte"
+            backRoute="/transacoes"
+            backRouteFunction={(route) => {
+                window.open(`https://api.whatsapp.com/send?phone=${supportPhoneNumber.replace(/\+|\s|\(|\)|-/g, "")}`, "_blank")
+                setLocation(route)
+            }}
+        />
+    )
 
     return (
         <div>
@@ -37,23 +53,32 @@ const Rates = () => {
             {
                 dataRows.map(data => (
                     <div
-                        aria-label= 'table' 
+                        aria-label= 'table'
                         key={data.brand}
                         style={{marginTop:'20px'}}
                     >
-                        <Table 
+                        <Table
                             data={
                                 dataTable(
-                                    data.content, 
-                                    data.brand === 'americanexpress' 
-                                    ? 'american express' 
+                                    data.content,
+                                    data.brand === 'americanexpress'
+                                    ? 'american express'
                                     : data.brand
                                     )
                             }
                             customGrid={{
                                 gridTemplateColumns: '1fr 1fr 1fr',
                                 gridRowGap: '5px',
-                            }} 
+                            }}
+                            cellStyle={{
+                                width: '100%',
+                                height: '100%',
+                                fontSize: '1.4rem',
+                                textAlign: 'center',
+                                textOverflow: 'ellipsis',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                            }}
                         />
                     </div>
                 ))

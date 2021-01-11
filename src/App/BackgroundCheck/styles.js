@@ -1,3 +1,5 @@
+import { alertColor, fontTitle, primaryColor, containerWithPadding } from '@ziro/theme';
+
 export const wrapper = {
     display: 'grid',
     gridTemplateColumns: 'repeat(2, 1fr)',
@@ -17,11 +19,24 @@ export const wrapper = {
         gridRowStart: 2,
         gridRowEnd: 2,
         marginTop: '55px',
-        height: '900px'
+        height: '400px'
     },
     details = {
         cursor: 'pointer',
         textDecoration: 'underline',
         fontSize: '15px',
         fontWeight: 'bold'
+    },
+    apiErrorContainer = {
+        display: 'grid',
+        alignContent: 'start',
+        gridRowGap: '15px',
+        color: primaryColor,
+        textAlign: 'center',
+        ...containerWithPadding
+    },
+    header = {
+        fontFamily: fontTitle,
+        textTransform: 'uppercase',
+        color: alertColor
     }
