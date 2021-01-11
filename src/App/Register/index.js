@@ -85,7 +85,7 @@ const Register = () => {
     const [accountTypeViewName, setAccountTypeViewName] = useState('')
     const [accountType, setAccountType] = useState('')
     const accountTypeList = ['Conta Corrente', 'Conta Poupança']
-    const validCnaes = ['47.81-4-00', '14.12-6-01', '14.12-6-03', '46.41-9-01', '46.42-7-01', '14.12-6-02', '15.31-9-01', '15.33-5-00', '15.39-4-00', '15.40-8-00'];
+    const validCnaes = ['47.81-4-00', '14.12-6-01', '14.12-6-03', '46.41-9-01', '46.42-7-01', '14.12-6-02', '15.31-9-01', '15.33-5-00', '15.39-4-00', '15.40-8-00', '14.12-6-02'];
     const cnpjUrl = process.env.CNPJ_URL || '';
     const cnpjToken = process.env.CNPJ_TOKEN || '';
 
