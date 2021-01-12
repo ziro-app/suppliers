@@ -39,4 +39,11 @@ export const wrapper = {
         fontFamily: fontTitle,
         textTransform: 'uppercase',
         color: alertColor
+    },
+    tooltipContainer = {
+        display: 'grid',
+        gridTemplateColumns: 'auto 1fr'
+    },
+    tooltipCursor = {
+        cursor: 'pointer'
     }
