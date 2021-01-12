@@ -3,7 +3,7 @@ import TooltipHelp from '@bit/vitorbarbosa19.ziro.tooltip-help';
 import { alertColor, successColor } from '@ziro/theme';
 import capitalize from '@ziro/capitalize';
 import maskInput from '@ziro/mask-input';
-import { details } from '../styles';
+import { details, tooltipContainer, tooltipCursor } from '../styles';
 import { cadastralSituationBody, ccfBody, pefinBody, protestsBody, refinBody } from './tooltipBody';
 
 const mountBlockPF = (data, setPendency) => {
@@ -55,7 +55,7 @@ const mountBlockPF = (data, setPendency) => {
                 //     content: estado
                 // },
                 {
-                    title: <>Situação Cadastral&nbsp;<TooltipHelp iconSize={14} illustration="cardAnalysis" title="Situação Cadastral" body={cadastralSituationBody} /></>,
+                    title: <div style={tooltipContainer}>Situação Cadastral&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Situação Cadastral" body={cadastralSituationBody} /></div></div>,
                     content: situacaoCpf,
                     color: situacaoCpf.toUpperCase() === 'REGULAR' ? successColor : alertColor
                 },
@@ -77,19 +77,19 @@ const mountBlockPF = (data, setPendency) => {
                     content: (cheque && cheque.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Cheque' })}>Pendências</div> : 'Nada consta'
                 },
                 {
-                    title: <>Protestos&nbsp;<TooltipHelp iconSize={14} illustration="cardAnalysis" title="Protestos" body={protestsBody} /></>,
+                    title: <div style={tooltipContainer}>Protestos&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Protestos" body={protestsBody} /></div></div>,
                     content: (protestos && protestos.count > 0) ? <div style={details} onClick={() => setPendency({ ...protestos, nome: 'Protestos' })}>Pendências</div> : 'Nada consta'
                 },
                 {
-                    title: <>PEFIN&nbsp;<TooltipHelp iconSize={14} illustration="cardAnalysis" title="PEFIN" body={pefinBody} /></>,
+                    title: <div style={tooltipContainer}>PEFIN&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="PEFIN" body={pefinBody} /></div></div>,
                     content: (pefin && pefin.count > 0) ? <div style={details} onClick={() => setPendency({ ...pefin, nome: 'PEFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
-                    title: <>REFIN&nbsp;<TooltipHelp iconSize={14} illustration="cardAnalysis" title="REFIN" body={refinBody} /></>,
+                    title: <div style={tooltipContainer}>REFIN&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="REFIN" body={refinBody} /></div></div>,
                     content: (refin && refin.count > 0) ? <div style={details} onClick={() => setPendency({ ...refin, nome: 'REFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
-                    title: <>CCF&nbsp;<TooltipHelp iconSize={14} illustration="cardAnalysis" title="CCF" body={ccfBody} /></>,
+                    title: <div style={tooltipContainer}>CCF&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="CCF" body={ccfBody} /></div></div>,
                     content: (ccf && ccf.count > 0) ? <div style={details} onClick={() => setPendency({ ...ccf, nome: 'CCF' })}>Pendências</div> : 'Nada consta'
                 }
             ]
@@ -130,7 +130,7 @@ const mountBlockPJ = (data, setPendency, setPartner) => {
                     content: tipoSociedade
                 },
                 {
-                    title: <>Situação Cadastral&nbsp;<TooltipHelp iconSize={14} illustration="cardAnalysis" title="Situação Cadastral" body={cadastralSituationBody} /></>,
+                    title: <div style={tooltipContainer}>Situação Cadastral&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Situação Cadastral" body={cadastralSituationBody} /></div></div>,
                     content: situacaoCadastral,
                     color: situacaoCadastral === 'ATIVA' ? successColor : alertColor
                 },
@@ -148,19 +148,19 @@ const mountBlockPJ = (data, setPendency, setPartner) => {
                     content: (dividas_vencidas && dividas_vencidas.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Dividas Vencidas' })}>Pendências</div> : 'Nada consta'
                 },
                 {
-                    title: <>Protestos&nbsp;<TooltipHelp iconSize={14} illustration="cardAnalysis" title="Protestos" body={protestsBody} /></>,
+                    title: <div style={tooltipContainer}>Protestos&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Protestos" body={protestsBody} /></div></div>,
                     content: (protestos && protestos.count > 0) ? <div style={details} onClick={() => setPendency({ ...protestos, nome: 'Protestos' })}>Pendências</div> : 'Nada consta'
                 },
                 {
-                    title: <>PEFIN&nbsp;<TooltipHelp iconSize={14} illustration="cardAnalysis" title="PEFIN" body={pefinBody} /></>,
+                    title: <div style={tooltipContainer}>PEFIN&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="PEFIN" body={pefinBody} /></div></div>,
                     content: (pefin && pefin.count > 0) ? <div style={details} onClick={() => setPendency({ ...pefin, nome: 'PEFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
-                    title: <>REFIN&nbsp;<TooltipHelp iconSize={14} illustration="cardAnalysis" title="REFIN" body={refinBody} /></>,
+                    title: <div style={tooltipContainer}>REFIN&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="REFIN" body={refinBody} /></div></div>,
                     content: (refin && refin.count > 0) ? <div style={details} onClick={() => setPendency({ ...refin, nome: 'REFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
-                    title: <>CCF&nbsp;<TooltipHelp iconSize={14} illustration="cardAnalysis" title="CCF" body={ccfBody} /></>,
+                    title: <div style={tooltipContainer}>CCF&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="CCF" body={ccfBody} /></div></div>,
                     content: (ccf && ccf.count > 0) ? <div style={details} onClick={() => setPendency({ ...ccf, nome: 'CCF' })}>Pendências</div> : 'Nada consta'
                 }
             ]
