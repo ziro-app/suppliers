@@ -63,6 +63,7 @@ const sendToBackend = state => () => {
                             throw 'Erro ao enviar email de verificação'
                         }
                     } catch (error) {
+                        console.log(error);
                         if (error.customError) throw error
                         if (error.code) {
                             switch (error.code) {
