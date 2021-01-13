@@ -1,6 +1,6 @@
 import { db } from '../../Firebase/index';
 
-const updateFirestore = async (docId, categoryName, bankName, bankNumber, tipoConta, reason, accountNumber, agency, cpf) => {
+const updateFirestore = async (docId, categoryName, bankName, bankNumber, tipoConta, reason, accountNumber, agency, cpf, nascimento) => {
   const update = async () => {
     let sellerZoopPlan = {};
     const fetchedStandardPlan = db.collection('utilities').doc(process.env.DOCUMENT_ID_FOR_UTILITIES_MAIN);
@@ -17,6 +17,7 @@ const updateFirestore = async (docId, categoryName, bankName, bankNumber, tipoCo
         codBanco: bankNumber,
         tipoConta: tipoConta,
         titular: reason,
+        nascimento: nascimento,
         numConta: accountNumber,
         agencia: agency,
         tipoCadastro: 'Completo',
