@@ -2,36 +2,38 @@ import currencyFormat from '@ziro/currency-format';
 import { dateFormat, getFilterQuery } from './utils';
 import matchStatusColor from './matchStatusColor';
 
+// TODO -> Formulate a way where the snapshot is cleaned and mounted a new one
+// with each new request/filter change
 const fetch = (state) => {
-    const {statusFilter, monthFilter, clientFilter, limitFetch:limit, setIsLoadingResults, setIsLoading, setErrorLoading, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator} = state
-    const storageFilterClient = clientFilter || localStorage.getItem('clientFilter')
-    const storageFilterStatus = statusFilter || localStorage.getItem('statusFilter')
-    const storageFilterMonth = monthFilter || localStorage.getItem('monthFilter')
+    const { limitFetch: limit, setIsLoadingResults, setIsLoading, setErrorLoading, setPayments, zoopId, setTotalTransactions, setLoadingMore, docId, isCollaborator } = state
+    const storageFilterClient = localStorage.getItem('clientFilter')
+    const storageFilterStatus = localStorage.getItem('statusFilter')
+    const storageFilterMonth = localStorage.getItem('monthFilter')
     const query = () => {
-        if(isCollaborator){
-            return  getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).limit(limit);
-        }
-        return getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).limit(limit);;
+        if (isCollaborator) return getFilterQuery({ storageFilterClient, storageFilterStatus, storageFilterMonth }).where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId);
+        return getFilterQuery({ storageFilterClient, storageFilterStatus, storageFilterMonth }).where('sellerZoopId', '==', zoopId);
     }
 
     const run = async () => {
         try {
             await query().onSnapshot(
                 async snapshot => {
+                    const storageFilterClient = localStorage.getItem('clientFilter');
+                    const storageFilterStatus = localStorage.getItem('statusFilter');
+                    const storageFilterMonth = localStorage.getItem('monthFilter');
                     const getCollection = () => {
-                        if(isCollaborator){
-                            return getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).get();
-                        }
-                           return getFilterQuery({storageFilterClient, storageFilterStatus, storageFilterMonth}).where('sellerZoopId', '==', zoopId).get();
-                        
+                        if (isCollaborator) return getFilterQuery({ storageFilterClient, storageFilterStatus, storageFilterMonth }).where('sellerZoopId', '==', zoopId).where('collaboratorId', '==', docId).limit(limit);
+                        return getFilterQuery({ storageFilterClient, storageFilterStatus, storageFilterMonth }).where('sellerZoopId', '==', zoopId).limit(limit);
                     }
-                    const collectionData = await getCollection()
-                    setTotalTransactions(collectionData.docs.length);
+                    const collectionData = await getCollection().get();
+                    setTotalTransactions(snapshot.size);
+                    console.log('Query outside: ', snapshot);
+                    console.log('Query inside: ', collectionData);
                     const paymentDoc = [];
                     const datesList = [];
                     const clientsList = [];
-                    if (!snapshot.empty) {
-                        snapshot.forEach(doc => {
+                    if (collectionData.docs.length) {
+                        collectionData.forEach(doc => {
                             const {
                                 charge,
                                 date,
@@ -77,26 +79,17 @@ const fetch = (state) => {
                                 splitTransaction
                             });
                         });
-                        setPayments([...paymentDoc]);
-                        setIsLoadingResults(false)
-                    } else {
-                        setPayments([]);
                     }
+                    setPayments([...paymentDoc]);
+                    setIsLoadingResults(false);
                     setIsLoading(false);
                     setLoadingMore(false);
-                    setIsLoadingResults(false)
-                    setIsLoading(false);
-                    setLoadingMore(false);
-                    setIsLoadingResults(false)
                 },
                 error => {
                     console.log(error);
                     setIsLoading(false);
                     setLoadingMore(false);
-                    setIsLoadingResults(false)
-                    setIsLoading(false);
-                    setLoadingMore(false);
-                    setIsLoadingResults(false)
+                    setIsLoadingResults(false);
                 },
             );
         } catch (error) {
@@ -104,11 +97,7 @@ const fetch = (state) => {
             setErrorLoading(true);
             setIsLoading(false);
             setLoadingMore(false);
-            setIsLoadingResults(false)
-            setIsLoading(false);
-            setLoadingMore(false);
-            setIsLoadingResults(false)
-            
+            setIsLoadingResults(false);
         }
     };
     run();
