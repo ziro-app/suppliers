@@ -73,15 +73,7 @@ const CreatePayment = () => {
     const validations = [
         {
             name: 'insurance',
-            validation: value => (
-                (hasSellerZoopPlan && isNewPlan)
-                    ? true
-                    : (hasSellerZoopPlan
-                        ? (hasSellerZoopPlan.antiFraud.amount !== null || hasSellerZoopPlan.antiFraud.percentage !== null)
-                        : true)
-                )
-                ? value !== ''
-                : true,
+            validation: value => hasSellerZoopPlan ? value !== '' : true,
             value: insurenceDropdownValue,
             message: 'Opção inválida',
         },
