@@ -108,7 +108,6 @@ const Router = ({ isLogged }) => {
                 </motion.div>
             </Menu>
         ),
-        [matchReceivable ? location : null]: <Receivables {...paramsReceivable} />,
         [match2 ? location : null]: <GerarBoleto {...params2} />,
         [matchMyReceipt ? location : null]: <Receipt {...paramsMyReceipt} receipt={receipt} setReceipt={setReceipt} />,
         [match ? location : null]: <Transactions {...params} setTransactionId={setTransactionId} />,
@@ -136,6 +135,9 @@ const Router = ({ isLogged }) => {
                     <MyAccount />
                 </motion.div>
             </Menu>
+        );
+        privateRoutes[matchReceivable ? location : null] = (
+            <Receivables {...paramsReceivable} />
         );
     }
 
