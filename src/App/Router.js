@@ -67,7 +67,7 @@ const Router = ({ isLogged }) => {
         '/minha-conta': (
             <Menu title="Minha Conta">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                    <MyAccount />
+                    <MyAccount role={role}/>
                 </motion.div>
             </Menu>
         ),
@@ -111,11 +111,6 @@ const Router = ({ isLogged }) => {
         [match2 ? location : null]: <GerarBoleto {...params2} />,
         [matchMyReceipt ? location : null]: <Receipt {...paramsMyReceipt} receipt={receipt} setReceipt={setReceipt} />,
         [match ? location : null]: <Transactions {...params} setTransactionId={setTransactionId} />,
-        '/update': (
-            <HeaderBack title="Meus dados" navigateTo="/login">
-                <UpdateUserInfo />
-            </HeaderBack>
-        ),
     };
 
     if (role === '') {
@@ -139,6 +134,11 @@ const Router = ({ isLogged }) => {
         privateRoutes[matchReceivable ? location : null] = (
             <Receivables {...paramsReceivable} />
         );
+        privateRoutes['/update'] = (
+            <HeaderBack title="Meus dados" navigateTo="/login">
+                <UpdateUserInfo />
+            </HeaderBack>
+        )
     }
 
     return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback="/" />);
