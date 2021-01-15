@@ -3,6 +3,7 @@ import { useLocation } from 'wouter'
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import { container } from '@ziro/theme';
 import { activePlan, saldosContainer, card, saldosLabel, valorH1, iconsContainer, iconDiv, iconStyle, iconDescription } from './styles';
+import { round } from '../Transactions/utils';
 import { userContext } from '../appContext';
 import currencyFormat from '@ziro/currency-format';
 import fetch from './fetch';
