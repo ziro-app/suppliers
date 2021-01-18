@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useLocation } from 'wouter'
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
+import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import { container } from '@ziro/theme';
 import { activePlan, saldosContainer, card, saldosLabel, valorH1, iconsContainer, iconDiv, iconStyle, iconDescription } from './styles';
 import { round } from '../Transactions/utils';
@@ -8,9 +9,10 @@ import { userContext } from '../appContext';
 import currencyFormat from '@ziro/currency-format';
 import fetch from './fetch';
 import fetchBalance from './fetchBalance';
+import getActivePlan from './utils/getActivePlan';
 
 function MainPage() {
-  const { role, zoopId, payoutAutomatic, fantasy } = useContext(userContext)
+  const { role, zoopId, payoutAutomatic, fantasy, uid } = useContext(userContext)
   const [, setLocation] = useLocation();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -26,14 +28,21 @@ function MainPage() {
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [days, setDays] = useState(0);
   const [balance, setBalance] = useState('');
+  const [activePlan, setActivePlan] = useState('');
   const setState = {
     setIsLoading, setErrorLoading, setReceivables, setData, setLocation,
     setHasMore, setLoadingMore, setInitDate, setFinalDate, setTotalAmount,
     setDays, setCustomError, setTotalTransactions, setBalance
   };
+  
+  const getPlan = async () => {
+    let result = await getActivePlan(uid);
+    return setActivePlan(result === 'standard' ? 'Fluxo' : result === 'financed30' ? 'Antecipado D+30' : result === 'financed14' ? 'Antecipado D+14' : 'Plano não encontrado.');
+  };
 
   useEffect(() => {
     fetchBalance(zoopId, setState);
+    getPlan();
     // fetch(zoopId, initDate, totalAmount, totalTransactions, data, days, receivables, fantasy, setState);
   },[])
 
@@ -43,14 +52,24 @@ function MainPage() {
       <div style={saldosContainer}>
         <div style={card}>
           <label style={saldosLabel}>Plano ativo</label>
-          <h1 style={valorH1}>Fluxo</h1>
+          <h1 style={valorH1}>
+            {activePlan === '' ? 
+              <div style={{ display: 'grid', justifyItems: 'center' }}>
+                <Spinner size="5rem" />
+              </div>
+            :
+              activePlan
+            }
+          </h1>
         </div>
         
         {role === '' &&  
           <>
             <div style={card}>
               <label style={saldosLabel}>Saldo à receber hoje</label>
-              <h1 style={valorH1}>{balance ? currencyFormat(round(balance, 2).toFixed(2).replace('.', '')) : 'R$ 0,00'}</h1>
+              <h1 style={valorH1}>
+                {balance ? currencyFormat(round(balance, 2).toFixed(2).replace('.', '')) : 'R$ 0,00'}
+              </h1>
             </div>
 
             <div style={card}>
