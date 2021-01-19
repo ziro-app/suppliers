@@ -357,7 +357,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         );
     }
 
-    if ((nothing && !isLoading && !isDeleting) || fantasy.toLowerCase() !== transactionSeller || role != transactionRole) {
+    if ((nothing && !isLoading && !isDeleting) /*|| fantasy.toLowerCase() !== transactionSeller || role != transactionRole*/) {
         return (
             <Error
                 message="Transação inválida ou não encontrada, retorne e tente novamente."
