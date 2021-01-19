@@ -45,6 +45,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     let markupTransaction = {};
     let antiFraudTransaction = {};
     let transactionSeller = ''
+    let transactionRole = transaction.role ? transaction.role : ''
     if (transaction) {
         transactionSeller = transaction.onBehalfOfBrand ? transaction.onBehalfOfBrand : transaction.seller
         transactionSeller = transactionSeller && transactionSeller.toLowerCase()
@@ -356,7 +357,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         );
     }
 
-    if ((nothing && !isLoading && !isDeleting) || fantasy.toLowerCase() !== transactionSeller) {
+    if ((nothing && !isLoading && !isDeleting) || fantasy.toLowerCase() !== transactionSeller || role != transactionRole) {
         return (
             <Error
                 message="Transação inválida ou não encontrada, retorne e tente novamente."
