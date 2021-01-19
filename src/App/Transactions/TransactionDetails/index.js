@@ -38,12 +38,18 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
     const [cancelModal, setCancelModal] = useState(false);
     const [backRoute, setBackRoute] = useState('');
     const [snapshotMemo, setSnapshotMemo] = useState({});
-    const { role } = useContext(userContext);
+    const { role, fantasy } = useContext(userContext);
     const textAreaRef = useRef(null);
     const history = createBrowserHistory();
     const [olderTransaction, setOlderTransaction] = useState(false);
     let markupTransaction = {};
     let antiFraudTransaction = {};
+    let transactionSeller = ''
+    let transactionRole = transaction.role ? transaction.role : ''
+    if (transaction) {
+        transactionSeller = transaction.onBehalfOfBrand ? transaction.onBehalfOfBrand : transaction.seller
+        transactionSeller = transactionSeller && transactionSeller.toLowerCase()
+    }
 
     const baseUrl = process.env.HOMOLOG ? 'http://localhost:8080/pagamento/' : 'https://ziro.app/pagamento/';
     const seller = (transaction && transaction.seller) || '';
@@ -351,7 +357,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
         );
     }
 
-    if (nothing && !isLoading && !isDeleting) {
+    if ((nothing && !isLoading && !isDeleting) || fantasy.toLowerCase() !== transactionSeller || role != transactionRole) {
         return (
             <Error
                 message="Transação inválida ou não encontrada, retorne e tente novamente."

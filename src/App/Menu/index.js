@@ -30,12 +30,12 @@ export const Menu = ({ title, children }) => {
                         icon: <Icon type='link' size={15} strokeWidth={2} />,
                         text: 'Criar Cobrança'
                     },
-                    {
-                        path: '/recebiveis',
-                        onClick: () => setIsOpen(false),
-                        icon: <Icon type='money' size={15} strokeWidth={2} />,
-                        text: 'Recebíveis'
-                    },
+                    // {
+                    //     path: '/recebiveis',
+                    //     onClick: () => setIsOpen(false),
+                    //     icon: <Icon type='money' size={15} strokeWidth={2} />,
+                    //     text: 'Recebíveis'
+                    // },
                     // {
                     //     path: '/tarifas',
                     //     onClick: () => setIsOpen(false),

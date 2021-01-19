@@ -18,6 +18,7 @@ import { HeaderBack } from './HeaderBack/index';
 import InviteCollaborator from './InviteCollaborator/index';
 import Login from './Login/index';
 import LoginSupportPage from "./LoginSupportPage";
+import MainPage from "./MainPage/index";
 import { Menu } from './Menu/index';
 import Receipt from './Receipt/index';
 import Receivables from './Receivables/index';
@@ -57,6 +58,13 @@ const Router = ({ isLogged }) => {
     const privateRoutes = {
         // Menu can't be put inside the components because then it'll unmount on transition
         '/': <Transactions {...params} />,
+        '/principal': (
+            <Menu title="Página Inicial">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <MainPage />
+                </motion.div>
+            </Menu>
+        ),
         '/upgrade': (
             <Menu title="Fazer Upgrade">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -67,7 +75,7 @@ const Router = ({ isLogged }) => {
         '/minha-conta': (
             <Menu title="Minha Conta">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                    <MyAccount />
+                    <MyAccount role={role}/>
                 </motion.div>
             </Menu>
         ),
@@ -108,15 +116,9 @@ const Router = ({ isLogged }) => {
                 </motion.div>
             </Menu>
         ),
-        [matchReceivable ? location : null]: <Receivables {...paramsReceivable} />,
         [match2 ? location : null]: <GerarBoleto {...params2} />,
         [matchMyReceipt ? location : null]: <Receipt {...paramsMyReceipt} receipt={receipt} setReceipt={setReceipt} />,
         [match ? location : null]: <Transactions {...params} setTransactionId={setTransactionId} />,
-        '/update': (
-            <HeaderBack title="Meus dados" navigateTo="/login">
-                <UpdateUserInfo />
-            </HeaderBack>
-        ),
     };
 
     if (role === '') {
@@ -137,6 +139,14 @@ const Router = ({ isLogged }) => {
                 </motion.div>
             </Menu>
         );
+        privateRoutes[matchReceivable ? location : null] = (
+            <Receivables {...paramsReceivable} />
+        );
+        privateRoutes['/update'] = (
+            <HeaderBack title="Meus dados" navigateTo="/login">
+                <UpdateUserInfo />
+            </HeaderBack>
+        )
     }
 
     return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback="/" />);
