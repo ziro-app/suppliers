@@ -28,16 +28,17 @@ function MainPage() {
   const [totalTransactions, setTotalTransactions] = useState(0);
   const [days, setDays] = useState(0);
   const [balance, setBalance] = useState('');
+  const [paidBalance, setPaidBalance] = useState('');
   const [activePlan, setActivePlan] = useState('');
   const setState = {
     setIsLoading, setErrorLoading, setReceivables, setData, setLocation,
     setHasMore, setLoadingMore, setInitDate, setFinalDate, setTotalAmount,
-    setDays, setCustomError, setTotalTransactions, setBalance
+    setDays, setCustomError, setTotalTransactions, setBalance, setPaidBalance
   };
   
   const getPlan = async () => {
     let result = await getActivePlan(uid);
-    return setActivePlan(result === 'standard' ? 'Fluxo' : result === 'financed30' ? 'Antecipado D+30' : result === 'financed14' ? 'Antecipado D+14' : 'Plano não encontrado.');
+    return setActivePlan(result === 'standard' ? 'Fluxo' : result === 'financed30' ? 'Antecipado D+30' : result === 'financed14' ? 'Antecipado D+14' : 'Não encontrado.');
   };
 
   useEffect(() => {
@@ -74,7 +75,9 @@ function MainPage() {
 
             <div style={card}>
               <label style={saldosLabel}>Saldo pago hoje</label>
-              <h1 style={valorH1}>R$ 0,00 (mocado)</h1>
+              <h1 style={valorH1}>
+                {paidBalance ? currencyFormat(round(paidBalance, 2).toFixed(2).replace('.', '')) : 'R$ 0,00'}
+              </h1>
             </div>
           </>
         }
