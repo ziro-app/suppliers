@@ -67,7 +67,7 @@ const Rates = () => {
                                     )
                             }
                             customGrid={{
-                                gridTemplateColumns: '1fr 1fr 1fr',
+                                gridTemplateColumns: 'auto 1fr auto',
                                 gridRowGap: '5px',
                             }}
                             cellStyle={{
