@@ -19,12 +19,9 @@ const fetchBalance = (zoopId, { setBalance, setPaidBalance }) => {
             const { data: { items: { current_balance } } } = await post(balanceUrl, {}, config);
             const parts = current_balance.split('.');
             const parsed = parseFloat(parts[0]) / 100;
-            
-            if (parsed !== 0) {
-                const rounded = (parseFloat(round(parsed, 2).toFixed(2)));
-                setBalance(rounded);
-            } 
-            
+            const rounded = (parseFloat(round(parsed, 2).toFixed(2)));
+            setBalance(rounded);
+
             const formatted = formatDate(new Date());
             const historyUrl = `${process.env.PAY_URL}account-history-all?seller_id=${zoopId}&created_date_range[gte]=${formatted}&created_date_range[lte]=${formatted}`;
             // const historyUrl = `http://localhost:9003/.netlify/functions/account-history-all?seller_id=${zoopId}&created_date_range[gte]=${formatted}&created_date_range[lte]=${formatted}`;
@@ -33,7 +30,7 @@ const fetchBalance = (zoopId, { setBalance, setPaidBalance }) => {
                 const floatValue = items[formatted]['items'].map(it => parseFloat(it.amount) < 0 ? -parseFloat(it.amount) : parseFloat(it.amount)).reduce((a, b) => a + b);
                 const paidRounded = parseFloat(round(floatValue, 2).toFixed(2));
                 setPaidBalance(paidRounded);
-            }
+            } else setPaidBalance(0);
         } catch (error) {
             if (error.response) console.log(error.response);
             else console.log(error);
