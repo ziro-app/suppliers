@@ -10,6 +10,7 @@ import currencyFormat from '@ziro/currency-format';
 import fetch from './fetch';
 import fetchBalance from './fetchBalance';
 import getActivePlan from './utils/getActivePlan';
+import Skeleton from 'react-loading-skeleton';
 
 function MainPage() {
     const { role, zoopId, payoutAutomatic, fantasy, uid } = useContext(userContext)
@@ -55,9 +56,7 @@ function MainPage() {
                     <label style={saldosLabel}>Plano ativo</label>
                     <h1 style={valorH1}>
                         {activePlan === '' ?
-                            <div style={spinnerStyle}>
-                                <Spinner size="5rem" />
-                            </div>
+                            <Skeleton width={150} height={30} />
                             :
                             activePlan
                         }
@@ -70,9 +69,7 @@ function MainPage() {
                             <label style={saldosLabel}>Saldo à receber hoje</label>
                             <h1 style={valorH1}>
                                 {balance < 0 ?
-                                    <div style={spinnerStyle}>
-                                        <Spinner size="5rem" />
-                                    </div>
+                                    <Skeleton width={150} height={30} />
                                     :
                                     balance ?
                                         currencyFormat(round(balance, 2).toFixed(2).replace('.', '')) : 'R$ 0,00'}
@@ -83,9 +80,7 @@ function MainPage() {
                             <label style={saldosLabel}>Saldo pago hoje</label>
                             <h1 style={valorH1}>
                                 {paidBalance < 0 ?
-                                    <div style={spinnerStyle}>
-                                        <Spinner size="5rem" />
-                                    </div>
+                                    <Skeleton width={150} height={30} />
                                     :
                                     paidBalance ?
                                         currencyFormat(round(paidBalance, 2).toFixed(2).replace('.', '')) : 'R$ 0,00'}
