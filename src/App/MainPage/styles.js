@@ -53,6 +53,7 @@ iconStyle = {
   borderRadius: '40%',
   padding: '20px',
   boxShadow: 'rgba(34, 34, 34, 0.7) 0px 3px 11px -4px',
+  backgroundColor: '#333333'
 },
 iconDescription = {
   marginTop: '10px',

@@ -98,7 +98,7 @@ function MainPage() {
       <div style={iconsContainer}>
         <div>
           <div style={iconDiv}>
-            <Icon type="money" size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/criar-cobranca')} />
+            <Icon type="money" color={'#fff'} size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/criar-cobranca')} />
           </div>
 
           <div style={iconDescription}>
@@ -107,7 +107,7 @@ function MainPage() {
         </div>
         <div>
           <div style={iconDiv}>
-            <Icon type="trending" size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/transacoes')} />
+            <Icon type="trending" color={'#fff'} size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/transacoes')} />
           </div>
 
           <div style={iconDescription}>
@@ -116,7 +116,7 @@ function MainPage() {
         </div>
         <div>
           <div style={iconDiv}>
-            <Icon type="id" size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/recebiveis')} />
+            <Icon type="id" color={'#fff'} size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/recebiveis')} />
           </div>
 
           <div style={iconDescription}>
@@ -125,7 +125,7 @@ function MainPage() {
         </div>
         <div>
           <div style={iconDiv}>
-            <Icon type="library" size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/recebiveis/dados-bancarios')} />
+            <Icon type="library" color={'#fff'} size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/recebiveis/dados-bancarios')} />
           </div>
 
           <div style={iconDescription}>
@@ -138,7 +138,7 @@ function MainPage() {
         </div>
         <div>
           <div style={iconDiv}>
-            <Icon type="user" size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/colaboradores')} />
+            <Icon type="user" color={'#fff'} size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/colaboradores')} />
           </div>
 
           <div style={iconDescription}>
@@ -147,7 +147,7 @@ function MainPage() {
         </div>
         <div>
           <div style={iconDiv}>
-            <Icon type="gear" size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/minha-conta')} />
+            <Icon type="gear" color={'#fff'} size={20} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/minha-conta')} />
           </div>
 
           <div style={iconDescription}>
