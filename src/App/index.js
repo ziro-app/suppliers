@@ -42,6 +42,7 @@ export const App = () => {
     const [maxInstallments, setMaxInstallments] = useState(null);
     const [payoutAutomatic, setPayoutAutomatic] = useState(null);
     const [zoopBankAccountId, setZoopBankAccountId] = useState(null);
+    const [backgroundCheckRequests, setBackgroundCheckRequests] = useState(null);
     const url = process.env.SHEET_URL;
     const config = {
         headers: {
@@ -141,6 +142,7 @@ export const App = () => {
         setMaxInstallments('');
         setPayoutAutomatic('');
         setZoopBankAccountId('');
+        setBackgroundCheckRequests('');
     };
 
     useEffect(() => {
@@ -206,7 +208,7 @@ export const App = () => {
                     const docRef = await db.collection('suppliers').where('uid', '==', uid).get();
                     if (!docRef.empty) {
                         docRef.forEach(async doc => {
-                            const { nome, sobrenome, cpf, cnpj, nascimento, whatsapp, telefone, email, tipoCadastro } = doc.data();
+                            const { nome, sobrenome, cpf, cnpj, nascimento, whatsapp, telefone, email, tipoCadastro, backgroundCheckRequestsAvailable } = doc.data();
 
                             setDocId(doc.id);
                             setFName(nome ? nome : '');
@@ -220,6 +222,7 @@ export const App = () => {
                             setOwnerId('');
                             setRole('');
                             setBrand('');
+                            setBackgroundCheckRequests(backgroundCheckRequestsAvailable ? backgroundCheckRequestsAvailable : '');
                             fillObject(doc.data());
                             if (userPos === null || userPos === '') setUserPos(await findStoreownerRow(cnpj));
                         });
@@ -285,7 +288,8 @@ export const App = () => {
         maxInstallments,
         payoutAutomatic,
         zoopBankAccountId,
-        whatsApp
+        whatsApp,
+        backgroundCheckRequests
     };
     if (loading) return <InitialLoader />;
     if (errorLoading) return <Error />;
