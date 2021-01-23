@@ -65,7 +65,7 @@ function MainPage() {
       <div style={saldosContainer}>
         <h1 style={{ width: '5rem' , marginBottom: '-25px' }}>Geral</h1>
         <div style={{ display: 'flex', width: '100%', padding: '20px 0px', borderRadius: '10px', marginBottom: '-22px', boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px', justifyContent: 'space-evenly' }}>
-          <div>
+          <div style={{ textAlign: 'center' }}>
             <label style={saldosLabel}>Plano ativo</label>
             <h1 style={valorH1}>{activePlan === '' ? <Skeleton width={150} height={30} /> : activePlan}</h1>
           </div>
