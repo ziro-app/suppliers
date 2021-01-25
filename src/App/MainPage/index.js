@@ -52,7 +52,13 @@ function MainPage() {
 
   const getPlan = async () => {
     let result = await getActivePlan(uid);
-    return setActivePlan(result === 'standard' ? 'Fluxo' : result === 'financed30' ? 'Antecipado D+30' : result === 'financed14' ? 'Antecipado D+14' : 'Não encontrado');
+    return setActivePlan(
+      result === 'standard' ? 'Fluxo' : 
+      result === 'financed30' && window.innerWidth < 400 ? 'Antecip. D+30' : 
+      result === 'financed30' && window.innerWidth > 400 ? 'Antecipado D+30' : 
+      result === 'financed14' && window.innerWidth < 400 ? 'Antecip. D+14' : 
+      result === 'financed14' && window.innerWidth > 400 ? 'Antecipado D+14' : 
+    'Não encontrado');
   };
 
   useEffect(() => {
@@ -85,9 +91,9 @@ function MainPage() {
               <label style={saldosLabel}>À receber hoje (R$)</label>
               <h1 style={valorH1}>
                 {balance < 0 ? 
-                  <Skeleton width={150} height={30} /> 
+                  <Skeleton width={150} height={20} /> 
                   : balance ? currencyFormat(round(balance, 2).toFixed(2).replace('.', '')) 
-                  : 'R$ 0,00'
+                  : '0,00'
                 }
               </h1>
             </div>
@@ -96,9 +102,9 @@ function MainPage() {
               <label style={saldosLabel}>Pago hoje (R$)</label>
               <h1 style={valorH1}>
                 {paidBalance < 0 ? 
-                  <Skeleton width={150} height={30} />
+                  <Skeleton width={150} height={20} />
                   : paidBalance ? currencyFormat(round(paidBalance, 2).toFixed(2).replace('.', '')) 
-                  : 'R$ 0,00'
+                  : '0,00'
                 }
               </h1>
             </div>
@@ -142,7 +148,7 @@ function MainPage() {
           </div>
 
           <div style={iconDescription}>
-            <label style={{ fontSize: '1.3rem' }}>Consultar<br /> CPF / CNPJ</label>
+            <label style={{ fontSize: '1.3rem' }}>Consultar<br /> CPF/CNPJ</label>
           </div>
         </div>
         <div>
