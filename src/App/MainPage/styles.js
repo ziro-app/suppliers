@@ -1,6 +1,8 @@
 import { fontTitle, fontSizeSmall } from '@ziro/theme'
 
-let dynamicWidth = window.innerWidth < 400 ? 'auto auto auto' : 'auto auto auto auto';
+const dynamicWidth = () => {
+  return window.innerWidth < 400 ? 'auto auto auto' : 'auto auto auto auto'
+};
 
 export const saldosContainer = {
   display: 'grid',
@@ -33,7 +35,7 @@ activePlan = {
 },
 iconsContainer = {
   display: 'grid',
-  gridTemplateColumns: dynamicWidth,
+  gridTemplateColumns: dynamicWidth(),
   justifyContent: 'space-between',
   marginTop: '50px'
 },
