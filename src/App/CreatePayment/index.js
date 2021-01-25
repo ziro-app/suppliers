@@ -26,7 +26,7 @@ const CreatePayment = () => {
     const [loading, setLoading] = useState(true);
     const [isNewPlan, setIsNewPlan] = useState(false);
     const options = ['Com seguro', 'Sem seguro'];
-    const withNewPlan = ['CRISFAEL', 'HAUT', 'AMOPOEMA', 'MANTUA'];
+    const withNewPlan = ['CRISFAEL', 'HAUT', 'AMOPOEMA', 'MANTUA', 'CLOSET DELUXE', 'EMPORIO CLOSET', 'VILLON JEANS', 'ATACADO FACIL'];
     const state = {
         seller: capitalize(fantasy),
         sellerId: zoopId,
