@@ -92,7 +92,7 @@ function MainPage() {
               <h1 style={valorH1}>
                 {balance < 0 ? 
                   <Skeleton width={150} height={20} /> 
-                  : balance ? currencyFormat(round(balance, 2).toFixed(2).replace('.', '')) 
+                  : balance ? currencyFormat(round(balance, 2).toFixed(2).replace('.', '')).replace('R$', '')  
                   : '0,00'
                 }
               </h1>
@@ -103,7 +103,7 @@ function MainPage() {
               <h1 style={valorH1}>
                 {paidBalance < 0 ? 
                   <Skeleton width={150} height={20} />
-                  : paidBalance ? currencyFormat(round(paidBalance, 2).toFixed(2).replace('.', '')) 
+                  : paidBalance ? currencyFormat(round(paidBalance, 2).toFixed(2).replace('.', '')).replace('R$', '')  
                   : '0,00'
                 }
               </h1>
