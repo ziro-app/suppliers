@@ -9,6 +9,11 @@ export const saldosContainer = {
   rowGap: '35px',
   marginTop: '-10px'
 },
+consultasContainer = {
+  display: 'grid',
+  rowGap: '35px',
+  marginTop: '35px'
+},
 card = {
   textAlign: 'center',
   width: '100%',
@@ -44,7 +49,7 @@ iconDivContainer = {
 },
 valorH1 = {
   textAlign: 'center',
-  fontSize: '2rem',
+  fontSize: '1.8rem',
   margin: '0',
 },
 iconDiv = {
