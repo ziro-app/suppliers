@@ -10,7 +10,7 @@ const config = {
 
 const formatDate = date => `${date.getFullYear()}-${date.getMonth() + 1 <= 9 ? `0${date.getMonth() + 1}` : date.getMonth() + 1}-${date.getDate() <= 9 ? `0${date.getDate()}` : date.getDate()}`;
 
-const fetchBalance = (zoopId, { setBalance, setPaidBalance }) => {
+const fetchBalance = (zoopId, { setBalance, setPaidBalance, setIsErrorBalance }) => {
     const source = axios.CancelToken.source();
     const run = async () => {
         try {
@@ -32,6 +32,7 @@ const fetchBalance = (zoopId, { setBalance, setPaidBalance }) => {
                 setPaidBalance(paidRounded);
             } else setPaidBalance(0);
         } catch (error) {
+            setIsErrorBalance(true)
             if (error.response) console.log(error.response);
             else console.log(error);
         }

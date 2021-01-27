@@ -1,14 +1,18 @@
 import { fontTitle, fontSizeSmall } from '@ziro/theme'
 
+const dynamicWidth = () => {
+  return window.innerWidth < 400 ? 'auto auto auto' : 'auto auto auto auto'
+};
+
 export const saldosContainer = {
-  // display: 'flex',
-  // flexDirection: 'column',
-  // justifyContent: 'center',
-  // alignItems: 'center',
   display: 'grid',
-  // placeItems: 'center',
   rowGap: '35px',
   marginTop: '-10px'
+},
+consultasContainer = {
+  display: 'grid',
+  rowGap: '35px',
+  marginTop: '35px'
 },
 card = {
   textAlign: 'center',
@@ -36,9 +40,7 @@ activePlan = {
 },
 iconsContainer = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fill, minmax(100px, auto))',
-  // gridAutoColumns: 'minmax(auto, auto)',
-  // gridColumnGap: '6px',
+  gridTemplateColumns: dynamicWidth(),
   justifyContent: 'space-between',
   marginTop: '50px'
 },
@@ -47,12 +49,10 @@ iconDivContainer = {
 },
 valorH1 = {
   textAlign: 'center',
-  fontSize: '2rem',
+  fontSize: '1.8rem',
   margin: '0',
 },
 iconDiv = {
-  // display: 'grid',
-  // gridTemplateColumns: 'auto auto',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
