@@ -24,6 +24,7 @@ const fetch = (setIsLoading, setErrorLoading, docId, { setCollaborators, setData
                         title: 'Vendedores',
                         header: ['Nome', 'Email', ''],
                         rows: rows.reverse(),
+                        align: 'start',
                         rowsClicks: [],
                         totals: []
                     });
