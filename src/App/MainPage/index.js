@@ -15,7 +15,7 @@ import getActivePlan from './utils/getActivePlan';
 import Skeleton from 'react-loading-skeleton';
 
 function MainPage() {
-  const { role, zoopId, payoutAutomatic, fantasy, uid, backgroundCheckRequests } = useContext(userContext);
+  const { role, zoopId, payoutAutomatic, fantasy, uid, backgroundCheckRequests, ownerId } = useContext(userContext);
   const [, setLocation] = useLocation();
 
   const [isErrorPlan, setIsErrorPlan] = useState(false);
@@ -58,7 +58,7 @@ function MainPage() {
 
   const getPlan = async () => {
     try {
-      let result = await getActivePlan(uid);
+      let result = role === '' ? await getActivePlan(uid) : await getActivePlan(ownerId);
       return setActivePlan(
         result === 'standard' ? 'Fluxo' : 
         result === 'financed30' && window.innerWidth < 400 ? 'Antecip. D+30' : 
@@ -125,7 +125,7 @@ function MainPage() {
               <label style={saldosLabel}>Plano ativo</label>
               <h1 style={valorH1}>
                 {!isErrorPlan ?
-                  activePlan === '' ? <Skeleton width={50} /> : activePlan
+                  activePlan ? activePlan : 'Não encontrado'
                   : runErrorPlan()
                 }
               </h1>
@@ -216,18 +216,20 @@ function MainPage() {
           </div>
 
           <div style={iconDescription}>
-            <label style={{ fontSize: '1.3rem' }}>Cobrar</label>
+            <label style={{ fontSize: '1.3rem' }}>Criar Cobrança</label>
           </div>
         </div>
-        <div>
-          <div style={iconDiv}>
-            <Icon type="money" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/recebiveis')} />
-          </div>
+        {role === '' &&
+          <div>
+            <div style={iconDiv}>
+              <Icon type="money" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/recebiveis')} />
+            </div>
 
-          <div style={iconDescription}>
-            <label style={{ fontSize: '1.3rem' }}>Recebíveis</label>
+            <div style={iconDescription}>
+              <label style={{ fontSize: '1.3rem' }}>Recebíveis</label>
+            </div>
           </div>
-        </div>
+        }
         <div>
           <div style={iconDiv}>
             <Icon type="search" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/consulta')} />
@@ -246,28 +248,32 @@ function MainPage() {
             <label style={{ fontSize: '1.3rem' }}>Tarifas</label>
           </div>
         </div>
-        <div>
-          <div style={iconDiv}>
-            <Icon type="user" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/colaboradores')} />
-          </div>
+        {role === '' &&
+          <div>
+            <div style={iconDiv}>
+              <Icon type="user" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/colaboradores')} />
+            </div>
 
-          <div style={iconDescription}>
-            <label style={{ fontSize: '1.3rem' }}>Vendedores</label>
+            <div style={iconDescription}>
+              <label style={{ fontSize: '1.3rem' }}>Vendedores</label>
+            </div>
           </div>
-        </div>
-        <div>
-          <div style={iconDiv}>
-            <Icon type="library" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/recebiveis/dados-bancarios')} />
-          </div>
+        }
+        {role === '' &&
+          <div>
+            <div style={iconDiv}>
+              <Icon type="library" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/recebiveis/dados-bancarios')} />
+            </div>
 
-          <div style={iconDescription}>
-            <label style={{ fontSize: '1.3rem' }}>
-              Dados
-              <br />
-              Bancários
-            </label>
+            <div style={iconDescription}>
+              <label style={{ fontSize: '1.3rem' }}>
+                Dados
+                <br />
+                Bancários
+              </label>
+            </div>
           </div>
-        </div>
+        }
         <div>
           <div style={iconDiv}>
             <Icon type="gear" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/minha-conta')} />
