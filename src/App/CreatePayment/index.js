@@ -26,7 +26,7 @@ const CreatePayment = () => {
     const [loading, setLoading] = useState(true);
     const [isNewPlan, setIsNewPlan] = useState(false);
     const options = ['Com seguro', 'Sem seguro'];
-    const withNewPlan = ['CRISFAEL', 'HAUT', 'AMOPOEMA', 'MANTUA', 'CLOSET DELUXE', 'EMPORIO CLOSET', 'VILLON JEANS', 'ATACADO FACIL','BIRO','CELEBRA MODA FESTA', 'SEIKI'];
+    const withNewPlan = ['CRISFAEL', 'HAUT', 'AMOPOEMA', 'MANTUA', 'CLOSET DELUXE', 'EMPORIO CLOSET', 'VILLON JEANS', 'ATACADO FACIL','BIRO','CELEBRA MODA FESTA', 'SEIKI', 'MY.NA', 'PASSIONAL STYLO', 'WINNIE MODAS', 'AYRES CLUB', 'MAY STYLE CO.'];
     const state = {
         seller: capitalize(fantasy),
         sellerId: zoopId,
