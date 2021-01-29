@@ -7,8 +7,6 @@ const getBackgroundRequestsPaid = async ownerId => {
   const request = await db.collection('suppliers').doc(ownerId).get();
   const result = request.data();
 
-  console.log('result.backgroundCheckRequestsAvailablePaid:', result.backgroundCheckRequestsAvailablePaid);
-  
   return result.backgroundCheckRequestsAvailablePaid
 };
 

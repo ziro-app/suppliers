@@ -89,7 +89,6 @@ function MainPage() {
   };
 
   useEffect(() => {
-    console.log(backgroundCheckRequestsPaid)
     // Busca os saldos da Zoop
     try {
       fetchBalance(zoopId, setState);
@@ -207,12 +206,20 @@ function MainPage() {
           <div style={{ display: 'flex', width: '100%', padding: '20px 0px', borderRadius: '10px', marginBottom: '-22px', boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px', justifyContent: 'space-evenly' }}>
             <div style={{ textAlign: 'center' }}>
               <label style={saldosLabel}>Consultas pagas</label>
-              <h1 style={valorH1}>{role === '' ? backgroundPaid : backgroundPaidCollaborator}</h1>
+              <h1 style={valorH1}>{
+                role === '' && backgroundPaid !== '' ? backgroundPaid 
+                : role === '' && backgroundPaid === '' ? '0'
+                : backgroundPaidCollaborator}
+              </h1>
             </div>
 
             <div>
               <label style={saldosLabel}>Consultas gratuitas</label>
-              <h1 style={valorH1}>{role === '' ? backgroundFree : backgroundFreeCollaborator}</h1>
+              <h1 style={valorH1}>{
+                role === '' && backgroundFree !== '' ? backgroundFree 
+                : role === '' && backgroundFree === '' ? '0'
+                : backgroundFreeCollaborator}
+              </h1>
             </div>
           </div>
           : runErrorPlan()
