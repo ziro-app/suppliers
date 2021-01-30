@@ -43,6 +43,7 @@ export const App = () => {
     const [payoutAutomatic, setPayoutAutomatic] = useState(null);
     const [zoopBankAccountId, setZoopBankAccountId] = useState(null);
     const [backgroundCheckRequests, setBackgroundCheckRequests] = useState(null);
+    const [backgroundCheckRequestsPaid, setBackgroundCheckRequestsPaid] = useState(null);
     const url = process.env.SHEET_URL;
     const config = {
         headers: {
@@ -143,6 +144,7 @@ export const App = () => {
         setPayoutAutomatic('');
         setZoopBankAccountId('');
         setBackgroundCheckRequests('');
+        setBackgroundCheckRequestsPaid('');
     };
 
     useEffect(() => {
@@ -208,7 +210,7 @@ export const App = () => {
                     const docRef = await db.collection('suppliers').where('uid', '==', uid).get();
                     if (!docRef.empty) {
                         docRef.forEach(async doc => {
-                            const { nome, sobrenome, cpf, cnpj, nascimento, whatsapp, telefone, email, tipoCadastro, backgroundCheckRequestsAvailable } = doc.data();
+                            const { nome, sobrenome, cpf, cnpj, nascimento, whatsapp, telefone, email, tipoCadastro, backgroundCheckRequestsAvailable, backgroundCheckRequestsAvailablePaid } = doc.data();
 
                             setDocId(doc.id);
                             setFName(nome ? nome : '');
@@ -223,6 +225,7 @@ export const App = () => {
                             setRole('');
                             setBrand('');
                             setBackgroundCheckRequests(backgroundCheckRequestsAvailable ? backgroundCheckRequestsAvailable : '');
+                            setBackgroundCheckRequestsPaid(backgroundCheckRequestsAvailablePaid ? backgroundCheckRequestsAvailablePaid : '');
                             fillObject(doc.data());
                             if (userPos === null || userPos === '') setUserPos(await findStoreownerRow(cnpj));
                         });
@@ -289,7 +292,8 @@ export const App = () => {
         payoutAutomatic,
         zoopBankAccountId,
         whatsApp,
-        backgroundCheckRequests
+        backgroundCheckRequests,
+        backgroundCheckRequestsPaid
     };
     if (loading) return <InitialLoader />;
     if (errorLoading) return <Error />;

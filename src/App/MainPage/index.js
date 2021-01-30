@@ -12,10 +12,12 @@ import currencyFormat from '@ziro/currency-format';
 import fetch from './fetch';
 import fetchBalance from './fetchBalance';
 import getActivePlan from './utils/getActivePlan';
+import getBackgroundRequestsPaid from './utils/getBackgroundRequestsPaid';
+import getBackgroundRequestsFree from './utils/getBackgroundRequestsFree';
 import Skeleton from 'react-loading-skeleton';
 
 function MainPage() {
-  const { role, zoopId, payoutAutomatic, fantasy, uid, backgroundCheckRequests, ownerId } = useContext(userContext);
+  const { role, zoopId, payoutAutomatic, fantasy, uid, backgroundCheckRequests, backgroundCheckRequestsPaid, ownerId } = useContext(userContext);
   const [, setLocation] = useLocation();
 
   const [isErrorPlan, setIsErrorPlan] = useState(false);
@@ -35,7 +37,10 @@ function MainPage() {
   const [balance, setBalance] = useState(-1);
   const [paidBalance, setPaidBalance] = useState(-1);
   const [activePlan, setActivePlan] = useState('');
-  // const [payoutAutomaticStatus, setPayoutAutomaticStatus] = useState('');
+  const [backgroundFree, setBackgroundFree] = useState(backgroundCheckRequests);
+  const [backgroundPaid, setBackgroundPaid] = useState(backgroundCheckRequestsPaid);
+  const [backgroundPaidCollaborator, setBackgroundPaidCollaborator] = useState();
+  const [backgroundFreeCollaborator, setBackgroundFreeCollaborator] = useState();
   const setState = {
     setIsErrorPlan,
     setIsErrorBalance,
@@ -71,14 +76,31 @@ function MainPage() {
     }
   };
 
+  // Somente usar função se for conta de vendedor
+  const getBackgroundPaidCollab = async () => {
+    const resultPaidCollab = await getBackgroundRequestsPaid(ownerId);
+    return setBackgroundPaidCollaborator(resultPaidCollab);
+  };
+
+  // Somente usar função se for conta de vendedor
+  const getBackgroundFreeCollab = async () => {
+    const resultFreeCollab = await getBackgroundRequestsFree(ownerId);
+    return setBackgroundFreeCollaborator(resultFreeCollab);
+  };
+
   useEffect(() => {
+    // Busca os saldos da Zoop
     try {
       fetchBalance(zoopId, setState);
 
+      // Busca o plano ativo do usuário
       try {
         getPlan();
-
         console.log('payoutAutomatic:', payoutAutomatic);
+
+        // Busca as consultas caso conta for de vendedor
+        {role !== '' && getBackgroundPaidCollab()}
+        {role !== '' && getBackgroundFreeCollab()}
 
       }catch(error) {
         console.log('Erro getPlan:', error)
@@ -184,14 +206,20 @@ function MainPage() {
           <div style={{ display: 'flex', width: '100%', padding: '20px 0px', borderRadius: '10px', marginBottom: '-22px', boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px', justifyContent: 'space-evenly' }}>
             <div style={{ textAlign: 'center' }}>
               <label style={saldosLabel}>Consultas pagas</label>
-              <h1 style={valorH1}>
-                5 (mocado)
+              <h1 style={valorH1}>{
+                role === '' && backgroundPaid !== '' ? backgroundPaid 
+                : role === '' && backgroundPaid === '' ? '0'
+                : backgroundPaidCollaborator}
               </h1>
             </div>
 
             <div>
               <label style={saldosLabel}>Consultas gratuitas</label>
-              <h1 style={valorH1}>{backgroundCheckRequests === '' ? <Skeleton width={50}  /> : backgroundCheckRequests}</h1>
+              <h1 style={valorH1}>{
+                role === '' && backgroundFree !== '' ? backgroundFree 
+                : role === '' && backgroundFree === '' ? '0'
+                : backgroundFreeCollaborator}
+              </h1>
             </div>
           </div>
           : runErrorPlan()
