@@ -47,6 +47,9 @@ const CreatePayment = () => {
     'MAIS NA MODA',
     'BM BOLSAS',
     'CALA BRANCA',
+    'COUSIN WOMAN',
+    'ALCANCE JEANS',
+    'LA BORDONA COUROS'
   ];
   const state = {
     seller: capitalize(fantasy),
