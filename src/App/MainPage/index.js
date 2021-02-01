@@ -17,6 +17,8 @@ import getBackgroundRequestsFree from './utils/getBackgroundRequestsFree';
 import Skeleton from 'react-loading-skeleton';
 
 function MainPage() {
+  const supportNumber = require('./supportNumber');
+
   const { role, zoopId, payoutAutomatic, fantasy, uid, backgroundCheckRequests, backgroundCheckRequestsPaid, ownerId } = useContext(userContext);
   const [, setLocation] = useLocation();
 
@@ -121,6 +123,7 @@ function MainPage() {
         type="noData"
         btnMsg="Falar com suporte"
         style={{ display: 'grid', placeItems: 'center', textAlign: 'center', height: '300px', gap: '7px' }}
+        backRouteFunction={() => window.open(`https://api.whatsapp.com/send?phone=${supportNumber.supportPhoneNumber.replace(/\+|\s|\(|\)|-/g, "")}`, "_blank")}
       />
     )
   };
@@ -133,6 +136,7 @@ function MainPage() {
         type="noData"
         btnMsg="Falar com suporte"
         style={{ display: 'grid', placeItems: 'center', textAlign: 'center', height: '300px', gap: '7px' }}
+        backRouteFunction={() => window.open(`https://api.whatsapp.com/send?phone=${supportNumber.supportPhoneNumber.replace(/\+|\s|\(|\)|-/g, "")}`, "_blank")}
       />
     )
   };
