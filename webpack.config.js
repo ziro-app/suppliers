@@ -9,6 +9,11 @@ module.exports = (env, { mode }) => {
     module: {
       rules: [
         {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/
+        },
+        {
           test: /\.js$/,
           exclude: /node_modules/,
           use: {
@@ -24,6 +29,9 @@ module.exports = (env, { mode }) => {
           use: ['style-loader', 'raw-loader'],
         },
       ],
+    },
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js']
     },
     plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
   };
