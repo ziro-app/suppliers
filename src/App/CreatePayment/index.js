@@ -80,13 +80,8 @@ const CreatePayment = () => {
         .onSnapshot(snap => {
           if (!snap.empty) {
             snap.forEach(doc => {
-              //apenas novos cadastros terão o plano novo
-              if (doc.data().cadastro.seconds >= 1607880636 || withNewPlan.includes(fantasy.toUpperCase())) {
                 setHasSellerZoopPlan(doc.data().sellerZoopPlan || null);
                 setIsNewPlan(true);
-              } else {
-                setHasSellerZoopPlan(doc.data().sellerZoopPlan || null);
-              }
             });
             setLoading(false);
           }
