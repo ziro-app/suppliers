@@ -75,12 +75,12 @@ export const Menu = ({ title, children }) => {
                         username={fname || 'Usuário'}
                         userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
                         options={[
-                            {
-                                path: '/inicio',
-                                onClick: () => setIsOpen(false),
-                                icon: <Icon type='home' size={15} strokeWidth={2} />,
-                                text: 'Início'
-                            },
+                            // {
+                            //     path: '/inicio',
+                            //     onClick: () => setIsOpen(false),
+                            //     icon: <Icon type='home' size={15} strokeWidth={2} />,
+                            //     text: 'Início'
+                            // },
                             {
                                 path: '/upgrade',
                                 onClick: () => setIsOpen(false),
@@ -141,12 +141,12 @@ export const Menu = ({ title, children }) => {
                         username={fname || 'Usuário'}
                         userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
                         options={[
-                            {
-                                path: '/inicio',
-                                onClick: () => setIsOpen(false),
-                                icon: <Icon type='home' size={15} strokeWidth={2} />,
-                                text: 'Início'
-                            },
+                            // {
+                            //     path: '/inicio',
+                            //     onClick: () => setIsOpen(false),
+                            //     icon: <Icon type='home' size={15} strokeWidth={2} />,
+                            //     text: 'Início'
+                            // },
                             {
                                 path: '/transacoes',
                                 onClick: () => setIsOpen(false),
