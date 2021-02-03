@@ -11,11 +11,11 @@ import Header from '@bit/vitorbarbosa19.ziro.header';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import { useMessage, useMessagePromise } from '@bit/vitorbarbosa19.ziro.message-modal';
 import { ZiroPromptMessage, ZiroWaitingMessage } from "ziro-messages";
-import { containerWithPadding } from '@ziro/theme';
+import { containerWithPadding, container } from '@ziro/theme';
 import maskInput from '@ziro/mask-input';
-import { userContext } from '../../appContext';
-import banksList from '../../Register/banks';
-import { db } from '../../../Firebase/index';
+import { userContext } from '../appContext';
+import banksList from '../Register/banks';
+import { db } from '../../Firebase/index';
 import sendToBackend from './sendToBackend';
 import mountBankInfo from './mountBankInfo';
 import { dot, headerStyle, infoBlock } from './styles';
@@ -171,8 +171,8 @@ const BankInfo = () => {
         );
 
     return (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={containerWithPadding}>
-            <Header type="icon" title="Dados Bancários" setIsOpen={backRoute && !activate ? () => history.push('/recebiveis/resgate') : () => history.push('/recebiveis')} icon="back" />
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={container}>
+            {/* <Header type="icon" title="Dados Bancários" setIsOpen={backRoute && !activate ? () => history.push('/recebiveis/resgate') : () => history.push('/recebiveis')} icon="back" /> */}
             <div style={{ display: 'grid', gridRowGap: '25px' }}>
                 <Details blocks={blocks} />
 

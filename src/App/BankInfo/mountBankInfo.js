@@ -1,7 +1,7 @@
 import React from 'react';
 import MessageModal from '@bit/vitorbarbosa19.ziro.message-modal';
 import ToggleButton from '@bit/vitorbarbosa19.ziro.toggle-button';
-import banksList from '../../Register/banks';
+import banksList from '../Register/banks';
 
 const mountBankInfo = (setIsLoading, setBlocks, { codBank, holderName, accountType, accountNumber, agency, activate, asyncClick }) => {
     let bank = banksList.find(bank => bank.split(' - ')[0] == codBank);

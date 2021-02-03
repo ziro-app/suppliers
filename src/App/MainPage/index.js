@@ -24,6 +24,7 @@ function MainPage() {
 
   const [isErrorPlan, setIsErrorPlan] = useState(false);
   const [isErrorBalance, setIsErrorBalance] = useState(false);
+  const [isErrorBgCheck, setIsErrorBgCheck] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [errorLoading, setErrorLoading] = useState(false);
   const [customError, setCustomError] = useState(false);
@@ -46,6 +47,7 @@ function MainPage() {
   const setState = {
     setIsErrorPlan,
     setIsErrorBalance,
+    setIsErrorBgCheck,
     setIsLoading,
     setErrorLoading,
     setReceivables,
@@ -140,6 +142,19 @@ function MainPage() {
       />
     )
   };
+  
+  const runErrorBgCheck = () => {
+    return (
+      <Error
+        title="Erro ao buscar consultas"
+        message="Entre em contato com o suporte para verificar suas consultas."
+        type="noData"
+        btnMsg="Falar com suporte"
+        style={{ display: 'grid', placeItems: 'center', textAlign: 'center', height: '300px', gap: '7px' }}
+        backRouteFunction={() => window.open(`https://api.whatsapp.com/send?phone=${supportNumber.supportPhoneNumber.replace(/\+|\s|\(|\)|-/g, "")}`, "_blank")}
+      />
+    )
+  };
 
   return (
     <div style={container}>
@@ -206,7 +221,7 @@ function MainPage() {
 
       <div style={consultasContainer}>
         <h1 style={{ width: '5rem' , marginBottom: '-25px' }}>Consultas</h1>
-        {!isErrorPlan ? 
+        {!isErrorBgCheck ? 
           <div style={{ display: 'flex', width: '100%', padding: '20px 0px', borderRadius: '10px', marginBottom: '-22px', boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px', justifyContent: 'space-evenly' }}>
             <div style={{ textAlign: 'center' }}>
               <label style={saldosLabel}>Consultas pagas</label>
@@ -226,7 +241,7 @@ function MainPage() {
               </h1>
             </div>
           </div>
-          : runErrorPlan()
+          : runErrorBgCheck()
         }
       </div>
 
@@ -294,7 +309,7 @@ function MainPage() {
         {role === '' &&
           <div>
             <div style={iconDiv}>
-              <Icon type="library" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/recebiveis/dados-bancarios')} />
+              <Icon type="library" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/dados-bancarios')} />
             </div>
 
             <div style={iconDescription}>

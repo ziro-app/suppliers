@@ -12,7 +12,7 @@ import currencyFormat from '@ziro/currency-format';
 import { Menu } from '../Menu/index';
 import { round } from '../Transactions/utils';
 import { userContext } from '../appContext';
-import BankInfo from './BankInfo/index';
+import BankInfo from '../BankInfo/index';
 import RedeemBalance from './RedeemBalance/index';
 import Transactions from './Transactions/index';
 import { btn, cellStyle, contentStyle, customGrid, illustrationContainer, illustrationTitle, info, spinner, titleStyle } from './styles';
@@ -117,7 +117,7 @@ const Receivables = ({ receivableId }) => {
         <Menu title='Recebíveis'>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <div style={{ display: 'grid', gridRowGap: '20px' }}>
-                    <Button cta="Configurar dados bancários" style={btn} navigate={() => setLocation('recebiveis/dados-bancarios')} type="link" />
+                    <Button cta="Configurar dados bancários" style={btn} navigate={() => setLocation('/dados-bancarios')} type="link" />
 
                     {payoutAutomatic != undefined && payoutAutomatic != null && payoutAutomatic === false && <Button cta="Resgatar saldo" style={btn} navigate={() => setLocation('recebiveis/resgate')} type="link" />}
 

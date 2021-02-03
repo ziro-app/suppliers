@@ -1,5 +1,5 @@
 import { post } from 'axios';
-import { db } from '../../../Firebase/index';
+import { db } from '../../Firebase/index';
 
 const url = process.env.SHEET_URL
 const config = {

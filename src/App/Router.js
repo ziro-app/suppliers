@@ -32,6 +32,7 @@ import UpdateEmail from './UpdateEmail/index';
 import UpdatePass from './UpdatePass/index';
 import UpdateUserInfo from './UpdateUserInfo/index';
 import BackgroundCheck from './BackgroundCheck/index';
+import BankInfo from './BankInfo/index';
 import { userContext } from './appContext';
 
 const Router = ({ isLogged }) => {
@@ -62,6 +63,13 @@ const Router = ({ isLogged }) => {
             <Menu title="Início">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <MainPage />
+                </motion.div>
+            </Menu>
+        ),
+        '/dados-bancarios': (
+            <Menu title="Dados Bancários">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <BankInfo />
                 </motion.div>
             </Menu>
         ),
