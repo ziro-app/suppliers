@@ -10,8 +10,6 @@ const useRollback = () => {
   //se houver a necessidade de rollback, iremos caminhar por essa lista realizando as operacoes
   const [dataRollback, setDataRollback] = useState <Array<IZoopData|IFirebaseData|IApiData|ISheetsData|IUserData>>([]); //useState<IRollbackData[]>([]);
   const [startRollbacks, setStartRollbacks] = useState(false);
-  const emailRoolback = 'vyseclown@gmail.com';
-  const passRollback = 'phppoporing';
 
   const update = () => {
     //auth.signInWithEmailAndPassword(emailRoolback, passRollback).then(() => {
