@@ -24,33 +24,8 @@ const CreatePayment = () => {
   const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
   const [hasSellerZoopPlan, setHasSellerZoopPlan] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isNewPlan, setIsNewPlan] = useState(false);
+  const [isNewPlan, setIsNewPlan] = useState(true);
   const options = ['Com seguro', 'Sem seguro'];
-  const withNewPlan = [
-    'CRISFAEL',
-    'HAUT',
-    'AMOPOEMA',
-    'MANTUA',
-    'CLOSET DELUXE',
-    'EMPORIO CLOSET',
-    'VILLON JEANS',
-    'ATACADO FACIL',
-    'BIRO',
-    'CELEBRA MODA FESTA',
-    'SEIKI',
-    'MY.NA',
-    'PASSIONAL STYLO',
-    'WINNIE MODAS',
-    'AYRES CLUB',
-    'MAY STYLE CO.',
-    'BENESH',
-    'MAIS NA MODA',
-    'BM BOLSAS',
-    'CALA BRANCA',
-    'COUSIN WOMAN',
-    'ALCANCE JEANS',
-    'LA BORDONA COUROS'
-  ];
   const state = {
     seller: capitalize(fantasy),
     sellerId: zoopId,
