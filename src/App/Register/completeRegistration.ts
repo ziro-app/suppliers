@@ -11,44 +11,6 @@ const config = {
     Authorization: process.env.SHEET_TOKEN,
   },
 };
-const findStoreownerRow = async cnpj => {
-  const body = {
-    apiResource: 'values',
-    apiMethod: 'get',
-    range: 'Base!E:E',
-    spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
-  };
-  let pos = 0;
-  const {
-    data: { values },
-  } = await axios.post(url, body, config);
-  values.map((user, index) => {
-    if (user[0] === cnpj) {
-      pos = index + 1;
-    }
-  });
-  return pos;
-};
-
-const findCollaboratorRow = async email => {
-  const body = {
-    apiResource: 'values',
-    apiMethod: 'get',
-    range: 'Colaboradores',
-    spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
-    // spreadsheetId: "1YlNSmVrawtxeKyy-tDdmI9B0bgSIIQswBnl3CEgdRRo"
-  };
-  let pos = 0;
-  const {
-    data: { values },
-  } = await axios.post(url, body, config);
-  values.map((user, index) => {
-    if (user[2] === email) {
-      pos = index + 1;
-    }
-  });
-  return pos;
-};
 
 const completeRegistration = state => () => {
   const {
@@ -144,12 +106,11 @@ const completeRegistration = state => () => {
           try {
             // Cadastrando usuário na planilha
             await axios.post(url, body, config);
-
-            const userPos = await findStoreownerRow(cnpj);
-            console.log('userPos', userPos);
             const sheetData: ISheetsData = {
               origin: 'sheets',
-              range: `Base!A${userPos}`,
+              id:cnpj,
+              rangeToSearch:'Base!E:E',
+              rangeToUpdate: `Base!A`,
               values: [
                 'Excluído',
                 'Excluído',

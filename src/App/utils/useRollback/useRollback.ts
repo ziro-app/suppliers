@@ -1,10 +1,35 @@
-import { useState, useEffect, memo } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { fbauth, auth, db } from '../../../Firebase/index';
-//import * from './IRollbackData';
+
+const url = process.env.SHEET_URL;
+const config = {
+  headers: {
+    'Content-type': 'application/json',
+    Authorization: process.env.SHEET_TOKEN,
+  },
+};
+
+const findSheetsRow = async (id,rangeToSearch,spreadsheetId) => {
+    const body = {
+      apiResource: 'values',
+      apiMethod: 'get',
+      range: rangeToSearch || 'Base!E:E',
+      spreadsheetId: spreadsheetId || process.env.SHEET_SUPPLIERS_ID,
+    };
+    let pos = 0;
+    const {
+      data: { values },
+    } = await axios.post(url, body, config);
+    values.map((user, index) => {
+      if (user[0] === id) {
+        pos = index + 1;
+      }
+    });
+    return pos;
+  };
 
 const useRollback = () => {
-    console.log('teste 0')
   //é como se uma lista fosse montada, ou seja, vamos adicionar itens com suas origens,
   //identificadores e método a ser usado,
   //se houver a necessidade de rollback, iremos caminhar por essa lista realizando as operacoes
@@ -14,9 +39,6 @@ const useRollback = () => {
   const update = () => {
     //auth.signInWithEmailAndPassword(emailRoolback, passRollback).then(() => {
       const run = async () => {
-          console.log('entrou')
-          console.log('startRollbacks useRollback',startRollbacks)
-          console.log('dataRollback useRollback',dataRollback)
         if (dataRollback.length > 0) {
           let snapCollection;
           let docRefCollection;
@@ -32,10 +54,12 @@ const useRollback = () => {
               docRefCollection.delete();
             } else if (origin === 'sheets') {
               console.log('sheets');
-              const { range, spreadsheetId, values } = item[1] as unknown as ISheetsData;
-              console.log('range',range);
+              const { id, rangeToSearch, rangeToUpdate, spreadsheetId, values } = item[1] as unknown as ISheetsData;
+              console.log('range',rangeToSearch);
               console.log('spreadsheetId',spreadsheetId);
               console.log('values',values);
+              const sheetsRow = await findSheetsRow(id,rangeToSearch,spreadsheetId)
+              const rangeWithRow = `${rangeToUpdate}${sheetsRow}`
               const url = process.env.SHEET_URL;
               const config = {
                 headers: {
@@ -46,7 +70,7 @@ const useRollback = () => {
               const body = {
                 apiResource: 'values',
                 apiMethod: 'update',
-                range: range,
+                range: rangeWithRow,
                 spreadsheetId,
                 resource: {
                   values: [values],
@@ -104,8 +128,8 @@ const useRollback = () => {
         addRollbackItem(newZoopId)
       }
       if(origin === 'sheets'){
-        const { range, spreadsheetId, values } = object as ISheetsData
-        const newZoopId:ISheetsData = {origin,range, spreadsheetId, values}
+        const { id, rangeToSearch, rangeToUpdate, spreadsheetId, values  } = object as ISheetsData
+        const newZoopId:ISheetsData = {origin, id, rangeToSearch, rangeToUpdate, spreadsheetId, values }
         addRollbackItem(newZoopId)
       }
       if(origin === 'zoop'){

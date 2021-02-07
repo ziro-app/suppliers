@@ -12,7 +12,9 @@ declare interface IZoopData {
 
 declare interface ISheetsData {
     origin:string;
-    range:string;
+    id:string;
+    rangeToSearch:string;
+    rangeToUpdate:string;
     spreadsheetId:string;
     values:Array<string>;
 }
