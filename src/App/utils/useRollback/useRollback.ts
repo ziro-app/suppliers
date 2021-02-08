@@ -37,27 +37,23 @@ const useRollback = () => {
   const [startRollbacks, setStartRollbacks] = useState(false);
 
   const update = () => {
-    //auth.signInWithEmailAndPassword(emailRoolback, passRollback).then(() => {
       const run = async () => {
         if (dataRollback.length > 0) {
           let snapCollection;
           let docRefCollection;
           Object.entries(dataRollback).map(async item => {
-              console.log('items useRollback',item)
             const { origin } = item[1] as unknown as IZoopData|IFirebaseData|IApiData|ISheetsData|IUserData;
-            console.log('origin useRollback',origin)
             if (origin === 'firebase') {
               const { collection, field, identifier } = item[1] as unknown as IFirebaseData;
-              console.log('firebase');
-              snapCollection = await db.collection(collection).where(field, '==', identifier).get();
-              snapCollection.forEach(doc => (docRefCollection = doc.ref));
-              docRefCollection.delete();
+              if(field === 'uid'){
+                await db.collection(collection).doc(identifier).delete();
+              } else {
+                snapCollection = await db.collection(collection).where(field, '==', identifier).get();
+                snapCollection.forEach(doc => (docRefCollection = doc.ref));
+                docRefCollection.delete();
+            }
             } else if (origin === 'sheets') {
-              console.log('sheets');
               const { id, rangeToSearch, rangeToUpdate, spreadsheetId, values } = item[1] as unknown as ISheetsData;
-              console.log('range',rangeToSearch);
-              console.log('spreadsheetId',spreadsheetId);
-              console.log('values',values);
               const sheetsRow = await findSheetsRow(id,rangeToSearch,spreadsheetId)
               const rangeWithRow = `${rangeToUpdate}${sheetsRow}`
               const url = process.env.SHEET_URL;
@@ -79,9 +75,7 @@ const useRollback = () => {
               };
               await axios.post(url, body, config);
             } else if (origin === 'zoop') {
-              console.log('zoop');
-              const { zoopId } = item[1] as unknown as IZoopData;;
-              console.log('api');
+              const { zoopId } = item[1] as unknown as IZoopData;
               await axios.post(
                 `${process.env.PAY_URL}sellers-delete?seller_id=${zoopId}`,
                 {},
@@ -94,31 +88,18 @@ const useRollback = () => {
             } else if (origin === 'auth'){
               const {pass} = item[1] as unknown as IUserData;
               const user = auth.currentUser;
-              console.log('user',user)
-              console.log('pass',pass)
               const credential = fbauth.EmailAuthProvider.credential(user.email, pass)
               await user.reauthenticateWithCredential(credential)
               await user.delete()
-              //window.location.replace('/')
               await auth.signOut()
-            } /*else {
-              const { url, body, config } = item as unknown as IApiData;
-              console.log('api');
-              await axios.post(url, body, config);
-            }*/
+            }
           });
           setDataRollback([]);
           setStartRollbacks(false);
         }
       };
       run();
-    //});
   };
-  /*useEffect(() => {
-    (async () => {
-
-    })();
-  }, [startRollbacks]);*/
 
   const createRollbackItem = (object: IZoopData|IFirebaseData|IApiData|ISheetsData|IUserData) => {
       const {origin} = object
@@ -145,18 +126,11 @@ const useRollback = () => {
   }
 
   const addRollbackItem = (rollbackData: IZoopData|IFirebaseData|IApiData|ISheetsData|IUserData) => {
-    console.log('teste 2')
-    console.log('dataRollback 2',dataRollback)
     const array:Array<IZoopData|IFirebaseData|IApiData|ISheetsData|IUserData> = dataRollback
     array.push(rollbackData)
-    console.log('dataRollback 3',dataRollback)
-    //setDataRollback(array)
-    //setDataRollback(prevState => [...prevState, rollbackData]);
   };
 
   const startRollback = () => {
-    console.log('teste 3')
-    console.log('dataRollback items:', dataRollback)
     setStartRollbacks(true);
     update()
   };

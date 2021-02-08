@@ -26,7 +26,6 @@ import completeRegistration from './completeRegistration';
 import simplifiedRegistration from './simplifiedRegistration';
 import { AtvdText, CnpjText, DocText, HolderText, HomeText, supportModalTitle, supportModalBody, supportModalTitleRegister, supportModalBodyRegister } from './modals';
 import validateDocuments from '../utils/validateDocuments';
-//import { useRollback } from './../utils/useRollback';
 import useRollback from '../utils/useRollback/useRollback';
 
 const categories = {
