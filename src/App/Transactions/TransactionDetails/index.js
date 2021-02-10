@@ -133,7 +133,7 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                 let dataTable;
                 let feesFormatted =
                     transaction.status !== 'Cancelado' && transaction.fees
-                        ? ` ${(transaction.isNewPlan && transaction.splitTransaction ? transaction.splitTransaction : transaction.sellerZoopPlan) && markupTransaction?.amount
+                        ? ` ${(Object.prototype.hasOwnProperty.call(transaction, 'sellerZoopPlan') && Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, 'activePlan') && transaction.splitTransaction ? transaction.splitTransaction : transaction.sellerZoopPlan) && markupTransaction?.amount
                             ? '- '.concat(
                                 parseFloat(parseFloat(markupTransaction.receivable_gross_amount) + parseFloat(transaction.fees))
                                     .toLocaleString('pt-br', {
@@ -157,13 +157,15 @@ const TransactionDetails = ({ transactions, transactionId, transaction, setTrans
                         transaction.insurance === true &&
                         Object.prototype.hasOwnProperty.call(transaction, 'receivables') &&
                         Object.prototype.hasOwnProperty.call(transaction, 'splitTransaction') &&
-                        Object.prototype.hasOwnProperty.call(transaction.isNewPlan ? transaction.splitTransaction : transaction.sellerZoopPlan, 'antiFraud') &&
+                        Object.prototype.hasOwnProperty.call(transaction, 'sellerZoopPlan') &&
+                        Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, 'activePlan') &&
+                        Object.prototype.hasOwnProperty.call(Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, 'activePlan') ? transaction.splitTransaction : transaction.sellerZoopPlan, 'antiFraud') &&
                         feesFormatted !== '-' &&
                         (antiFraudTransaction.amount || antiFraudTransaction.percentage)
                         ? handleInsurance(transaction)
                         : '-';
                 markupValueFormatted =
-                    Object.prototype.hasOwnProperty.call(transaction, 'receivables') && feesFormatted !== '-' && (transaction.isNewPlan ? transaction.splitTransaction : transaction.sellerZoopPlan)
+                    Object.prototype.hasOwnProperty.call(transaction, 'receivables') && feesFormatted !== '-' && (Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, 'activePlan')? transaction.splitTransaction : transaction.sellerZoopPlan)
                         ? handleMarkup(transaction)
                         : '-';
                 let sumOfFees = 0;

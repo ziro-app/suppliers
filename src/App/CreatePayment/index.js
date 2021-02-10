@@ -24,7 +24,6 @@ const CreatePayment = () => {
   const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
   const [hasSellerZoopPlan, setHasSellerZoopPlan] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isNewPlan, setIsNewPlan] = useState(true);
   const options = ['Com seguro', 'Sem seguro'];
   const state = {
     seller: capitalize(fantasy),
@@ -40,7 +39,6 @@ const CreatePayment = () => {
     observations,
     setObservations,
     insurance,
-    isNewPlan,
     setInsurance,
     setInsurenceDropdownValue,
     hasSellerZoopPlan,
@@ -56,7 +54,6 @@ const CreatePayment = () => {
           if (!snap.empty) {
             snap.forEach(doc => {
                 setHasSellerZoopPlan(doc.data().sellerZoopPlan || null);
-                setIsNewPlan(true);
             });
             setLoading(false);
           }
@@ -87,7 +84,7 @@ const CreatePayment = () => {
   if (loading) return <Spinner size="5.5rem" />;
 
   return hasSellerZoopPlan &&
-    (isNewPlan ? true : Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'amount') || Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'percentage')) ? (
+    (Object.prototype.hasOwnProperty.call(hasSellerZoopPlan, 'activePlan') ? true : Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'amount') || Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'percentage')) ? (
     insurance === null || insurance ? (
       <Form
         buttonName="Criar Link"

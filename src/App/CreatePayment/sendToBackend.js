@@ -27,7 +27,6 @@ const sendToBackend = state => () => {
     hasSellerZoopPlan,
     checkoutWithoutRegister,
     setCheckoutWithoutRegister,
-    isNewPlan,
   } = state;
   const baseUrl = process.env.HOMOLOG ? 'http://localhost:8080/pagamento/' : 'https://ziro.app/pagamento/';
 
@@ -57,7 +56,6 @@ const sendToBackend = state => () => {
               //onBehalfOfBrand: brand ? brand : seller,
               observations,
               insurance: insurance !== null ? insurance : true,
-              isNewPlan,
               sellerZoopPlan: sellerZoopPlan || null,
               checkoutWithoutRegister: checkoutWithoutRegister || false,
             });
@@ -79,7 +77,6 @@ const sendToBackend = state => () => {
             observations,
             insurance: insurance !== null ? insurance : true,
             sellerZoopPlan: sellerZoopPlan || null,
-            isNewPlan,
             checkoutWithoutRegister: checkoutWithoutRegister || false,
           });
         }
