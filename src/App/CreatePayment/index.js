@@ -115,7 +115,8 @@ const CreatePayment = () => {
                 value={installmentsMax}
                 onChange={({ target: { value } }) => {
                   const toInteger = parseInt(value, 10);
-                  setInstallmentsMax(maskInput(toInteger, '##', true));
+                  const checkValue = toInteger >= 1 && toInteger <= 12 && toInteger
+                  setInstallmentsMax(maskInput(checkValue, '##', true));
                 }}
                 placeholder={parseInt(maxInstallments)}
                 inputMode="numeric"
@@ -128,7 +129,7 @@ const CreatePayment = () => {
             input={
               <Dropdown
                 disabled={!hasSellerZoopPlan || checkoutWithoutRegister || alwaysInsuredToggle === true}
-                value={insurenceDropdownValue}
+                value={insurenceDropdownValue || alwaysInsuredToggle && 'Com seguro'}
                 onChange={({ target: { value } }) => {
                   if (value === 'Com seguro') {
                     setInsurance(true);
@@ -187,7 +188,8 @@ const CreatePayment = () => {
                 value={installmentsMax}
                 onChange={({ target: { value } }) => {
                   const toInteger = parseInt(value, 10);
-                  setInstallmentsMax(maskInput(toInteger, '##', true));
+                  const checkValue = toInteger >= 1 && toInteger <= 12 && toInteger
+                  setInstallmentsMax(maskInput(checkValue, '##', true));
                 }}
                 placeholder={parseInt(maxInstallments)}
                 inputMode="numeric"
@@ -200,7 +202,7 @@ const CreatePayment = () => {
             input={
               <Dropdown
                 disabled={!hasSellerZoopPlan || checkoutWithoutRegister || alwaysInsuredToggle === true}
-                value={insurenceDropdownValue}
+                value={insurenceDropdownValue || alwaysInsuredToggle && 'Com seguro'}
                 onChange={({ target: { value } }) => {
                   if (value === 'Com seguro') {
                     setInsurance(true);

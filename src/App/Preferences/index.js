@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { db, fs } from '../../Firebase/index';
 
-import { motion } from 'framer-motion';
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown';
-import Form from '@bit/vitorbarbosa19.ziro.form';
-import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
+import maskInput from '@ziro/mask-input';
 import sendToBackend from './sendToBackend';
 import { userContext } from '../appContext';
 import TooltipHelp from '@bit/vitorbarbosa19.ziro.tooltip-help';
@@ -34,7 +32,8 @@ const Preferences = () => {
     setIsError,
     setUnavailableAlwaysInsured,
     isSuccess,
-    setIsSuccess
+    setIsSuccess,
+    allInstallments
   };
 
   useEffect(() => {
@@ -92,7 +91,11 @@ const Preferences = () => {
             <Dropdown
               readOnly={false}
               value={installments}
-              onChange={({ target: { value } }) => setInstallments(value)}
+              onChange={({ target: { value } }) => {
+                const toInteger = parseInt(value, 10);
+                const checkValue = toInteger >= 1 && toInteger <= 12 && toInteger
+                setInstallments(maskInput(checkValue, '##', true));
+              }}
               list={allInstallments}
               placeholder='Escolha uma opção'
               inputMode='numeric'
