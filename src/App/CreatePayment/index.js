@@ -24,34 +24,8 @@ const CreatePayment = () => {
   const [insurenceDropdownValue, setInsurenceDropdownValue] = useState('');
   const [hasSellerZoopPlan, setHasSellerZoopPlan] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isNewPlan, setIsNewPlan] = useState(false);
   const [alwaysInsuredToggle, setAlwaysInsuredToggle] = useState();
   const options = ['Com seguro', 'Sem seguro'];
-  const withNewPlan = [
-    'CRISFAEL',
-    'HAUT',
-    'AMOPOEMA',
-    'MANTUA',
-    'CLOSET DELUXE',
-    'EMPORIO CLOSET',
-    'VILLON JEANS',
-    'ATACADO FACIL',
-    'BIRO',
-    'CELEBRA MODA FESTA',
-    'SEIKI',
-    'MY.NA',
-    'PASSIONAL STYLO',
-    'WINNIE MODAS',
-    'AYRES CLUB',
-    'MAY STYLE CO.',
-    'BENESH',
-    'MAIS NA MODA',
-    'BM BOLSAS',
-    'CALA BRANCA',
-    'COUSIN WOMAN',
-    'ALCANCE JEANS',
-    'LA BORDONA COUROS'
-  ];
   const state = {
     seller: capitalize(fantasy),
     sellerId: zoopId,
@@ -66,7 +40,6 @@ const CreatePayment = () => {
     observations,
     setObservations,
     insurance,
-    isNewPlan,
     setInsurance,
     setInsurenceDropdownValue,
     hasSellerZoopPlan,
@@ -82,7 +55,6 @@ const CreatePayment = () => {
           if (!snap.empty) {
             snap.forEach(doc => {
                 setHasSellerZoopPlan(doc.data().sellerZoopPlan || null);
-                setIsNewPlan(true);
             });
             setLoading(false);
           }
@@ -127,7 +99,7 @@ const CreatePayment = () => {
   if (loading) return <Spinner size="5.5rem" />;
 
   return hasSellerZoopPlan &&
-    (isNewPlan ? true : Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'amount') || Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'percentage')) ? (
+    (Object.prototype.hasOwnProperty.call(hasSellerZoopPlan, 'activePlan') ? true : Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'amount') || Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'percentage')) ? (
     insurance === null || insurance ? (
       <Form
         buttonName="Criar Link"

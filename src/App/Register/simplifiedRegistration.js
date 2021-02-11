@@ -3,6 +3,7 @@ import { auth, db } from '../../Firebase/index';
 const { formatDateUTC3 } = require('@ziro/format-date-utc3');
 
 const simplifiedRegistration = state => () => {
+    const registrationControl = {userCreated:false,sheetCreated:false,zoopCreated:false,firestoreSuppliersCreated:false,firestoreUsersCreated:false};
     const { fname, lname, whatsApp, email, cnpj, cnpjValid, pass, reason, fantasia, cep, street, number, complement, neighborhood, city, cityState, fone, fantasias } = state;
     const nomeCompleto = fname && lname ? `${fname.trim()} ${lname.trim()}` : '';
     const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`;
@@ -44,8 +45,6 @@ const simplifiedRegistration = state => () => {
                         await post(url, body, config);
 
                         try {
-                            // Enviando email de confirmação
-                            await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` });
 
                             try {
                                 // Criando registro na Zoop
@@ -115,6 +114,8 @@ const simplifiedRegistration = state => () => {
                                         });
                                     // Adicionando usuário nos users
                                     await db.collection('users').add({ email, app: 'suppliers' });
+                                    // Enviando email de confirmação
+                                    await auth.currentUser.sendEmailVerification({ url: `${process.env.CONTINUE_URL}` });
 
                                     try {
                                         await auth.signOut(); // user needs to validate email before signing in to app
