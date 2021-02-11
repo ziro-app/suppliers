@@ -59,11 +59,24 @@ const Router = ({ isLogged }) => {
     };
     const privateRoutes = {
         // Menu can't be put inside the components because then it'll unmount on transition
-        '/': <Transactions {...params} />,
+        '/': (
+            <Menu title="Início">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <MainPage />
+                </motion.div>
+            </Menu>
+        ),
         '/inicio': (
             <Menu title="Início">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <MainPage />
+                </motion.div>
+            </Menu>
+        ),
+        '/transacoes': (
+            <Menu title="Transações">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <Transactions {...params} />
                 </motion.div>
             </Menu>
         ),
