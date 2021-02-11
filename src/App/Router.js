@@ -33,6 +33,7 @@ import UpdatePass from './UpdatePass/index';
 import UpdateUserInfo from './UpdateUserInfo/index';
 import BackgroundCheck from './BackgroundCheck/index';
 import BankInfo from './BankInfo/index';
+import Preferences from './Preferences/index';
 import { userContext } from './appContext';
 
 const Router = ({ isLogged }) => {
@@ -130,6 +131,11 @@ const Router = ({ isLogged }) => {
     };
 
     if (role === '') {
+        privateRoutes['/preferencias'] = (
+            <HeaderBack title="Preferências" navigateTo="/minha-conta">
+                <Preferences />
+            </HeaderBack>
+        ),
         privateRoutes['/colaboradores'] = (
             <Menu title="Vendedores">
                 <Collaborators />

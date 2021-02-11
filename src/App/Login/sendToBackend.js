@@ -23,7 +23,7 @@ const sendToBackend = state => () => new Promise(async (resolve, reject) => {
                 await auth.signOut()
                 throw { msg: 'Acesse o email de confirmação', customError: true }
             }
-            window.location.replace('/')
+            window.location.replace('/inicio')
         } catch (error) {
             if (error.code) {
                 switch (error.code) {

@@ -44,6 +44,7 @@ export const App = () => {
     const [zoopBankAccountId, setZoopBankAccountId] = useState(null);
     const [backgroundCheckRequests, setBackgroundCheckRequests] = useState(null);
     const [backgroundCheckRequestsPaid, setBackgroundCheckRequestsPaid] = useState(null);
+    const [paymentsInsurance, setPaymentsInsurance] = useState(null);
     const url = process.env.SHEET_URL;
     const config = {
         headers: {
@@ -145,6 +146,7 @@ export const App = () => {
         setZoopBankAccountId('');
         setBackgroundCheckRequests('');
         setBackgroundCheckRequestsPaid('');
+        setPaymentsInsurance('');
     };
 
     useEffect(() => {
@@ -210,7 +212,7 @@ export const App = () => {
                     const docRef = await db.collection('suppliers').where('uid', '==', uid).get();
                     if (!docRef.empty) {
                         docRef.forEach(async doc => {
-                            const { nome, sobrenome, cpf, cnpj, nascimento, whatsapp, telefone, email, tipoCadastro, backgroundCheckRequestsAvailable, backgroundCheckRequestsAvailablePaid } = doc.data();
+                            const { nome, sobrenome, cpf, cnpj, nascimento, whatsapp, telefone, email, tipoCadastro, backgroundCheckRequestsAvailable, backgroundCheckRequestsAvailablePaid, alwaysInsured } = doc.data();
 
                             setDocId(doc.id);
                             setFName(nome ? nome : '');
@@ -226,6 +228,7 @@ export const App = () => {
                             setBrand('');
                             setBackgroundCheckRequests(backgroundCheckRequestsAvailable ? backgroundCheckRequestsAvailable : '');
                             setBackgroundCheckRequestsPaid(backgroundCheckRequestsAvailablePaid ? backgroundCheckRequestsAvailablePaid : '');
+                            setPaymentsInsurance(alwaysInsured);
                             fillObject(doc.data());
                             if (userPos === null || userPos === '') setUserPos(await findStoreownerRow(cnpj));
                         });
@@ -293,7 +296,8 @@ export const App = () => {
         zoopBankAccountId,
         whatsApp,
         backgroundCheckRequests,
-        backgroundCheckRequestsPaid
+        backgroundCheckRequestsPaid,
+        paymentsInsurance
     };
     if (loading) return <InitialLoader />;
     if (errorLoading) return <Error />;

@@ -25,6 +25,7 @@ const CreatePayment = () => {
   const [hasSellerZoopPlan, setHasSellerZoopPlan] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isNewPlan, setIsNewPlan] = useState(false);
+  const [alwaysInsuredToggle, setAlwaysInsuredToggle] = useState();
   const options = ['Com seguro', 'Sem seguro'];
   const withNewPlan = [
     'CRISFAEL',
@@ -87,12 +88,26 @@ const CreatePayment = () => {
           }
         });
     }
+    async function getPaymentsInsuranceOption() {
+      await db
+        .collection('suppliers')
+        .where('fantasia', '==', fantasy.toUpperCase())
+        .onSnapshot(snap => {
+          if (!snap.empty) {
+            snap.forEach(doc => {
+                setAlwaysInsuredToggle(doc.data().alwaysInsured || null);
+            });
+            setLoading(false);
+          }
+        });
+    }
     getSellerZoopPlan();
+    getPaymentsInsuranceOption();
   }, []);
   const validations = [
     {
       name: 'insurance',
-      validation: value => (hasSellerZoopPlan ? value !== '' : true),
+      validation: value => (hasSellerZoopPlan ? value !== '' : true) || alwaysInsuredToggle === true,
       value: insurenceDropdownValue,
       message: 'Opção inválida',
     },
@@ -140,7 +155,7 @@ const CreatePayment = () => {
             label="Seguro antifraude na transação"
             input={
               <Dropdown
-                disabled={!hasSellerZoopPlan || checkoutWithoutRegister}
+                disabled={!hasSellerZoopPlan || checkoutWithoutRegister || alwaysInsuredToggle === true}
                 value={insurenceDropdownValue}
                 onChange={({ target: { value } }) => {
                   if (value === 'Com seguro') {
@@ -152,6 +167,9 @@ const CreatePayment = () => {
                   } else if (checkoutWithoutRegister === true) {
                     setInsurance(false);
                     setInsurenceDropdownValue('Sem seguro');
+                  } else if (alwaysInsuredToggle === true) {
+                    setInsurance(true);
+                    setInsurenceDropdownValue('Com seguro');
                   } else {
                     setInsurance(null);
                     setInsurenceDropdownValue('');
@@ -170,7 +188,7 @@ const CreatePayment = () => {
                   }
                 }}
                 list={options}
-                placeholder="Escolha com ou sem seguro"
+                placeholder={alwaysInsuredToggle === true ? "Com seguro" : "Escolha com ou sem seguro"}
                 readOnly
               />
             }
@@ -209,7 +227,7 @@ const CreatePayment = () => {
             label="Seguro antifraude na transação"
             input={
               <Dropdown
-                disabled={!hasSellerZoopPlan || checkoutWithoutRegister}
+                disabled={!hasSellerZoopPlan || checkoutWithoutRegister || alwaysInsuredToggle === true}
                 value={insurenceDropdownValue}
                 onChange={({ target: { value } }) => {
                   if (value === 'Com seguro') {
@@ -221,6 +239,9 @@ const CreatePayment = () => {
                   } else if (checkoutWithoutRegister === true) {
                     setInsurance(false);
                     setInsurenceDropdownValue('Sem seguro');
+                  } else if (alwaysInsuredToggle === true) {
+                    setInsurance(true);
+                    setInsurenceDropdownValue('Com seguro');
                   } else {
                     setInsurance(null);
                     setInsurenceDropdownValue('');

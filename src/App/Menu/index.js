@@ -18,12 +18,12 @@ export const Menu = ({ title, children }) => {
                 username={fname || 'Usuário'}
                 userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
                 options={[
-                    // {
-                    //     path: '/inicio',
-                    //     onClick: () => setIsOpen(false),
-                    //     icon: <Icon type='home' size={15} strokeWidth={2} />,
-                    //     text: 'Início'
-                    // },
+                    {
+                        path: '/inicio',
+                        onClick: () => setIsOpen(false),
+                        icon: <Icon type='home' size={15} strokeWidth={2} />,
+                        text: 'Início'
+                    },
                     {
                         path: '/transacoes',
                         onClick: () => setIsOpen(false),
@@ -42,12 +42,12 @@ export const Menu = ({ title, children }) => {
                     //     icon: <Icon type='money' size={15} strokeWidth={2} />,
                     //     text: 'Recebíveis'
                     // },
-                    // {
-                    //     path: '/tarifas',
-                    //     onClick: () => setIsOpen(false),
-                    //     icon: <Icon type='percent' size={15} strokeWidth={3} />,
-                    //     text: 'Tarifas'
-                    // },
+                    {
+                        path: '/tarifas',
+                        onClick: () => setIsOpen(false),
+                        icon: <Icon type='percent' size={15} strokeWidth={2} />,
+                        text: 'Tarifas'
+                    },
                     {
                         path: '/consulta',
                         onClick: () => setIsOpen(false),
@@ -75,12 +75,12 @@ export const Menu = ({ title, children }) => {
                         username={fname || 'Usuário'}
                         userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
                         options={[
-                            // {
-                            //     path: '/inicio',
-                            //     onClick: () => setIsOpen(false),
-                            //     icon: <Icon type='home' size={15} strokeWidth={2} />,
-                            //     text: 'Início'
-                            // },
+                            {
+                                path: '/inicio',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='home' size={15} strokeWidth={2} />,
+                                text: 'Início'
+                            },
                             {
                                 path: '/upgrade',
                                 onClick: () => setIsOpen(false),
@@ -108,7 +108,7 @@ export const Menu = ({ title, children }) => {
                             // {
                             //     path: '/tarifas',
                             //     onClick: () => setIsOpen(false),
-                            //     icon: <Icon type='percent' size={15} strokeWidth={3} />,
+                            //     icon: <Icon type='percent' size={15} strokeWidth={2} />,
                             //     text: 'Tarifas'
                             // },
                             {
@@ -141,12 +141,12 @@ export const Menu = ({ title, children }) => {
                         username={fname || 'Usuário'}
                         userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
                         options={[
-                            // {
-                            //     path: '/inicio',
-                            //     onClick: () => setIsOpen(false),
-                            //     icon: <Icon type='home' size={15} strokeWidth={2} />,
-                            //     text: 'Início'
-                            // },
+                            {
+                                path: '/inicio',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='home' size={15} strokeWidth={2} />,
+                                text: 'Início'
+                            },
                             {
                                 path: '/transacoes',
                                 onClick: () => setIsOpen(false),
@@ -177,12 +177,12 @@ export const Menu = ({ title, children }) => {
                                 icon: <Icon type='user' size={15} strokeWidth={2} />,
                                 text: 'Vendedores'
                             },
-                            // {
-                            //     path: '/tarifas',
-                            //     onClick: () => setIsOpen(false),
-                            //     icon: <Icon type='percent' size={15} strokeWidth={3} />,
-                            //     text: 'Tarifas'
-                            // },
+                            {
+                                path: '/tarifas',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='percent' size={15} strokeWidth={2} />,
+                                text: 'Tarifas'
+                            },
                             {
                                 path: '/minha-conta',
                                 onClick: () => setIsOpen(false),
