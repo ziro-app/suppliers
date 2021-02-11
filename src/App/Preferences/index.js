@@ -14,7 +14,7 @@ import { container } from '@ziro/theme';
 import { tooltipSeguro, tooltipParcelamento } from './utils/tooltipMessages';
 
 const Preferences = () => {
-  const { docId, role, maxInstallments, paymentsInsurance } = useContext(userContext);
+  const { docId, role, maxInstallments, paymentsInsurance, fantasy } = useContext(userContext);
   const [isError, setIsError] = useState(false);
   const [unavailableAlwaysInsured, setUnavailableAlwaysInsured] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -36,6 +36,22 @@ const Preferences = () => {
     isSuccess,
     setIsSuccess
   };
+
+  useEffect(() => {
+    async function getAlwaysInsuredOption() {
+      await db
+        .collection('suppliers')
+        .where('fantasia', '==', fantasy.toUpperCase())
+        .onSnapshot(snap => {
+          if (!snap.empty) {
+            snap.forEach(doc => {
+                setInsuranceValue(doc.data().alwaysInsured || null);
+            });
+          }
+        });
+    }
+    getAlwaysInsuredOption();
+  }, []);
   
   const handleToggle = () => {
     setInsuranceValue(!insuranceValue);
