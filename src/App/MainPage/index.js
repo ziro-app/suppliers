@@ -97,7 +97,7 @@ function MainPage() {
             // Busca o plano ativo do usuário
             try {
                 getPlan();
-                console.log('payoutAutomatic:', payoutAutomatic);
+                // console.log('payoutAutomatic:', payoutAutomatic);
 
                 // Busca as consultas caso conta for de vendedor
                 { role !== '' && getBackgroundPaidCollab() }
@@ -192,7 +192,7 @@ function MainPage() {
                             <div style={card}>
                                 <label style={saldosLabel}>À receber hoje (R$)</label>
                                 <h1 style={valorH1}>
-                                    {console.log('balance:', balance)}
+                                    {/* {console.log('balance:', balance)} */}
 
                                     {balance < 0 ? <Skeleton width={50} /> : balance ? currencyFormat(round(balance, 2).toFixed(2).replace('.', '')).replace('R$', '') : '0,00'}
                                 </h1>
@@ -201,7 +201,7 @@ function MainPage() {
                             <div style={card}>
                                 <label style={saldosLabel}>Pago hoje (R$)</label>
                                 <h1 style={valorH1}>
-                                    {console.log('paidBalance:', paidBalance)}
+                                    {/* {console.log('paidBalance:', paidBalance)} */}
 
                                     {paidBalance < 0 ?
                                         <Skeleton width={50} />

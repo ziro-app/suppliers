@@ -44,7 +44,7 @@ const Preferences = () => {
         .onSnapshot(snap => {
           if (!snap.empty) {
             snap.forEach(doc => {
-                setInsuranceValue(doc.data().alwaysInsured || null);
+                setInsuranceValue(doc.data().alwaysInsured);
             });
           }
         });
@@ -95,6 +95,20 @@ const Preferences = () => {
                 const toInteger = parseInt(value, 10);
                 const checkValue = toInteger >= 1 && toInteger <= 12 && toInteger
                 setInstallments(maskInput(checkValue, '##', true));
+              }}
+              onChangeKeyboard={element => {
+                if(element.value === '1') setInstallments('1')
+                if(element.value === '2') setInstallments('2')
+                if(element.value === '3') setInstallments('3')
+                if(element.value === '4') setInstallments('4')
+                if(element.value === '5') setInstallments('5')
+                if(element.value === '6') setInstallments('6')
+                if(element.value === '7') setInstallments('7')
+                if(element.value === '8') setInstallments('8')
+                if(element.value === '9') setInstallments('9')
+                if(element.value === '10') setInstallments('10')
+                if(element.value === '11') setInstallments('11')
+                if(element.value === '12') setInstallments('12')
               }}
               list={allInstallments}
               placeholder='Escolha uma opção'
