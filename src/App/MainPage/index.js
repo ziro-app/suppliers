@@ -16,48 +16,23 @@ import Skeleton from 'react-loading-skeleton';
 function MainPage() {
     const supportNumber = require('./supportNumber');
 
-    const { role, zoopId, payoutAutomatic, fantasy, uid, backgroundCheckRequests, backgroundCheckRequestsPaid, ownerId } = useContext(userContext);
+    const { role, zoopId, payoutAutomatic, fantasy, uid,
+        backgroundCheckRequests, backgroundCheckRequestsPaid, ownerId } = useContext(userContext);
     const [, setLocation] = useLocation();
 
     const [isErrorPlan, setIsErrorPlan] = useState(false);
     const [isErrorBalance, setIsErrorBalance] = useState(false);
     const [isErrorBgCheck, setIsErrorBgCheck] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [errorLoading, setErrorLoading] = useState(false);
-    const [customError, setCustomError] = useState(false);
-    const [receivables, setReceivables] = useState([]);
-    const [data, setData] = useState([]);
-    const [hasMore, setHasMore] = useState(true);
-    const [loadingMore, setLoadingMore] = useState(false);
-    const [initDate, setInitDate] = useState(new Date());
-    const [finalDate, setFinalDate] = useState();
-    const [totalAmount, setTotalAmount] = useState(0);
-    const [totalTransactions, setTotalTransactions] = useState(0);
-    const [days, setDays] = useState(0);
     const [balance, setBalance] = useState(-1);
     const [paidBalance, setPaidBalance] = useState(-1);
     const [activePlan, setActivePlan] = useState('');
-    const [backgroundFree, setBackgroundFree] = useState(backgroundCheckRequests);
-    const [backgroundPaid, setBackgroundPaid] = useState(backgroundCheckRequestsPaid);
     const [backgroundPaidCollaborator, setBackgroundPaidCollaborator] = useState();
     const [backgroundFreeCollaborator, setBackgroundFreeCollaborator] = useState();
     const setState = {
         setIsErrorPlan,
         setIsErrorBalance,
         setIsErrorBgCheck,
-        setIsLoading,
-        setErrorLoading,
-        setReceivables,
-        setData,
         setLocation,
-        setHasMore,
-        setLoadingMore,
-        setInitDate,
-        setFinalDate,
-        setTotalAmount,
-        setDays,
-        setCustomError,
-        setTotalTransactions,
         setBalance,
         setPaidBalance,
     };
@@ -92,7 +67,7 @@ function MainPage() {
     useEffect(() => {
         // Busca os saldos da Zoop
         try {
-            fetchBalance(zoopId, setState);
+            fetchBalance(zoopId, payoutAutomatic, setState);
 
             // Busca o plano ativo do usuário
             try {
@@ -223,8 +198,8 @@ function MainPage() {
                         <div style={{ textAlign: 'center' }}>
                             <label style={saldosLabel}>Consultas pagas</label>
                             <h1 style={valorH1}>{
-                                role === '' && backgroundPaid !== '' ? backgroundPaid
-                                    : role === '' && backgroundPaid === '' ? '0'
+                                role === '' && backgroundCheckRequestsPaid !== '' ? backgroundCheckRequestsPaid
+                                    : role === '' && backgroundCheckRequestsPaid === '' ? '0'
                                         : backgroundPaidCollaborator}
                             </h1>
                         </div>
@@ -232,8 +207,8 @@ function MainPage() {
                         <div>
                             <label style={saldosLabel}>Consultas gratuitas</label>
                             <h1 style={valorH1}>{
-                                role === '' && backgroundFree !== '' ? backgroundFree
-                                    : role === '' && backgroundFree === '' ? '0'
+                                role === '' && backgroundCheckRequests !== '' ? backgroundCheckRequests
+                                    : role === '' && backgroundCheckRequests === '' ? '0'
                                         : backgroundFreeCollaborator}
                             </h1>
                         </div>
