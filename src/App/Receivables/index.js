@@ -93,7 +93,7 @@ const Receivables = ({ receivableId }) => {
         if (snapshotMemo) useSnapshot(snapshotMemo);
         else if (localSnapshot) useSnapshot(localSnapshot);
         else {
-            fetchBalance(zoopId, setState);
+            fetchBalance(zoopId, payoutAutomatic, setState);
             fetch(zoopId, initDate, totalAmount, totalTransactions, data, days, receivables, fantasy, setState);
         }
     }, []);
