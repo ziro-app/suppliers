@@ -149,15 +149,19 @@ const CreatePayment = () => {
                   }
                 }}
                 onChangeKeyboard={element => {
-                  if (element.value === 'Com seguro') {
-                    setInsurance(true);
-                    setInsurenceDropdownValue('Com seguro');
-                  } else if (element.value === 'Sem seguro') {
-                    setInsurance(false);
-                    setInsurenceDropdownValue('Sem seguro');
-                  } else {
-                    setInsurance(false);
-                    setInsurenceDropdownValue('');
+                  if(element === null){
+                    return
+                  }else{
+                    if (element.value === 'Com seguro') {
+                      setInsurance(true);
+                      setInsurenceDropdownValue('Com seguro');
+                    } else if (element.value === 'Sem seguro') {
+                      setInsurance(false);
+                      setInsurenceDropdownValue('Sem seguro');
+                    } else {
+                      setInsurance(false);
+                      setInsurenceDropdownValue('');
+                    }
                   }
                 }}
                 list={options}
@@ -222,15 +226,19 @@ const CreatePayment = () => {
                   }
                 }}
                 onChangeKeyboard={element => {
-                  if (element.value === 'Com seguro') {
-                    setInsurance(true);
-                    setInsurenceDropdownValue('Com seguro');
-                  } else if (element.value === 'Sem seguro') {
-                    setInsurance(false);
-                    setInsurenceDropdownValue('Sem seguro');
-                  } else {
-                    setInsurance(false);
-                    setInsurenceDropdownValue('');
+                  if(element === null){
+                    return
+                  }else{
+                    if (element.value === 'Com seguro') {
+                      setInsurance(true);
+                      setInsurenceDropdownValue('Com seguro');
+                    } else if (element.value === 'Sem seguro') {
+                      setInsurance(false);
+                      setInsurenceDropdownValue('Sem seguro');
+                    } else {
+                      setInsurance(false);
+                      setInsurenceDropdownValue('');
+                    }
                   }
                 }}
                 list={options}
