@@ -92,7 +92,6 @@ const sendToBackend = state => () => {
         setInstallmentsMax('');
         setObservations('');
         setInsurance(null);
-        setInsurenceDropdownValue('');
         setCheckoutWithoutRegister(false);
       } else {
         throw { msg: 'Vendedor não encontrado', customError: true };

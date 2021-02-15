@@ -8,8 +8,8 @@ import sendToBackend from './sendToBackend';
 import { userContext } from '../appContext';
 import TooltipHelp from '@bit/vitorbarbosa19.ziro.tooltip-help';
 import ToggleButton from '@bit/vitorbarbosa19.ziro.toggle-button';
-import { container } from '@ziro/theme';
-import { tooltipSeguro, tooltipParcelamento } from './utils/tooltipMessages';
+import { container, successColor, alertColor } from '@ziro/theme';
+import { tooltipSeguro, tooltipParcelamento, tituloSeguro, tituloParcelamento } from './utils/tooltipMessages';
 
 const Preferences = () => {
   const { docId, role, maxInstallments, paymentsInsurance, fantasy } = useContext(userContext);
@@ -51,6 +51,14 @@ const Preferences = () => {
     }
     getAlwaysInsuredOption();
   }, []);
+
+  useEffect(() => {
+    isSuccess && setIsSuccess(false);
+  }, [installments]);
+
+  useEffect(() => {
+    isError && setIsError(false)
+  }, [installments]);
   
   const handleToggle = () => {
     setInsuranceValue(!insuranceValue);
@@ -65,6 +73,8 @@ const Preferences = () => {
             <div style={{ display: 'inline-block', marginLeft: '8px' }}>
               <TooltipHelp
                 body={tooltipSeguro}
+                title={tituloSeguro}
+                illustration='security'
               />
             </div>
           </div>
@@ -84,6 +94,8 @@ const Preferences = () => {
             <div style={{ display: 'inline-block', marginLeft: '8px' }}>
               <TooltipHelp
                 body={tooltipParcelamento}
+                title={tituloParcelamento}
+                illustration='creditCard'
               />
             </div>
           </div>
@@ -97,18 +109,23 @@ const Preferences = () => {
                 setInstallments(maskInput(checkValue, '##', true));
               }}
               onChangeKeyboard={element => {
-                if(element.value === '1') setInstallments('1')
-                if(element.value === '2') setInstallments('2')
-                if(element.value === '3') setInstallments('3')
-                if(element.value === '4') setInstallments('4')
-                if(element.value === '5') setInstallments('5')
-                if(element.value === '6') setInstallments('6')
-                if(element.value === '7') setInstallments('7')
-                if(element.value === '8') setInstallments('8')
-                if(element.value === '9') setInstallments('9')
-                if(element.value === '10') setInstallments('10')
-                if(element.value === '11') setInstallments('11')
-                if(element.value === '12') setInstallments('12')
+                if(element === null || element.value === null){
+                  return setIsError(true);
+                }else{
+
+                  if(element === '1' || element.value === '1') setInstallments('1')
+                  if(element === '2' || element.value === '2') setInstallments('2')
+                  if(element === '3' || element.value === '3') setInstallments('3')
+                  if(element === '4' || element.value === '4') setInstallments('4')
+                  if(element === '5' || element.value === '5') setInstallments('5')
+                  if(element === '6' || element.value === '6') setInstallments('6')
+                  if(element === '7' || element.value === '7') setInstallments('7')
+                  if(element === '8' || element.value === '8') setInstallments('8')
+                  if(element === '9' || element.value === '9') setInstallments('9')
+                  if(element === '10' || element.value === '10') setInstallments('10')
+                  if(element === '11' || element.value === '11') setInstallments('11')
+                  if(element === '12' || element.value === '12') setInstallments('12')
+                }
               }}
               list={allInstallments}
               placeholder='Escolha uma opção'
@@ -127,18 +144,18 @@ const Preferences = () => {
         
         {isError ? 
             <div style={{ textAlign: 'center', marginTop: '20px' }}>
-              <label style={{ color: 'red' }}>Escolha entre 1 e 12 parcelas.</label>
+              <label style={{ color: alertColor }}>Escolha entre 1 e 12 parcelas.</label>
             </div>
           : isSuccess ? 
             <div style={{ textAlign: 'center', marginTop: '20px' }}>
-              <label style={{ color: 'green' }}>Preferências atualizadas com sucesso!</label>
+              <label style={{ color: successColor }}>Preferências atualizadas com sucesso!</label>
             </div>
           : null
         }
         
         {unavailableAlwaysInsured && 
           <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <label style={{ color: 'red' }}>Erro ao atualizar seguro. Entre em contato com o suporte.</label>
+            <label style={{ color: alertColor }}>Erro ao atualizar seguro. Entre em contato com o suporte.</label>
           </div>
         }
       
