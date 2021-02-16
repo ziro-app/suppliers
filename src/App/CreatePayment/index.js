@@ -78,6 +78,17 @@ const CreatePayment = () => {
     getSellerZoopPlan();
     getPaymentsInsuranceOption();
   }, []);
+
+  useEffect(() => {
+    if(alwaysInsuredToggle === true && afterBackend === true){
+      setInsurance(true),
+      setInsurenceDropdownValue('Com seguro')
+      setAfterBackend(false);
+    }else{
+
+    }
+  }, [afterBackend]);
+
   const validations = [
     {
       name: 'insurance',
