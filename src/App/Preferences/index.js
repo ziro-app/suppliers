@@ -54,11 +54,11 @@ const Preferences = () => {
 
   useEffect(() => {
     isSuccess && setIsSuccess(false);
-  }, [installments]);
+  }, [installments, insuranceValue]);
 
   useEffect(() => {
     isError && setIsError(false)
-  }, [installments]);
+  }, [installments, insuranceValue]);
   
   const handleToggle = () => {
     setInsuranceValue(!insuranceValue);

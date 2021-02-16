@@ -27,6 +27,7 @@ const sendToBackend = state => () => {
     hasSellerZoopPlan,
     checkoutWithoutRegister,
     setCheckoutWithoutRegister,
+    setAfterBackend,
   } = state;
   const baseUrl = process.env.HOMOLOG ? 'http://localhost:8080/pagamento/' : 'https://ziro.app/pagamento/';
 
@@ -92,7 +93,9 @@ const sendToBackend = state => () => {
         setInstallmentsMax('');
         setObservations('');
         setInsurance(null);
+        setInsurenceDropdownValue('');
         setCheckoutWithoutRegister(false);
+        setAfterBackend(true);
       } else {
         throw { msg: 'Vendedor não encontrado', customError: true };
       }

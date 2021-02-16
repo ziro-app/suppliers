@@ -16,6 +16,7 @@ import { inline, center } from './styles';
 
 const CreatePayment = () => {
   const { fantasy, zoopId, docId, role, fname, brand, maxInstallments } = useContext(userContext);
+  const [afterBackend, setAfterBackend] = useState(false);
   const [charge, setCharge] = useState('');
   const [installmentsMax, setInstallmentsMax] = useState('');
   const [observations, setObservations] = useState('');
@@ -45,6 +46,7 @@ const CreatePayment = () => {
     hasSellerZoopPlan,
     checkoutWithoutRegister,
     setCheckoutWithoutRegister,
+    setAfterBackend,
   };
   useEffect(() => {
     async function getSellerZoopPlan() {
@@ -129,7 +131,7 @@ const CreatePayment = () => {
             input={
               <Dropdown
                 disabled={!hasSellerZoopPlan || checkoutWithoutRegister || alwaysInsuredToggle === true}
-                value={insurenceDropdownValue || alwaysInsuredToggle && 'Com seguro'}
+                value={insurenceDropdownValue || (alwaysInsuredToggle === true && afterBackend === false ? 'Com seguro' : '')}
                 onChange={({ target: { value } }) => {
                   if (value === 'Com seguro') {
                     setInsurance(true);
@@ -206,7 +208,7 @@ const CreatePayment = () => {
             input={
               <Dropdown
                 disabled={!hasSellerZoopPlan || checkoutWithoutRegister || alwaysInsuredToggle === true}
-                value={insurenceDropdownValue || alwaysInsuredToggle && 'Com seguro'}
+                value={insurenceDropdownValue || (alwaysInsuredToggle === true && afterBackend === false ? 'Com seguro' : '')}
                 onChange={({ target: { value } }) => {
                   if (value === 'Com seguro') {
                     setInsurance(true);
