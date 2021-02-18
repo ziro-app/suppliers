@@ -2,8 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
-import { container } from '@ziro/theme';
-import { activePlan, saldosContainer, consultasContainer, card, saldosLabel, valorH1, iconsContainer, iconDiv, iconStyle, iconDescription, cardTop } from './styles';
+import { container, primaryColor, shadow, fontTitle } from '@ziro/theme';
+import { activePlan, saldosContainer, consultasContainer, card, saldosLabel, valorH1, iconsContainer, iconDiv, iconStyle, iconDescription, cardTop, cardSimplificado } from './styles';
 import { round } from '../Transactions/utils';
 import { userContext } from '../appContext';
 import currencyFormat from '@ziro/currency-format';
@@ -17,7 +17,7 @@ function MainPage() {
     const supportNumber = require('./supportNumber');
 
     const { role, zoopId, payoutAutomatic, fantasy, uid,
-        backgroundCheckRequests, backgroundCheckRequestsPaid, ownerId } = useContext(userContext);
+        backgroundCheckRequests, backgroundCheckRequestsPaid, ownerId, typeRegister } = useContext(userContext);
     const [, setLocation] = useLocation();
 
     const [isErrorPlan, setIsErrorPlan] = useState(false);
@@ -51,6 +51,8 @@ function MainPage() {
             console.log('Erro getPlan:', error)
         }
     };
+
+    const checkWidth = () => window.innerWidth < 400 ? '70%' : '35%';
 
     // Somente usar função se for conta de vendedor
     const getBackgroundPaidCollab = async () => {
@@ -90,7 +92,8 @@ function MainPage() {
     }, []);
 
     const runErrorBalance = () => {
-        return (
+        typeRegister === 'Completo' &&
+        (
             <Error
                 title="Erro ao buscar saldo"
                 message="Entre em contato com o suporte para corrigir seu saldo."
@@ -138,6 +141,7 @@ function MainPage() {
                             <label style={saldosLabel}>Plano ativo</label>
                             <h1 style={valorH1}>
                                 {!isErrorPlan ?
+                                    typeRegister === 'Simplificado' ? 'Nenhum' :
                                     activePlan ? activePlan : 'Não encontrado'
                                     : runErrorPlan()
                                 }
@@ -162,7 +166,7 @@ function MainPage() {
             {role === '' && (
                 <div style={{ display: 'flex', width: '100%', gap: '10px', flexDirection: 'column' }}>
                     <h1 style={{ marginTop: '50px', width: '5.3rem', marginBottom: '0px' }}>Saldos</h1>
-                    {!isErrorBalance ?
+                    {!isErrorBalance && typeRegister === 'Completo' ?
                         <div style={{ display: 'flex', gap: '10px' }}>
                             <div style={card}>
                                 <label style={saldosLabel}>À receber hoje (R$)</label>
@@ -187,6 +191,17 @@ function MainPage() {
                             </div>
                         </div>
                         : runErrorBalance()
+                    }
+                    {typeRegister === 'Simplificado' &&
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <div style={cardSimplificado}>
+                                <label style={{  }}>Você não possui saldos pois não está habilitado a transacionar. Habilite agora!</label>
+                                <div onClick={() => setLocation('/upgrade')} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '10px', marginTop: '20px', border: '1px solid rgba(34, 34, 34, 0.2)', width: checkWidth(), borderRadius: '25px', cursor: 'pointer', backgroundColor: primaryColor, boxShadow: shadow }}>
+                                    <Icon type="rocket" size={21} color="#fafafa" style={{ marginRight: '10px' }} />
+                                    <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Fazer upgrade</label>
+                                </div>
+                            </div>
+                        </div>
                     }
                 </div>
             )}

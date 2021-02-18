@@ -22,6 +22,18 @@ card = {
   marginBottom: '-22px',
   boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px',
 },
+cardSimplificado = {
+  display: 'flex',
+  flexDirection: 'column',
+  textAlign: 'center',
+  width: '100%',
+  padding: '20px 0px',
+  borderRadius: '10px',
+  marginBottom: '-22px',
+  boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px',
+  justifyContent: 'center',
+  alignItems: 'center'
+},
 cardTop = {
   display: 'flex',
   textAlign: 'center',
