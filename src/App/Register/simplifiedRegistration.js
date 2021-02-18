@@ -108,9 +108,12 @@ const simplifiedRegistration = state => () => {
                                             telefone: fone,
                                             tipoCadastro: 'Simplificado',
                                             backgroundCheckRequestsAvailable: 10,
+                                            backgroundCheckRequestsAvailablePaid: 0,
                                             backgroundCheckCurrentMonth: today.getMonth(),
                                             backgroundCheckCurrentYear: today.getFullYear(),
                                             sellerZoopPlan,
+                                            alwaysInsured: false,
+                                            maxParcelas: "10"
                                         });
                                     // Adicionando usuário nos users
                                     await db.collection('users').add({ email, app: 'suppliers' });

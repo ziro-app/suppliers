@@ -282,8 +282,10 @@ const completeRegistration = state => () => {
                           payoutAutomatic: true,
                           zoopBankAccountId: responseAssociating.data.id,
                           backgroundCheckRequestsAvailable: 10,
+                          backgroundCheckRequestsAvailablePaid: 0,
                           backgroundCheckCurrentMonth: today.getMonth(),
                           backgroundCheckCurrentYear: today.getFullYear(),
+                          alwaysInsured: false
                         });
 
                       const sellerFirebaseData: IFirebaseData = { origin: 'firebase', collection: 'suppliers', field: 'uid', identifier: user.uid };
