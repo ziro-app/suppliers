@@ -73,7 +73,7 @@ const Rates = () => {
             }
 
             {
-                dataRows.map(data => (
+                typeRegister === 'Completo' && dataRows.map(data => (
                     <div
                         aria-label= 'table'
                         key={data.brand}
