@@ -76,16 +76,16 @@ export const Menu = ({ title, children }) => {
                         userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
                         options={[
                             {
-                                path: '/inicio',
-                                onClick: () => setIsOpen(false),
-                                icon: <Icon type='home' size={15} strokeWidth={2} />,
-                                text: 'Início'
-                            },
-                            {
                                 path: '/upgrade',
                                 onClick: () => setIsOpen(false),
                                 icon: <Icon type='rocket' size={15} strokeWidth={2} />,
                                 text: 'Fazer Upgrade'
+                            },
+                            {
+                                path: '/inicio',
+                                onClick: () => setIsOpen(false),
+                                icon: <Icon type='home' size={15} strokeWidth={2} />,
+                                text: 'Início'
                             },
                             {
                                 path: '/transacoes',
