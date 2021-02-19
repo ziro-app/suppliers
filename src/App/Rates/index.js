@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import Button from '@bit/vitorbarbosa19.ziro.button';
 import Details from '@bit/vitorbarbosa19.ziro.details';
+import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner-with-div'
 import Error from '@bit/vitorbarbosa19.ziro.error'
 import Table from '@bit/vitorbarbosa19.ziro.table';
+import { fontBody } from '@ziro/theme';
 import { useLocation } from 'wouter';
 import { supportPhoneNumber } from "@bit/vitorbarbosa19.ziro.utils.support-phone-number";
+import { userContext } from '../appContext';
 
 import useLoadRates from './hooks/useLoadRates'
 
 const Rates = () => {
     const [, setLocation] = useLocation();
+    const { typeRegister } = useContext(userContext);
+    
     const {
         blockDetails,
         dataRows,
@@ -49,7 +55,23 @@ const Rates = () => {
 
     return (
         <div>
-            <Details blocks={blockDetails} />
+            {typeRegister === 'Completo' &&
+                <Details blocks={blockDetails} />
+            }
+
+            {typeRegister === 'Simplificado' &&
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '25px' }}>
+                    <Illustration type="upgradePlan" size={200} />
+                    <label style={{ fontFamily: fontBody, textAlign: 'center' }}>Você não está habilitado a transacionar. Veja as tarifas com o nosso time de vendas.</label>
+                    <Button
+                        type='link'
+                        cta='Habilitar agora'
+                        template='regular'
+                        navigate={() => { setLocation('/upgrade') }}
+                    />
+                </div>
+            }
+
             {
                 dataRows.map(data => (
                     <div

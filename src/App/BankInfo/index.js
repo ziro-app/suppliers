@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'wouter'
 import { motion } from 'framer-motion';
 import { post } from 'axios';
 import { createBrowserHistory } from 'history';
+import Button from '@bit/vitorbarbosa19.ziro.button';
 import Form from '@bit/vitorbarbosa19.ziro.form';
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
+import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
 import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown';
 import Details from '@bit/vitorbarbosa19.ziro.details';
@@ -11,7 +14,7 @@ import Header from '@bit/vitorbarbosa19.ziro.header';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import { useMessage, useMessagePromise } from '@bit/vitorbarbosa19.ziro.message-modal';
 import { ZiroPromptMessage, ZiroWaitingMessage } from "ziro-messages";
-import { containerWithPadding, container } from '@ziro/theme';
+import { containerWithPadding, container, fontBody } from '@ziro/theme';
 import maskInput from '@ziro/mask-input';
 import { userContext } from '../appContext';
 import banksList from '../Register/banks';
@@ -21,7 +24,7 @@ import mountBankInfo from './mountBankInfo';
 import { dot, headerStyle, infoBlock } from './styles';
 
 const BankInfo = () => {
-    const { zoopId, userPos, docId, cnpj, codBank, holderName, accountType, accountNumber, agency, payoutAutomatic } = useContext(userContext);
+    const { zoopId, userPos, docId, cnpj, codBank, holderName, accountType, accountNumber, agency, payoutAutomatic, typeRegister } = useContext(userContext);
     const [activate, setActivate] = useState((payoutAutomatic != undefined && payoutAutomatic != null && payoutAutomatic === false) ? false : true);
     const [isLoading, setIsLoading] = useState(true);
     const [blocks, setBlocks] = useState([]);
@@ -36,6 +39,7 @@ const BankInfo = () => {
     const accountTypeList = ['Conta Corrente', 'Conta Poupança'];
     const setPromiseMessage = useMessagePromise();
     const setMessage = useMessage();
+	const [, setLocation] = useLocation();
     const setState = {
         setIsLoading, setBlocks, setBankName, setBankNumber,
         setNewAgency, setNewAccountNumber, setAccountTypeViewName, setNewAccountType
@@ -173,89 +177,102 @@ const BankInfo = () => {
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={container}>
             {/* <Header type="icon" title="Dados Bancários" setIsOpen={backRoute && !activate ? () => history.push('/recebiveis/resgate') : () => history.push('/recebiveis')} icon="back" /> */}
-            <div style={{ display: 'grid', gridRowGap: '25px' }}>
-                <Details blocks={blocks} />
+            {typeRegister === 'Completo' ? 
+                <div style={{ display: 'grid', gridRowGap: '25px' }}>
+                    <Details blocks={blocks} />
 
-                <div style={infoBlock}>
-                    <label style={headerStyle}>Receber em outra conta
-					<label style={dot}>&nbsp;.</label>
-                    </label>
-                </div>
+                    <div style={infoBlock}>
+                        <label style={headerStyle}>Receber em outra conta
+                        <label style={dot}>&nbsp;.</label>
+                        </label>
+                    </div>
 
-                <Form
-                    validations={validations}
-                    sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
-                    inputs={[
-                        <FormInput name='newHolderName' label='Titular' input={
-                            <InputText
-                                value={holderName}
-                                onChange={() => null}
-                                readOnly={true}
-                            />
-                        } />,
-                        <FormInput name='bankNumber' label='Banco' input={
-                            <Dropdown
-                                value={bankName}
-                                onChange={({ target: { value } }) => {
-                                    setBankName(value)
-                                    if (value.indexOf(' - ')) {
-                                        value.split(' - ')[0] ? setBankNumber(value.split(' - ')[0]) : null
-                                    }
-                                }}
-                                onChangeKeyboard={element => {
-                                    if (element) {
-                                        setBankName(element.value)
-                                        if (element.value.indexOf(' - ')) {
-                                            element.value.split(' - ')[0] ? setBankNumber(element.value.split(' - ')[0]) : null
+                    <Form
+                        validations={validations}
+                        sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+                        inputs={[
+                            <FormInput name='newHolderName' label='Titular' input={
+                                <InputText
+                                    value={holderName}
+                                    onChange={() => null}
+                                    readOnly={true}
+                                />
+                            } />,
+                            <FormInput name='bankNumber' label='Banco' input={
+                                <Dropdown
+                                    value={bankName}
+                                    onChange={({ target: { value } }) => {
+                                        setBankName(value)
+                                        if (value.indexOf(' - ')) {
+                                            value.split(' - ')[0] ? setBankNumber(value.split(' - ')[0]) : null
                                         }
-                                    }
-                                }}
-                                list={banksList}
-                                placeholder="Nubank"
-                            />
-                        } />,
-                        <FormInput name='agency' label='Agência sem DV' input={
-                            <InputText
-                                value={newAgency}
-                                onChange={({ target: { value } }) => setNewAgency(maskInput(value, '####', true))}
-                                placeholder='Ex.: 0001'
-                                inputMode='numeric'
-                            />
-                        } />,
-                        <FormInput name='accountNumber' label='Número da Conta com DV' input={
-                            <InputText
-                                value={newAccountNumber}
-                                onChange={({ target: { value } }) => setNewAccountNumber(value)}
-                                placeholder='Ex.: 9472156-8'
-                                inputMode='numeric'
-                            />
-                        } />,
-                        <FormInput name='accountType' label='Tipo da Conta' input={
-                            <Dropdown
-                                value={accountTypeViewName}
-                                onChange={({ target: { value } }) => {
-                                    setAccountTypeViewName(value)
-                                    if (value === 'Conta Poupança') setNewAccountType('savings')
-                                    else if (value === 'Conta Corrente') setNewAccountType('checking')
-                                    else setNewAccountType('')
-                                }}
-                                onChangeKeyboard={element => {
-                                    if (element) {
-                                        setAccountTypeViewName(element.value)
-                                        if (element.value === 'Conta Poupança') setNewAccountType('savings')
-                                        else if (element.value === 'Conta Corrente') setNewAccountType('checking')
+                                    }}
+                                    onChangeKeyboard={element => {
+                                        if (element) {
+                                            setBankName(element.value)
+                                            if (element.value.indexOf(' - ')) {
+                                                element.value.split(' - ')[0] ? setBankNumber(element.value.split(' - ')[0]) : null
+                                            }
+                                        }
+                                    }}
+                                    list={banksList}
+                                    placeholder="Nubank"
+                                />
+                            } />,
+                            <FormInput name='agency' label='Agência sem DV' input={
+                                <InputText
+                                    value={newAgency}
+                                    onChange={({ target: { value } }) => setNewAgency(maskInput(value, '####', true))}
+                                    placeholder='Ex.: 0001'
+                                    inputMode='numeric'
+                                />
+                            } />,
+                            <FormInput name='accountNumber' label='Número da Conta com DV' input={
+                                <InputText
+                                    value={newAccountNumber}
+                                    onChange={({ target: { value } }) => setNewAccountNumber(value)}
+                                    placeholder='Ex.: 9472156-8'
+                                    inputMode='numeric'
+                                />
+                            } />,
+                            <FormInput name='accountType' label='Tipo da Conta' input={
+                                <Dropdown
+                                    value={accountTypeViewName}
+                                    onChange={({ target: { value } }) => {
+                                        setAccountTypeViewName(value)
+                                        if (value === 'Conta Poupança') setNewAccountType('savings')
+                                        else if (value === 'Conta Corrente') setNewAccountType('checking')
                                         else setNewAccountType('')
-                                    }
-                                }}
-                                list={accountTypeList}
-                                placeholder="Corrente"
-                                readOnly={true}
-                            />
-                        } />
-                    ]}
-                />
+                                    }}
+                                    onChangeKeyboard={element => {
+                                        if (element) {
+                                            setAccountTypeViewName(element.value)
+                                            if (element.value === 'Conta Poupança') setNewAccountType('savings')
+                                            else if (element.value === 'Conta Corrente') setNewAccountType('checking')
+                                            else setNewAccountType('')
+                                        }
+                                    }}
+                                    list={accountTypeList}
+                                    placeholder="Corrente"
+                                    readOnly={true}
+                                />
+                            } />
+                        ]}
+                    />
 
-            </div>
+                </div>
+                :
+                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '25px' }}>
+                    <Illustration type="upgradePlan" size={200} />
+                    <label style={{ fontFamily: fontBody, textAlign: 'center' }}>Você não possui dados bancários pois não está habilitado a transacionar. Habilite agora!</label>
+                    <Button
+                        type='link'
+                        cta='Fazer upgrade'
+                        template='regular'
+                        navigate={() => { setLocation('/upgrade') }}
+                    />
+                </div>
+            }
         </motion.div>
     );
 };
