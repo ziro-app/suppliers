@@ -25,15 +25,16 @@ import fetch from './fetch';
 import completeRegistration from './completeRegistration';
 import simplifiedRegistration from './simplifiedRegistration';
 import { AtvdText, CnpjText, DocText, HolderText, HomeText, supportModalTitle, supportModalBody, supportModalTitleRegister, supportModalBodyRegister } from './modals';
+import { allCategories, categoryList } from './allCategories';
 import validateDocuments from '../utils/validateDocuments';
 import useRollback from '../utils/useRollback/useRollback';
 
-const categories = {
-    Bijouterias: '09',
-    'Calçados/Bolsas/Malas': '10',
-    'Roupas masc., fem., inf., geral': '14',
-    Vestuário: '25',
-};
+// const categories = {
+//     Bijouterias: '09',
+//     'Calçados/Bolsas/Malas': '10',
+//     'Roupas masc., fem., inf., geral': '14',
+//     Vestuário: '25',
+// };
 
 const Register = () => {
     const [isError, setIsError] = useState(false);
@@ -53,7 +54,7 @@ const Register = () => {
     const [fantasia, setFantasia] = useState('');
     const [categoryName, setCategoryName] = useState('');
     const [category, setCategory] = useState('');
-    const categoryList = ['Vestuário', 'Bijouterias', 'Calçados/Bolsas/Malas', 'Roupas masc., fem., inf., geral'];
+    // const categoryList = ['Vestuário', 'Bijouterias', 'Calçados/Bolsas/Malas', 'Roupas masc., fem., inf., geral'];
     const [cep, setCep] = useState('');
     const [street, setStreet] = useState('');
     const [number, setNumber] = useState('');
@@ -605,17 +606,16 @@ const Register = () => {
                                         value={categoryName}
                                         onChange={({ target: { value } }) => {
                                             setCategoryName(value);
-                                            setCategory(categories[value]);
+                                            setCategory(allCategories[value]);
                                         }}
                                         onChangeKeyboard={element => {
                                             if (element) {
                                                 setCategoryName(element.value);
-                                                setCategory(categories[element.value]);
+                                                setCategory(allCategories[element.value]);
                                             }
                                         }}
                                         list={categoryList}
                                         placeholder="Vestuário"
-                                        readOnly={true}
                                     />
                                 }
                             />,
