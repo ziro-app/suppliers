@@ -27,12 +27,18 @@ const fetchTransactionsOfDay = async zoopId => {
             const { items, has_more } = data;
             arrayItems = [...arrayItems, ...items];
             const finalItem = items[items.length - 1];
-            const finalDate = formatDate(finalItem['transfer_date']);
-            if (has_more && now.getTime() === finalDate.getTime()) {
-                offset += 40;
-            } else hasMore = false;
-        }
-        return arrayItems.filter(({ transfer_date }) => now.getTime() === formatDate(transfer_date).getTime());
+            if(finalItem){
+                const finalDate = formatDate(finalItem['transfer_date']);
+                if (has_more && now.getTime() === finalDate.getTime()) {
+                    offset += 40;
+                } else hasMore = false;
+            }else hasMore = false;
+        };
+        if(arrayItems.length){
+            return arrayItems.filter(({ transfer_date }) => now.getTime() === formatDate(transfer_date).getTime());
+        }else{
+            return [];
+        };
     } catch (error) {
         throw error;
     }
