@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useLocation } from 'wouter';
+import { db } from '../../Firebase/index';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import { container, primaryColor, shadow, fontTitle } from '@ziro/theme';
-import { activePlan, saldosContainer, consultasContainer, card, saldosLabel, valorH1, iconsContainer, iconDiv, iconStyle, iconDescription, cardTop, cardSimplificado } from './styles';
+import { saldosContainer, consultasContainer, card, saldosLabel, valorH1, iconsContainer, iconDiv, iconStyle, iconDescription, cardSimplificado } from './styles';
 import { round } from '../Transactions/utils';
 import { userContext } from '../appContext';
 import currencyFormat from '@ziro/currency-format';
@@ -26,6 +27,8 @@ function MainPage() {
     const [balance, setBalance] = useState(-1);
     const [paidBalance, setPaidBalance] = useState(-1);
     const [activePlan, setActivePlan] = useState('');
+    const [freeBgCheck, setFreeBgCheck] = useState(backgroundCheckRequests);
+    const [paidBgCheck, setPaidBgCheck] = useState(backgroundCheckRequestsPaid);
     const [backgroundPaidCollaborator, setBackgroundPaidCollaborator] = useState();
     const [backgroundFreeCollaborator, setBackgroundFreeCollaborator] = useState();
     const setState = {
@@ -36,6 +39,36 @@ function MainPage() {
         setBalance,
         setPaidBalance,
     };
+
+    useEffect(() => {
+        async function getFreeBgCheck() {
+            await db
+                .collection('suppliers')
+                .where('fantasia', '==', fantasy.toUpperCase())
+                .onSnapshot(snap => {
+                if (!snap.empty) {
+                    snap.forEach(doc => {
+                        setFreeBgCheck(doc.data().backgroundCheckRequestsAvailable);
+                    });
+                }
+                });
+            }
+        
+        async function getPaidBgCheck() {
+            await db
+                .collection('suppliers')
+                .where('fantasia', '==', fantasy.toUpperCase())
+                .onSnapshot(snap => {
+                if (!snap.empty) {
+                    snap.forEach(doc => {
+                        setPaidBgCheck(doc.data().backgroundCheckRequestsAvailablePaid);
+                    });
+                }
+                });
+            }
+        getFreeBgCheck();
+        getPaidBgCheck();
+    }, [])
 
     const getPlan = async () => {
         try {
@@ -213,8 +246,8 @@ function MainPage() {
                         <div style={{ textAlign: 'center' }}>
                             <label style={saldosLabel}>Consultas pagas</label>
                             <h1 style={valorH1}>{
-                                role === '' && backgroundCheckRequestsPaid !== '' ? backgroundCheckRequestsPaid
-                                    : role === '' && backgroundCheckRequestsPaid === '' ? '0'
+                                role === '' && paidBgCheck !== '' ? paidBgCheck
+                                    : role === '' && paidBgCheck === '' ? '0'
                                         : backgroundPaidCollaborator}
                             </h1>
                         </div>
@@ -222,8 +255,8 @@ function MainPage() {
                         <div>
                             <label style={saldosLabel}>Consultas gratuitas</label>
                             <h1 style={valorH1}>{
-                                role === '' && backgroundCheckRequests !== '' ? backgroundCheckRequests
-                                    : role === '' && backgroundCheckRequests === '' ? '0'
+                                role === '' && freeBgCheck !== '' ? freeBgCheck
+                                    : role === '' && freeBgCheck === '' ? '0'
                                         : backgroundFreeCollaborator}
                             </h1>
                         </div>
