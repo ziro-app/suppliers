@@ -14,7 +14,7 @@ import useLoadRates from './hooks/useLoadRates'
 
 const Rates = () => {
     const [, setLocation] = useLocation();
-    const { typeRegister } = useContext(userContext);
+    const { typeRegister, role } = useContext(userContext);
     
     const {
         blockDetails,
@@ -55,7 +55,11 @@ const Rates = () => {
 
     return (
         <div>
-            {typeRegister === 'Completo' &&
+            {typeRegister === 'Completo' && role === '' &&
+                <Details blocks={blockDetails} />
+            }
+            
+            {role !== '' &&
                 <Details blocks={blockDetails} />
             }
 
@@ -73,7 +77,41 @@ const Rates = () => {
             }
 
             {
-                typeRegister === 'Completo' && dataRows.map(data => (
+                typeRegister === 'Completo' && role === '' && dataRows.map(data => (
+                    <div
+                        aria-label= 'table'
+                        key={data.brand}
+                        style={{marginTop:'20px'}}
+                    >
+                        <Table
+                            data={
+                                dataTable(
+                                    data.content,
+                                    data.brand === 'americanexpress'
+                                    ? 'american express'
+                                    : data.brand
+                                    )
+                            }
+                            customGrid={{
+                                gridTemplateColumns: 'auto 1fr auto',
+                                gridRowGap: '5px',
+                            }}
+                            cellStyle={{
+                                width: '100%',
+                                height: '100%',
+                                fontSize: '1.4rem',
+                                textAlign: 'center',
+                                textOverflow: 'ellipsis',
+                                overflow: 'hidden',
+                                whiteSpace: 'nowrap',
+                            }}
+                        />
+                    </div>
+                ))
+            }
+            
+            {
+                role !== '' && dataRows.map(data => (
                     <div
                         aria-label= 'table'
                         key={data.brand}
