@@ -27,7 +27,6 @@ const BackgroundCheck = () => {
     const [apiError, setApiError] = useState(false);
     const [document, setDocument] = useState('');
     const [freeRequests, setFreeRequests] = useState(0);
-    const [paidRequests, setPaidRequests] = useState(0);
     const [pendency, setPendency] = useState(null);
     const [partner, setPartner] = useState(null);
     const [scoreValue, setScoreValue] = useState(0);
@@ -35,15 +34,15 @@ const BackgroundCheck = () => {
     const [blockPJ, setBlockPJ] = useState([]);
     const isCollaborator = role !== '';
     const DEFAULT_STEP_COLORS = ['#a50a0a', '#bc0b0b', '#eb0e0e', '#e68c06', '#ff9b07', '#f8d823', '#ebeb09', '#5deb3e', '#35e60e', '#2fcc0c'];
-    const setState = { setPaidRequests, setDocument, setFreeRequests, setScoreValue, setBlockPF, setBlockPJ, setPendency, setPartner, setApiError };
+    const setState = { setDocument, setFreeRequests, setScoreValue, setBlockPF, setBlockPJ, setPendency, setPartner, setApiError };
     const state = { docId, isCollaborator, ownerId, document, freeRequests, ...setState };
     const validations = [
         {
             name: 'document',
-            validation: value => (process.env.HOMOLOG ? true : validateDocuments(value)),
+            validation: value => process.env.HOMOLOG ? true : validateDocuments(value),
             value: document,
             message: document === '' ? 'Documento inválido' : document.length === 14 ? 'CPF inválido' : 'CNPJ inválido',
-        },
+        }
     ];
 
     const clearInfo = () => {
@@ -61,29 +60,24 @@ const BackgroundCheck = () => {
         );
     if (errorLoading) return <Error />;
 
-    if (apiError)
-        return (
-            <div style={apiErrorContainer}>
-                <div style={{ justifySelf: 'center' }}>
-                    <Illustration type="paymentError" />
-                </div>
-                <label style={header}>Erro na API</label>
-                <label>Ocorreu um erro ao consultar o documento. Tente novamente ou contate suporte</label>
-                <Button type="button" cta="Voltar" click={() => setApiError(false)} />
-            </div>
-        );
+    if (apiError) return <div style={apiErrorContainer}>
+        <div style={{ justifySelf: 'center' }}>
+            <Illustration type='paymentError' />
+        </div>
+        <label style={header}>Erro na API</label>
+        <label>Ocorreu um erro ao consultar o documento. Tente novamente ou contate suporte</label>
+        <Button type='button' cta='Voltar' click={() => setApiError(false)} />
+    </div>
 
     if (pendency) return <PendencyDetails pendency={pendency} setPendency={setPendency} />;
 
-    if (partner) return <PartnersDetails partners={partner} setPartners={setPartner} />;
+    if (partner) return <PartnersDetails partners={partner} setPartners={setPartner} />
 
     return (
         <Menu title="Consultar CPF ou CNPJ">
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                 <div style={{ display: 'grid', justifyContent: 'center', paddingBottom: '20px' }}>
-                    <strong style={{ fontSize: '1.5rem', fontFamily: 'Rubik', color: freeRequests ? '#000' : alertColor }}>
-                        {freeRequests ? `${freeRequests} consultas gratuitas restantes` : 'Consultas gratuitas esgotadas'}
-                    </strong>
+                    <strong style={{ fontSize: '1.5rem', fontFamily: 'Rubik', color: freeRequests ? '#000' : alertColor }} >{freeRequests ? `${freeRequests} consultas gratuitas restantes` : 'Consultas gratuitas esgotadas'}</strong>
                 </div>
 
                 <Form
@@ -92,24 +86,20 @@ const BackgroundCheck = () => {
                     validations={validations}
                     sendToBackend={sendToBackend ? sendToBackend({ ...state, clearInfo }) : () => null}
                     inputs={[
-                        <FormInput
-                            name="document"
-                            label="CPF ou CNPJ"
-                            input={
-                                <InputText
-                                    value={document}
-                                    onChange={({ target: { value } }) => {
-                                        let mask = value.length <= 14 ? '###.###.###-##' : '##.###.###/####-##';
-                                        setDocument(maskInput(value, mask, true));
-                                    }}
-                                    placeholder="000.000.000-00"
-                                    inputMode="numeric"
-                                />
-                            }
-                        />,
+                        <FormInput name='document' label='CPF ou CNPJ' input={
+                            <InputText
+                                value={document}
+                                onChange={({ target: { value } }) => {
+                                    let mask = value.length <= 14 ? '###.###.###-##' : '##.###.###/####-##';
+                                    setDocument(maskInput(value, mask, true));
+                                }}
+                                placeholder='000.000.000-00'
+                                inputMode='numeric'
+                            />
+                        } />
                     ]}
                 />
-                {blockPF.length > 0 && (
+                {blockPF.length > 0 &&
                     <div style={wrapper}>
                         <div style={box1}>
                             <ScoreCircle
@@ -126,14 +116,16 @@ const BackgroundCheck = () => {
                             />
                         </div>
                         <div style={box2}>
-                            <Details blocks={blockPF} blockGap="20px" />
+                            <Details blocks={blockPF} blockGap='20px' />
                         </div>
                     </div>
-                )}
-                {blockPJ.length > 0 && <Details blocks={blockPJ} blockGap="20px" />}
+                }
+                {blockPJ.length > 0 &&
+                    <Details blocks={blockPJ} blockGap='20px' />
+                }
             </motion.div>
         </Menu>
-    );
-};
+    )
+}
 
 export default BackgroundCheck;
