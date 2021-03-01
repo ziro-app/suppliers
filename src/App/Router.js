@@ -13,12 +13,12 @@ import Collaborators from './Collaborators/index';
 import CreatePayment from './CreatePayment/index';
 import DeleteAccount from './DeleteAccount/index';
 import GerarBoleto from './GerarBoleto/index';
-import Rates from './Rates'
+import Rates from './Rates';
 import { HeaderBack } from './HeaderBack/index';
 import InviteCollaborator from './InviteCollaborator/index';
 import Login from './Login/index';
-import LoginSupportPage from "./LoginSupportPage";
-import MainPage from "./MainPage/index";
+import LoginSupportPage from './LoginSupportPage';
+import MainPage from './MainPage/index';
 import { Menu } from './Menu/index';
 import Receipt from './Receipt/index';
 import Receivables from './Receivables/index';
@@ -34,6 +34,7 @@ import UpdateUserInfo from './UpdateUserInfo/index';
 import BackgroundCheck from './BackgroundCheck/index';
 import BankInfo from './BankInfo/index';
 import Preferences from './Preferences/index';
+import CheckoutBackgroundCheck from './CheckoutBackgroundCheck/index';
 import { userContext } from './appContext';
 
 const Router = ({ isLogged }) => {
@@ -41,6 +42,7 @@ const Router = ({ isLogged }) => {
     const [match2, params2] = useRoute('/relatorio/:boletbankId?/:boletId?');
     const [matchReceivable, paramsReceivable] = useRoute('/recebiveis/:receivableId?');
     const [matchMyReceipt, paramsMyReceipt] = useRoute('/comprovante/:transactionId?/:receiptId?');
+    const [matchBuyCreditBackgroundCheck, paramsBuyCreditBackgroundCheck] = useRoute('/comprar-consulta/cartao/:quantity');
     const [receipt, setReceipt] = useState('');
     const [transactionId, setTransactionId] = useState('');
     const [location] = useLocation();
@@ -97,7 +99,7 @@ const Router = ({ isLogged }) => {
         '/minha-conta': (
             <Menu title="Minha Conta">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                    <MyAccount role={role}/>
+                    <MyAccount role={role} />
                 </motion.div>
             </Menu>
         ),
@@ -130,7 +132,11 @@ const Router = ({ isLogged }) => {
                 </motion.div>
             </Menu>
         ),
-        '/consulta': <BackgroundCheck />,
+        '/consulta': (
+            <HeaderBack title="Comprar consultas de CNPJ" navigateTo="/comprar-consulta">
+                <BackgroundCheck />
+            </HeaderBack>
+        ),
         '/tarifas': (
             <Menu title="Tarifas">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -148,7 +154,7 @@ const Router = ({ isLogged }) => {
             <HeaderBack title="Preferências" navigateTo="/minha-conta">
                 <Preferences />
             </HeaderBack>
-        ),
+        );
         privateRoutes['/colaboradores'] = (
             <Menu title="Vendedores">
                 <Collaborators />
@@ -166,14 +172,18 @@ const Router = ({ isLogged }) => {
                 </motion.div>
             </Menu>
         );
-        privateRoutes[matchReceivable ? location : null] = (
-            <Receivables {...paramsReceivable} />
-        );
+        privateRoutes['/comprar-consulta'] = <CheckoutBackgroundCheck />;
+        privateRoutes[matchReceivable ? location : null] = <Receivables {...paramsReceivable} />;
         privateRoutes['/update'] = (
             <HeaderBack title="Meus dados" navigateTo="/login">
                 <UpdateUserInfo />
             </HeaderBack>
-        )
+        );
+        privateRoutes[matchBuyCreditBackgroundCheck ? location : null] = (
+            <HeaderBack title="Comprar consultas de CNPJ" navigateTo="/comprar-consulta">
+                <CheckoutBackgroundCheck {...paramsBuyCreditBackgroundCheck} />
+            </HeaderBack>
+        );
     }
 
     return routeMatcher(isLogged, publicRoutes, privateRoutes, <Login />, <NotFound fallback="/" />);

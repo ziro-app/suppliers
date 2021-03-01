@@ -2,12 +2,13 @@ import { post } from 'axios';
 import { db } from '../../Firebase/index';
 import mountBlocks from './utils/mountBlocks';
 
-const getInfo = async (docId) => {
+const getInfo = async docId => {
     const doc = await db.collection('suppliers').doc(docId).get();
     if (doc.exists) {
-        const { backgroundCheckRequestsAvailable, backgroundCheckCurrentMonth, backgroundCheckCurrentYear } = doc.data();
+        const { backgroundCheckRequestsAvailable, backgroundCheckRequestsAvailablePaid, backgroundCheckCurrentMonth, backgroundCheckCurrentYear } = doc.data();
         const now = new Date();
-        if (now.getMonth() <= backgroundCheckCurrentMonth && now.getFullYear() <= backgroundCheckCurrentYear) return [backgroundCheckRequestsAvailable, backgroundCheckCurrentMonth, backgroundCheckCurrentYear];
+        if (now.getMonth() <= backgroundCheckCurrentMonth && now.getFullYear() <= backgroundCheckCurrentYear)
+            return [backgroundCheckRequestsAvailablePaid, backgroundCheckRequestsAvailable, backgroundCheckCurrentMonth, backgroundCheckCurrentYear];
         else return [10, now.getMonth(), now.getFullYear()];
     } else return [null, null, null];
 };
@@ -24,40 +25,56 @@ const fillValues = (field, scoreValue, block, { setScoreValue, setBlockPF, setBl
 };
 
 const sendToBackend = state => () => {
-    const { docId, isCollaborator, ownerId, document, setFreeRequests, clearInfo, setPendency, setPartner, setApiError, setDocument } = state;
+    const { docId, isCollaborator, ownerId, document, setFreeRequests, setPaidRequests, clearInfo, setPendency, setPartner, setApiError, setDocument } = state;
     const field = document.length === 14 ? 'cpf' : 'cnpj';
     const onlyNumbers = document.replace(/[\D]*/g, '');
     const url = `${process.env.PAY_URL}buy2b-bc?document=${onlyNumbers}`;
     const refId = isCollaborator ? ownerId : docId;
     const config = {
         headers: {
-            Authorization: `${process.env.PAY_TOKEN}`
-        }
+            Authorization: `${process.env.PAY_TOKEN}`,
+        },
     };
     return new Promise(async (resolve, reject) => {
         try {
-            let block, scoreValue = 0;
+            let block,
+                scoreValue = 0;
             clearInfo();
             // BUSCANDO DOCUMENTO NA BASE
             const query = await db.collection('backgroundCheck').where(field, '==', document).get();
             if (query.empty) {
-                const [freeRequests, currentFreeMonth, currentFreeYear] = await getInfo(refId);
-                if (freeRequests > 0) {
-                    const { data: { backgroundCheck } } = await post(url, {}, config);
+                const [paidRequests, freeRequests, currentFreeMonth, currentFreeYear] = await getInfo(refId);
+                if (freeRequests > 0 || paidRequests > 0) {
+                    const {
+                        data: { backgroundCheck },
+                    } = await post(url, {}, config);
                     console.log(backgroundCheck);
-                    const updated = freeRequests - 1;
-                    await db.collection('backgroundCheck').add({ date: new Date(), ...backgroundCheck });
-                    await db.collection('suppliers').doc(refId).update({
-                        backgroundCheckRequestsAvailable: updated,
-                        backgroundCheckCurrentYear: currentFreeYear,
-                        backgroundCheckCurrentMonth: currentFreeMonth
-                    });
+                    let updated = 0;
+                    if (freeRequests > 0) {
+                        updated = freeRequests - 1;
+                        await db.collection('backgroundCheck').add({ date: new Date(), ...backgroundCheck });
+                        await db.collection('suppliers').doc(refId).update({
+                            backgroundCheckRequestsAvailable: updated,
+                            backgroundCheckCurrentYear: currentFreeYear,
+                            backgroundCheckCurrentMonth: currentFreeMonth,
+                        });
+                        setFreeRequests(updated);
+                    } else if (paidRequests > 0) {
+                        updated = paidRequests - 1;
+                        await db.collection('backgroundCheck').add({ date: new Date(), ...backgroundCheck });
+                        await db.collection('suppliers').doc(refId).update({
+                            backgroundCheckRequestsAvailablePaid: updated,
+                            backgroundCheckCurrentYear: currentFreeYear,
+                            backgroundCheckCurrentMonth: currentFreeMonth,
+                        });
+                        setPaidRequests(updated);
+                    }
                     block = mountBlocks(document, backgroundCheck, setPendency, setPartner);
                     scoreValue = backgroundCheck?.score || 0;
-                    setFreeRequests(updated);
                 } else if (freeRequests === 0) {
                     setFreeRequests(0);
-                    throw { msg: 'Consultas grátis esgotadas. Recarregue seu saldo', customError: true };
+                    setPaidRequests(0);
+                    throw { msg: 'Consultas esgotadas. Recarregue seu saldo', customError: true };
                 } else throw { msg: 'Usuário não encontrado, recarregue a página', customError: true };
             } else {
                 const data = query.docs[0].data();
@@ -78,8 +95,7 @@ const sendToBackend = state => () => {
                     setDocument('');
                     setApiError(true);
                 }
-            }
-            else reject(error);
+            } else reject(error);
         }
     });
 };
