@@ -22,18 +22,18 @@ const mountBlockPF = (data, setPendency) => {
                     title: 'Nascimento',
                     content: dataNascimento
                 },
-                // {
-                //     title: 'Idade',
-                //     content: idade > 0 ? `${idade} anos` : 'Não informado'
-                // },
-                // {
-                //     title: 'Falecido',
-                //     content: falecido ? 'Sim' : 'Não'
-                // },
-                // {
-                //     title: 'Nome da mãe',
-                //     content: nomeMae
-                // },
+                {
+                    title: 'Idade',
+                    content: (idade && idade > 0) ? `${idade} anos` : 'Não informado'
+                },
+                {
+                    title: 'Falecido',
+                    content: falecido ? 'Sim' : 'Não'
+                },
+                {
+                    title: 'Nome da mãe',
+                    content: nomeMae ? nomeMae : 'Não informado'
+                },
                 // {
                 //     title: 'Endereço',
                 //     content: endereco
@@ -99,8 +99,9 @@ const mountBlockPF = (data, setPendency) => {
 
 const mountBlockPJ = (data, setPendency, setPartner) => {
     const { razao, dataFundacao, situacaoCadastral, dataSituacaoCnpj,
-        ramoAtv, opcaoTributaria, tipoSociedade, dividas_vencidas,
+        ramoAtv, naturezaJuridica, tipoSociedade, dividas_vencidas,
         protestos, pefin, refin, ccf, socios } = data;
+    const principal = ramoAtv.data ? ramoAtv.data.filter(it => it.atvdPrimaria)[0]['descricao'] : '';
     return [
         {
             header: 'Informações do Documento',
@@ -115,11 +116,11 @@ const mountBlockPJ = (data, setPendency, setPartner) => {
                 },
                 {
                     title: 'Ramo de Atividade',
-                    content: ramoAtv
+                    content: principal || 'Não informado'
                 },
                 {
-                    title: 'Opção Tributária',
-                    content: opcaoTributaria
+                    title: 'Natureza jurídica',
+                    content: naturezaJuridica?.descricao ? naturezaJuridica.descricao : 'Não informado'
                 },
                 {
                     title: 'Sócios',
