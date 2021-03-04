@@ -18,9 +18,13 @@ import Transactions from './Transactions/index';
 import { btn, cellStyle, contentStyle, customGrid, illustrationContainer, illustrationTitle, info, spinner, titleStyle } from './styles';
 import fetch from './fetch';
 import fetchBalance from './fetchBalance';
+import fetchPaidReceivables from './fetchPaidReceivables';
 import convertCsv from './utils/convertCsv';
+import convertCsv2 from './utils/convertCsv2';
+import { alertColor } from '@ziro/theme';
 
 const Receivables = ({ receivableId }) => {
+    const [isError, setIsError] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
     const [receivables, setReceivables] = useState([]);
@@ -42,6 +46,17 @@ const Receivables = ({ receivableId }) => {
     };
     const state = { receivables, hasMore, loadingMore, initDate, finalDate, totalAmount, days, totalTransactions, balance };
     const { zoopId, payoutAutomatic, fantasy } = useContext(userContext);
+
+    const runFetchPaidReceivables = async () => {
+        try {
+            const paidReceivables = await fetchPaidReceivables(zoopId, setIsError)
+            convertCsv2(paidReceivables, 'Recebiveis Pagos.csv')
+            return setIsError(false)
+        } catch (error) {
+            setIsError(true)
+            console.log("Erro ao rodar função de buscar recebíveis.", error)
+        }
+    };
 
     const handleClick = () => {
         setLoadingMore(true);
@@ -121,8 +136,16 @@ const Receivables = ({ receivableId }) => {
 
                     {payoutAutomatic != undefined && payoutAutomatic != null && payoutAutomatic === false && <Button cta="Resgatar saldo" style={btn} navigate={() => setLocation('recebiveis/resgate')} type="link" />}
 
-                    {(receivables.length > 0 && totalAmount > 0 && totalTransactions > 0) && <Button cta="Exportar planilha" style={btn} click={() => convertCsv(receivables, totalAmount, totalTransactions, 'Recebiveis.csv')} type="button" />}
+                    {(receivables.length > 0 && totalAmount > 0 && totalTransactions > 0) && <Button cta="Exportar recebíveis futuros" style={btn} click={() => convertCsv(receivables, totalAmount, totalTransactions, 'Recebiveis Futuros.csv')} type="button" />}
+                    
+                    <Button cta="Exportar recebíveis pagos" style={btn} click={() => runFetchPaidReceivables()} type="button" />
 
+                    {isError && 
+                        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                            <label style={{ color: alertColor }}>Erro ao gerar planilha.</label>
+                        </div>
+                    }
+                    
                     <div style={{ marginTop: '10px' }}></div>
                     <div style={info}>
                         <label style={titleStyle}>À RECEBER HOJE</label>
