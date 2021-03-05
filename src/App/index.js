@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { post } from 'axios';
 import { auth, db } from '../Firebase/index';
 import { userContext } from './appContext';
 import InitialLoader from '@bit/vitorbarbosa19.ziro.initial-loader';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import ErrorBoundary from '@bit/vitorbarbosa19.ziro.error-boundary';
-import MessageModal from "@bit/vitorbarbosa19.ziro.message-modal"
+import MessageModal from '@bit/vitorbarbosa19.ziro.message-modal';
 import Router from './Router';
 
 export const App = () => {
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
     const [uid, setUid] = useState(null);
     const [zoopId, setZoopId] = useState(null);
@@ -212,7 +212,20 @@ export const App = () => {
                     const docRef = await db.collection('suppliers').where('uid', '==', uid).get();
                     if (!docRef.empty) {
                         docRef.forEach(async doc => {
-                            const { nome, sobrenome, cpf, cnpj, nascimento, whatsapp, telefone, email, tipoCadastro, backgroundCheckRequestsAvailable, backgroundCheckRequestsAvailablePaid, alwaysInsured } = doc.data();
+                            const {
+                                nome,
+                                sobrenome,
+                                cpf,
+                                cnpj,
+                                nascimento,
+                                whatsapp,
+                                telefone,
+                                email,
+                                tipoCadastro,
+                                backgroundCheckRequestsAvailable,
+                                backgroundCheckRequestsAvailablePaid,
+                                alwaysInsured,
+                            } = doc.data();
 
                             setDocId(doc.id);
                             setFName(nome ? nome : '');
@@ -297,17 +310,19 @@ export const App = () => {
         whatsApp,
         backgroundCheckRequests,
         backgroundCheckRequestsPaid,
-        paymentsInsurance
+        paymentsInsurance,
     };
     if (loading) return <InitialLoader />;
     if (errorLoading) return <Error />;
     return (
         <ErrorBoundary>
-            <MessageModal>
-                <userContext.Provider value={userData}>
-                    <Router isLogged={!!uid} />
-                </userContext.Provider>
-            </MessageModal>
+            <Suspense fallback={<InitialLoader />}>
+                <MessageModal>
+                    <userContext.Provider value={userData}>
+                        <Router isLogged={!!uid} />
+                    </userContext.Provider>
+                </MessageModal>
+            </Suspense>
         </ErrorBoundary>
     );
 };

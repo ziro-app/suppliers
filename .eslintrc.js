@@ -53,5 +53,8 @@ module.exports = {
         'no-sparse-arrays': 'off',
         'no-shadow': 'off',
         radix: 'off',
+        'no-nested-ternary': 'off',
+        'import/no-named-as-default': 'off',
+        'import/no-named-as-default-member': 'off',
     },
 };

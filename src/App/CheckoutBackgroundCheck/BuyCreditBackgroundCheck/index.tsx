@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { useLocation, useRoute } from 'wouter';
 import { motion } from 'framer-motion';
 import Form from '@bit/vitorbarbosa19.ziro.form';
@@ -19,9 +19,12 @@ import { dual } from './styles';
 import { useMessage, useMessagePromise } from '@bit/vitorbarbosa19.ziro.message-modal';
 import { ZiroPromptMessage, ZiroWaitingMessage } from 'ziro-messages';
 //import ChooseCard from './ChooseCard';
-import { db } from '../../../Firebase/index';
+import { db,fs } from '../../../Firebase/index';
 import createTransaction from './utils/createTransaction';
 import prepareDataToPay from './utils/prepareDataToPay';
+import { HeaderWithoutModal } from './components/Header';
+import { installmentOptions, installmentCharge } from './utils/installmentUtils';
+import { usePayment } from './components/pay/cardLifecycle';
 
 const getInfo = async docId => {
     const doc = await db.collection('suppliers').doc(docId).get();
@@ -31,8 +34,58 @@ const getInfo = async docId => {
     } else return null;
 };
 
+const parseCard = ({ cardholder: holder_name, number, cvv: security_code, expiry }) => {
+    const [expiration_month, expiration_year] = expiry.replace('/', '/20').split('/');
+    const card_number = number.replace(/ /g, '');
+    return {
+      holder_name,
+      security_code,
+      expiration_month,
+      expiration_year,
+      card_number,
+    };
+  };
+const createPaymentBuyer = async (setPaymentId,valueForZoop,card,type) => {
+    const nowDate = fs.FieldValue.serverTimestamp()
+    await db
+        .collection('payments-sellers-ziro')
+        .add({
+            teste: 'test',
+            dateLinkCreated: nowDate,
+    dateLastUpdated: nowDate,
+    datePaid: null,
+    sellerName: 'Ziro',
+    sellerId: '',
+    sellerZoopId: process.env.SELLER_ID_ZIRO,
+    status: 'Aguardando pagamento',
+	authorizer: '',
+	cardBrand: type,
+    cardFirstFour: card.card_number.substring(0,4),
+    cardLastFour: card.card_number.substring(card.card_number.length-4),
+    cardholder: card.holder_name,
+    charge: Number(valueForZoop),
+    fees: '',
+    fee_details: {},
+    totalFees: '',
+    receivables: {},
+    transactionZoopId: '',
+
+        })
+        .then(doc => {
+            return setPaymentId(doc.id);
+        })
+        .catch(e => {
+            console.log('error firebase', e);
+        })
+        .finally(() => console.log('pagamento criado'));
+};
+
 const BuyCreditBackgroundCheck = () => {
-    const { docId, role, ownerId } = useContext(userContext);
+    const header = useMemo(() => <HeaderWithoutModal title="Finalizar" leftButton={{ icon: 'close', onClick: close }} />, [close]);
+    const { docId, zoopId, ownerId, role } = useContext(userContext);
+    const supplierId = docId;
+    //console.log('zoopId', zoopId);
+    const [paymentId, setPaymentId] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [customError, setCustomError] = useState(false);
     const [errorLoading, setErrorLoading] = useState(false);
@@ -41,6 +94,7 @@ const BuyCreditBackgroundCheck = () => {
     const [paidRequests, setPaidRequests] = useState(0);
     const [valueCreditBackgroundCheck, setValueCreditBackgroundCheck] = useState(0);
     const [totalValueCreditBackgroundCheck, setTotalValueCreditBackgroundCheck] = useState(0);
+    const valueForZoop = totalValueCreditBackgroundCheck * 100
     const isCollaborator = role !== '';
     const [_, setLocation] = useLocation();
     const [match, params] = useRoute('/comprar-consulta/cartao/:quantity');
@@ -48,12 +102,15 @@ const BuyCreditBackgroundCheck = () => {
     if (!quantity) setLocation('comprar-consulta');
     const { cardholder, expiry, cvv, validations, prettyNumber, prettyNumberWithAsterisks, type, code, cvvPlaceholder, cvvPlaceholderWithAsterisk, onChange } = useCreditCard();
     const state = { cardholder, expiry, prettyNumber, cvv, totalValueCreditBackgroundCheck, docId, isCollaborator, ownerId, document, quantity, setApiError };
+    const card = parseCard({cardholder, expiry, number:prettyNumber, cvv})
+    //console.log('card',card)
     useEffect(() => fetch(setIsLoading, setErrorLoading, setCustomError, setValueCreditBackgroundCheck), []);
     useEffect(() => {
         setTotalValueCreditBackgroundCheck(Number(quantity) * valueCreditBackgroundCheck);
     }, [quantity, valueCreditBackgroundCheck]);
     const setPromiseMessage = useMessagePromise();
     const setMessage = useMessage();
+    //const [onClick] = usePayment(() => {}, paymentId, supplierId, zoopId,'1',type,card);
 
     const PromptMessage = new ZiroPromptMessage({
         name: 'promptReceivingPolicy',
@@ -112,24 +169,29 @@ const BuyCreditBackgroundCheck = () => {
                 buttonOnTop
                 buttonName="Comprar"
                 validations={validations}
-                sendToBackend={async () => {
+                sendToBackend={/*{() =>
+                    createPaymentBuyer(setPaymentId,valueForZoop,card,type).then(() => {
+                        onClick;
+                    })
+                }*/  async () => {
                     //await setPromiseMessage(PromptMessage);
                     const promise: any = new Promise(async resolve => {
                         try {
                             console.log('entrou');
-                            const paymentData = prepareDataToPay(state, process.env.SELLER_ID_ZIRO, totalValueCreditBackgroundCheck, 'Ziro');
+                            const paymentData = prepareDataToPay(state, process.env.SELLER_ID_ZIRO, valueForZoop, 'Ziro');
                             console.log('paymentData', paymentData);
                             const transaction = await createTransaction(paymentData);
                             console.log(transaction);
                             const backgroundCheckRequestsAvailablePaid = await getInfo(docId);
                             if (typeof backgroundCheckRequestsAvailablePaid !== 'undefined') {
                                 const sum = Number(backgroundCheckRequestsAvailablePaid) + Number(quantity);
-                                await db.collection('suppliers').doc(docId).update({
+                               /* await db.collection('suppliers').doc(docId).update({
                                     backgroundCheckRequestsAvailablePaid: sum,
-                                });
+                                });*/
                             }
                             resolve('resolved');
                         } catch (error) {
+                            console.log('error',error)
                             if (error.response) {
                                 console.log(error.response);
                                 if (error.response.data.customError) {
@@ -144,6 +206,7 @@ const BuyCreditBackgroundCheck = () => {
                     });
                     setMessage(WaitingMessage.withPromise(promise));
                     const result = await promise;
+                    console.log('result',result)
                     setMessage(result ? SuccessMessage : FailureMessage);
                 }}
                 inputs={[

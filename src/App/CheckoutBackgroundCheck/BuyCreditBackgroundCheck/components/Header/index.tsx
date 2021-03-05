@@ -1,4 +1,12 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import Icon from '@bit/vitorbarbosa19.ziro.icon';
+import { container, headerTitle, priceButton, inputPlaceholder } from './styles';
+const commonProps = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
+};
 export const HeaderWithoutModal = ({ title, onClickTitle = undefined, shadow = false, leftButton }) => {
     return (
         <div style={{ ...container, ...{ gridTemplateColumns: '1fr 10fr 1fr', boxShadow: shadow ? container.boxShadow : undefined } }}>
