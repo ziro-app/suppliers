@@ -40,9 +40,9 @@ const zoopMessageFinder = (error: any) => ({ additionalData: { status, category,
 function getRightMessage(error) {
     let data = error?.response?.data ?? {};
     let innerError = data.error || {};
-    console.log('data inside getRightMessage',data)
-    console.log('innerError inside getRightMessage',innerError)
-    console.log('error inside getRightMessage',error)
+    //console.log('data inside getRightMessage',data)
+    //console.log('innerError inside getRightMessage',innerError)
+    //console.log('error inside getRightMessage',error)
     let redeMessage: GenericMessage = Object.values(redePrompt).find(redeMessageFinder(innerError));
     let zoopMessage: GenericMessage = Object.values(prompt).find(zoopMessageFinder(innerError));
     let unknown: GenericMessage = prompt.UNKNOWN_ERROR;
@@ -56,7 +56,7 @@ const getInfo = async docId => {
         return backgroundCheckRequestsAvailablePaid;
     } else return null;
 };
-console.log('payMessages',payMessages)
+//console.log('payMessages',payMessages)
 const parseCard = ({ cardholder: holder_name, number, cvv: security_code, expiry }) => {
     const [expiration_month, expiration_year] = expiry.replace('/', '/20').split('/');
     const card_number = number.replace(/ /g, '');
@@ -68,12 +68,11 @@ const parseCard = ({ cardholder: holder_name, number, cvv: security_code, expiry
       card_number,
     };
   };
-const createPaymentBuyer = async (setPaymentId,valueForZoop,card,type,buyer) => {
+const createPaymentBuyer = async (setPaymentId,valueForZoop,card,type,buyer,transactionState) => {
     const nowDate = fs.FieldValue.serverTimestamp()
     await db
         .collection('payments-sellers-ziro')
         .add({
-            teste: 'test',
             dateLinkCreated: nowDate,
     dateLastUpdated: nowDate,
     datePaid: nowDate,
@@ -88,11 +87,11 @@ const createPaymentBuyer = async (setPaymentId,valueForZoop,card,type,buyer) => 
     cardLastFour: card.card_number.substring(card.card_number.length-4),
     cardholder: card.holder_name,
     charge: Number(valueForZoop),
-    fees: '',
-    fee_details: {},
+    fees: transactionState.fees,
+    fee_details: transactionState.fee_details,
     totalFees: '',
     receivables: {},
-    transactionZoopId: '',
+    transactionZoopId: transactionState.transactionZoopId,
 
         })
         .then(doc => {
@@ -132,7 +131,7 @@ const BuyCreditBackgroundCheck = ({setPaidRequests}) => {
     const setPromiseMessage = useMessagePromise();
     const setMessage = useMessage();
     //const [onClick] = usePayment(() => {}, paymentId, supplierId, zoopId,'1',type,card);
-    console.log(setPaidRequests)
+    //console.log(setPaidRequests)
     const PromptMessage = new ZiroPromptMessage({
         name: 'promptReceivingPolicy',
         type: 'neutral',
@@ -203,11 +202,13 @@ const BuyCreditBackgroundCheck = ({setPaidRequests}) => {
                     //await setPromiseMessage(PromptMessage);
                     const promise: any = new Promise(async resolve => {
                         try {
-                            console.log('entrou');
+                            //console.log('entrou');
                             const paymentData = prepareDataToPay(state, process.env.SELLER_ID_ZIRO, valueForZoop, 'Ziro');
-                            console.log('paymentData', paymentData);
+                            //console.log('paymentData', paymentData);
                             const transaction = await createTransaction(paymentData);
-                            console.log(transaction);
+                            //console.log('transaction',transaction);
+                            const {id:transactionZoopId,fee_details,sales_receipt:receiptId,fees} = transaction
+                            const transactionState = {transactionZoopId, fee_details,receiptId,fees}
                             const backgroundCheckRequestsAvailablePaid = await getInfo(docId);
                             if (typeof backgroundCheckRequestsAvailablePaid !== 'undefined') {
                                 const sum = Number(backgroundCheckRequestsAvailablePaid) + Number(quantity);
@@ -215,20 +216,20 @@ const BuyCreditBackgroundCheck = ({setPaidRequests}) => {
                                     backgroundCheckRequestsAvailablePaid: sum,
                                 });
                             }
-                            createPaymentBuyer(setPaymentId,valueForZoop,card,type,buyer)
+                            createPaymentBuyer(setPaymentId,valueForZoop,card,type,buyer,transactionState)
                             setPaidRequests(Number(backgroundCheckRequestsAvailablePaid) + Number(quantity))
                             setLocation('/comprar-consulta')
                             resolve('resolved');
                         } catch (error) {
                             resolve(null);
                             //console.log('error',error)
-                            console.log('getRightMessage',getRightMessage(error))
+                            //console.log('getRightMessage',getRightMessage(error))
                             setMessage(getRightMessage(error))
                         }
                     });
                     setMessage(WaitingMessage.withPromise(promise));
                     const result = await promise;
-                    console.log('result',result)
+                    //console.log('result',result)
                     if(result)setMessage(SuccessMessage);
                 }}
                 inputs={[
