@@ -86,6 +86,8 @@ function MainPage() {
     };
 
     const checkWidth = () => window.innerWidth < 400 ? '70%' : '35%';
+    const checkWidth2 = () => window.innerWidth < 400 ? '80%' : '41%';
+    const checkGap = () => window.innerWidth < 400 ? '4rem' : '9rem';
 
     // Somente usar função se for conta de vendedor
     const getBackgroundPaidCollab = async () => {
@@ -228,7 +230,7 @@ function MainPage() {
                     {typeRegister === 'Simplificado' &&
                         <div style={{ display: 'flex', gap: '10px' }}>
                             <div style={cardSimplificado}>
-                                <label style={{  }}>Você não possui saldos pois não está habilitado a transacionar. Habilite agora!</label>
+                                <label>Você não possui saldos pois não está habilitado a transacionar. Habilite agora!</label>
                                 <div onClick={() => setLocation('/upgrade')} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '10px', marginTop: '20px', border: '1px solid rgba(34, 34, 34, 0.2)', width: checkWidth(), borderRadius: '25px', cursor: 'pointer', backgroundColor: primaryColor, boxShadow: shadow }}>
                                     <Icon type="rocket" size={21} color="#fafafa" style={{ marginRight: '10px' }} />
                                     <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Fazer upgrade</label>
@@ -242,23 +244,35 @@ function MainPage() {
             <div style={consultasContainer}>
                 <h1 style={{ width: '5rem', marginBottom: '-25px' }}>Consultas</h1>
                 {!isErrorBgCheck ?
-                    <div style={{ display: 'flex', width: '100%', padding: '20px 0px', borderRadius: '10px', marginBottom: '-22px', boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px', justifyContent: 'space-evenly' }}>
-                        <div style={{ textAlign: 'center' }}>
-                            <label style={saldosLabel}>Consultas pagas</label>
-                            <h1 style={valorH1}>{
-                                role === '' && paidBgCheck !== '' ? paidBgCheck
-                                    : role === '' && paidBgCheck === '' ? '0'
-                                        : backgroundPaidCollaborator}
-                            </h1>
-                        </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', borderRadius: '10px', marginBottom: '-22px', boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px', justifyContent: 'space-evenly' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', gap: checkGap(), padding: '2rem' }}>
+                            <div style={{ textAlign: 'center' }}>
+                                <label style={saldosLabel}>Consultas pagas</label>
+                                <h1 style={valorH1}>{
+                                    role === '' && paidBgCheck !== '' ? paidBgCheck
+                                        : role === '' && paidBgCheck === '' ? '0'
+                                            : backgroundPaidCollaborator}
+                                </h1>
+                            </div>
 
-                        <div>
-                            <label style={saldosLabel}>Consultas gratuitas</label>
-                            <h1 style={valorH1}>{
-                                role === '' && freeBgCheck !== '' ? freeBgCheck
-                                    : role === '' && freeBgCheck === '' ? '0'
-                                        : backgroundFreeCollaborator}
-                            </h1>
+                            <div>
+                                <label style={saldosLabel}>Consultas gratuitas</label>
+                                <h1 style={valorH1}>{
+                                    role === '' && freeBgCheck !== '' ? freeBgCheck
+                                        : role === '' && freeBgCheck === '' ? '0'
+                                            : backgroundFreeCollaborator}
+                                </h1>
+                            </div>
+                        </div>
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '2rem', borderTop: '1px solid rgba(0, 0, 0, 0.07)' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                                <label style={{ textAlign: 'center' }}>Para adquirir mais créditos de consultas para sua conta, clique no botão abaixo.</label>
+                                <div onClick={() => setLocation('/creditos')} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '10px', border: '1px solid rgba(34, 34, 34, 0.2)', width: checkWidth2(), marginTop: '2rem', borderRadius: '25px', cursor: 'pointer', backgroundColor: primaryColor, boxShadow: shadow }}>
+                                    <Icon type="plusCircle" size={21} color="#fafafa" style={{ marginRight: '10px' }} />
+                                    <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     : runErrorBgCheck()

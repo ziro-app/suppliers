@@ -46,4 +46,19 @@ export const wrapper = {
     },
     tooltipCursor = {
         cursor: 'pointer'
+    },
+    consultasContainer = {
+        display: 'grid',
+        rowGap: '35px',
+        marginTop: '35px',
+        marginBottom: '50px'
+    },
+    saldosLabel = {
+        opacity: '55%',
+        fontSize: '1.1rem'
+    },
+    valorH1 = {
+    textAlign: 'center',
+    fontSize: '1.8rem',
+    margin: '0',
     }

@@ -35,6 +35,7 @@ import BackgroundCheck from './BackgroundCheck/index';
 import BankInfo from './BankInfo/index';
 import Preferences from './Preferences/index';
 import CheckoutBackgroundCheck from './CheckoutBackgroundCheck/index';
+import AboutCredits from './AboutCredits/index';
 import { userContext } from './appContext';
 
 const Router = ({ isLogged }) => {
@@ -141,6 +142,13 @@ const Router = ({ isLogged }) => {
             <Menu title="Tarifas">
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <Rates />
+                </motion.div>
+            </Menu>
+        ),
+        '/creditos': (
+            <Menu title="Créditos para consultas">
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                    <AboutCredits />
                 </motion.div>
             </Menu>
         ),
