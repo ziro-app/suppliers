@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const createTransaction = async ({ sellerZoopId, charge, cardholder, month, year, prettyNumber, cvv, installments, seller }) => {
-    const url = `${process.env.PAY_URL}/payments-create`;
+    const url = `${process.env.PAY_URL}payments-create`;
     console.log('url', url);
     const method = 'POST';
     const headers = {
