@@ -9,6 +9,7 @@ import { cadastralSituationBody, ccfBody, pefinBody, protestsBody, refinBody } f
 const mountBlockPF = (data, setPendency) => {
     const { nome, nomeMae, dataNascimento, bairro, cep, cidade,
         endereco, estado, falecido, idade, situacaoCpf, dataSituacaoCpf } = data;
+        console.log(data)
     const { cheque, dividas_vencidas, protestos, pefin, refin, ccf } = data;
     return [
         {
@@ -16,7 +17,7 @@ const mountBlockPF = (data, setPendency) => {
             body: [
                 {
                     title: 'Nome',
-                    content: nome
+                    content: nome || 'Nome não encontrado'
                 },
                 {
                     title: 'Nascimento',
@@ -101,6 +102,7 @@ const mountBlockPJ = (data, setPendency, setPartner) => {
     const { razao, dataFundacao, situacaoCadastral, dataSituacaoCnpj,
         ramoAtv, naturezaJuridica, tipoSociedade, dividas_vencidas,
         protestos, pefin, refin, ccf, socios } = data;
+        console.log(data)
     const principal = ramoAtv.data ? ramoAtv.data.filter(it => it.atvdPrimaria)[0]['descricao'] : '';
     return [
         {

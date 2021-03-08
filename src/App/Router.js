@@ -134,9 +134,7 @@ const Router = ({ isLogged }) => {
             </Menu>
         ),
         '/consulta': (
-            <HeaderBack title="Comprar consultas de CNPJ" navigateTo="/comprar-consulta">
                 <BackgroundCheck />
-            </HeaderBack>
         ),
         '/tarifas': (
             <Menu title="Tarifas">

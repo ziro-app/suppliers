@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,Suspense } from 'react';
 import { post } from 'axios';
 import { auth, db } from '../Firebase/index';
 import { userContext } from './appContext';
@@ -303,11 +303,13 @@ export const App = () => {
     if (errorLoading) return <Error />;
     return (
         <ErrorBoundary>
+        <Suspense fallback={<InitialLoader />}>
             <MessageModal>
                 <userContext.Provider value={userData}>
                     <Router isLogged={!!uid} />
                 </userContext.Provider>
             </MessageModal>
+            </Suspense>
         </ErrorBoundary>
     );
 };

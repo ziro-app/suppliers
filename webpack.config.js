@@ -11,7 +11,7 @@ module.exports = (env, { mode }) => {
         {
           test: /\.tsx?$/,
           use: 'ts-loader',
-          exclude: /node_modules/
+          exclude: /node_modules/,
         },
         {
           test: /\.js$/,
@@ -31,7 +31,7 @@ module.exports = (env, { mode }) => {
       ],
     },
     resolve: {
-        extensions: ['.ts', '.tsx', '.js']
+      extensions: ['.ts', '.tsx', '.js'],
     },
     plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
   };
@@ -49,6 +49,7 @@ module.exports = (env, { mode }) => {
       zoop_auth,
       doc_url,
       seller_id_ziro,
+      sheet_id_transactions,
       sheet_cnpj_id,
       email_token,
       api_email,
@@ -64,6 +65,7 @@ module.exports = (env, { mode }) => {
     config.plugins.push(
       new webpack.DefinePlugin({
         'process.env': {
+          SHEET_ID_TRANSACTIONS: JSON.stringify(sheet_id_transactions),
           SHEET_URL: JSON.stringify(sheet_url),
           SHEET_TOKEN: JSON.stringify(sheet_token),
           SHEET_ID: JSON.stringify(sheet_id),
@@ -116,6 +118,7 @@ module.exports = (env, { mode }) => {
           CNPJ_URL: JSON.stringify(process.env.CNPJ_URL),
           CNPJ_TOKEN: JSON.stringify(process.env.CNPJ_TOKEN),
           SHEET_SUPPLIERS_ID: JSON.stringify(process.env.SHEET_SUPPLIERS_ID),
+          SHEET_ID_TRANSACTIONS: JSON.stringify(process.env.SHEET_ID_TRANSACTIONS),
           PAY_URL: JSON.stringify(process.env.PAY_URL),
           PAY_TOKEN: JSON.stringify(process.env.PAY_TOKEN),
           ZOOP_AUTH: JSON.stringify(process.env.ZOOP_AUTH),
