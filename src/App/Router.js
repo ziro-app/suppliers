@@ -178,7 +178,7 @@ const Router = ({ isLogged }) => {
                 </motion.div>
             </Menu>
         );
-        privateRoutes['/comprar-consulta'] = <CheckoutBackgroundCheck />;
+        privateRoutes['/comprar-consulta'] = <Menu title="Comprar consultas"><CheckoutBackgroundCheck /></Menu>;
         privateRoutes[matchReceivable ? location : null] = <Receivables {...paramsReceivable} />;
         privateRoutes['/update'] = (
             <HeaderBack title="Meus dados" navigateTo="/login">
@@ -186,7 +186,7 @@ const Router = ({ isLogged }) => {
             </HeaderBack>
         );
         privateRoutes[matchBuyCreditBackgroundCheck ? location : null] = (
-            <HeaderBack title="Comprar consultas de CNPJ" navigateTo="/comprar-consulta">
+            <HeaderBack title="Comprar consultas" navigateTo="/comprar-consulta">
                 <CheckoutBackgroundCheck {...paramsBuyCreditBackgroundCheck} />
             </HeaderBack>
         );

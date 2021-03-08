@@ -13,7 +13,7 @@ import Error from '@bit/vitorbarbosa19.ziro.error';
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import { alertColor } from '@ziro/theme';
-import { Menu } from '../Menu';
+//import { Menu } from '../Menu';
 import { userContext } from '../appContext';
 import fetch from './fetch';
 import { apiErrorContainer, box1, box2, header, wrapper } from './styles';
@@ -68,7 +68,6 @@ const CheckoutBackgroundCheck = () => {
       {match ? (
         <BuyCreditBackgroundCheck setPaidRequests={setPaidRequests} {...params} />
       ) : (
-        <Menu title="Comprar consultas de CNPJ">
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div style={{ display: 'grid', textAlign: 'center', justifyContent: 'center', paddingBottom: '20px' }}>
               <strong style={{ fontSize: '1.5rem', fontFamily: 'Rubik', color: freeRequests ? '#000' : alertColor }}>
@@ -92,11 +91,13 @@ const CheckoutBackgroundCheck = () => {
                     <InputText
                       value={quantity}
                       onChange={({ target: { value } }) => {
-                        setQuantity(value);
+                        const re = /^[0-9\b]+$/;
+                        if (value === '' || re.test(value)) {
+                            setQuantity(value);
+                         }
                       }}
                       placeholder="5"
                       inputMode="numeric"
-                      type="number"
                       maxLength="5"
                     />
                   }
@@ -104,7 +105,6 @@ const CheckoutBackgroundCheck = () => {
               ]}
             />
           </motion.div>
-        </Menu>
       )}
     </>
   );
