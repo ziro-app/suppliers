@@ -20,6 +20,7 @@ import fetch from './fetch';
 import maskInput from '@ziro/mask-input';
 import { motion } from 'framer-motion';
 import sendToBackend from './sendToBackend';
+import isCPF from '../utils/isCPF'
 import { useLocation } from 'wouter';
 import { userContext } from '../appContext';
 import validateDocuments from '../utils/validateDocuments';
@@ -233,7 +234,8 @@ const BackgroundCheck = () => {
                 <InputText
                   value={document}
                   onChange={({ target: { value } }) => {
-                    let mask = value.length <= 14 ? '###.###.###-##' : '##.###.###/####-##';
+                    console.log(value)
+                    const mask = isCPF(value) ? '###.###.###-##' : '##.###.###/####-##';
                     setDocument(maskInput(value, mask, true));
                   }}
                   placeholder="000.000.000-00"
