@@ -14,11 +14,11 @@ const useGetRates = () => {
     const { zoopId } = useContext(userContext);
 
     const brands = [
-        'americanexpress',
-        'elo',
-        'hipercard',
         'mastercard',
-        'visa'
+        'visa',
+        'elo',
+        'americanexpress',
+        'hipercard'
     ]
     
     useEffect(() => {
