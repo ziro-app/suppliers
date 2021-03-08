@@ -21,7 +21,6 @@ import { db } from '../../Firebase/index';
 import fetch from './fetch';
 import sendToBackend from './sendToBackend';
 import isCPF from '../utils/isCPF'
-import { useLocation } from 'wouter';
 import { apiErrorContainer, box1, box2, consultasContainer, header, saldosLabel, valorH1, wrapper } from './styles';
 import { userContext } from '../appContext';
 import validateDocuments from '../utils/validateDocuments';
