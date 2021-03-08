@@ -43,6 +43,19 @@ const fetch = async(
                                             content: `${doc.data().maxParcelas}x`
                                         },
                                     ]
+                                },
+                                {
+                                    header: 'Consultas CPF e CNPJ',
+                                    body: [
+                                        {
+                                            title: 'Valor de 1 crédito',
+                                            content: 'R$10,00'
+                                        },
+                                        {
+                                            title: 'Validade dos créditos',
+                                            content: 'Não expiram'
+                                        }
+                                    ]
                                 }
                             ]
                             setBlockDetails(details)

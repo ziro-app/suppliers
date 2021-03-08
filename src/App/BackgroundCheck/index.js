@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { alertColor, fontTitle, primaryColor, shadow } from '@ziro/theme';
-import { apiErrorContainer, box1, box2, consultasContainer, header, saldosLabel, valorH1, wrapper } from './styles';
 
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Details from '@bit/vitorbarbosa19.ziro.details';
@@ -10,18 +9,20 @@ import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
+import ScoreCircle from '@bit/vitorbarbosa19.ziro.score-circle';
+import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
+import maskInput from '@ziro/mask-input';
+import { motion } from 'framer-motion';
+import { useLocation } from 'wouter';
 import { Menu } from '../Menu';
 import PartnersDetails from './PartnersDetails';
 import PendencyDetails from './PendencyDetails';
-import ScoreCircle from '@bit/vitorbarbosa19.ziro.score-circle';
-import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import { db } from '../../Firebase/index';
 import fetch from './fetch';
-import maskInput from '@ziro/mask-input';
-import { motion } from 'framer-motion';
 import sendToBackend from './sendToBackend';
 import isCPF from '../utils/isCPF'
 import { useLocation } from 'wouter';
+import { apiErrorContainer, box1, box2, consultasContainer, header, saldosLabel, valorH1, wrapper } from './styles';
 import { userContext } from '../appContext';
 import validateDocuments from '../utils/validateDocuments';
 
@@ -192,7 +193,11 @@ const BackgroundCheck = () => {
               {backgroundCheckRequests + backgroundCheckRequestsPaid <= 2 && (
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '2rem', borderTop: '1px solid rgba(0, 0, 0, 0.07)' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                    <label style={{ textAlign: 'center' }}>Atenção! Seus créditos estão acabando. Clique no botão abaixo para adquirir mais.</label>
+                    {backgroundCheckRequests > 0 || backgroundCheckRequestsPaid > 0 ?
+                      <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Seus créditos estão acabando. Clique no botão abaixo para adquirir mais.</label>
+                    :
+                      <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Não fique sem créditos. Apenas R$10,00 por consulta.</label>
+                    }
                     <div
                       onClick={() => setLocation('/creditos')}
                       style={{
@@ -234,7 +239,6 @@ const BackgroundCheck = () => {
                 <InputText
                   value={document}
                   onChange={({ target: { value } }) => {
-                    console.log(value)
                     const mask = isCPF(value) ? '###.###.###-##' : '##.###.###/####-##';
                     setDocument(maskInput(value, mask, true));
                   }}
