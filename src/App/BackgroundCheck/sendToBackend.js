@@ -45,33 +45,36 @@ const sendToBackend = state => () => {
       if (query.empty) {
         const [paidRequests, freeRequests, currentFreeMonth, currentFreeYear] = await getInfo(refId);
         if (freeRequests > 0 || paidRequests > 0) {
-          const {
-            data: { backgroundCheck },
-          } = await post(url, {}, config);
-          console.log(backgroundCheck);
-          let updated = 0;
-          if (freeRequests > 0) {
-            updated = freeRequests - 1;
-            await db.collection('backgroundCheck').add({ date: new Date(), ...backgroundCheck });
-            await db.collection('suppliers').doc(refId).update({
-              backgroundCheckRequestsAvailable: updated,
-              backgroundCheckCurrentYear: currentFreeYear,
-              backgroundCheckCurrentMonth: currentFreeMonth,
-            });
-            setFreeRequests(updated);
-          } else if (paidRequests > 0) {
-            updated = paidRequests - 1;
-            await db.collection('backgroundCheck').add({ date: new Date(), ...backgroundCheck });
-            await db.collection('suppliers').doc(refId).update({
-              backgroundCheckRequestsAvailablePaid: updated,
-              backgroundCheckCurrentYear: currentFreeYear,
-              backgroundCheckCurrentMonth: currentFreeMonth,
-            });
-            setPaidRequests(updated);
+            const { data: { backgroundCheck } } = await post(url, {}, config);
+            console.log(backgroundCheck);
+          if (backgroundCheck) {
+            let updated = 0;
+            if (freeRequests > 0) {
+              updated = freeRequests - 1;
+              await db.collection('backgroundCheck').add({ date: new Date(), ...backgroundCheck });
+              await db.collection('suppliers').doc(refId).update({
+                backgroundCheckRequestsAvailable: updated,
+                backgroundCheckCurrentYear: currentFreeYear,
+                backgroundCheckCurrentMonth: currentFreeMonth,
+              });
+              setFreeRequests(updated);
+            } else if (paidRequests > 0) {
+              updated = paidRequests - 1;
+              await db.collection('backgroundCheck').add({ date: new Date(), ...backgroundCheck });
+              await db.collection('suppliers').doc(refId).update({
+                backgroundCheckRequestsAvailablePaid: updated,
+                backgroundCheckCurrentYear: currentFreeYear,
+                backgroundCheckCurrentMonth: currentFreeMonth,
+              });
+              setPaidRequests(updated);
+            }
+            console.log('backgroundCheck inside sendToBackend', backgroundCheck);
+            block = mountBlocks(document, backgroundCheck, setPendency, setPartner);
+            scoreValue = backgroundCheck?.score || 0;
+          }else{
+            setDocument('');
+            setApiError(true);
           }
-          console.log('backgroundCheck inside sendToBackend',backgroundCheck)
-          block = mountBlocks(document, backgroundCheck, setPendency, setPartner);
-          scoreValue = backgroundCheck?.score || 0;
         } else if (freeRequests === 0 && paidRequests === 0) {
           setFreeRequests(0);
           setPaidRequests(0);
@@ -80,7 +83,7 @@ const sendToBackend = state => () => {
       } else {
         const data = query.docs[0].data();
         const { score } = data;
-        console.log('data inside sendToBackend',data)
+        console.log('data inside sendToBackend', data);
         block = mountBlocks(document, data, setPendency, setPartner);
         scoreValue = score;
       }
