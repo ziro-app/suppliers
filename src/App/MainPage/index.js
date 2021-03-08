@@ -267,7 +267,7 @@ function MainPage() {
                         
                         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '2rem', borderTop: '1px solid rgba(0, 0, 0, 0.07)' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                <label style={{ textAlign: 'center' }}>Para adquirir mais créditos de consultas para sua conta, clique no botão abaixo.</label>
+                                <label style={{ textAlign: 'center' }}>Adquira créditos para consultar CPF e CNPJ. Venda para clientes novos com mais segurança.</label>
                                 <div onClick={() => setLocation('/creditos')} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '10px', border: '1px solid rgba(34, 34, 34, 0.2)', width: checkWidth2(), marginTop: '2rem', borderRadius: '25px', cursor: 'pointer', backgroundColor: primaryColor, boxShadow: shadow }}>
                                     <Icon type="plusCircle" size={21} color="#fafafa" style={{ marginRight: '10px' }} />
                                     <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
