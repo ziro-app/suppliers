@@ -1,18 +1,21 @@
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useRoute } from 'wouter';
 import { motion } from 'framer-motion';
 import Form from '@bit/vitorbarbosa19.ziro.form';
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
-import InputValue from '@bit/vitorbarbosa19.ziro.input-text';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
+import { alertColor } from '@ziro/theme';
 import { Menu } from '../Menu';
 import { userContext } from '../appContext';
 import fetch from './fetch';
-import { alertColor } from '@ziro/theme';
 import { apiErrorContainer, box1, box2, header, wrapper } from './styles';
 import BuyCreditBackgroundCheck from './BuyCreditBackgroundCheck';
 
@@ -80,7 +83,7 @@ const CheckoutBackgroundCheck = () => {
               buttonOnTop
               buttonName="Ir para cartão"
               validations={validations}
-              sendToBackend={() => setLocation(`/comprar-consulta/cartao/${quantity}`) /*sendToBackend ? sendToBackend({ ...state }) : () => null*/}
+              sendToBackend={() => setLocation(`/comprar-consulta/cartao/${quantity}`) /* sendToBackend ? sendToBackend({ ...state }) : () => null */}
               inputs={[
                 <FormInput
                   name="quantity"

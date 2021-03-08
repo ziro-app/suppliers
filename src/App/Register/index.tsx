@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect, memo } from 'react';
 import axios from 'axios';
 import HeaderHome from '@bit/vitorbarbosa19.ziro.header-home';

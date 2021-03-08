@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { useLocation, useRoute } from 'wouter';
 import { motion } from 'framer-motion';
@@ -24,9 +25,17 @@ import createTransaction from './utils/createTransaction';
 import prepareDataToPay from './utils/prepareDataToPay';
 import { HeaderWithoutModal } from './components/Header';
 import { installmentOptions, installmentCharge } from './utils/installmentUtils';
-import * as payMessages from "ziro-messages/dist/src/catalogo/pay/checkout";import { prompt, redePrompt } from "ziro-messages/dist/src/zoop";
-//import { RequestInterceptor, ResponseInterceptor } from "@bit/vitorbarbosa19.ziro.utils.axios";
-import { AxiosError } from 'axios';
+import { prompt, redePrompt } from "ziro-messages/dist/src/zoop";
+import writeReceivablesToSheet from './utils/writeReceivablesToSheet'
+import writeTransactionToSheet from './utils/writeTransactionToSheet'
+import {dbAndSheet} from './utils/dbSheet'
+import { useFirestore } from 'reactfire';
+import {
+    createPayment,
+    getReceivables,
+} from './utils/functionsZoop'
+import { useCancelToken } from '@bit/vitorbarbosa19.ziro.utils.axios';
+
 
 type RedeMessage = typeof redePrompt[keyof typeof redePrompt];
 type ZoopMessage = typeof prompt[keyof typeof prompt];
@@ -68,11 +77,11 @@ const parseCard = ({ cardholder: holder_name, number, cvv: security_code, expiry
       card_number,
     };
   };
-const createPaymentBuyer = async (setPaymentId,valueForZoop,card,type,buyer,transactionState) => {
+  const createPaymentBuyer = async (dbData/* setPaymentId,valueForZoop,card,type,buyer,transactionState */) => {
     const nowDate = fs.FieldValue.serverTimestamp()
     await db
         .collection('payments-sellers-ziro')
-        .add({
+        .add(dbData/* {
             dateLinkCreated: nowDate,
     dateLastUpdated: nowDate,
     datePaid: nowDate,
@@ -85,7 +94,7 @@ const createPaymentBuyer = async (setPaymentId,valueForZoop,card,type,buyer,tran
 	cardBrand: type,
     cardFirstFour: card.card_number.substring(0,4),
     cardLastFour: card.card_number.substring(card.card_number.length-4),
-    cardholder: card.holder_name,
+    cardholder: card.holder_name.toLowerCase(),
     charge: Number(valueForZoop),
     fees: transactionState.fees,
     fee_details: transactionState.fee_details,
@@ -93,10 +102,7 @@ const createPaymentBuyer = async (setPaymentId,valueForZoop,card,type,buyer,tran
     receivables: {},
     transactionZoopId: transactionState.transactionZoopId,
 
-        })
-        .then(doc => {
-            return setPaymentId(doc.id);
-        })
+        } */)
         .catch(e => {
             console.log('error firebase', e);
         })
@@ -104,8 +110,10 @@ const createPaymentBuyer = async (setPaymentId,valueForZoop,card,type,buyer,tran
 };
 
 const BuyCreditBackgroundCheck = ({setPaidRequests}) => {
+    const source = useCancelToken();
     const header = useMemo(() => <HeaderWithoutModal title="Finalizar" leftButton={{ icon: 'close', onClick: close }} />, [close]);
     const { docId, zoopId, ownerId, role, fantasia,reason} = useContext(userContext);
+    const timestamp = useFirestore.FieldValue.serverTimestamp;
     const buyer = {zoopId, docId,fantasia, reason}
     const [paymentId, setPaymentId] = useState('');
     const [isLoading, setIsLoading] = useState(true);
@@ -208,6 +216,7 @@ const BuyCreditBackgroundCheck = ({setPaidRequests}) => {
                             const transaction = await createTransaction(paymentData);
                             //console.log('transaction',transaction);
                             const {id:transactionZoopId,fee_details,sales_receipt:receiptId,fees} = transaction
+
                             const transactionState = {transactionZoopId, fee_details,receiptId,fees}
                             const backgroundCheckRequestsAvailablePaid = await getInfo(docId);
                             if (typeof backgroundCheckRequestsAvailablePaid !== 'undefined') {
@@ -216,7 +225,18 @@ const BuyCreditBackgroundCheck = ({setPaidRequests}) => {
                                     backgroundCheckRequestsAvailablePaid: sum,
                                 });
                             }
-                            createPaymentBuyer(setPaymentId,valueForZoop,card,type,buyer,transactionState)
+                            const receivables = await getReceivables(transaction.id, source.token);
+                            const [dbData, sheetData, receivablesData] = dbAndSheet(
+                                transaction,
+                                buyer,
+                                receivables,
+                                timestamp,
+                            );
+                            await writeTransactionToSheet(sheetData);
+                            if (receivablesData.length > 0) await writeReceivablesToSheet(receivablesData);
+                            //await payment.ref.update(dbData).catch(errorThrowers.saveFirestore("registered-payment"));
+
+                            createPaymentBuyer(dbData/* setPaymentId,valueForZoop,card,type,buyer,transactionState */)
                             setPaidRequests(Number(backgroundCheckRequestsAvailablePaid) + Number(quantity))
                             setLocation('/comprar-consulta')
                             resolve('resolved');
