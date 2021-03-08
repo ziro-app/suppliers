@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { alertColor, fontTitle, primaryColor, shadow } from '@ziro/theme';
+import { alertColor, fontTitle, primaryColor, shadow, warningColor } from '@ziro/theme';
 import { apiErrorContainer, box1, box2, consultasContainer, header, saldosLabel, valorH1, wrapper } from './styles';
 
 import Button from '@bit/vitorbarbosa19.ziro.button';
@@ -191,7 +191,11 @@ const BackgroundCheck = () => {
               {backgroundCheckRequests + backgroundCheckRequestsPaid <= 2 && (
                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '2rem', borderTop: '1px solid rgba(0, 0, 0, 0.07)' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                    <label style={{ textAlign: 'center' }}>Atenção! Seus créditos estão acabando. Clique no botão abaixo para adquirir mais.</label>
+                    {backgroundCheckRequests > 0 || backgroundCheckRequestsPaid > 0 ?
+                      <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Seus créditos estão acabando. Clique no botão abaixo para adquirir mais.</label>
+                    :
+                      <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Não fique sem créditos. Apenas R$10,00 por consulta.</label>
+                    }
                     <div
                       onClick={() => setLocation('/creditos')}
                       style={{
