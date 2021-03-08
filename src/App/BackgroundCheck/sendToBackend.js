@@ -69,6 +69,7 @@ const sendToBackend = state => () => {
             });
             setPaidRequests(updated);
           }
+          console.log('backgroundCheck inside sendToBackend',backgroundCheck)
           block = mountBlocks(document, backgroundCheck, setPendency, setPartner);
           scoreValue = backgroundCheck?.score || 0;
         } else if (freeRequests === 0 && paidRequests === 0) {
@@ -79,6 +80,7 @@ const sendToBackend = state => () => {
       } else {
         const data = query.docs[0].data();
         const { score } = data;
+        console.log('data inside sendToBackend',data)
         block = mountBlocks(document, data, setPendency, setPartner);
         scoreValue = score;
       }

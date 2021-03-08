@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { alertColor, fontTitle, primaryColor, shadow, warningColor } from '@ziro/theme';
-import { apiErrorContainer, box1, box2, consultasContainer, header, saldosLabel, valorH1, wrapper } from './styles';
+import { alertColor, fontTitle, primaryColor, shadow } from '@ziro/theme';
 
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Details from '@bit/vitorbarbosa19.ziro.details';
@@ -10,17 +9,18 @@ import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
+import ScoreCircle from '@bit/vitorbarbosa19.ziro.score-circle';
+import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
+import maskInput from '@ziro/mask-input';
+import { motion } from 'framer-motion';
+import { useLocation } from 'wouter';
 import { Menu } from '../Menu';
 import PartnersDetails from './PartnersDetails';
 import PendencyDetails from './PendencyDetails';
-import ScoreCircle from '@bit/vitorbarbosa19.ziro.score-circle';
-import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
 import { db } from '../../Firebase/index';
 import fetch from './fetch';
-import maskInput from '@ziro/mask-input';
-import { motion } from 'framer-motion';
 import sendToBackend from './sendToBackend';
-import { useLocation } from 'wouter';
+import { apiErrorContainer, box1, box2, consultasContainer, header, saldosLabel, valorH1, wrapper } from './styles';
 import { userContext } from '../appContext';
 import validateDocuments from '../utils/validateDocuments';
 
@@ -237,7 +237,7 @@ const BackgroundCheck = () => {
                 <InputText
                   value={document}
                   onChange={({ target: { value } }) => {
-                    let mask = value.length <= 14 ? '###.###.###-##' : '##.###.###/####-##';
+                    const mask = value.length <= 14 ? '###.###.###-##' : '##.###.###/####-##';
                     setDocument(maskInput(value, mask, true));
                   }}
                   placeholder="000.000.000-00"
