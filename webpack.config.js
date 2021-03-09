@@ -31,7 +31,7 @@ module.exports = (env, { mode }) => {
       ],
     },
     resolve: {
-      extensions: ['.ts', '.tsx', '.js'],
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
     },
     plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
   };

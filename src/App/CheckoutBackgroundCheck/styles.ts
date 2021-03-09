@@ -37,7 +37,6 @@ export const wrapper = {
     },
     header = {
         fontFamily: fontTitle,
-        textTransform: 'uppercase',
         color: alertColor,
     },
     tooltipContainer = {
