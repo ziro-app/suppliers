@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useLocation } from 'wouter';
 import { db, fs } from '../../Firebase/index';
 
 import Dropdown from '@bit/vitorbarbosa19.ziro.dropdown';
 import Form from '@bit/vitorbarbosa19.ziro.form';
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
+import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import InputMoney from '@bit/vitorbarbosa19.ziro.input-money';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner-with-div';
@@ -13,10 +15,12 @@ import sendToBackend from './sendToBackend';
 import { userContext } from '../appContext';
 import ToggleButton from '@bit/vitorbarbosa19.ziro.toggle-button';
 import { inline, center } from './styles';
+import { primaryColor, shadow, fontTitle, fontSizeNormal } from '@ziro/theme';
 
 const CreatePayment = () => {
   const { fantasy, zoopId, docId, role, fname, brand, maxInstallments } = useContext(userContext);
   const [afterBackend, setAfterBackend] = useState(false);
+  const [, setLocation] = useLocation();
   const [charge, setCharge] = useState('');
   const [installmentsMax, setInstallmentsMax] = useState('');
   const [observations, setObservations] = useState('');
@@ -89,6 +93,8 @@ const CreatePayment = () => {
     }
   }, [afterBackend]);
 
+  const checkWidth2 = () => window.innerWidth < 400 ? '80%' : '41%';
+
   const validations = [
     {
       name: 'insurance',
@@ -114,181 +120,203 @@ const CreatePayment = () => {
   return hasSellerZoopPlan &&
     (Object.prototype.hasOwnProperty.call(hasSellerZoopPlan, 'activePlan') ? true : Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'amount') || Object.prototype.hasOwnProperty.call(hasSellerZoopPlan.antiFraud, 'percentage')) ? (
     insurance === null || insurance ? (
-      <Form
-        buttonName="Criar Link"
-        validations={validations}
-        sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
-        inputs={[
-          <FormInput name="charge" label="Valor a cobrar" input={<InputMoney value={charge} setValue={setCharge} />} />,
-          <FormInput
-            name="installmentsMax"
-            label="Parcelamento máximo"
-            input={
-              <InputText
-                value={installmentsMax}
-                onChange={({ target: { value } }) => {
-                  const toInteger = parseInt(value, 10);
-                  const checkValue = toInteger >= 1 && toInteger <= 12 && toInteger
-                  setInstallmentsMax(maskInput(checkValue, '##', true));
-                }}
-                placeholder={parseInt(maxInstallments)}
-                inputMode="numeric"
-              />
-            }
-          />,
-          <FormInput
-            name="insurance"
-            label="Seguro antifraude na transação"
-            input={
-              <Dropdown
-                disabled={!hasSellerZoopPlan || checkoutWithoutRegister || alwaysInsuredToggle === true}
-                value={insurenceDropdownValue || (alwaysInsuredToggle === true && afterBackend === false ? 'Com seguro' : '')}
-                onChange={({ target: { value } }) => {
-                  if (value === 'Com seguro') {
-                    setInsurance(true);
-                    setInsurenceDropdownValue('Com seguro');
-                  } else if (value === 'Sem seguro') {
-                    setInsurance(false);
-                    setInsurenceDropdownValue('Sem seguro');
-                  } else if (checkoutWithoutRegister === true) {
-                    setInsurance(false);
-                    setInsurenceDropdownValue('Sem seguro');
-                  } else if (alwaysInsuredToggle === true) {
-                    setInsurance(true);
-                    setInsurenceDropdownValue('Com seguro');
-                  } else {
-                    setInsurance(null);
-                    setInsurenceDropdownValue('');
-                  }
-                }}
-                onChangeKeyboard={element => {
-                  if(element === null){
-                    return
-                  }else{
-                    if (element.value === 'Com seguro') {
+      <div>  
+        <Form
+          buttonName="Criar Link"
+          validations={validations}
+          sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+          inputs={[
+            <FormInput name="charge" label="Valor a cobrar" input={<InputMoney value={charge} setValue={setCharge} />} />,
+            <FormInput
+              name="installmentsMax"
+              label="Parcelamento máximo"
+              input={
+                <InputText
+                  value={installmentsMax}
+                  onChange={({ target: { value } }) => {
+                    const toInteger = parseInt(value, 10);
+                    const checkValue = toInteger >= 1 && toInteger <= 12 && toInteger
+                    setInstallmentsMax(maskInput(checkValue, '##', true));
+                  }}
+                  placeholder={parseInt(maxInstallments)}
+                  inputMode="numeric"
+                />
+              }
+            />,
+            <FormInput
+              name="insurance"
+              label="Seguro antifraude na transação"
+              input={
+                <Dropdown
+                  disabled={!hasSellerZoopPlan || checkoutWithoutRegister || alwaysInsuredToggle === true}
+                  value={insurenceDropdownValue || (alwaysInsuredToggle === true && afterBackend === false ? 'Com seguro' : '')}
+                  onChange={({ target: { value } }) => {
+                    if (value === 'Com seguro') {
                       setInsurance(true);
                       setInsurenceDropdownValue('Com seguro');
-                    } else if (element.value === 'Sem seguro') {
+                    } else if (value === 'Sem seguro') {
                       setInsurance(false);
                       setInsurenceDropdownValue('Sem seguro');
-                    } else {
+                    } else if (checkoutWithoutRegister === true) {
                       setInsurance(false);
-                      setInsurenceDropdownValue('');
-                    }
-                  }
-                }}
-                list={options}
-                placeholder={alwaysInsuredToggle === true ? "Com seguro" : "Escolha com ou sem seguro"}
-                readOnly
-              />
-            }
-          />,
-          <FormInput
-            name="observation"
-            label="Observações (opcional)"
-            input={<InputText value={observations} onChange={({ target: { value } }) => setObservations(value)} placeholder="Romaneio, nome do cliente, etc" />}
-          />,
-        ]}
-      />
-    ) : (
-      <Form
-        buttonName="Criar Link"
-        validations={validations}
-        sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
-        inputs={[
-          <FormInput name="charge" label="Valor a cobrar" input={<InputMoney value={charge} setValue={setCharge} />} />,
-          <FormInput
-            name="installmentsMax"
-            label="Parcelamento máximo"
-            input={
-              <InputText
-                value={installmentsMax}
-                onChange={({ target: { value } }) => {
-                  const toInteger = parseInt(value, 10);
-                  const checkValue = toInteger >= 1 && toInteger <= 12 && toInteger
-                  setInstallmentsMax(maskInput(checkValue, '##', true));
-                }}
-                placeholder={parseInt(maxInstallments)}
-                inputMode="numeric"
-              />
-            }
-          />,
-          <FormInput
-            name="insurance"
-            label="Seguro antifraude na transação"
-            input={
-              <Dropdown
-                disabled={!hasSellerZoopPlan || checkoutWithoutRegister || alwaysInsuredToggle === true}
-                value={insurenceDropdownValue || (alwaysInsuredToggle === true && afterBackend === false ? 'Com seguro' : '')}
-                onChange={({ target: { value } }) => {
-                  if (value === 'Com seguro') {
-                    setInsurance(true);
-                    setInsurenceDropdownValue('Com seguro');
-                  } else if (value === 'Sem seguro') {
-                    setInsurance(false);
-                    setInsurenceDropdownValue('Sem seguro');
-                  } else if (checkoutWithoutRegister === true) {
-                    setInsurance(false);
-                    setInsurenceDropdownValue('Sem seguro');
-                  } else if (alwaysInsuredToggle === true) {
-                    setInsurance(true);
-                    setInsurenceDropdownValue('Com seguro');
-                  } else {
-                    setInsurance(null);
-                    setInsurenceDropdownValue('');
-                  }
-                }}
-                onChangeKeyboard={element => {
-                  if(element === null){
-                    return
-                  }else{
-                    if (element.value === 'Com seguro') {
+                      setInsurenceDropdownValue('Sem seguro');
+                    } else if (alwaysInsuredToggle === true) {
                       setInsurance(true);
                       setInsurenceDropdownValue('Com seguro');
-                    } else if (element.value === 'Sem seguro') {
-                      setInsurance(false);
-                      setInsurenceDropdownValue('Sem seguro');
                     } else {
-                      setInsurance(false);
+                      setInsurance(null);
                       setInsurenceDropdownValue('');
-                    }
-                  }
-                }}
-                list={options}
-                placeholder="Escolha com ou sem seguro"
-                readOnly
-              />
-            }
-          />,
-          <FormInput
-            name="observation"
-            label="Observações (opcional)"
-            input={<InputText value={observations} onChange={({ target: { value } }) => setObservations(value)} placeholder="Romaneio, nome do cliente, etc" />}
-          />,
-          <FormInput
-            name="checkoutWithoutRegister"
-            label="Deseja pagamento sem cadastro?"
-            input={
-              <div style={center}>
-                <div style={inline}>Não</div>
-                <ToggleButton
-                  size={30}
-                  template="primary"
-                  active={checkoutWithoutRegister}
-                  onClick={() => {
-                    setCheckoutWithoutRegister(!checkoutWithoutRegister);
-                    if (!checkoutWithoutRegister) {
-                      setInsurance(false);
-                      setInsurenceDropdownValue('Sem seguro');
                     }
                   }}
+                  onChangeKeyboard={element => {
+                    if(element === null){
+                      return
+                    }else{
+                      if (element.value === 'Com seguro') {
+                        setInsurance(true);
+                        setInsurenceDropdownValue('Com seguro');
+                      } else if (element.value === 'Sem seguro') {
+                        setInsurance(false);
+                        setInsurenceDropdownValue('Sem seguro');
+                      } else {
+                        setInsurance(false);
+                        setInsurenceDropdownValue('');
+                      }
+                    }
+                  }}
+                  list={options}
+                  placeholder={alwaysInsuredToggle === true ? "Com seguro" : "Escolha com ou sem seguro"}
+                  readOnly
                 />
-                <div style={inline}>Sim</div>
-              </div>
-            }
-          />,
-        ]}
-      />
+              }
+            />,
+            <FormInput
+              name="observation"
+              label="Observações (opcional)"
+              input={<InputText value={observations} onChange={({ target: { value } }) => setObservations(value)} placeholder="Romaneio, nome do cliente, etc" />}
+            />,
+          ]}
+        />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '3rem', borderRadius: '10px', marginTop: '2rem', boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px' }}>
+          <div style={{ display: 'flex', backgroundColor: 'rgba(0,0,0,0.05)', padding: '12px', borderRadius: '50%', marginRight: '23px' }}>
+            <Icon type="search" size={19} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <label style={{ fontSize: '1.5rem' }}>Deseja mais confiabilidade em suas vendas?</label>
+            <label style={{ fontSize: '1.5rem' }}>Consulte CPF/CNPJ do seu cliente <label onClick={() => setLocation('/creditos')} style={{ cursor: 'pointer', color: primaryColor, fontSize: '1.5rem', fontFamily: fontTitle, textDecoration: 'underline', marginTop: '2px' }}>aqui</label>.</label>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div>
+        <Form
+          buttonName="Criar Link"
+          validations={validations}
+          sendToBackend={sendToBackend ? sendToBackend(state) : () => null}
+          inputs={[
+            <FormInput name="charge" label="Valor a cobrar" input={<InputMoney value={charge} setValue={setCharge} />} />,
+            <FormInput
+              name="installmentsMax"
+              label="Parcelamento máximo"
+              input={
+                <InputText
+                  value={installmentsMax}
+                  onChange={({ target: { value } }) => {
+                    const toInteger = parseInt(value, 10);
+                    const checkValue = toInteger >= 1 && toInteger <= 12 && toInteger
+                    setInstallmentsMax(maskInput(checkValue, '##', true));
+                  }}
+                  placeholder={parseInt(maxInstallments)}
+                  inputMode="numeric"
+                />
+              }
+            />,
+            <FormInput
+              name="insurance"
+              label="Seguro antifraude na transação"
+              input={
+                <Dropdown
+                  disabled={!hasSellerZoopPlan || checkoutWithoutRegister || alwaysInsuredToggle === true}
+                  value={insurenceDropdownValue || (alwaysInsuredToggle === true && afterBackend === false ? 'Com seguro' : '')}
+                  onChange={({ target: { value } }) => {
+                    if (value === 'Com seguro') {
+                      setInsurance(true);
+                      setInsurenceDropdownValue('Com seguro');
+                    } else if (value === 'Sem seguro') {
+                      setInsurance(false);
+                      setInsurenceDropdownValue('Sem seguro');
+                    } else if (checkoutWithoutRegister === true) {
+                      setInsurance(false);
+                      setInsurenceDropdownValue('Sem seguro');
+                    } else if (alwaysInsuredToggle === true) {
+                      setInsurance(true);
+                      setInsurenceDropdownValue('Com seguro');
+                    } else {
+                      setInsurance(null);
+                      setInsurenceDropdownValue('');
+                    }
+                  }}
+                  onChangeKeyboard={element => {
+                    if(element === null){
+                      return
+                    }else{
+                      if (element.value === 'Com seguro') {
+                        setInsurance(true);
+                        setInsurenceDropdownValue('Com seguro');
+                      } else if (element.value === 'Sem seguro') {
+                        setInsurance(false);
+                        setInsurenceDropdownValue('Sem seguro');
+                      } else {
+                        setInsurance(false);
+                        setInsurenceDropdownValue('');
+                      }
+                    }
+                  }}
+                  list={options}
+                  placeholder="Escolha com ou sem seguro"
+                  readOnly
+                />
+              }
+            />,
+            <FormInput
+              name="observation"
+              label="Observações (opcional)"
+              input={<InputText value={observations} onChange={({ target: { value } }) => setObservations(value)} placeholder="Romaneio, nome do cliente, etc" />}
+            />,
+            <FormInput
+              name="checkoutWithoutRegister"
+              label="Deseja pagamento sem cadastro?"
+              input={
+                <div style={center}>
+                  <div style={inline}>Não</div>
+                  <ToggleButton
+                    size={30}
+                    template="primary"
+                    active={checkoutWithoutRegister}
+                    onClick={() => {
+                      setCheckoutWithoutRegister(!checkoutWithoutRegister);
+                      if (!checkoutWithoutRegister) {
+                        setInsurance(false);
+                        setInsurenceDropdownValue('Sem seguro');
+                      }
+                    }}
+                  />
+                  <div style={inline}>Sim</div>
+                </div>
+              }
+            />,
+          ]}
+        />
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '3rem', borderRadius: '10px', marginTop: '2rem', boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px' }}>
+          <div style={{ display: 'flex', backgroundColor: 'rgba(0,0,0,0.05)', padding: '12px', borderRadius: '50%', marginRight: '23px' }}>
+            <Icon type="search" size={19} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <label style={{ fontSize: '1.5rem' }}>Deseja mais confiabilidade em suas vendas?</label>
+            <label style={{ fontSize: '1.5rem' }}>Consulte CPF/CNPJ do seu cliente <label onClick={() => setLocation('/creditos')} style={{ cursor: 'pointer', color: primaryColor, fontSize: '1.5rem', fontFamily: fontTitle, textDecoration: 'underline', marginTop: '2px' }}>aqui</label>.</label>
+          </div>
+        </div>
+      </div>
     )
   ) : (
     <Form
