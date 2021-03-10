@@ -178,7 +178,7 @@ const Router = ({ isLogged }) => {
                 </motion.div>
             </Menu>
         );
-        privateRoutes['/comprar-consulta'] = <Menu title="Comprar consultas"><CheckoutBackgroundCheck /></Menu>;
+        privateRoutes['/comprar-consulta'] = <Menu title="Adquirir créditos"><CheckoutBackgroundCheck /></Menu>;
         privateRoutes[matchReceivable ? location : null] = <Receivables {...paramsReceivable} />;
         privateRoutes['/update'] = (
             <HeaderBack title="Meus dados" navigateTo="/login">

@@ -40,7 +40,7 @@ const CheckoutBackgroundCheck = () => {
       name: 'quantity',
       validation: value => (value ? Number(value) > 0 : false),
       value: quantity,
-      message: quantity === '' ? 'Não pode deixar vazio!' : Number(quantity) === 0 ? 'Não pode ser zero' : true,
+      message: quantity === '' ? 'Quantidade inválida' : Number(quantity) === 0 ? 'Não pode ser zero' : true,
     },
   ];
 
@@ -70,23 +70,20 @@ const CheckoutBackgroundCheck = () => {
       ) : (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div style={{ display: 'grid', textAlign: 'center', justifyContent: 'center', paddingBottom: '20px' }}>
-              <strong style={{ fontSize: '1.5rem', fontFamily: 'Rubik', color: freeRequests ? '#000' : alertColor }}>
-                {freeRequests ? `${freeRequests} consultas gratuitas restantes` : 'Consultas gratuitas esgotadas'}
-              </strong>
-              <strong style={{ fontSize: '1.5rem', fontFamily: 'Rubik', color: paidRequests ? '#000' : alertColor }}>
-                {paidRequests ? `${paidRequests} consultas pagas restantes` : 'Consultas pagas esgotadas'}
+              <strong style={{ fontSize: '1.5rem', fontFamily: 'Rubik', color: freeRequests || paidRequests > 0 ? '#000' : alertColor }}>
+                {freeRequests || paidRequests ? `${freeRequests+paidRequests} consulta(s) para usar` : 'Consultas esgotadas'}
               </strong>
             </div>
 
             <Form
               buttonOnTop
-              buttonName="Ir para cartão"
+              buttonName="Pagar"
               validations={validations}
               sendToBackend={() => setLocation(`/comprar-consulta/cartao/${quantity}`) /* sendToBackend ? sendToBackend({ ...state }) : () => null */}
               inputs={[
                 <FormInput
                   name="quantity"
-                  label="Quantidade"
+                  label="Quantidade desejada"
                   input={
                     <InputText
                       value={quantity}
@@ -98,7 +95,7 @@ const CheckoutBackgroundCheck = () => {
                       }}
                       placeholder="5"
                       inputMode="numeric"
-                      maxLength="5"
+                      maxLength="3"
                     />
                   }
                 />,
