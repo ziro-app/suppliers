@@ -112,9 +112,8 @@ const parseCard = ({ cardholder: holder_name, number, cvv: security_code, expiry
 const BuyCreditBackgroundCheck = ({setPaidRequests}) => {
     const source = useCancelToken();
     const header = useMemo(() => <HeaderWithoutModal title="Finalizar" leftButton={{ icon: 'close', onClick: close }} />, [close]);
-    const { docId, zoopId, ownerId, role, fantasia,reason} = useContext(userContext);
+    const { docId, zoopId, ownerId, role, fantasy,reason} = useContext(userContext);
     const timestamp = useFirestore.FieldValue.serverTimestamp;
-    const buyer = {zoopId, docId,fantasia, reason}
     const [paymentId, setPaymentId] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [customError, setCustomError] = useState(false);
@@ -128,6 +127,9 @@ const BuyCreditBackgroundCheck = ({setPaidRequests}) => {
     const [match, params] = useRoute('/comprar-consulta/cartao/:quantity');
     const { quantity } = params;
     if (!quantity) setLocation('comprar-consulta');
+    const quantityNumber = Number(quantity)
+    const buyer = {zoopId, docId,fantasy, reason,quantityNumber}
+    console.log(buyer)
     const { cardholder, expiry, cvv, validations, prettyNumber, prettyNumberWithAsterisks, type, code, cvvPlaceholder, cvvPlaceholderWithAsterisk, onChange } = useCreditCard();
     const state = { cardholder, expiry, prettyNumber, cvv, totalValueCreditBackgroundCheck, docId, isCollaborator, ownerId, document, quantity, setApiError };
     const card = parseCard({cardholder, expiry, number:prettyNumber, cvv})
@@ -232,7 +234,7 @@ const BuyCreditBackgroundCheck = ({setPaidRequests}) => {
                                 receivables,
                                 timestamp,
                             );
-                            await writeTransactionToSheet(sheetData);
+                            //await writeTransactionToSheet(sheetData);
                             if (receivablesData.length > 0) await writeReceivablesToSheet(receivablesData);
                             //await payment.ref.update(dbData).catch(errorThrowers.saveFirestore("registered-payment"));
 
