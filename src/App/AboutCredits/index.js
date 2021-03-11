@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useLocation } from 'wouter'
-import { container, fontTitle } from '@ziro/theme';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
@@ -11,21 +10,29 @@ const supportNumber = require('./supportNumber');
 
 function AboutCredits() {
   const { 
-    typeRegister,
     backgroundCheckRequests, 
     backgroundCheckRequestsPaid 
   } = useContext(userContext);
 
   const [, setLocation] = useLocation();
+  const [creditsValue, setCreditsValue] = useState();
+  
+  useEffect(() => {
+    backgroundCheckRequests + backgroundCheckRequestsPaid === '' ? setCreditsValue('0') :
+    backgroundCheckRequests + backgroundCheckRequestsPaid === '0' ? setCreditsValue('0') :
+    backgroundCheckRequests + backgroundCheckRequestsPaid === undefined ? setCreditsValue('0') :
+    backgroundCheckRequests + backgroundCheckRequestsPaid === null ? setCreditsValue('0') :
+    setCreditsValue(backgroundCheckRequests + backgroundCheckRequestsPaid)
+  }, [])
 
   return (
-    <div style={container}>
+    <div>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
         <Illustration type="cardAnalysis" size={180} />
         <h1 style={{ fontFamily: 'Rubik', fontSize: '16px', textTransform: 'uppercase', color: '#323232', textAlign: 'center' }}>Deseja adquirir créditos?</h1>
 
         <label style={{ textAlign: 'center', fontSize: '1.6rem', color: 'rgb(34, 34, 34)', marginTop: '-5px' }}>
-          {`Atualmente, você possui ${backgroundCheckRequests} crédito(s) gratuito(s) e ${backgroundCheckRequestsPaid === '' ? '0' : backgroundCheckRequestsPaid} crédito(s) pago(s). Veja abaixo as vantagens de adquirir mais créditos:`}
+          {`Você possui ${creditsValue} crédito(s) para usar. Adquira mais a qualquer momento ou fale com nosso time de vendas`}
         </label>
 
         <div style={advantagesContainer}>
@@ -33,35 +40,37 @@ function AboutCredits() {
             <div style={innerAdvantagesDiv}>
               <Icon type='check' size={15} strokeWidth={2} style={{ background: 'white' }}/>
             </div>
-            <label style={advantagesLabel}>Cada crédito custa <strong>R$10,00</strong></label>
+            <label style={advantagesLabel}>1 crédito te dá direito a 1 consulta de CPF ou CNPJ</label>
           </div>
           
           <div style={advantagesDiv}>
             <div style={innerAdvantagesDiv}>
-              <Icon type='check' size={15} strokeWidth={2} style={{ background: 'white' }} />
+              <Icon type='money' size={15} strokeWidth={2} style={{ background: 'white' }}/>
             </div>
-            <label style={advantagesLabel}>Seus créditos <strong>nunca</strong> expiram</label>
+            <label style={advantagesLabel}>Cada crédito custa R$10,00</label>
           </div>
           
           <div style={advantagesDiv}>
             <div style={innerAdvantagesDiv}>
-              <Icon type='check' size={15} strokeWidth={2} style={{ background: 'white' }} />
+              <Icon type='clock' size={15} strokeWidth={2} style={{ background: 'white' }}/>
             </div>
-            <label style={advantagesLabel}>Você recebe <strong>gratuitamente</strong> 10 créditos por mês</label>
+            <label style={advantagesLabel}>Os créditos comprados nunca expiram</label>
           </div>
           
           <div style={advantagesDiv}>
             <div style={innerAdvantagesDiv}>
-              <Icon type='check' size={15} strokeWidth={2} style={{ background: 'white' }} />
+              <Icon type='hardDrive' size={15} strokeWidth={2} style={{ background: 'white' }}/>
             </div>
-            <label style={advantagesLabel}>Você pode utilizar créditos para consultar CPF ou CNPJ</label>
+            <label style={advantagesLabel}>Consultar o mesmo CPF ou CNPJ mais do que uma vez não consome um novo crédito</label>
           </div>
+          
           <div style={advantagesDiv}>
             <div style={innerAdvantagesDiv}>
-              <Icon type='whats' size={15} strokeWidth={2} style={{ background: 'white' }} />
+              <Icon type='award' size={15} strokeWidth={2} style={{ background: 'white' }}/>
             </div>
-            <label style={advantagesLabel}>Qualquer dúvida, fale com nosso time de vendas</label>
+            <label style={advantagesLabel}>Todo dia 01 do mês você recebe 10 novos créditos gratuitos para usar e que expiram no fim do mês</label>
           </div>
+
         </div>
 
         <div style={{ display: 'grid', width: '100%', marginTop: '20px', opacity: '1', gap: '10px' }}>
