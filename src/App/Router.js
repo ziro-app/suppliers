@@ -186,7 +186,7 @@ const Router = ({ isLogged }) => {
             </HeaderBack>
         );
         privateRoutes[matchBuyCreditBackgroundCheck ? location : null] = (
-            <HeaderBack title="Comprar consultas" navigateTo="/comprar-consulta">
+            <HeaderBack title="Finalizar compra" navigateTo="/comprar-consulta">
                 <CheckoutBackgroundCheck {...paramsBuyCreditBackgroundCheck} />
             </HeaderBack>
         );

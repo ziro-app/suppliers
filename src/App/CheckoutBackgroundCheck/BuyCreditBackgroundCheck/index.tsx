@@ -195,7 +195,7 @@ const BuyCreditBackgroundCheck = ({setPaidRequests}) => {
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div style={{ display: 'grid', textAlign: 'center', justifyContent: 'center', paddingBottom: '20px' }}>
                 <strong style={{ fontSize: '1.5rem', fontFamily: 'Rubik', color: '#000' }}>
-                    Você irá comprar {quantity} {Number(quantity) > 1 ? 'consultas' : 'consulta'} e irá pagar{' '}
+                    Você escolheu {quantity} {Number(quantity) > 1 ? 'consultas' : 'consulta'} por{' '}
                     {parseFloat(`${totalValueCreditBackgroundCheck}`).toLocaleString('pt-br', { style: 'currency', currency: 'BRL' }).replace(/\s/g, '') || '-'}
                 </strong>
             </div>
