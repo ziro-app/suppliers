@@ -2,15 +2,25 @@ import React from 'react';
 import TooltipHelp from '@bit/vitorbarbosa19.ziro.tooltip-help';
 import { alertColor, successColor } from '@ziro/theme';
 import capitalize from '@ziro/capitalize';
-import maskInput from '@ziro/mask-input';
+import currencyFormat from '@ziro/currency-format';
 import { details, tooltipContainer, tooltipCursor } from '../styles';
-import { cadastralSituationBody, ccfBody, pefinBody, protestsBody, refinBody } from './tooltipBody';
+import {
+    addressBody, cadastralSituationBody, ccfBody, economicClassBody,
+    emailsBody, familySalaryBody, individualSalaryBody, pefinBody, phonesBody,
+    protestsBody, refinBody, fieldsOfActivityBody, legalNatureBody, simpleNationalBody,
+    shareCapital
+} from './tooltipBody';
 
-const mountBlockPF = (data, setPendency) => {
-    const { nome, nomeMae, dataNascimento, bairro, cep, cidade,
-        endereco, estado, falecido, idade, situacaoCpf, dataSituacaoCpf } = data;
-        console.log(data)
+const formatCurrency = value => currencyFormat(value.replace('.', '')) || 'Não informado';
+
+const mountBlockPF = (data, setPages) => {
+    const { nome, dataNascimento, socios,
+        falecido, idade, situacaoCpf, dataSituacaoCpf, nacionalidade, numDependentes,
+        genero, pessoaPolitica, rendaPresumida, telefones, emails, enderecos, parentescos } = data;
+    const { classeFamilia, classeIndividual, descricaoFamilia, descricaoIndividual,
+        salarioFamiliar, salary } = rendaPresumida;
     const { cheque, dividas_vencidas, protestos, pefin, refin, ccf } = data;
+    const { setPendency, setDefaultData } = setPages;
     return [
         {
             header: 'Informações Pessoais',
@@ -28,33 +38,37 @@ const mountBlockPF = (data, setPendency) => {
                     content: (idade && idade > 0) ? `${idade} anos` : 'Não informado'
                 },
                 {
+                    title: 'Nacionalidade',
+                    content: nacionalidade || 'Não informado'
+                },
+                {
+                    title: 'Gênero',
+                    content: genero || 'Não informado'
+                },
+                {
+                    title: 'Nº dependentes',
+                    content: numDependentes
+                },
+                {
+                    title: 'Pessoa política',
+                    content: pessoaPolitica ? 'Sim' : 'Não'
+                },
+                {
                     title: 'Falecido',
                     content: falecido ? 'Sim' : 'Não'
                 },
                 {
-                    title: 'Nome da mãe',
-                    content: nomeMae ? nomeMae : 'Não informado'
+                    title: 'Parentescos',
+                    content: (parentescos && parentescos.count > 0) ? <div style={details} onClick={() => setDefaultData({ ...parentescos, nome: 'Parentescos', sortedFields: ["nome", "cpf", "parentesco", "genero"] })}>Visualizar</div> : 'Nada consta'
                 },
-                // {
-                //     title: 'Endereço',
-                //     content: endereco
-                // },
-                // {
-                //     title: 'Bairro',
-                //     content: bairro
-                // },
-                // {
-                //     title: 'CEP',
-                //     content: cep
-                // },
-                // {
-                //     title: 'Cidade',
-                //     content: cidade
-                // },
-                // {
-                //     title: 'Estado',
-                //     content: estado
-                // },
+                {
+                    title: <div style={tooltipContainer}>Endereços&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Endereços" body={addressBody} /></div></div>,
+                    content: (enderecos && enderecos.count > 0) ? <div style={details} onClick={() => setDefaultData({ ...enderecos, nome: 'Endereços', sortedFields: ["cep", "rua", "numero", "complemento", "bairro", "cidade", "estado"] })}>Visualizar</div> : 'Nada consta'
+                },
+                {
+                    title: 'Part. societárias',
+                    content: (socios && socios.count > 0) ? <div style={details} onClick={() => setDefaultData({ ...socios, nome: 'Participações societárias', sortedFields: ["capital"] })}>Visualizar</div> : 'Nada consta'
+                },
                 {
                     title: <div style={tooltipContainer}>Situação Cadastral&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Situação Cadastral" body={cadastralSituationBody} /></div></div>,
                     content: situacaoCpf,
@@ -63,6 +77,40 @@ const mountBlockPF = (data, setPendency) => {
                 {
                     title: 'Atualizado em',
                     content: dataSituacaoCpf
+                }
+            ]
+        },
+        {
+            header: 'Contatos',
+            body: [
+                {
+                    title: <div style={tooltipContainer}>Telefones&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Telefones" body={phonesBody} /></div></div>,
+                    content: (telefones && telefones.count > 0) ? <div style={details} onClick={() => setDefaultData({ ...telefones, nome: 'Telefones', sortedFields: ["ddd", "numero"], blockTitle: 'Telefone' })}>Visualizar</div> : 'Nada consta'
+                },
+                {
+                    title: <div style={tooltipContainer}>Emails&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Emails" body={emailsBody} /></div></div>,
+                    content: (emails && emails.count > 0) ? <div style={details} onClick={() => setDefaultData({ ...emails, nome: 'Emails', sortedFields: ["email"], blockTitle: 'Email' })}>Visualizar</div> : 'Nada consta'
+                }
+            ]
+        },
+        {
+            header: 'Renda Presumida',
+            body: [
+                {
+                    title: <div style={tooltipContainer}>Classe I&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Classe individual" body={economicClassBody(descricaoIndividual)} /></div></div>,
+                    content: classeIndividual || 'Não encontrado'
+                },
+                {
+                    title: <div style={tooltipContainer}>Salário I&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Salário individual" body={individualSalaryBody} /></div></div>,
+                    content: formatCurrency(salary)
+                },
+                {
+                    title: <div style={tooltipContainer}>Classe F&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Classe familiar" body={economicClassBody(descricaoFamilia)} /></div></div>,
+                    content: classeFamilia || 'Não encontrado'
+                },
+                {
+                    title: <div style={tooltipContainer}>Salário F&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Salário familiar" body={familySalaryBody} /></div></div>,
+                    content: formatCurrency(salarioFamiliar)
                 }
             ]
         },
@@ -98,12 +146,14 @@ const mountBlockPF = (data, setPendency) => {
     ];
 };
 
-const mountBlockPJ = (data, setPendency, setPartner) => {
-    const { razao, dataFundacao, situacaoCadastral, dataSituacaoCnpj,
-        ramoAtv, naturezaJuridica, tipoSociedade, dividas_vencidas,
-        protestos, pefin, refin, ccf, socios } = data;
-        console.log(data)
-    const principal = ramoAtv.data ? ramoAtv.data.filter(it => it.atvdPrimaria)[0]['descricao'] : '';
+const mountBlockPJ = (data, setPages) => {
+    const { razao, dataFundacao, situacaoCadastral, dataSituacaoCnpj, telefones,
+        ramoAtv, naturezaJuridica, tipo, dividas_vencidas, rendimentos, emails, enderecos,
+        protestos, pefin, refin, ccf, socios, simplesNacional, porte, administradores } = data;
+    const { setPendency, setDefaultData } = setPages;
+    const { capitalSocial, balancoMinimo, balancoMaximo, faturamentoMinimo, faturamentoMaximo } = rendimentos;
+    const normalized = porte && capitalize(porte.split('_').join(' ').trim()) || 'Não informado'
+    console.log(data);
     return [
         {
             header: 'Informações do Documento',
@@ -117,20 +167,32 @@ const mountBlockPJ = (data, setPendency, setPartner) => {
                     content: dataFundacao
                 },
                 {
-                    title: 'Ramo de Atividade',
-                    content: principal || 'Não informado'
+                    title: <div style={tooltipContainer}>N. Jurídica&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Natureza Jurídica" body={legalNatureBody} /></div></div>,
+                    content: naturezaJuridica?.descricao || 'Não informado'
                 },
                 {
-                    title: 'Natureza jurídica',
-                    content: naturezaJuridica?.descricao ? naturezaJuridica.descricao : 'Não informado'
+                    title: 'Tipo',
+                    content: tipo || 'Não informado'
+                },
+                {
+                    title: 'Porte',
+                    content: normalized
+                },
+                {
+                    title: <div style={tooltipContainer}>Simples N.&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Simples Nacional" body={simpleNationalBody} /></div></div>,
+                    content: simplesNacional === 'N' ? 'Não' : 'Sim'
+                },
+                {
+                    title: <div style={tooltipContainer}>Endereços&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Endereços" body={addressBody} /></div></div>,
+                    content: (enderecos && enderecos.count > 0) ? <div style={details} onClick={() => setDefaultData({ ...enderecos, nome: 'Endereços', sortedFields: ["cep", "rua", "numero", "complemento", "bairro", "cidade", "estado"], pj: true })}>Visualizar</div> : 'Nada consta'
+                },
+                {
+                    title: <div style={tooltipContainer}>Ramos de Atvd&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Ramos de Atividade" body={fieldsOfActivityBody} /></div></div>,
+                    content: (ramoAtv && ramoAtv.count > 0) ? <div style={details} onClick={() => setDefaultData({ ...ramoAtv, nome: 'Ramos de Atividade', sortedFields: ["atvdPrimaria", "cnae", "descricao"] })}>Visualizar</div> : 'Não informado'
                 },
                 {
                     title: 'Sócios',
-                    content: (socios && socios.count > 0) ? <div style={details} onClick={() => setPartner({ ...socios, nome: 'Quadro de Sócios' })}>Detalhes</div> : 'Não informado'
-                },
-                {
-                    title: 'Tipo de Sociedade',
-                    content: tipoSociedade
+                    content: (socios && socios.count > 0) ? <div style={details} onClick={() => setDefaultData({ ...administradores, nome: 'Sócios Administradores', sortedFields: ["cpf"], blockTitle: 'Sócio' })}>Visualizar</div> : 'Não informado'
                 },
                 {
                     title: <div style={tooltipContainer}>Situação Cadastral&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Situação Cadastral" body={cadastralSituationBody} /></div></div>,
@@ -141,6 +203,44 @@ const mountBlockPJ = (data, setPendency, setPartner) => {
                     title: 'Atualizado em',
                     content: dataSituacaoCnpj
                 }
+            ]
+        },
+        {
+            header: 'Contatos',
+            body: [
+                {
+                    title: <div style={tooltipContainer}>Telefones&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Telefones" body={phonesBody} /></div></div>,
+                    content: (telefones && telefones.count > 0) ? <div style={details} onClick={() => setDefaultData({ ...telefones, nome: 'Telefones', sortedFields: ["ddd", "numero"], blockTitle: 'Telefone' })}>Visualizar</div> : 'Nada consta'
+                },
+                {
+                    title: <div style={tooltipContainer}>Emails&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Emails" body={emailsBody} /></div></div>,
+                    content: (emails && emails.count > 0) ? <div style={details} onClick={() => setDefaultData({ ...emails, nome: 'Emails', sortedFields: ["email"], blockTitle: 'Email', pj: true })}>Visualizar</div> : 'Nada consta'
+                }
+            ]
+        },
+        {
+            header: 'Rendimentos',
+            body: [
+                {
+                    title: <div style={tooltipContainer}>Capital S.&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Capital Social" body={shareCapital} /></div></div>,
+                    content: formatCurrency(capitalSocial)
+                },
+                {
+                    title: 'Balanço Min.',
+                    content: formatCurrency(balancoMinimo)
+                },
+                {
+                    title: 'Faturamento Min.',
+                    content: formatCurrency(faturamentoMinimo)
+                },
+                {
+                    title: 'Balanço Max.',
+                    content: formatCurrency(balancoMaximo)
+                },
+                {
+                    title: 'Faturamento Max.',
+                    content: formatCurrency(faturamentoMaximo)
+                },
             ]
         },
         {
@@ -171,9 +271,9 @@ const mountBlockPJ = (data, setPendency, setPartner) => {
     ];
 }
 
-const mountBlock = (document, data, setPendency, setPartner) => {
-    if (document.length <= 14) return mountBlockPF(data, setPendency);
-    else return mountBlockPJ(data, setPendency, setPartner);
+const mountBlock = (document, data, setPages) => {
+    if (document.length <= 14) return mountBlockPF(data, setPages);
+    else return mountBlockPJ(data, setPages);
 };
 
 export default mountBlock;

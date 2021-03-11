@@ -19,7 +19,7 @@ export const wrapper = {
         gridRowStart: 2,
         gridRowEnd: 2,
         marginTop: '55px',
-        height: '400px'
+        height: '910px'
     },
     details = {
         cursor: 'pointer',
@@ -58,7 +58,7 @@ export const wrapper = {
         fontSize: '1.1rem'
     },
     valorH1 = {
-    textAlign: 'center',
-    fontSize: '1.8rem',
-    margin: '0',
+        textAlign: 'center',
+        fontSize: '1.8rem',
+        margin: '0',
     }
