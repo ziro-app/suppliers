@@ -50,7 +50,6 @@ export const wrapper = {
     consultasContainer = {
         display: 'grid',
         rowGap: '35px',
-        marginTop: '35px',
         marginBottom: '50px'
     },
     saldosLabel = {
@@ -61,4 +60,33 @@ export const wrapper = {
     textAlign: 'center',
     fontSize: '1.8rem',
     margin: '0',
-    }
+    },
+    advantagesContainer = {
+		display: 'grid',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: '20px',
+		backgroundColor: '#f4f4f4',
+		borderRadius: '5px',
+		padding: '10px 20px'
+	},
+	advantagesDiv = {
+		display: 'grid',
+		gridTemplateColumns: 'auto 1fr',
+		alignItems: 'center',
+		padding: '5px 3px',
+	},
+	innerAdvantagesDiv = {
+		display: 'grid',
+		placeItems: 'center',
+		boxShadow: 'rgba(34, 34, 34, 0.7) 0px 3px 11px -4px',
+		borderRadius: '100%',
+		width: '30px',
+		height: '30px',
+		background: 'white'
+	},
+	advantagesLabel = {
+		fontSize: '1.6rem',
+		paddingLeft: '10px',
+		textAlign: 'left'
+	};

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { alertColor, fontTitle, primaryColor, shadow } from '@ziro/theme';
+import { alertColor, fontTitle, primaryColor, shadow, fontSizeSmall } from '@ziro/theme';
 
 import Button from '@bit/vitorbarbosa19.ziro.button';
 import Details from '@bit/vitorbarbosa19.ziro.details';
@@ -11,6 +11,7 @@ import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
 import ScoreCircle from '@bit/vitorbarbosa19.ziro.score-circle';
 import Spinner from '@bit/vitorbarbosa19.ziro.spinner';
+import TooltipHelp from '@bit/vitorbarbosa19.ziro.tooltip-help';
 import maskInput from '@ziro/mask-input';
 import { motion } from 'framer-motion';
 import { useLocation } from 'wouter';
@@ -24,6 +25,7 @@ import isCPF from '../utils/isCPF'
 import { apiErrorContainer, box1, box2, consultasContainer, header, saldosLabel, valorH1, wrapper } from './styles';
 import { userContext } from '../appContext';
 import validateDocuments from '../utils/validateDocuments';
+import { creditsModalTitle, creditsModalBody } from './modals';
 
 const BackgroundCheck = () => {
   const supportNumber = require('./supportNumber');
@@ -234,6 +236,16 @@ const BackgroundCheck = () => {
             <FormInput
               name="document"
               label="CPF ou CNPJ"
+              LabelComponent={(
+              <div style={{ paddingLeft: '5px', display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                <label style={{ fontFamily: fontTitle, fontSize: fontSizeSmall, color: primaryColor, textTransform: 'uppercase', marginRight: '5px' }}>CPF OU CNPJ</label>
+                <TooltipHelp
+                  illustration="cardAnalysis"
+                  title={creditsModalTitle}
+                  body={creditsModalBody}
+                />
+              </div>
+              )}
               input={
                 <InputText
                   value={document}
