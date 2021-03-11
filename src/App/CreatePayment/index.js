@@ -93,8 +93,6 @@ const CreatePayment = () => {
     }
   }, [afterBackend]);
 
-  const checkWidth2 = () => window.innerWidth < 400 ? '80%' : '41%';
-
   const validations = [
     {
       name: 'insurance',
@@ -197,13 +195,27 @@ const CreatePayment = () => {
             />,
           ]}
         />
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '3rem', borderRadius: '10px', marginTop: '2rem', boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px' }}>
-          <div style={{ display: 'flex', backgroundColor: 'rgba(0,0,0,0.05)', padding: '12px', borderRadius: '50%', marginRight: '23px' }}>
-            <Icon type="search" size={19} />
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          padding: window.innerWidth < 400 ? '2rem' : '3rem', 
+          borderRadius: '10px', 
+          marginTop: '2rem', 
+          boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px' 
+        }}>
+          <div style={{ 
+            display: 'flex', 
+            backgroundColor: 'rgba(0,0,0,0.05)', 
+            padding: window.innerWidth < 400 ? '6px' : '20px', 
+            borderRadius: '50%', 
+            marginRight: window.innerWidth < 400 ? '10px' : '23px'
+          }}>
+            <Icon type="search" size={window.innerWidth < 400 ? 15 : 17} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <label style={{ fontSize: '1.5rem' }}>Deseja mais confiabilidade em suas vendas?</label>
-            <label style={{ fontSize: '1.5rem' }}>Consulte CPF/CNPJ do seu cliente <label onClick={() => setLocation('/creditos')} style={{ cursor: 'pointer', color: primaryColor, fontSize: '1.5rem', fontFamily: fontTitle, textDecoration: 'underline', marginTop: '2px' }}>aqui</label>.</label>
+            <label style={{ fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem' }}>Deseja mais confiabilidade em suas vendas?</label>
+            <label style={{ fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem' }}>Consulte CPF/CNPJ do seu cliente <label onClick={() => setLocation('/consulta')} style={{ cursor: 'pointer', color: primaryColor, fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem', fontFamily: fontTitle, textDecoration: 'underline', marginTop: '2px' }}>aqui</label>.</label>
           </div>
         </div>
       </div>
@@ -307,13 +319,27 @@ const CreatePayment = () => {
             />,
           ]}
         />
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '3rem', borderRadius: '10px', marginTop: '2rem', boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px' }}>
-          <div style={{ display: 'flex', backgroundColor: 'rgba(0,0,0,0.05)', padding: '12px', borderRadius: '50%', marginRight: '23px' }}>
-            <Icon type="search" size={19} />
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          alignItems: 'center', 
+          padding: window.innerWidth < 400 ? '2rem' : '3rem', 
+          borderRadius: '10px', 
+          marginTop: '2rem', 
+          boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px' 
+        }}>
+          <div style={{ 
+            display: 'flex', 
+            backgroundColor: 'rgba(0,0,0,0.05)', 
+            padding: window.innerWidth < 400 ? '6px' : '20px', 
+            borderRadius: '50%', 
+            marginRight: window.innerWidth < 400 ? '10px' : '23px'
+          }}>
+            <Icon type="search" size={window.innerWidth < 400 ? 15 : 17} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <label style={{ fontSize: '1.5rem' }}>Deseja mais confiabilidade em suas vendas?</label>
-            <label style={{ fontSize: '1.5rem' }}>Consulte CPF/CNPJ do seu cliente <label onClick={() => setLocation('/creditos')} style={{ cursor: 'pointer', color: primaryColor, fontSize: '1.5rem', fontFamily: fontTitle, textDecoration: 'underline', marginTop: '2px' }}>aqui</label>.</label>
+            <label style={{ fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem' }}>Deseja mais confiabilidade em suas vendas?</label>
+            <label style={{ fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem' }}>Consulte CPF/CNPJ do seu cliente <label onClick={() => setLocation('/consulta')} style={{ cursor: 'pointer', color: primaryColor, fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem', fontFamily: fontTitle, textDecoration: 'underline', marginTop: '2px' }}>aqui</label>.</label>
           </div>
         </div>
       </div>
