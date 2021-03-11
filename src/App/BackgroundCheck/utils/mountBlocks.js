@@ -117,27 +117,27 @@ const mountBlockPF = (data, setPages) => {
             body: [
                 {
                     title: 'Dívidas vencidas',
-                    content: (dividas_vencidas && dividas_vencidas.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Dividas Vencidas' })}>Pendências</div> : 'Não informado'
+                    content: (dividas_vencidas && dividas_vencidas.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Dividas Vencidas' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: 'Cheque',
-                    content: (cheque && cheque.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Cheque' })}>Pendências</div> : 'Não informado'
+                    content: (cheque && cheque.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Cheque' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: <div style={tooltipContainer}>Protestos&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Protestos" body={protestsBody} /></div></div>,
-                    content: (protestos && protestos.count > 0) ? <div style={details} onClick={() => setPendency({ ...protestos, nome: 'Protestos' })}>Pendências</div> : 'Não informado'
+                    content: (protestos && protestos.count > 0) ? <div style={details} onClick={() => setPendency({ ...protestos, nome: 'Protestos' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: <div style={tooltipContainer}>PEFIN&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="PEFIN" body={pefinBody} /></div></div>,
-                    content: (pefin && pefin.count > 0) ? <div style={details} onClick={() => setPendency({ ...pefin, nome: 'PEFIN' })}>Pendências</div> : 'Não informado'
+                    content: (pefin && pefin.count > 0) ? <div style={details} onClick={() => setPendency({ ...pefin, nome: 'PEFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: <div style={tooltipContainer}>REFIN&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="REFIN" body={refinBody} /></div></div>,
-                    content: (refin && refin.count > 0) ? <div style={details} onClick={() => setPendency({ ...refin, nome: 'REFIN' })}>Pendências</div> : 'Não informado'
+                    content: (refin && refin.count > 0) ? <div style={details} onClick={() => setPendency({ ...refin, nome: 'REFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: <div style={tooltipContainer}>CCF&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="CCF" body={ccfBody} /></div></div>,
-                    content: (ccf && ccf.count > 0) ? <div style={details} onClick={() => setPendency({ ...ccf, nome: 'CCF' })}>Pendências</div> : 'Não informado'
+                    content: (ccf && ccf.count > 0) ? <div style={details} onClick={() => setPendency({ ...ccf, nome: 'CCF' })}>Pendências</div> : 'Nada consta'
                 }
             ]
         }
@@ -244,23 +244,23 @@ const mountBlockPJ = (data, setPages) => {
             body: [
                 {
                     title: 'Dívidas vencidas',
-                    content: (dividas_vencidas && dividas_vencidas.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Dividas Vencidas' })}>Pendências</div> : 'Não informado'
+                    content: (dividas_vencidas && dividas_vencidas.count > 0) ? <div style={details} onClick={() => setPendency({ ...dividas_vencidas, nome: 'Dividas Vencidas' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: <div style={tooltipContainer}>Protestos&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="Protestos" body={protestsBody} /></div></div>,
-                    content: (protestos && protestos.count > 0) ? <div style={details} onClick={() => setPendency({ ...protestos, nome: 'Protestos' })}>Pendências</div> : 'Não informado'
+                    content: (protestos && protestos.count > 0) ? <div style={details} onClick={() => setPendency({ ...protestos, nome: 'Protestos' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: <div style={tooltipContainer}>PEFIN&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="PEFIN" body={pefinBody} /></div></div>,
-                    content: (pefin && pefin.count > 0) ? <div style={details} onClick={() => setPendency({ ...pefin, nome: 'PEFIN' })}>Pendências</div> : 'Não informado'
+                    content: (pefin && pefin.count > 0) ? <div style={details} onClick={() => setPendency({ ...pefin, nome: 'PEFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: <div style={tooltipContainer}>REFIN&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="REFIN" body={refinBody} /></div></div>,
-                    content: (refin && refin.count > 0) ? <div style={details} onClick={() => setPendency({ ...refin, nome: 'REFIN' })}>Pendências</div> : 'Não informado'
+                    content: (refin && refin.count > 0) ? <div style={details} onClick={() => setPendency({ ...refin, nome: 'REFIN' })}>Pendências</div> : 'Nada consta'
                 },
                 {
                     title: <div style={tooltipContainer}>CCF&nbsp;<div style={tooltipCursor}><TooltipHelp iconSize={14} illustration="cardAnalysis" title="CCF" body={ccfBody} /></div></div>,
-                    content: (ccf && ccf.count > 0) ? <div style={details} onClick={() => setPendency({ ...ccf, nome: 'CCF' })}>Pendências</div> : 'Não informado'
+                    content: (ccf && ccf.count > 0) ? <div style={details} onClick={() => setPendency({ ...ccf, nome: 'CCF' })}>Pendências</div> : 'Nada consta'
                 }
             ]
         }
