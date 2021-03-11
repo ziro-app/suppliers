@@ -71,7 +71,7 @@ const CheckoutBackgroundCheck = () => {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <div style={{ display: 'grid', textAlign: 'center', justifyContent: 'center', paddingBottom: '20px' }}>
               <strong style={{ fontSize: '1.5rem', fontFamily: 'Rubik', color: freeRequests || paidRequests > 0 ? '#000' : alertColor }}>
-                {freeRequests || paidRequests ? `${freeRequests+paidRequests} consulta(s) para usar` : 'Consultas esgotadas'}
+                {freeRequests || paidRequests ? `${freeRequests+paidRequests} crédito(s) em conta` : 'Créditos esgotados'}
               </strong>
             </div>
 
