@@ -50,7 +50,7 @@ const BackgroundCheck = () => {
     const [backgroundFreeCollaborator, setBackgroundFreeCollaborator] = useState();
 
     const isCollaborator = role !== '';
-    const DEFAULT_STEP_COLORS = ['#a50a0a', '#bc0b0b', '#eb0e0e', '#e68c06', '#ff9b07', '#f8d823', '#ebeb09', '#5deb3e', '#35e60e', '#2fcc0c'];
+    const DEFAULT_STEP_COLORS = ['#762c2c', '#a53d3d', '#d44e4e', '#dea700', '#f7ba00', '#f8d823', '#ebeb09', '#5deb3e', '#35e60e', '#2fcc0c'];
     const setState = { setPaidRequests, setDocument, setFreeRequests, setScoreValue, setBlockPF, setBlockPJ, setPendency, setDefaultData, setApiError };
     const state = { docId, isCollaborator, ownerId, document, freeRequests, ...setState };
     const validations = [

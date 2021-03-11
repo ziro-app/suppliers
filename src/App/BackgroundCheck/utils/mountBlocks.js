@@ -45,7 +45,7 @@ const mountBlockPF = (data, setPages) => {
                 },
                 {
                     title: 'Nº dependentes',
-                    content: numDependentes || 'Não informado'
+                    content: numDependentes
                 },
                 {
                     title: 'Pessoa política',

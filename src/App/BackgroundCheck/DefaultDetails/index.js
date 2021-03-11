@@ -22,7 +22,7 @@ const DefaultDetails = ({ defaultData, setDefaultData }) => {
                 bodyEffect.push({ title: 'Empresa', content: it['nomeEmpresa'] || 'Não informado' });
                 bodyEffect.push({ title: 'Cnpj', content: it['cnpjSocietario'] || 'Não informado' });
                 sortedFields.map(name => bodyEffect.push({ title: capitalize(name), content: it[name] || 'Não informado' }));
-                bodyEffect.push({ content: it['posicao'] || 'Não informado', isDescription: true });
+                bodyEffect.push({ title: 'Tipo', content: it['posicao'] || 'Não informado' });
             } else if (title === 'Telefones') {
                 bodyEffect.push({ title: 'Ativo', content: it['ativo'] !== undefined ? it['ativo'] ? 'Sim' : 'Não' : 'Não informado' });
                 sortedFields.map(name => bodyEffect.push({ title: capitalize(name), content: it[name] }));
