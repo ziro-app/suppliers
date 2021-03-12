@@ -227,6 +227,7 @@ const BuyCreditBackgroundCheck = ({setPaidRequests}) => {
                                     backgroundCheckRequestsAvailablePaid: sum,
                                 });
                             }
+                            transaction.valueCreditBackgroundCheck = valueCreditBackgroundCheck
                             const receivables = await getReceivables(transaction.id, source.token);
                             const [dbData, sheetData, receivablesData] = dbAndSheet(
                                 transaction,
