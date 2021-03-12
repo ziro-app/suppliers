@@ -1,4 +1,5 @@
 const sumTextNumbers = (arrayTextNumbers) => {
+    console.log('arrayTextNumbers',arrayTextNumbers)
     const arrayNumber = arrayTextNumbers.map(numText => {
         return Number(numText)
     })
@@ -9,7 +10,7 @@ const sumTextNumbers = (arrayTextNumbers) => {
             return '0,00%'
         }
         const result = `${String(num).replace('.',',')}`
-        if(result.split(',')[1].length === 2){
+        if(result.split(',')[1]?.length === 2){
             return `${result}%`
         }
         return `${result}0%`
