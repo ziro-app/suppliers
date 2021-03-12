@@ -45,6 +45,8 @@ export const App = () => {
     const [backgroundCheckRequests, setBackgroundCheckRequests] = useState(null);
     const [backgroundCheckRequestsPaid, setBackgroundCheckRequestsPaid] = useState(null);
     const [paymentsInsurance, setPaymentsInsurance] = useState(null);
+    const [bgPrice, setBgPrice] = useState(null);
+    const [device, setDevice] = useState('phone')
     const url = process.env.SHEET_URL;
     const config = {
         headers: {
@@ -150,6 +152,34 @@ export const App = () => {
     };
 
     useEffect(() => {
+        const smallMobile = window.matchMedia('(max-width: 399px)')
+        const mobile = window.matchMedia('(min-width: 400px) and (max-width: 1199px)')
+        const desktop = window.matchMedia('(min-width: 1200px)')
+        // define user device
+        if (smallMobile.matches) setDevice('smallMobile')
+        if (mobile.matches) setDevice('mobile')
+        if (desktop.matches) setDevice('desktop')
+        // define listeners
+        const listenerSmallMobile = ({ matches }) => {
+          if (matches) setDevice('smallMobile')
+        }
+        const listenerMobile = ({ matches }) => {
+          if (matches) setDevice('mobile')
+        }
+        const listenerDesktop = ({ matches }) => {
+          if (matches) setDevice('desktop')
+        }
+        // add listeners
+        smallMobile.addListener(listenerSmallMobile)
+        mobile.addListener(listenerMobile)
+        desktop.addListener(listenerDesktop)
+        // cleanup
+        return () => smallMobile.removeListener(listenerSmallMobile)
+        return () => mobile.removeListener(listenerMobile)
+        return () => desktop.removeListener(listenerDesktop)
+      }, [])
+
+    useEffect(() => {
         let unsubscribe = () => null;
         return auth.onAuthStateChanged(async user => {
             if (user && user.emailVerified) {
@@ -204,6 +234,22 @@ export const App = () => {
                 clearObject();
             }
         });
+    }, []);
+    useEffect(() => {
+        const getBgCheck = async () => {
+            try {
+                db.collection('utilities').doc(process.env.DOCUMENT_ID_FOR_UTILITIES_MAIN)
+                .onSnapshot(snap => {
+                    if (!snap.empty) {
+                        setBgPrice(snap.data().main.standardValueBackgroundCheck);
+                    }
+                });
+            } catch (error) {
+                console.log('error', error)
+            }
+        }
+
+        getBgCheck();
     }, []);
     useEffect(() => {
         const getUserData = async () => {
@@ -297,7 +343,9 @@ export const App = () => {
         whatsApp,
         backgroundCheckRequests,
         backgroundCheckRequestsPaid,
-        paymentsInsurance
+        paymentsInsurance,
+        bgPrice,
+        device
     };
     if (loading) return <InitialLoader />;
     if (errorLoading) return <Error />;

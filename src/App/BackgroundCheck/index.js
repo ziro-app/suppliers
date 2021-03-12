@@ -25,13 +25,13 @@ import isCPF from '../utils/isCPF'
 import { apiErrorContainer, box1, box2, consultasContainer, header, saldosLabel, valorH1, wrapper } from './styles';
 import { userContext } from '../appContext';
 import validateDocuments from '../utils/validateDocuments';
-import { creditsModalTitle, creditsModalBody } from './modals';
+import modals from './modals';
 
 const BackgroundCheck = () => {
     const supportNumber = require('./supportNumber');
     const [, setLocation] = useLocation();
 
-    const { docId, role, ownerId, backgroundCheckRequests, backgroundCheckRequestsPaid, fantasy } = useContext(userContext);
+    const { docId, role, ownerId, backgroundCheckRequests, backgroundCheckRequestsPaid, fantasy, bgPrice } = useContext(userContext);
     const [isLoading, setIsLoading] = useState(true);
     const [errorLoading, setErrorLoading] = useState(false);
     const [apiError, setApiError] = useState(false);
@@ -50,6 +50,10 @@ const BackgroundCheck = () => {
     const [paidBgCheck, setPaidBgCheck] = useState(backgroundCheckRequestsPaid);
     const [backgroundPaidCollaborator, setBackgroundPaidCollaborator] = useState();
     const [backgroundFreeCollaborator, setBackgroundFreeCollaborator] = useState();
+    
+    const [bgCheckPrice, setBgCheckPrice] = useState(0);
+
+    const { creditsModalTitle, creditsModalBody } = modals()
 
     const isCollaborator = role !== '';
     const DEFAULT_STEP_COLORS = ['#762c2c', '#a53d3d', '#d44e4e', '#dea700', '#f7ba00', '#f8d823', '#ebeb09', '#5deb3e', '#35e60e', '#2fcc0c'];
@@ -111,8 +115,22 @@ const BackgroundCheck = () => {
                     }
                 });
         }
+
+        async function getBgCheckPrice() {
+            await db
+                .collection('utilities')
+                .doc(process.env.DOCUMENT_ID_FOR_UTILITIES_MAIN)
+                .onSnapshot(snap => {
+                    if (!snap.empty) {
+                        setBgCheckPrice(snap.data().main.standardValueBackgroundCheck);
+                    }
+                });
+
+        }
+
         getFreeBgCheck();
         getPaidBgCheck();
+        getBgCheckPrice();
     }, []);
 
     useEffect(() => fetch(setIsLoading, setErrorLoading, docId, isCollaborator, ownerId, setState), []);
@@ -197,7 +215,7 @@ const BackgroundCheck = () => {
                                         {backgroundCheckRequests > 0 || backgroundCheckRequestsPaid > 0 ?
                                             <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Seus créditos estão acabando. Clique no botão abaixo para adquirir mais.</label>
                                             :
-                                            <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Não fique sem créditos. Apenas R$10,00 por consulta.</label>
+                                            <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção! </span>{`Não fique sem créditos. Apenas ${bgCheckPrice.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} por consulta.`}</label>
                                         }
                                         <div
                                             onClick={() => setLocation('/creditos')}

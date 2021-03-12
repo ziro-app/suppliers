@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
+import { db } from '../../Firebase/index';
+
 import { useLocation } from 'wouter'
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import Button from '@bit/vitorbarbosa19.ziro.button';
@@ -16,6 +18,7 @@ function AboutCredits() {
 
   const [, setLocation] = useLocation();
   const [creditsValue, setCreditsValue] = useState();
+  const [bgCheckPrice, setBgCheckPrice] = useState(0);
   
   useEffect(() => {
     backgroundCheckRequests + backgroundCheckRequestsPaid === '' ? setCreditsValue('0') :
@@ -23,6 +26,22 @@ function AboutCredits() {
     backgroundCheckRequests + backgroundCheckRequestsPaid === undefined ? setCreditsValue('0') :
     backgroundCheckRequests + backgroundCheckRequestsPaid === null ? setCreditsValue('0') :
     setCreditsValue(backgroundCheckRequests + backgroundCheckRequestsPaid)
+  }, [])
+
+  useEffect(() => {
+    async function getBgCheckPrice() {
+      await db
+          .collection('utilities')
+          .doc(process.env.DOCUMENT_ID_FOR_UTILITIES_MAIN)
+          .onSnapshot(snap => {
+              if (!snap.empty) {
+                setBgCheckPrice(snap.data().main.standardValueBackgroundCheck);
+              }
+          });
+
+  }
+
+  getBgCheckPrice();
   }, [])
 
   return (
@@ -47,7 +66,7 @@ function AboutCredits() {
             <div style={innerAdvantagesDiv}>
               <Icon type='money' size={15} strokeWidth={2} style={{ background: 'white' }}/>
             </div>
-            <label style={advantagesLabel}>Cada crédito custa R$10,00</label>
+            <label style={advantagesLabel}>{`Cada crédito custa R$${bgCheckPrice},00`}</label>
           </div>
           
           <div style={advantagesDiv}>
