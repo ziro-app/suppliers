@@ -20,13 +20,14 @@ import { userContext } from '../appContext';
 import { getSteps } from './getSteps';
 import { advantagesDiv, advantagesLabel, innerAdvantagesDiv, advantagesContainer } from './styles';
 import validateDocuments from '../utils/validateDocuments';
+import { categoryList } from './allCategories';
 
-const categories = {
-    'Bijouterias': '09',
-    'Calçados/Bolsas/Malas': '10',
-    'Roupas masc., fem., inf., geral': '14',
-    'Vestuário': '25'
-}
+// const categories = {
+//     'Bijouterias': '09',
+//     'Calçados/Bolsas/Malas': '10',
+//     'Roupas masc., fem., inf., geral': '14',
+//     'Vestuário': '25'
+// }
 
 const supportNumber = require('./supportNumber');
 
@@ -36,7 +37,7 @@ function Upgrade() {
   // STATE - Categoria
   const [categoryName, setCategoryName] = useState('');
   const [category, setCategory] = useState('');
-  const categoryList = ['Vestuário', 'Bijouterias', 'Calçados/Bolsas/Malas', 'Roupas masc., fem., inf., geral'];
+  const listImported = [...categoryList];
   
   // STATE - Dados Pessoais
   const [cpf, setCpf] = useState('');
@@ -332,7 +333,7 @@ function Upgrade() {
                       setCategory(categories[element.value])
                     }
                   }}
-                  list={categoryList}
+                  list={listImported}
                   placeholder="Vestuário"
                   readOnly={true}
                 />
