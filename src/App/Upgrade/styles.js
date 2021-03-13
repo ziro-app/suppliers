@@ -50,8 +50,8 @@ export const
 		alignItems: 'center',
 		marginTop: '20px',
 		backgroundColor: '#f4f4f4',
-		borderRadius: '5px',
-		padding: '10px 20px'
+		borderRadius: '8px',
+		padding: '12px 8px'
 	},
 	advantagesDiv = {
 		display: 'grid',

@@ -68,7 +68,7 @@ export const wrapper = {
 		marginTop: '20px',
 		backgroundColor: '#f4f4f4',
 		borderRadius: '5px',
-		padding: '10px 20px'
+        padding: '12px 8px'
 	},
 	advantagesDiv = {
 		display: 'grid',

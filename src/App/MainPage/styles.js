@@ -27,7 +27,7 @@ cardSimplificado = {
   flexDirection: 'column',
   textAlign: 'center',
   width: '100%',
-  padding: '20px 0px',
+  padding: '20px 2px',
   borderRadius: '10px',
   marginBottom: '-22px',
   boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px',
