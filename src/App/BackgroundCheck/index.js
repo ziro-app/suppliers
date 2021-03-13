@@ -51,7 +51,7 @@ const BackgroundCheck = () => {
     const [backgroundPaidCollaborator, setBackgroundPaidCollaborator] = useState();
     const [backgroundFreeCollaborator, setBackgroundFreeCollaborator] = useState();
     
-    const [bgCheckPrice, setBgCheckPrice] = useState(0);
+    const [bgCheckPrice, setBgCheckPrice] = useState(bgPrice);
 
     const { creditsModalTitle, creditsModalBody } = modals()
 
@@ -209,33 +209,81 @@ const BackgroundCheck = () => {
                                 </div>
                             </div>
 
-                            {backgroundCheckRequests + backgroundCheckRequestsPaid <= 2 && (
+                            {freeBgCheck + paidBgCheck <= 2 && (
                                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '2rem', borderTop: '1px solid rgba(0, 0, 0, 0.07)' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                        {backgroundCheckRequests > 0 || backgroundCheckRequestsPaid > 0 ?
-                                            <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Seus créditos estão acabando. Clique no botão abaixo para adquirir mais.</label>
-                                            :
-                                            <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção! </span>{`Não fique sem créditos. Apenas ${bgCheckPrice.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} por consulta.`}</label>
+                                        {(freeBgCheck >= 1 && freeBgCheck <= 2) &&
+                                            <>
+                                                <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Seus créditos estão acabando. Clique no botão abaixo para adquirir mais.</label>
+                                                <div
+                                                    onClick={() => setLocation('/creditos')}
+                                                    style={{
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        padding: '10px',
+                                                        border: '1px solid rgba(34, 34, 34, 0.2)',
+                                                        width: checkWidth2(),
+                                                        marginTop: '2rem',
+                                                        borderRadius: '25px',
+                                                        cursor: 'pointer',
+                                                        backgroundColor: primaryColor,
+                                                        boxShadow: shadow,
+                                                    }}
+                                                >
+                                                    <Icon type="plusCircle" size={21} color="#fafafa" style={{ marginRight: '10px' }} />
+                                                    <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
+                                                </div>
+                                            </>
                                         }
-                                        <div
-                                            onClick={() => setLocation('/creditos')}
-                                            style={{
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                padding: '10px',
-                                                border: '1px solid rgba(34, 34, 34, 0.2)',
-                                                width: checkWidth2(),
-                                                marginTop: '2rem',
-                                                borderRadius: '25px',
-                                                cursor: 'pointer',
-                                                backgroundColor: primaryColor,
-                                                boxShadow: shadow,
-                                            }}
-                                        >
-                                            <Icon type="plusCircle" size={21} color="#fafafa" style={{ marginRight: '10px' }} />
-                                            <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
-                                        </div>
+                                        {(paidBgCheck >= 1 && paidBgCheck <= 2) &&
+                                            <>
+                                                <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Seus créditos estão acabando. Clique no botão abaixo para adquirir mais.</label>
+                                                <div
+                                                    onClick={() => setLocation('/creditos')}
+                                                    style={{
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        padding: '10px',
+                                                        border: '1px solid rgba(34, 34, 34, 0.2)',
+                                                        width: checkWidth2(),
+                                                        marginTop: '2rem',
+                                                        borderRadius: '25px',
+                                                        cursor: 'pointer',
+                                                        backgroundColor: primaryColor,
+                                                        boxShadow: shadow,
+                                                    }}
+                                                >
+                                                    <Icon type="plusCircle" size={21} color="#fafafa" style={{ marginRight: '10px' }} />
+                                                    <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
+                                                </div>
+                                            </>
+                                        }
+                                        {freeBgCheck === 0 && paidBgCheck === 0 &&
+                                            <>
+                                                <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção! </span>{`Não fique sem créditos. Apenas ${bgCheckPrice.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} por consulta.`}</label>
+                                                <div
+                                                    onClick={() => setLocation('/creditos')}
+                                                    style={{
+                                                        display: 'flex',
+                                                        justifyContent: 'center',
+                                                        alignItems: 'center',
+                                                        padding: '10px',
+                                                        border: '1px solid rgba(34, 34, 34, 0.2)',
+                                                        width: checkWidth2(),
+                                                        marginTop: '2rem',
+                                                        borderRadius: '25px',
+                                                        cursor: 'pointer',
+                                                        backgroundColor: primaryColor,
+                                                        boxShadow: shadow,
+                                                    }}
+                                                >
+                                                    <Icon type="plusCircle" size={21} color="#fafafa" style={{ marginRight: '10px' }} />
+                                                    <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
+                                                </div>
+                                            </>
+                                        }
                                     </div>
                                 </div>
                             )}
