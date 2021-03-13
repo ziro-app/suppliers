@@ -53,7 +53,11 @@ const BackgroundCheck = () => {
     
     const [bgCheckPrice, setBgCheckPrice] = useState(bgPrice);
 
-    const { creditsModalTitle, creditsModalBody } = modals()
+    const { creditsModalTitle, creditsModalBody } = modals();
+
+    const [freeMsg, setFreeMsg] = useState(false);
+    const [paidMsg, setPaidMsg] = useState(false);
+    const [zeroMsg, setZeroMsg] = useState(false);
 
     const isCollaborator = role !== '';
     const DEFAULT_STEP_COLORS = ['#762c2c', '#a53d3d', '#d44e4e', '#dea700', '#f7ba00', '#f8d823', '#ebeb09', '#5deb3e', '#35e60e', '#2fcc0c'];
@@ -144,6 +148,22 @@ const BackgroundCheck = () => {
         }
     }, []);
 
+    useEffect(() => {
+        if(freeBgCheck >= 1 && freeBgCheck <= 2){
+            setFreeMsg(true)
+            setPaidMsg(false)
+            setZeroMsg(false)
+        }else if(paidBgCheck >= 1 && paidBgCheck <= 2){
+            setPaidMsg(true)
+            setFreeMsg(false)
+            setZeroMsg(false)
+        }else if(freeBgCheck === 0 && paidBgCheck === 0){
+            setFreeMsg(false)
+            setPaidMsg(false)
+            setZeroMsg(true)
+        }
+    }, [freeBgCheck, paidBgCheck]);
+
     const runErrorBgCheck = () => {
         return (
             <Error
@@ -212,7 +232,7 @@ const BackgroundCheck = () => {
                             {freeBgCheck + paidBgCheck <= 2 && (
                                 <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '2rem', borderTop: '1px solid rgba(0, 0, 0, 0.07)' }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                                        {(freeBgCheck >= 1 && freeBgCheck <= 2) &&
+                                        {freeMsg === true ?
                                             <>
                                                 <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Seus créditos estão acabando. Clique no botão abaixo para adquirir mais.</label>
                                                 <div
@@ -235,8 +255,8 @@ const BackgroundCheck = () => {
                                                     <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
                                                 </div>
                                             </>
-                                        }
-                                        {(paidBgCheck >= 1 && paidBgCheck <= 2) &&
+                                        : null}
+                                        {paidMsg === true ?
                                             <>
                                                 <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Seus créditos estão acabando. Clique no botão abaixo para adquirir mais.</label>
                                                 <div
@@ -259,8 +279,8 @@ const BackgroundCheck = () => {
                                                     <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
                                                 </div>
                                             </>
-                                        }
-                                        {freeBgCheck === 0 && paidBgCheck === 0 &&
+                                        : null }
+                                        {zeroMsg === true ?
                                             <>
                                                 <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção! </span>{`Não fique sem créditos. Apenas ${bgCheckPrice.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} por consulta.`}</label>
                                                 <div
@@ -283,7 +303,7 @@ const BackgroundCheck = () => {
                                                     <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
                                                 </div>
                                             </>
-                                        }
+                                        : null }
                                     </div>
                                 </div>
                             )}
