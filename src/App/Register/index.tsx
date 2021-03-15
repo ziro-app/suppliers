@@ -20,13 +20,12 @@ import capitalize from '@ziro/capitalize';
 import { containerWithPadding, fontTitle } from '@ziro/theme';
 import SingleImageUpload from './SingleImageUpload/index';
 import fetchFantasia from './fetchFantasia';
-import { welcome, marker } from './styles';
 import banksList from './banks';
 import fetch from './fetch';
 import completeRegistration from './completeRegistration';
 import simplifiedRegistration from './simplifiedRegistration';
 import { AtvdText, CnpjText, DocText, HolderText, HomeText, supportModalTitle, supportModalBody, supportModalTitleRegister, supportModalBodyRegister } from './modals';
-import { allCategories, categoryList } from './allCategories';
+import { allCategories } from '../utils/allCategories';
 import validateDocuments from '../utils/validateDocuments';
 import useRollback from '../utils/useRollback/useRollback';
 
@@ -55,7 +54,7 @@ const Register = () => {
     const [fantasia, setFantasia] = useState('');
     const [categoryName, setCategoryName] = useState('');
     const [category, setCategory] = useState('');
-    // const categoryList = ['Vestuário', 'Bijouterias', 'Calçados/Bolsas/Malas', 'Roupas masc., fem., inf., geral'];
+    const categoryList = Object.keys(allCategories);
     const [cep, setCep] = useState('');
     const [street, setStreet] = useState('');
     const [number, setNumber] = useState('');

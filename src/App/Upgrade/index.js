@@ -20,14 +20,7 @@ import { userContext } from '../appContext';
 import { getSteps } from './getSteps';
 import { advantagesDiv, advantagesLabel, innerAdvantagesDiv, advantagesContainer } from './styles';
 import validateDocuments from '../utils/validateDocuments';
-import { categoryList } from './allCategories';
-
-// const categories = {
-//     'Bijouterias': '09',
-//     'Calçados/Bolsas/Malas': '10',
-//     'Roupas masc., fem., inf., geral': '14',
-//     'Vestuário': '25'
-// }
+import { allCategories } from '../utils/allCategories';
 
 const supportNumber = require('./supportNumber');
 
@@ -37,7 +30,7 @@ function Upgrade() {
     // STATE - Categoria
     const [categoryName, setCategoryName] = useState('');
     const [category, setCategory] = useState('');
-    const listImported = [...categoryList];
+    const listImported = Object.keys(allCategories);
 
     // STATE - Dados Pessoais
     const [cpf, setCpf] = useState('');
@@ -82,7 +75,7 @@ function Upgrade() {
     const validationsPersonalInfo = [
         {
             name: 'categoryName',
-            validation: value => categoryList.includes(value) ? true : false,
+            validation: value => listImported.includes(value) ? true : false,
             value: categoryName,
             message: 'Campo obrigatório'
         },
@@ -325,12 +318,12 @@ function Upgrade() {
                                         value={categoryName}
                                         onChange={({ target: { value } }) => {
                                             setCategoryName(value)
-                                            setCategory(categories[value])
+                                            setCategory(allCategories[value])
                                         }}
                                         onChangeKeyboard={element => {
                                             if (element) {
                                                 setCategoryName(element.value)
-                                                setCategory(categories[element.value])
+                                                setCategory(allCategories[element.value])
                                             }
                                         }}
                                         list={listImported}
