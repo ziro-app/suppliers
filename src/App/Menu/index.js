@@ -26,6 +26,12 @@ export const Menu = ({ title, children }) => {
               text: 'Início',
             },
             {
+              path: '/pedidos',
+              onClick: () => setIsOpen(false),
+              icon: <Icon type="cart" size={15} strokeWidth={2} />,
+              text: 'Pedidos',
+            },
+            {
               path: '/transacoes',
               onClick: () => setIsOpen(false),
               icon: <Icon type="trending" size={15} strokeWidth={2} />,
@@ -207,7 +213,7 @@ export const Menu = ({ title, children }) => {
   };
 
   return (
-    <div style={{...containerWithPadding, padding: '20px 12px 60px'}}>
+    <div style={{ ...containerWithPadding, padding: '20px 12px 60px' }}>
       <Header type="icon" title={title} icon="menu" setIsOpen={() => setIsOpen(true)} />
       <Drawer isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
         {mountDrawerpanel()}
