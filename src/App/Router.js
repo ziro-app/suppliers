@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState,Suspense } from 'react';
 import { useLocation, useRoute } from 'wouter';
 
 import ConfirmEmail from '@bit/vitorbarbosa19.ziro.confirm-email';
@@ -6,7 +6,7 @@ import LoginTrouble from '@bit/vitorbarbosa19.ziro.login-trouble';
 import MyAccount from '@bit/vitorbarbosa19.ziro.my-account';
 import NotFound from '@bit/vitorbarbosa19.ziro.not-found';
 import PropTypes from 'prop-types';
-import Submenu from '@bit/vitorbarbosa19.ziro.submenu';
+import SpinnerWithDiv from '@bit/vitorbarbosa19.ziro.spinner-with-div';
 import { motion } from 'framer-motion';
 import { Router2 as routeMatcher } from '@ziro/router';
 import Collaborators from './Collaborators/index';
@@ -14,6 +14,7 @@ import CreatePayment from './CreatePayment/index';
 import DeleteAccount from './DeleteAccount/index';
 import GerarBoleto from './GerarBoleto/index';
 import Rates from './Rates';
+import UserCart from './UserCart'
 import { HeaderBack } from './HeaderBack/index';
 import InviteCollaborator from './InviteCollaborator/index';
 import Login from './Login/index';
@@ -39,6 +40,7 @@ import AboutCredits from './AboutCredits/index';
 import { userContext } from './appContext';
 
 const Router = ({ isLogged }) => {
+    const [matchCart, paramsCart] = useRoute('/pedidos/:cartId?')
     const [match, params] = useRoute('/transacoes/:transactionId?/:receivableId?');
     const [match2, params2] = useRoute('/relatorio/:boletbankId?/:boletId?');
     const [matchReceivable, paramsReceivable] = useRoute('/recebiveis/:receivableId?');
@@ -89,6 +91,11 @@ const Router = ({ isLogged }) => {
                     <BankInfo />
                 </motion.div>
             </Menu>
+        ),
+        [matchCart ? location : null]: (
+          <Suspense fallback={<SpinnerWithDiv />}>
+            <UserCart {...paramsCart} />
+          </Suspense>
         ),
         '/upgrade': (
             <Menu title="Fazer Upgrade">
