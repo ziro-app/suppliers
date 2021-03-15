@@ -54,13 +54,19 @@ const Rates = () => {
     )
 
     return (
-        <div style={{ display: 'grid', gap: '26px' }}>
+        <div style={{ display: 'grid', gap: '5px' }}>
             {typeRegister === 'Completo' && role === '' &&
-                <Details blocks={blockDetails} />
+                <Details
+                    blocks={blockDetails}
+                    blockGap="20px"
+                />
             }
             
             {role !== '' &&
-                <Details blocks={blockDetails} />
+                <Details 
+                    blocks={blockDetails}
+                    blockGap="20px"
+                />
             }
 
             {typeRegister === 'Simplificado' &&
