@@ -54,7 +54,7 @@ const Rates = () => {
     )
 
     return (
-        <div>
+        <div style={{ display: 'grid', gap: '26px' }}>
             {typeRegister === 'Completo' && role === '' &&
                 <Details blocks={blockDetails} />
             }
