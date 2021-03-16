@@ -43,12 +43,12 @@ const modals = () => {
           <label style={advantagesLabel}>Consultar o mesmo CPF/CNPJ mais que uma vez não consome novo crédito</label>
         </div>
         
-        <div style={advantagesDiv}>
+        {/* <div style={advantagesDiv}>
           <div style={innerAdvantagesDiv}>
             <Icon type='award' size={15} strokeWidth={2} style={{ background: 'white' }}/>
           </div>
           <label style={advantagesLabel}>No dia 01 de cada mês você recebe 10 créditos gratuitos que expiram no fim do mês</label>
-        </div>
+        </div> */}
       </div>
     </div>
   );
