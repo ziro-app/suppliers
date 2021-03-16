@@ -25,12 +25,12 @@ export const Menu = ({ title, children }) => {
               icon: <Icon type="home" size={15} strokeWidth={2} />,
               text: 'Início',
             },
-            {
+            /* {
               path: '/pedidos',
               onClick: () => setIsOpen(false),
               icon: <Icon type="cart" size={15} strokeWidth={2} />,
               text: 'Pedidos',
-            },
+            }, */
             {
               path: '/transacoes',
               onClick: () => setIsOpen(false),
