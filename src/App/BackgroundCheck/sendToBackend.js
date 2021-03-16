@@ -6,11 +6,13 @@ const getInfo = async docId => {
     const doc = await db.collection('suppliers').doc(docId).get();
     if (doc.exists) {
         const { backgroundCheckRequestsAvailable, backgroundCheckRequestsAvailablePaid, backgroundCheckCurrentMonth, backgroundCheckCurrentYear } = doc.data();
-        const now = new Date();
-        if (now.getMonth() <= backgroundCheckCurrentMonth && now.getFullYear() <= backgroundCheckCurrentYear)
-            return [backgroundCheckRequestsAvailablePaid, backgroundCheckRequestsAvailable, backgroundCheckCurrentMonth, backgroundCheckCurrentYear];
-        else return [10, now.getMonth(), now.getFullYear()];
-    } else return [null, null, null];
+        return [backgroundCheckRequestsAvailablePaid, backgroundCheckRequestsAvailable, backgroundCheckCurrentMonth, backgroundCheckCurrentYear];
+        // Code for automatic credit renewal
+        // const now = new Date();
+        // if (now.getMonth() <= backgroundCheckCurrentMonth && now.getFullYear() <= backgroundCheckCurrentYear)
+        //     return [backgroundCheckRequestsAvailablePaid, backgroundCheckRequestsAvailable, backgroundCheckCurrentMonth, backgroundCheckCurrentYear];
+        // else return [backgroundCheckRequestsAvailablePaid, 10, now.getMonth(), now.getFullYear()];
+    } else return [null, null, null, null];
 };
 
 const fillValues = (field, scoreValue, block, { setScoreValue, setBlockPF, setBlockPJ }) => {
