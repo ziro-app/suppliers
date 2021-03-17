@@ -452,7 +452,7 @@ const Register = () => {
                     </div>
                     <h1 style={{ fontFamily: 'Rubik', textTransform: 'uppercase', color: 'rgb(45, 156, 219)', textAlign: 'center', paddingTop: '30px', margin: '0' }}>Crie sua conta na Ziro</h1>
 
-                    <label style={{ color: 'rgb(34, 34, 34)', marginTop: '10px' }}>Comece agora a fazer consultas no SERASA e evite fraudes e inadimplência. São 10 consultas por mês!</label>
+                    <label style={{ color: 'rgb(34, 34, 34)', marginTop: '10px' }}>Comece agora a fazer consultas no SERASA e evite fraudes e inadimplência. São 10 consultas gratuitas para começar!</label>
 
                     <label style={{ color: 'rgb(34, 34, 34)', marginTop: '10px' }}>Você também pode se cadastrar para criar links de pagamento e vender online via WhatsApp.</label>
 
