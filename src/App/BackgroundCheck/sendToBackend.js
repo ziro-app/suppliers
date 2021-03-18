@@ -16,7 +16,8 @@ const getInfo = async docId => {
 };
 
 const fillValues = (field, scoreValue, block, { setScoreValue, setBlockPF, setBlockPJ }) => {
-    if (field === 'cpf') {
+    if (!block || block === undefined) return;
+    else if (field === 'cpf') {
         setScoreValue(scoreValue);
         setBlockPF(block);
         setBlockPJ([]);

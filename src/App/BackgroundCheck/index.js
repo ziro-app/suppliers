@@ -50,7 +50,7 @@ const BackgroundCheck = () => {
     const [paidBgCheck, setPaidBgCheck] = useState(backgroundCheckRequestsPaid);
     const [backgroundPaidCollaborator, setBackgroundPaidCollaborator] = useState();
     const [backgroundFreeCollaborator, setBackgroundFreeCollaborator] = useState();
-    
+
     const [bgCheckPrice, setBgCheckPrice] = useState(bgPrice);
 
     const { creditsModalTitle, creditsModalBody } = modals();
@@ -149,15 +149,15 @@ const BackgroundCheck = () => {
     }, []);
 
     useEffect(() => {
-        if(freeBgCheck >= 1 && freeBgCheck <= 2){
+        if (freeBgCheck >= 1 && freeBgCheck <= 2) {
             setFreeMsg(true)
             setPaidMsg(false)
             setZeroMsg(false)
-        }else if(paidBgCheck >= 1 && paidBgCheck <= 2){
+        } else if (paidBgCheck >= 1 && paidBgCheck <= 2) {
             setPaidMsg(true)
             setFreeMsg(false)
             setZeroMsg(false)
-        }else if(freeBgCheck === 0 && paidBgCheck === 0){
+        } else if (freeBgCheck === 0 && paidBgCheck === 0) {
             setFreeMsg(false)
             setPaidMsg(false)
             setZeroMsg(true)
@@ -255,7 +255,7 @@ const BackgroundCheck = () => {
                                                     <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
                                                 </div>
                                             </>
-                                        : null}
+                                            : null}
                                         {paidMsg === true ?
                                             <>
                                                 <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção!</span> Seus créditos estão acabando. Clique no botão abaixo para adquirir mais.</label>
@@ -279,7 +279,7 @@ const BackgroundCheck = () => {
                                                     <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
                                                 </div>
                                             </>
-                                        : null }
+                                            : null}
                                         {zeroMsg === true ?
                                             <>
                                                 <label style={{ textAlign: 'center' }}><span style={{ color: alertColor, fontWeight: 'bold' }}>Atenção! </span>{`Não fique sem créditos. Apenas ${bgCheckPrice.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })} por consulta.`}</label>
@@ -303,7 +303,7 @@ const BackgroundCheck = () => {
                                                     <label style={{ cursor: 'pointer', color: '#fafafa', fontSize: '1.3rem', fontFamily: fontTitle }}>Adquirir créditos</label>
                                                 </div>
                                             </>
-                                        : null }
+                                            : null}
                                     </div>
                                 </div>
                             )}
@@ -346,7 +346,7 @@ const BackgroundCheck = () => {
                         />,
                     ]}
                 />
-                {blockPF.length > 0 && (
+                {blockPF !== undefined && blockPF.length > 0 && (
                     <div style={wrapper}>
                         <div style={box1}>
                             <ScoreCircle value={scoreValue} maxValue={1000} width={200} lineWidth={20} lineSpacing={1} lineGap={1} maxAngle={210} rotation={90} stepsColors={DEFAULT_STEP_COLORS} fadedOpacity={25} />
@@ -356,7 +356,7 @@ const BackgroundCheck = () => {
                         </div>
                     </div>
                 )}
-                {blockPJ.length > 0 && <Details blocks={blockPJ} blockGap="20px" />}
+                {blockPJ !== undefined && blockPJ.length > 0 && <Details blocks={blockPJ} blockGap="20px" />}
             </motion.div>
         </Menu>
     );
