@@ -31,7 +31,7 @@ import ToastNotification from '../../ToastNotification';
 import InfoCard from './infoCard';
 import SummaryCard from './summaryCard';
 
-import EditCardCatalog from './editCardCatalog/editCard';
+import EditCardCatalog from './editCardCatalog/editCard.js';
 
 const PTstatus = {
   available: 'Disponível',
