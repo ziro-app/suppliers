@@ -191,8 +191,8 @@ const BackgroundCheck = () => {
                 <div style={{ justifySelf: 'center' }}>
                     <Illustration type="paymentError" />
                 </div>
-                <label style={header}>Erro na API</label>
-                <label>Ocorreu um erro ao consultar o documento. Tente novamente ou contate suporte</label>
+                <label style={header}>Erro no Serasa</label>
+                <label>O Serasa não retornou nenhuma informação acerca do documento. Tente novamente ou contate suporte</label>
                 <Button type="button" cta="Voltar" click={() => setApiError(false)} />
             </div>
         );

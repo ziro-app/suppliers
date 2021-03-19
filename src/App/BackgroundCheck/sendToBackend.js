@@ -48,7 +48,9 @@ const sendToBackend = state => () => {
             if (query.empty) {
                 const [paidRequests, freeRequests, currentFreeMonth, currentFreeYear] = await getInfo(refId);
                 if (freeRequests > 0 || paidRequests > 0) {
-                    const { data: { backgroundCheck } } = await post(url, {}, config);
+                    const { data } = await post(url, {}, config);
+                    console.log(data);
+                    const { backgroundCheck } = data;
                     console.log(backgroundCheck);
                     if (backgroundCheck) {
                         let updated = 0;
