@@ -1,8 +1,8 @@
-import * as firebase from 'firebase/app'
+import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/storage'
-import { firebaseConfig } from './firebase-config.js'
+import { firebaseConfig } from './firebase-config'
 import { firebaseHomologConfig } from './firebase-homolog-config'
 
 const config = process.env.HOMOLOG ? firebaseHomologConfig : firebaseConfig;
@@ -14,5 +14,5 @@ export const
     auth = init.auth(),
     fs = firebase.firestore,
     fbauth = firebase.auth,
-    storage = firebase.storage().ref,
+    storage = firebase.storage().ref(),
     configFirebase = config;

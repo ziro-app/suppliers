@@ -14,7 +14,9 @@ import { db, fs } from '../../../Firebase';
 import { brandCart, brandName, buttonDownload } from './styles';
 import { reduceTotal } from './utils';
 
-export default ({ cart: { productIds, products, ...cart }, storeowner, oldQuery }) => {
+export default ({state, cart: { productIds, products, ...cart }, storeowner, oldQuery }) => {
+    //console.log('get in cart',cart)
+    //console.log('state in cart',state)
   const [prices, setPrices] = useState({});
   const [urls, setURLs] = useState({});
   const [location, setLocation] = useLocation();
@@ -72,7 +74,7 @@ export default ({ cart: { productIds, products, ...cart }, storeowner, oldQuery 
       <div style={brandCart}>
         <label style={brandName}>{cart.brandName}</label>
         <Button type="button" cta="Fazer download fotos" click={downloadAllImages} style={buttonDownload} />
-        {productIds.map(productId => (
+        {productIds.map((productId,index) => (
           /* <CardForm
                                             key={productId}
                                             productId={productId}
@@ -90,8 +92,11 @@ export default ({ cart: { productIds, products, ...cart }, storeowner, oldQuery 
             cartProduct={products[productId]}
             setPrice={price => setPrices(old => ({ ...old, [productId]: price }))}
             setURL={url => setURLs(old => ({ ...old, [productId]: url }))}
-            // buyerStoreownerId={cart.buyerStoreownerId}
-            // brandName={cart.brandName}
+            brandName={cart.brandName}
+            state={state}
+            index={index}
+            buyerStoreownerId={cart.buyerStoreownerId}
+
           />
         ))}
         <div style={summary}>

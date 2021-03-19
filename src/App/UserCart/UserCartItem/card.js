@@ -8,11 +8,13 @@ import EditCard from './editCard';
 import SummaryCard from './summaryCard';
 import InfoCard from './infoCard';
 
-export default ({ productId, cartProduct, setURL, setPrice }) => {
+export default ({ state,buyerStoreownerId,cartProduct,index,brandName,productId, setURL, setPrice }) => {
+   //console.log('state,cartProduct,index,brandName,productId, setURL, setPrice',state,cartProduct,index,brandName,productId, setURL, setPrice)
     const [productRef] = useState(db.collection('catalog-images').doc(productId));
     const [fetchingProduct, setFetchingProduct] = useState(true);
     const [editing, setEditing] = useState(false);
     const [product, setProduct] = useState({});
+    const [productCart, setProductCart] = useState({})
     const [initialStatus, setInitialStatus] = useState();
     const [sizes, setSizes] = useState([]);
     const [colors, setColors] = useState([]);
@@ -30,6 +32,7 @@ export default ({ productId, cartProduct, setURL, setPrice }) => {
                 setPrice(data.price);
                 setURL(data.url);
                 setProduct(data);
+                setProductCart(data)
                 setInitialStatus(data.status);
                 setFetchingProduct(false);
             }),
@@ -44,6 +47,7 @@ export default ({ productId, cartProduct, setURL, setPrice }) => {
                 .where('status', '>', 'closed')
                 .get();
             await db.runTransaction(async transaction => {
+                console.log('product inside UserCartItem: ', product)
                 if (product.status === 'available' && !Object.keys(product.availableQuantities || {}).length)
                     transaction.update(productRef, { ...product, status: 'waitingStock' });
                 else if (
@@ -96,6 +100,9 @@ export default ({ productId, cartProduct, setURL, setPrice }) => {
             container={children =>
                 !initialStatus || initialStatus === 'waitingInfo' || editing ? (
                     <EditCard
+                    productId={productId}
+                    buyerStoreownerId={buyerStoreownerId}
+                    productCart={productCart}
                         image={children}
                         product={product}
                         productRef={productRef}
@@ -105,6 +112,9 @@ export default ({ productId, cartProduct, setURL, setPrice }) => {
                         colors={colors}
                         sizes={sizes}
                         update={update}
+                        state={state}cartProduct={cartProduct}index={index}brandName={brandName}
+                        setURL={setURL} setPrice={setPrice}
+                        initialStatus={initialStatus} setInitialStatus={setInitialStatus}
                     />
                 ) : initialStatus === 'unavailable' && cartProduct.status !== 'closed' ? (
                     <InfoCard product={{ requestedQuantities: {}, ...product, ...cartProduct }} image={children}

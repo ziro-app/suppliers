@@ -1,3 +1,5 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import Header from '@bit/vitorbarbosa19.ziro.header';
@@ -24,6 +26,12 @@ export const Menu = ({ title, children }) => {
               onClick: () => setIsOpen(false),
               icon: <Icon type="home" size={15} strokeWidth={2} />,
               text: 'Início',
+            },
+            {
+              path: '/upload-imagens',
+              onClick: () => setIsOpen(false),
+              icon: <Icon type="home" size={15} strokeWidth={2} />,
+              text: 'Cadastar Produtos',
             },
             /* {
               path: '/pedidos',

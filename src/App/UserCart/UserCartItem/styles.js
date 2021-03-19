@@ -1,6 +1,8 @@
 import { primaryColor, secondaryColor, grayColor2, fontTitle, gradient } from '@ziro/theme'
 
-export const 
+
+
+export const
 
 brandCart = {
     display: 'grid',
@@ -135,4 +137,40 @@ qtyContainer = {
     display: 'grid',
     gridTemplateColumns: '1fr 2fr 1fr',
     alignItems: 'center'
+},
+
+radioButtonContainer = {
+  display: 'flex',
+  position: 'relative',
+},
+priceLabel = {
+  fontFamily: fontTitle,
+  fontSize: '1.5rem',
+},
+editCardInputs = {
+  display: 'grid',
+  gridRowGap: '3em',
+  padding: '10px 10px 20px',
+},
+// .fileContainer .uploadPicturesWrapper
+fileContainerUploadPicturesWrapperClass = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  justifyContent: 'center',
+  width: '100%',
+},
+// .fileContainer .uploadPictureContainer
+fileContainerUploadPictureContainerClass = {
+  width: '100%',
+  Display: 'flex',
+  AlignItems: 'center',
+  justifyContent: 'center',
+  height: 'inherit',
+  position: 'relative',
+  borderRadius: '5px',
+  boxShadow: 'rgba(34, 34, 34, 0.3) 0px 0px 15px -4px',
+},
+// .fileContainer .uploadPictureContainer img.uploadPicture
+fileContainerUploadPictureContainerimgUploadPictureClass = {
+  width: '100%',
 }

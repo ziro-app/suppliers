@@ -39,7 +39,7 @@ export default ({ cartId }) => {
       setSelectedStoreowner(selectedCart ? storeowners[selectedCart.buyerStoreownerId] : undefined);
     }
   }, [cartId, carts, storeowners, selectedCart]);
-  if (cartId && selectedCart && selectedStoreowner) return <CartItem cart={selectedCart} storeowner={selectedStoreowner} oldQuery={queryStr} />;
+  if (cartId && selectedCart && selectedStoreowner) return <CartItem state={state} cart={selectedCart} storeowner={selectedStoreowner} oldQuery={queryStr} />;
   else if (carts.length > 0) return <SearchCart carts={carts} storeowners={storeowners} setQueryStr={setQueryStr} />;
   else return <SpinnerWithDiv />;
 };
