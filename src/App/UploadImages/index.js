@@ -16,6 +16,7 @@ import BrandChoose from './BrandChoose';
 import inputs from './inputs';
 import ToastNotification from '../ToastNotification';
 import { userContext } from '../appContext';
+import Empty from './Empty';
 
 const sendDefaultValueToState = ({value,color,size,states,identifierOfPicture,dispatch}) => {
     if (/^[0-9]*$/gm.test(value)) {
@@ -164,7 +165,7 @@ const UploadImages = () => {
       {/* <BrandChoose isSubmitting={isSubmitting} brand={brand} setBrand={setBrand} brands={brands} /> */}
       <div style={fileContainerClass} className="fileContainer" onDragOver={onDragOver}>
         <ToastNotification openToastRoot={openToast} setOpenToastRoot={setOpenToast} messageToastRoot={messageToast} type={typeOfToast} />
-        {showUpload && (
+        {showUpload ? (
           <>
             <ImageUpload
               sendToBackend={data => settingThePicturesAndFiles(data, setIsError, pictures, filesList, setPictures, setFiles, uuid, states, dispatch, thumbPhoto, setThumbPhoto)}
@@ -225,7 +226,7 @@ const UploadImages = () => {
                 }) */}
             </div>
           </>
-        )}
+        ): <Empty/>}
       </div>
     </>
   );
