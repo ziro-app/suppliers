@@ -54,13 +54,6 @@ export default ({ carts, storeowners, setQueryStr }) => {
       <div style={container}>
         <div style={{ display: 'grid', gridGap: '8px', marginBottom: '40px' }}>
           <Dropdown
-            value={seller || ''}
-            list={_sellers.options}
-            placeholder="Filtrar fabricante"
-            onChange={({ target: { value } }) => setSeller(value)}
-            onChangeKeyboard={e => e && setSeller(e.value)}
-          />
-          <Dropdown
             value={bufferStatus || ''}
             list={_status.options.PT}
             placeholder="Filtrar status"

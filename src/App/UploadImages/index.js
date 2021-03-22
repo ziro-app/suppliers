@@ -112,15 +112,12 @@ const UploadImages = () => {
   const [oldPictures, setOldPictures] = useState(['']);
   const [states, dispatch] = useReducer((state, payload) => inputStateControl(state, payload), {});
   const defaultQuantityValue = 2;
-  const { device } = useContext(userContext);
+  const { device,fantasy } = useContext(userContext);
   const context = useContext(userContext);
-  console.log('context',context)
   useEffect(() => fetch(setIsLoading, setIsError, setBrands, setBrandsAndTrends), []);
   useEffect(() => {
     if (filesList.length === 0) setThumbPhoto('');
   }, [filesList]);
-  console.log('states', states);
-  console.log('device', device);
 
   useEffect(() => {
     if (pictures[0]) setShowButtonBot(true);
@@ -131,10 +128,13 @@ const UploadImages = () => {
   }, [pictures]);
 
   useEffect(() => {
-    if (isValidBrand(brands, brand)) {
+    console.log('isValidBrand',isValidBrand(brands, fantasy))
+    if (isValidBrand(brands, fantasy)) {
+      setBrand(brands.filter(item => fantasy.includes(item.toUpperCase()))[0])
       setShowUpload(true);
     } else setShowUpload(false);
-  }, [brand]);
+  }, [brands,fantasy]);
+  console.log(brand)
 
   if (isLoading) return <Spinner size="5rem" />;
   // if (isError) return <Error />;
@@ -155,17 +155,20 @@ const UploadImages = () => {
     setMessageToast,
     setTypeOfToast,
   };
-
+  console.log('brand',brand)
+  console.log('!isValidBrand(brands, brand) || isSubmitting',!isValidBrand(brands, brand) || isSubmitting)
+  console.log('!isValidBrand(brands, brand)',!isValidBrand(brands, brand))
+  console.log('isSubmitting',isSubmitting)
   return (
     <>
-      <BrandChoose isSubmitting={isSubmitting} brand={brand} setBrand={setBrand} brands={brands} />
+      {/* <BrandChoose isSubmitting={isSubmitting} brand={brand} setBrand={setBrand} brands={brands} /> */}
       <div style={fileContainerClass} className="fileContainer" onDragOver={onDragOver}>
         <ToastNotification openToastRoot={openToast} setOpenToastRoot={setOpenToast} messageToastRoot={messageToast} type={typeOfToast} />
         {showUpload && (
           <>
             <ImageUpload
               sendToBackend={data => settingThePicturesAndFiles(data, setIsError, pictures, filesList, setPictures, setFiles, uuid, states, dispatch, thumbPhoto, setThumbPhoto)}
-              isDisabled={!isValidBrand(brands, brand) || isSubmitting}
+              isDisabled={isValidBrand(brands, brand) || isSubmitting}
             />
             <div style={cardContainerClass}>
               {showButtonTop && (

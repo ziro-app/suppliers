@@ -8,6 +8,7 @@ const fetch = async state => {
     const carts = [];
     if (!snapshot.empty) {
       snapshot.forEach(doc => {
+        console.log('carts:',doc.data())
         carts.push(doc);
       });
       setAllCarts(carts);
@@ -17,6 +18,7 @@ const fetch = async state => {
     const storeowners = [];
     if (!docs.empty) {
       docs.forEach(doc => {
+        //console.log('storeowners:',doc.data())
         storeowners.push(doc);
       });
       setAllStoreowners(storeowners);

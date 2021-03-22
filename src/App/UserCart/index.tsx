@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { toCartArray, toStoreownerData } from './utils';
 import SearchCart from './SearchCart';
 import CartItem from './UserCartItem';
 import SpinnerWithDiv from '@bit/vitorbarbosa19.ziro.spinner-with-div';
 
+import {userContext} from '../appContext'
+import Empty from './Empty'
 import fetch from './fetch';
 
 export default ({ cartId }) => {
+    const {fantasy} = useContext(userContext)
+    console.log('fantasy:',fantasy)
   const [queryStr, setQueryStr] = useState();
   const [allCarts, setAllCarts] = useState([]);
   const [allStoreowners, setAllStoreowners] = useState([]);
@@ -29,7 +33,11 @@ export default ({ cartId }) => {
   }, [newDateForFilter, last7Days]);
   useEffect(() => {
     if (allCarts.length > 0 && allStoreowners.length > 0) {
-      setCarts(allCarts.reduce(toCartArray, []));
+        console.log('fantasy',fantasy)
+
+      console.log('allCarts.reduce(toCartArray, [])',allCarts.reduce(toCartArray, []).filter(item => 'QBONITA VESTIDOS DE FESTA EIRELI'.includes(item.brandName.toUpperCase())))
+      console.log('allCarts.reduce(toCartArray, [])',allCarts.reduce(toCartArray, []).filter(item => fantasy.includes(item.brandName.toUpperCase())))
+      setCarts(allCarts.reduce(toCartArray, []).filter(item => fantasy.includes(item.brandName.toUpperCase())));
       setStoreowners(allStoreowners.reduce(toStoreownerData, []));
     }
   }, [allCarts, allStoreowners]);
@@ -41,5 +49,6 @@ export default ({ cartId }) => {
   }, [cartId, carts, storeowners, selectedCart]);
   if (cartId && selectedCart && selectedStoreowner) return <CartItem state={state} cart={selectedCart} storeowner={selectedStoreowner} oldQuery={queryStr} />;
   else if (carts.length > 0) return <SearchCart carts={carts} storeowners={storeowners} setQueryStr={setQueryStr} />;
+  else if (carts.length === 0) return <Empty />
   else return <SpinnerWithDiv />;
 };

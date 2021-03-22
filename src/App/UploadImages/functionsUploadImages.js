@@ -209,5 +209,6 @@ export function getThumbImage(uploadResult) {
 export function isValidBrand(brands, brand) {
   if (!(brands instanceof Array)) return false;
   if (brands.length === 0) return false;
-  return brands.includes(brand);
+
+  return brands.map(brand => brand.toUpperCase()).includes(brand);
 }
