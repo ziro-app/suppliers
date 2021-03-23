@@ -169,7 +169,7 @@ const UploadImages = () => {
           <>
             <ImageUpload
               sendToBackend={data => settingThePicturesAndFiles(data, setIsError, pictures, filesList, setPictures, setFiles, uuid, states, dispatch, thumbPhoto, setThumbPhoto)}
-              isDisabled={isValidBrand(brands, brand) || isSubmitting}
+              isDisabled={!brands.filter(item => fantasy.includes(item.toUpperCase()))[0]||isValidBrand(brands, brand) || isSubmitting}
             />
             <div style={cardContainerClass}>
               {showButtonTop && (
