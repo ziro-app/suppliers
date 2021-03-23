@@ -49,6 +49,6 @@ export default ({ cartId }) => {
   }, [cartId, carts, storeowners, selectedCart]);
   if (cartId && selectedCart && selectedStoreowner) return <CartItem state={state} cart={selectedCart} storeowner={selectedStoreowner} oldQuery={queryStr} />;
   else if (carts.length > 0) return <SearchCart carts={carts} storeowners={storeowners} setQueryStr={setQueryStr} />;
-  else if (carts.length === 0) return <Empty />
-  else return <SpinnerWithDiv />;
+  else if(storeowners.length === 0) return <SpinnerWithDiv />;
+  else return <Empty />
 };
