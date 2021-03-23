@@ -93,7 +93,7 @@ const sendToBackend = async ({
 
   setIsSubmitting(false);
   setIsSubmitted(true);
-  setBrand('');
+  //setBrand('');
   setPictures([]);
   setFiles([]);
   setThumbPhoto('');
