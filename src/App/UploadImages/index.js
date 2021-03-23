@@ -130,7 +130,7 @@ const UploadImages = () => {
 
   useEffect(() => {
     console.log('isValidBrand',isValidBrand(brands, fantasy))
-    if (isValidBrand(brands, fantasy)) {
+    if (isValidBrand(brands, fantasy) && brands.filter(item => fantasy.includes(item.toUpperCase()))[0]) {
       setBrand(brands.filter(item => fantasy.includes(item.toUpperCase()))[0])
       setShowUpload(true);
     } else setShowUpload(false);
