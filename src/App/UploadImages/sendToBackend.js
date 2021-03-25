@@ -19,6 +19,9 @@ const sendToBackend = async ({
   setOpenToast,
   setMessageToast,
   setTypeOfToast,
+  cartId,
+  onCartPress,
+  setLocation
 }) => {
   setIsSubmitting(true);
   const uploadImages = await Promise.all(
@@ -32,7 +35,7 @@ const sendToBackend = async ({
         const uploadTask = await image.put(file);
         const url = await uploadTask.ref.getDownloadURL();
 
-        await db.collection('catalog-images').add({
+        const docRef = await db.collection('catalog-images').add({
           availableQuantities: states[`availableQuantities${file.identifierOfPicture}`] ? states[`availableQuantities${file.identifierOfPicture}`] : '',
           price: states[`price${file.identifierOfPicture}`] ? states[`price${file.identifierOfPicture}`] : '',
           description: states[`description${file.identifierOfPicture}`] ? states[`description${file.identifierOfPicture}`] : '',
@@ -46,6 +49,8 @@ const sendToBackend = async ({
           photoPeriod: 'Nova',
           bucket: `${Math.floor(Math.random() * (300 - Number.MIN_VALUE))}`, // will be used to fetch random images on front-end
         });
+        console.log('docRef.id,brand',docRef.id,brand)
+        if(cartId)onCartPress(docRef.id,brand,'available')
         console.log('added new image file',file)
         try {
             if(thumbPhoto.identifierOfPicture ===file.identifierOfPicture){
@@ -102,6 +107,7 @@ const sendToBackend = async ({
   setTypeOfToast('alert');
   setMessageToast('Enviado com sucesso');
   setOpenToast(true);
+  setLocation(`/pedidos/${cartId}`)
 };
 
 export default sendToBackend;

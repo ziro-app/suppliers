@@ -13,6 +13,7 @@ import Form from '@bit/vitorbarbosa19.ziro.form';
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
 import DropDown from '@bit/vitorbarbosa19.ziro.dropdown';
+import {useRoute,useLocation} from 'wouter'
 import { v4 as uuid } from 'uuid';
 import _ from 'lodash';
 import RImg from 'react-image';
@@ -64,6 +65,11 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
     status: 'available',
     identifierOfPicture,
   });
+  const [location, setLocation] = useLocation();
+  const cartId = useMemo(()=>{
+      console.log('location')
+    return location.split('/')[2]},[location])
+  //console.log('location',location.split('/')[2])
   //const [initialStatus, setInitialStatus] = useState('waitingInfo');
   const [sizes, setSizes] = useState([]);
   const [colors, setColors] = useState([]);
@@ -138,12 +144,11 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
         }
 
         //console.log('entrou no primeiro');
-        // console.log('at end products[0][productId]', products[0][productId])
+        //console.log('at end products[0][productId]', products[0][productId])
         if (Object.prototype.hasOwnProperty.call(products[0][productId], 'requestedQuantities')) {
           const { requestedQuantities } = products[0][productId];
           if (requestedQuantities) {
             const newData = Object.assign(data, { requestedQuantities });
-            //console.log('entrou no segundo');
             //console.log('newData', newData);
             setProduct(newData);
           }
@@ -187,16 +192,19 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
     }
     test();
   }, []);
+  //console.log('Object.entries(cart)',Object.entries(cart))
   const findCartItem = useCallback(cartItemFinder(Object.entries(cart)), [cart]);
   const cartRef = useMemo(() => buyerStoreownerId && db.collection('catalog-user-data').doc(buyerStoreownerId).collection('cart'), [buyerStoreownerId]);
   const updateRequestedQuantities = useCallback(
     async (brandName, productId, newRequestedQuantities) => {
       if (!buyerStoreownerId) return;
       try {
-        const [id] = findCartItem(brandName);
-        if (!id) throw 'NO_CART_FOUND';
+          console.log('brandName',brandName)
+        //const [id] = findCartItem(brandName);
+        console.log(Object.entries(cart))
+        if (!cartId) throw 'NO_CART_FOUND';
         await db.runTransaction(async transaction => {
-          const cartItemRef = cartRef.doc(id);
+          const cartItemRef = cartRef.doc(cartId);
           const cartItemSnapshot = await transaction.get(cartItemRef);
           const productRef = db.collection('catalog-images').doc(productId);
           const productSnapshot = await transaction.get(productRef);

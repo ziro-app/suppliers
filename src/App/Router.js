@@ -42,6 +42,7 @@ import { userContext } from './appContext';
 
 const Router = ({ isLogged }) => {
   const [matchCart, paramsCart] = useRoute('/pedidos/:cartId?');
+  const [matchUploadForCart, paramsUploadForCart] = useRoute('/upload-imagens/:cartId?');
   const [match, params] = useRoute('/transacoes/:transactionId?/:receivableId?');
   const [match2, params2] = useRoute('/relatorio/:boletbankId?/:boletId?');
   const [matchReceivable, paramsReceivable] = useRoute('/recebiveis/:receivableId?');
@@ -51,6 +52,7 @@ const Router = ({ isLogged }) => {
   const [transactionId, setTransactionId] = useState('');
   const [location] = useLocation();
   const { role } = useContext(userContext);
+  const currentBackRoute = localStorage.getItem('voltar');
 
   const publicRoutes = {
     '/': <Login />,
@@ -96,6 +98,15 @@ const Router = ({ isLogged }) => {
     [matchCart ? location : null]: (
       <Suspense fallback={<SpinnerWithDiv />}>
         <UserCart {...paramsCart} />
+      </Suspense>
+    ),
+    [matchUploadForCart ? location : null]: (
+      <Suspense fallback={<SpinnerWithDiv />}>
+        <HeaderBack title="Upload de imagens" navigateTo={currentBackRoute || '/pedidos'}>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <UploadImages withIcon imgExtension={['.jpg', '.gif', '.png', '.gif']} maxFileSize={5242880} {...paramsUploadForCart} />
+          </motion.div>
+        </HeaderBack>
       </Suspense>
     ),
     '/upgrade': (

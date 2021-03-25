@@ -21,6 +21,8 @@ export default ({state, cart: { productIds, products, ...cart }, storeowner, old
   const [urls, setURLs] = useState({});
   const [location, setLocation] = useLocation();
   const [match, params] = useRoute('/pedidos/:cartId?');
+  const {cartId} = params;
+  //console.log('cartId',cartId)
   const [totalItems, totalPrice] = useMemo(() => (productIds && products ? productIds.reduce(reduceTotal(prices, products), [0, 0]) : [0, 0]), [productIds, products, prices]);
   const confirmCartItem = useCallback(async () => {
     try {
@@ -68,6 +70,13 @@ export default ({state, cart: { productIds, products, ...cart }, storeowner, old
       console.log({ error });
     }
   }, [productIds, urls]);
+
+  const handleClickUploadProduct = () => {
+    localStorage.setItem('voltar', `/pedidos/${cartId}`);
+    localStorage.setItem('cart',JSON.stringify(cart))
+    setLocation(`upload-imagens/${cartId}`)
+      console.log('Teste')
+  }
   return (
     <div style={containerWithPadding}>
       <Header type="icon-link" title={storeowner.razao} navigateTo={`/pedidos${oldQuery || ''}`} icon="back" />
@@ -108,6 +117,12 @@ export default ({state, cart: { productIds, products, ...cart }, storeowner, old
             <label style={total}>Quantidade</label>
             <label style={priceTotal}>{totalItems}</label>
           </div>
+          <Button
+            type="button"
+            cta="Upload de Produto"
+            click={handleClickUploadProduct}
+            submitting={false}
+          />
         </div>
         {cart.status === 'waitingConfirmation' && <Button type="button" cta="Confirmar pedido" click={confirmCartItem} submitting={false} />}
         {cart.status === 'waitingPayment' && <Button type="button" cta="Aguardando pagamento" click={() => {}} submitting />}
