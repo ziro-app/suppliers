@@ -3,7 +3,7 @@ import { auth, db } from '../../Firebase/index';
 const { formatDateUTC3 } = require('@ziro/format-date-utc3');
 
 const simplifiedRegistration = state => () => {
-    const registrationControl = {userCreated:false,sheetCreated:false,zoopCreated:false,firestoreSuppliersCreated:false,firestoreUsersCreated:false};
+    const registrationControl = { userCreated: false, sheetCreated: false, zoopCreated: false, firestoreSuppliersCreated: false, firestoreUsersCreated: false };
     const { fname, lname, whatsApp, email, cnpj, cnpjValid, pass, reason, fantasia, cep, street, number, complement, neighborhood, city, cityState, fone, fantasias } = state;
     const nomeCompleto = fname && lname ? `${fname.trim()} ${lname.trim()}` : '';
     const endereco = complement ? `${street}, ${number}, ${complement}` : `${street}, ${number}`;
@@ -15,6 +15,7 @@ const simplifiedRegistration = state => () => {
     const dotCep = cepSplit.join('');
     const fantasiaSheet = fantasias.filter(item => item.cnpj === Number(cnpj.replace('.', '').replace('.', '').replace('/', '').replace('-', '')));
     const resultFantasia = fantasiaSheet[0] ? fantasiaSheet[0].fantasia : fantasia;
+    const normalizeFantasia = resultFantasia || reason;
     const url = process.env.SHEET_URL;
     const config = {
         headers: {
@@ -28,7 +29,7 @@ const simplifiedRegistration = state => () => {
         spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
         range: 'Base!A1',
         resource: {
-            values: [[formatDateUTC3(today), nomeCompleto, whats, email, cnpj, reason, resultFantasia, dotCep, endereco, neighborhood, city, cityState, telefone]],
+            values: [[formatDateUTC3(today), nomeCompleto, whats, email, cnpj, reason, normalizeFantasia, dotCep, endereco, neighborhood, city, cityState, telefone]],
         },
         valueInputOption: 'user_entered',
     };
@@ -99,7 +100,7 @@ const simplifiedRegistration = state => () => {
                                             email,
                                             cnpj,
                                             razao: reason,
-                                            fantasia: resultFantasia,
+                                            fantasia: normalizeFantasia,
                                             cep: dotCep,
                                             endereco,
                                             bairro: neighborhood,

@@ -57,6 +57,7 @@ const completeRegistration = state => () => {
     const whats = whatsApp ? `55 ${whatsApp.trim()}` : '';
     const fantasiaSheet = fantasias.filter(item => item.cnpj === Number(cnpj.replace('.', '').replace('.', '').replace('/', '').replace('-', '')));
     const resultFantasia = fantasiaSheet[0] ? fantasiaSheet[0].fantasia : fantasia;
+    const normalizeFantasia = resultFantasia || reason;
     let cepSplit = cep.split('');
     cepSplit.splice(2, 0, '.');
     const dotCep = cepSplit.join('');
@@ -75,7 +76,7 @@ const completeRegistration = state => () => {
                     email,
                     cnpj,
                     reason,
-                    resultFantasia,
+                    normalizeFantasia,
                     dotCep,
                     endereco,
                     neighborhood,
@@ -167,7 +168,7 @@ const completeRegistration = state => () => {
                                             country_code: 'BR',
                                         },
                                         mcc: category,
-                                        statementDescriptor: capitalize(resultFantasia)
+                                        statementDescriptor: capitalize(normalizeFantasia)
                                     },
                                     {
                                         headers: {
@@ -265,7 +266,7 @@ const completeRegistration = state => () => {
                                                     email,
                                                     cnpj,
                                                     razao: reason,
-                                                    fantasia: resultFantasia,
+                                                    fantasia: normalizeFantasia,
                                                     categoria: categoryName,
                                                     cep: dotCep,
                                                     endereco,
