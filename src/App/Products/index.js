@@ -187,7 +187,7 @@ const UploadImages = (params) => {
             <div style={cardContainerClass}>
               {showButtonTop && (
                 <>
-                  <Button click={() => sendToBackend(state)} submitting={isSubmitting} cta="Enviar todas fotos" type="button" />
+                  <Button click={() => sendToBackend(state)} submitting={isSubmitting} cta="Enviar todos produtos" type="button" />
                 </>
               )}
 
@@ -204,7 +204,7 @@ const UploadImages = (params) => {
                     {WindowedCard}
                   </List>
 
-                  {showButtonBot && <Button click={() => sendToBackend(state)} submitting={!showButtonBot || isSubmitting} cta="Enviar todas fotos" type="button" />}
+                  {showButtonBot && <Button click={() => sendToBackend(state)} submitting={!showButtonBot || isSubmitting} cta="Enviar todos produtos" type="button" />}
                 </>
               )}
 

@@ -9,6 +9,7 @@ import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import { containerWithPadding } from '@ziro/theme';
 import { auth } from '../../Firebase/index';
 import { userContext } from '../appContext';
+import {ImageIcon} from './ImageIcon'
 
 export const Menu = ({ title, children }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,17 +29,17 @@ export const Menu = ({ title, children }) => {
               text: 'Início',
             },
             {
-              path: '/upload-imagens',
+              path: '/produtos',
               onClick: () => setIsOpen(false),
-              icon: <Icon type="home" size={15} strokeWidth={2} />,
+              icon: <ImageIcon/>,
               text: 'Cadastar Produtos',
             },
-            /* {
+            {
               path: '/pedidos',
               onClick: () => setIsOpen(false),
               icon: <Icon type="cart" size={15} strokeWidth={2} />,
               text: 'Pedidos',
-            }, */
+            },
             {
               path: '/transacoes',
               onClick: () => setIsOpen(false),
@@ -164,6 +165,18 @@ export const Menu = ({ title, children }) => {
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="home" size={15} strokeWidth={2} />,
                 text: 'Início',
+              },
+              {
+                path: '/produtos',
+                onClick: () => setIsOpen(false),
+                icon: <ImageIcon/>,
+                text: 'Cadastar Produtos',
+              },
+              {
+                path: '/pedidos',
+                onClick: () => setIsOpen(false),
+                icon: <Icon type="cart" size={15} strokeWidth={2} />,
+                text: 'Pedidos',
               },
               {
                 path: '/transacoes',

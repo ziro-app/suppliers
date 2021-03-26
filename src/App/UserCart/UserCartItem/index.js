@@ -25,6 +25,8 @@ export default ({state, cart: { productIds, products, ...cart }, storeowner, old
   //console.log('cartId',cartId)
   const [totalItems, totalPrice] = useMemo(() => (productIds && products ? productIds.reduce(reduceTotal(prices, products), [0, 0]) : [0, 0]), [productIds, products, prices]);
   const confirmCartItem = useCallback(async () => {
+      console.log('cart',cart)
+      console.log('totalPrice',totalPrice)
     try {
       await db
         .collection('catalog-user-data')
@@ -74,7 +76,7 @@ export default ({state, cart: { productIds, products, ...cart }, storeowner, old
   const handleClickUploadProduct = () => {
     localStorage.setItem('voltar', `/pedidos/${cartId}`);
     localStorage.setItem('cart',JSON.stringify(cart))
-    setLocation(`upload-imagens/${cartId}`)
+    setLocation(`produtos/${cartId}`)
       console.log('Teste')
   }
   return (

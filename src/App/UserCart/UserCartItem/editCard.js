@@ -145,7 +145,7 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
 
         //console.log('entrou no primeiro');
         //console.log('at end products[0][productId]', products[0][productId])
-        if (Object.prototype.hasOwnProperty.call(products[0][productId], 'requestedQuantities')) {
+        if (products[0] && productId in products[0] && Object.prototype.hasOwnProperty.call(products[0][productId], 'requestedQuantities')) {
           const { requestedQuantities } = products[0][productId];
           if (requestedQuantities) {
             const newData = Object.assign(data, { requestedQuantities });
@@ -164,7 +164,7 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
         setOldProduct(product);
       });
     }
-  }, [products, product, cart]);
+  }, [products, cart]);
   useEffect(() => {
     const cartObserver = db
       .collection('catalog-user-data')
@@ -265,6 +265,7 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
             <InputText
               value={currencyFormat(product.price || '')}
               onChange={({ target: { value } }) => {
+                  console.log('entrou com value:',value,' e tem o atual valor como:', product.price)
                 const toInteger = parseInt(value.replace(/[R$\.,]/g, ''), 10);
                 setProduct(old => ({ ...old, price: maskInput(toInteger, '#######', true) }));
               }}
@@ -528,7 +529,7 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
           </>
         ) : (
           <>
-            <Form buttonName="Atualizar Grade" validations={validations} sendToBackend={update} inputs={inputs} />
+            <Form buttonName="Atualizar Variações" validations={validations} sendToBackend={update} inputs={inputs} />
             {/* <Form buttonName="Atualizar" validations={validations} sendToBackend={(r) => setRequestedQuantities(productId, r)} inputs={normalInputs(
             product,
             setProduct,

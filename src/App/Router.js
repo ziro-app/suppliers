@@ -24,7 +24,7 @@ import { Menu } from './Menu/index';
 import Receipt from './Receipt/index';
 import Receivables from './Receivables/index';
 import Register from './Register/index';
-import UploadImages from './UploadImages/index';
+import Products from './Products/index';
 import RegisterCollaborator from './RegisterCollaborator/index';
 import ResendEmail from './ResendEmail/index';
 import ResetPass from './ResetPass/index';
@@ -42,7 +42,7 @@ import { userContext } from './appContext';
 
 const Router = ({ isLogged }) => {
   const [matchCart, paramsCart] = useRoute('/pedidos/:cartId?');
-  const [matchUploadForCart, paramsUploadForCart] = useRoute('/upload-imagens/:cartId?');
+  const [matchUploadForCart, paramsUploadForCart] = useRoute('/produtos/:cartId?');
   const [match, params] = useRoute('/transacoes/:transactionId?/:receivableId?');
   const [match2, params2] = useRoute('/relatorio/:boletbankId?/:boletId?');
   const [matchReceivable, paramsReceivable] = useRoute('/recebiveis/:receivableId?');
@@ -102,9 +102,9 @@ const Router = ({ isLogged }) => {
     ),
     [matchUploadForCart ? location : null]: (
       <Suspense fallback={<SpinnerWithDiv />}>
-        <HeaderBack title="Upload de imagens" navigateTo={currentBackRoute || '/pedidos'}>
+        <HeaderBack title="Produtos" navigateTo={currentBackRoute || '/pedidos'}>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <UploadImages withIcon imgExtension={['.jpg', '.gif', '.png', '.gif']} maxFileSize={5242880} {...paramsUploadForCart} />
+            <Products withIcon imgExtension={['.jpg', '.gif', '.png', '.gif']} maxFileSize={5242880} {...paramsUploadForCart} />
           </motion.div>
         </HeaderBack>
       </Suspense>
@@ -123,10 +123,10 @@ const Router = ({ isLogged }) => {
         </motion.div>
       </Menu>
     ),
-    '/upload-imagens': (
-      <Menu title="Upload de imagens">
+    '/produtos': (
+      <Menu title="Produtos">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <UploadImages withIcon imgExtension={['.jpg', '.gif', '.png', '.gif']} maxFileSize={5242880} />
+          <Products withIcon imgExtension={['.jpg', '.gif', '.png', '.gif']} maxFileSize={5242880} />
         </motion.div>
       </Menu>
     ),

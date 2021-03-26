@@ -4,8 +4,8 @@ import { infoCard, infoCardInfo, infoCardLabel, button } from './styles_catalog'
 
 const PTstatus = {
   unavailable: 'Indisponível',
-  waitingInfo: 'Aguardando grade e preço',
-  waitingStock: 'Aguardando grade'
+  waitingInfo: 'Aguardando variações e preço',
+  waitingStock: 'Aguardando Variações'
 };
 
 export default ({ image, product, setEditing }) => {

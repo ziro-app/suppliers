@@ -24,7 +24,7 @@ export default ({ image, product, setEditing }) => {
           <label>{product?.referenceId || '-'}</label>
         </div>
         <div>
-          <label style={priceLabel}>Grade escolhida</label>
+          <label style={priceLabel}>Variações escolhidas</label>
           <div style={stock}>
             {Object.keys(product.requestedQuantities || {}).length ? (
               Object.entries(product.requestedQuantities).map(([key, qty]) => (
@@ -35,7 +35,7 @@ export default ({ image, product, setEditing }) => {
               ))
             ) : (
               <div>
-                <label style={infoCardLabel}>nenhuma grade</label>
+                <label style={infoCardLabel}>nenhuma variação</label>
               </div>
             )}
           </div>

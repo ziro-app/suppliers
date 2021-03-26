@@ -1,4 +1,4 @@
-import { centerInline, checkbox, gapBetweenFlexItems, quantitiesStyle } from '../../UploadImages/styles'
+import { centerInline, checkbox, gapBetweenFlexItems, quantitiesStyle } from '../../Products/styles'
 
 import DropDown from '@bit/vitorbarbosa19.ziro.dropdown'
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input'

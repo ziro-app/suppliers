@@ -72,7 +72,7 @@ export default ({ update, updateCarts, image, arrayOfInputs, validations, isSubm
       {
         secondArrayOfInputs && (
           <div style={editCardInputs}>
-            <label style={priceLabel}>Escolher grade</label>
+            <label style={priceLabel}>Escolher Variações</label>
             <div style={{ display: 'grid', gridRowGap: '1em' }}>
               {[...requestedQuantities, ['', '']].map(([key, qty], index) => {
                 const keys = Object.keys(reallyAvailableQuantities).sort()
@@ -85,7 +85,7 @@ export default ({ update, updateCarts, image, arrayOfInputs, validations, isSubm
                       value={key}
                       onChange={({ target: { value } }) => setKeyQuantity(value, index)}
                       onChangeKeyboard={element => (element ? setKeyQuantity(element.value, index) : null)}
-                      placeholder="Grade"
+                      placeholder="Variações"
                     />
                     <Dropdown
                       readOnly
