@@ -32,7 +32,7 @@ export const Menu = ({ title, children }) => {
               path: '/produtos',
               onClick: () => setIsOpen(false),
               icon: <ImageIcon/>,
-              text: 'Cadastar Produtos',
+              text: 'Produtos',
             },
             {
               path: '/pedidos',
@@ -170,7 +170,7 @@ export const Menu = ({ title, children }) => {
                 path: '/produtos',
                 onClick: () => setIsOpen(false),
                 icon: <ImageIcon/>,
-                text: 'Cadastar Produtos',
+                text: 'Produtos',
               },
               {
                 path: '/pedidos',
