@@ -82,7 +82,7 @@ export default ({ product, update, setEditing }) => {
           <label>{currencyFormat(product.price)}</label>
         </div>
         <div>
-          <label style={priceLabel}>Grade disponível</label>
+          <label style={priceLabel}>Variações disponíveis</label>
           <div style={stock}>
             {Object.entries(reallyAvailableQuantities)
               .sort()
@@ -98,7 +98,7 @@ export default ({ product, update, setEditing }) => {
           </div>
         </div>
         <div>
-          <label style={priceLabel}>Escolher grade</label>
+          <label style={priceLabel}>Escolher variações</label>
           <div style={editCardInputs}>
             {[...requestedQuantities, ['', '']].map(([key, qty], index) => {
               const keys = Object.keys(reallyAvailableQuantities).sort();
@@ -111,7 +111,7 @@ export default ({ product, update, setEditing }) => {
                     value={key}
                     onChange={({ target: { value } }) => setKeyQuantity(value, index)}
                     onChangeKeyboard={element => (element ? setKeyQuantity(element.value, index) : null)}
-                    placeholder="Grade"
+                    placeholder="Variações"
                   />
                   <Dropdown
                     readOnly

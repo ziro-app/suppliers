@@ -72,16 +72,11 @@ export const useCart = (idCart,cartObject) => {
 
   const addToCart = useCallback(
     async (brandName, productId) => {
-        console.log('inside addToCart', brandName,productId)
       if (!cart.buyerStoreownerId) return;
       try {
         // setPendingCart(old => [...old, productId]);
         await db.runTransaction(async transaction => {
           const productRef = db.collection('catalog-images').doc(productId);
-
-          console.log('productId inside addToCart',productId)
-          console.log('brandName inside addToCart',brandName)
-          console.log('productRef,cartItemRef',productRef, cartRef)
           await addProductToCartItem(productRef, cartRef)(transaction);
         });
       } catch (error) {
