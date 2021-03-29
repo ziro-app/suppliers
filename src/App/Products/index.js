@@ -18,7 +18,8 @@ import inputs from './inputs';
 import ToastNotification from '../ToastNotification';
 import { userContext } from '../appContext';
 import Empty from './Empty';
-import {useCart} from './cart'
+import { useCart } from './cart';
+import { db } from '../../Firebase';
 
 const sendDefaultValueToState = ({ value, color, size, states, identifierOfPicture, dispatch }) => {
   if (/^[0-9]*$/gm.test(value)) {
@@ -91,12 +92,19 @@ const WindowedCard = ({ data, index, style }) => {
     </div>
   );
 };
-const UploadImages = (params) => {
+
+function titleCase(str) {
+  return str.replace(/\w\S*/g, function (txt) {
+    return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+  });
+}
+
+const UploadImages = params => {
   const { register, handleSubmit, watch, errors } = useForm();
   const onSubmit = data => {
     return console.log(data);
   };
-  const [,setLocation] = useLocation()
+  const [, setLocation] = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -115,12 +123,12 @@ const UploadImages = (params) => {
   const [thumbPhoto, setThumbPhoto] = useState('');
   const [oldPictures, setOldPictures] = useState(['']);
   const [states, dispatch] = useReducer((state, payload) => inputStateControl(state, payload), {});
-  const {cartId} = params
-  const cartString = localStorage.getItem('cart')
-  const cartObject = JSON.parse(cartString)
+  const { cartId } = params;
+  const cartString = localStorage.getItem('cart');
+  const cartObject = JSON.parse(cartString);
   //localStorage.removeItem('cart')
-  console.log('cartObject',cartObject)
-  const { cartIds, onCartPress } = useCart(cartId,cartObject);
+  console.log('cartObject', cartObject);
+  const { cartIds, onCartPress } = useCart(cartId, cartObject);
 
   const defaultQuantityValue = 2;
   const { device, fantasy } = useContext(userContext);
@@ -143,7 +151,22 @@ const UploadImages = (params) => {
     if (isValidBrand(brands, fantasy) && brands.filter(item => fantasy.includes(item.toUpperCase()))[0]) {
       setBrand(brands.filter(item => fantasy.includes(item.toUpperCase()))[0]);
       setShowUpload(true);
-    } else setShowUpload(false);
+    } else {
+      const brandFormattedForCatalogBrands = titleCase(context.fantasy);
+      console.log('brand inside index', brandFormattedForCatalogBrands);
+      console.log('fantasy inside index', fantasy);
+      const snapRef = db.collection('catalog-brands');
+      console.log(brands);
+      console.log(brands.filter(item => item === brandFormattedForCatalogBrands));
+      if (brands.length === 0) return;
+      if (brands.filter(item => item === brandFormattedForCatalogBrands).length > 0) return;
+
+      snapRef
+        .add({ brand: brandFormattedForCatalogBrands, freeShipping: 'não', minimumItemQty: 0, trends: [], updatedAt: 0, updatedLoggedThumb: '', updatedThumb: '', withoutImages: true })
+        .then(setBrands([...brands, brandFormattedForCatalogBrands]));
+
+      setShowUpload(false);
+    }
   }, [brands, fantasy]);
   console.log(brand);
 

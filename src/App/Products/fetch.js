@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { db } from '../../Firebase';
 
 const fetch = (setIsLoading, setIsError, setBrands, setBrandsAndTrends) => {
   const source = axios.CancelToken.source();
@@ -25,7 +26,15 @@ const fetch = (setIsLoading, setIsError, setBrands, setBrandsAndTrends) => {
 
       const brands = values.map(([name]) => name);
       const brandsAndTrends = values.map(([name, insta, ...trends]) => [name, trends]);
-      setBrands(['TestNewUpload', 'Bot', ...new Set(brands)]);
+
+      const list = [];
+      const snapRef = db.collection('catalog-brands');
+      const snapCollection = await snapRef.get();
+      snapCollection.forEach(document => {
+        if (document.data().brand !== '') list.push(document.data().brand);
+      });
+      setBrands(list.filter((value, index, self) => self.findIndex(m => m === value) === index));
+      //setBrands(['TestNewUpload', 'Bot', ...new Set(brands)]);
       setBrandsAndTrends(...new Set(brandsAndTrends));
     } catch (error) {
       if (error.response) console.log(error.response);

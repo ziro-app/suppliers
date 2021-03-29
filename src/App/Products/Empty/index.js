@@ -4,10 +4,12 @@ import { Menu } from '../../Menu';
 
 const Empty = () => {
   return (
-      <div style={{ display: 'grid', maxWidth: '350px', margin: '0 auto', padding: '20px', gridGap: '20px', justifyItems: 'center' }}>
-        <Illustration type="timelineStart" size={150} />
-        <label style={{ textAlign: 'center' }}>Fabricante não cadastrado para fazer upload de imagens!</label>
-      </div>
+    <div style={{ display: 'grid', maxWidth: '350px', margin: '0 auto', padding: '20px', gridGap: '20px', justifyItems: 'center' }}>
+      <Illustration type="timelineStart" size={150} />
+      <label style={{ textAlign: 'center' }}>
+        Fabricante não cadastrado para fazer upload de imagens, mas não se preocupe, estamos te adicionando, se nada acontecer, por favor, atualize a pagina!!
+      </label>
+    </div>
   );
 };
 
