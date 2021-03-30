@@ -106,6 +106,18 @@ export const Menu = ({ title, children }) => {
                 text: 'Início',
               },
               {
+                path: '/produtos',
+                onClick: () => setIsOpen(false),
+                icon: <ImageIcon/>,
+                text: 'Produtos',
+              },
+              {
+                path: '/pedidos',
+                onClick: () => setIsOpen(false),
+                icon: <Icon type="cart" size={15} strokeWidth={2} />,
+                text: 'Pedidos',
+              },
+              {
                 path: '/transacoes',
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="trending" size={15} strokeWidth={2} />,
