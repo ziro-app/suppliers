@@ -196,26 +196,34 @@ const CreatePayment = () => {
           ]}
         />
         <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          padding: window.innerWidth < 400 ? '2rem' : '3rem', 
-          borderRadius: '10px', 
-          marginTop: '2rem', 
-          boxShadow: 'rgba(34, 34, 34, 0.4) 0px 3px 11px -4px' 
+          display: 'grid', 
+          gridTemplateColumns: 'auto 1fr',
+          gridColumnGap: '5px',
+          // alignItems: 'center', 
+          padding: window.innerWidth < 400 ? '15px 10px' : '15px 10px', 
+          borderRadius: '8px', 
+          marginTop: '20px', 
+          boxShadow: 'rgba(34, 34, 34, 0.4) 0px 2px 12px -4px',
+          placeItems: 'center'
         }}>
           <div style={{ 
-            display: 'flex', 
+            display: 'grid', 
             backgroundColor: 'rgba(0,0,0,0.05)', 
-            padding: window.innerWidth < 400 ? '6px' : '20px', 
+            padding: window.innerWidth < 400 ? '10px' : '12px', 
             borderRadius: '50%', 
-            marginRight: window.innerWidth < 400 ? '10px' : '23px'
           }}>
             <Icon type="search" size={window.innerWidth < 400 ? 15 : 17} />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <label style={{ fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem' }}>Deseja mais confiabilidade em suas vendas?</label>
-            <label style={{ fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem' }}>Consulte CPF/CNPJ do seu cliente <label onClick={() => setLocation('/consulta')} style={{ cursor: 'pointer', color: primaryColor, fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem', fontFamily: fontTitle, textDecoration: 'underline', marginTop: '2px' }}>aqui</label>.</label>
+          <div style={{ display: 'grid', gridRowGap: '2px' }}>
+            <label style={{ fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem', opacity: '0.85' }}>
+              {window.innerWidth < 400 ? 'Deseja mais confiança em suas vendas?' : 'Deseja mais confiabilidade em suas vendas?'}
+            </label>
+            <label style={{ fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem', opacity: '0.85' }}>
+              {window.innerWidth < 400 ? 'Consulte o CPF/CNPJ do seu cliente ' : 'Consulte agora o CPF/CNPJ do seu cliente '} 
+              <label onClick={() => setLocation('/consulta')} style={{ cursor: 'pointer', color: primaryColor, fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem', fontFamily: fontTitle, textDecoration: 'underline', marginTop: '2px' }}>
+                {window.innerWidth < 400 ? 'aqui' : 'clicando aqui'}
+              </label>.
+            </label>
           </div>
         </div>
       </div>
