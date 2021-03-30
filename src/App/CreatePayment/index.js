@@ -200,7 +200,7 @@ const CreatePayment = () => {
           gridTemplateColumns: 'auto 1fr',
           gridColumnGap: '5px',
           // alignItems: 'center', 
-          padding: window.innerWidth < 400 ? '15px 10px' : '15px 10px', 
+          padding: window.innerWidth < 400 ? '15px 10px' : '20px 15px', 
           borderRadius: '8px', 
           marginTop: '20px', 
           boxShadow: 'rgba(34, 34, 34, 0.4) 0px 2px 12px -4px',
@@ -216,10 +216,10 @@ const CreatePayment = () => {
           </div>
           <div style={{ display: 'grid', gridRowGap: '2px' }}>
             <label style={{ fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem', opacity: '0.85' }}>
-              {window.innerWidth < 400 ? 'Deseja mais confiança em suas vendas?' : 'Deseja mais confiabilidade em suas vendas?'}
+              {window.innerWidth < 400 ? 'Deseja mais confiança nas vendas?' : 'Deseja mais confiabilidade em suas vendas?'}
             </label>
             <label style={{ fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem', opacity: '0.85' }}>
-              {window.innerWidth < 400 ? 'Consulte o CPF/CNPJ do seu cliente ' : 'Consulte agora o CPF/CNPJ do seu cliente '} 
+              {window.innerWidth < 400 ? 'Consulte CPF/CNPJ do cliente ' : 'Consulte agora o CPF/CNPJ do seu cliente '} 
               <label onClick={() => setLocation('/consulta')} style={{ cursor: 'pointer', color: primaryColor, fontSize: window.innerWidth < 400 ? '1.3rem' : '1.4rem', fontFamily: fontTitle, textDecoration: 'underline', marginTop: '2px' }}>
                 {window.innerWidth < 400 ? 'aqui' : 'clicando aqui'}
               </label>.
