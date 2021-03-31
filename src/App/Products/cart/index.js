@@ -12,7 +12,7 @@ const { serverTimestamp } = fs.FieldValue;
 
 export const useCart = (idCart,cartObject) => {
     const [cart,setCart] = useState(cartObject)
-    if(!idCart) return {cartIds:[],onCartPress: () => null };
+    if(typeof idCart === 'undefined') return {cartIds:[],onCartPress: () => null };
     console.log('idCart',idCart)
     const queryCart = db.collection('catalog-user-data')
     .doc(cart.buyerStoreownerId)
