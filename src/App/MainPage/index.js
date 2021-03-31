@@ -13,6 +13,9 @@ import getActivePlan from './utils/getActivePlan';
 import getBackgroundRequestsPaid from './utils/getBackgroundRequestsPaid';
 import getBackgroundRequestsFree from './utils/getBackgroundRequestsFree';
 import Skeleton from 'react-loading-skeleton';
+import { ImageIcon } from './ImageIcon';
+import { CartIcon } from './CartIcon';
+
 
 function MainPage() {
     const supportNumber = require('./supportNumber');
@@ -284,6 +287,24 @@ function MainPage() {
             <div style={iconsContainer}>
                 <div>
                     <div style={iconDiv}>
+                        <ImageIcon colorFill="black" onClick={() => setLocation('/produtos')} />
+                    </div>
+
+                    <div style={iconDescription}>
+                        <label style={{ fontSize: '1.3rem' }}>Produtos</label>
+                    </div>
+                </div>
+                <div>
+                    <div style={iconDiv}>
+                        <CartIcon strokeColor="white" strokeWidth={2} onClick={() => setLocation('/pedidos')} />
+                    </div>
+
+                    <div style={iconDescription}>
+                        <label style={{ fontSize: '1.3rem' }}>Pedidos</label>
+                    </div>
+                </div>
+                <div>
+                    <div style={iconDiv}>
                         <Icon type="trending" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/transacoes')} />
                     </div>
 
@@ -297,7 +318,7 @@ function MainPage() {
                     </div>
 
                     <div style={iconDescription}>
-                        <label style={{ fontSize: '1.3rem' }}>Criar Cobrança</label>
+                        <label style={{ fontSize: '1.3rem' }}>Criar <br/>Cobrança</label>
                     </div>
                 </div>
                 {role === '' &&
@@ -320,15 +341,6 @@ function MainPage() {
                         <label style={{ fontSize: '1.3rem' }}>Consultar<br /> CPF/CNPJ</label>
                     </div>
                 </div>
-                <div>
-                    <div style={iconDiv}>
-                        <Icon type="percent" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/tarifas')} />
-                    </div>
-
-                    <div style={iconDescription}>
-                        <label style={{ fontSize: '1.3rem' }}>Tarifas</label>
-                    </div>
-                </div>
                 {role === '' &&
                     <div>
                         <div style={iconDiv}>
@@ -340,6 +352,15 @@ function MainPage() {
                         </div>
                     </div>
                 }
+                <div>
+                    <div style={iconDiv}>
+                        <Icon type="percent" color={'#fff'} size={21} strokeWidth={2} style={iconStyle} onClick={() => setLocation('/tarifas')} />
+                    </div>
+
+                    <div style={iconDescription}>
+                        <label style={{ fontSize: '1.3rem' }}>Tarifas</label>
+                    </div>
+                </div>
                 {role === '' &&
                     <div>
                         <div style={iconDiv}>
