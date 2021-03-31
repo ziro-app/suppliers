@@ -107,7 +107,7 @@ const sendToBackend = async ({
   setTypeOfToast('alert');
   setMessageToast('Enviado com sucesso');
   setOpenToast(true);
-  setLocation(`/pedidos/${cartId}`)
+  if(cartId)setLocation(`/pedidos/${cartId}`)
 };
 
 export default sendToBackend;
