@@ -201,7 +201,7 @@ const UploadImages = params => {
     setTypeOfToast,
     setLocation,
   };
-  console.log()
+  console.log();
   return (
     <>
       {/* <BrandChoose isSubmitting={isSubmitting} brand={brand} setBrand={setBrand} brands={brands} /> */}
@@ -213,16 +213,17 @@ const UploadImages = params => {
               sendToBackend={data => settingThePicturesAndFiles(data, setIsError, pictures, filesList, setPictures, setFiles, uuid, states, dispatch, thumbPhoto, setThumbPhoto)}
               isDisabled={!brands.filter(item => fantasy.includes(item.toUpperCase()))[0] || isValidBrand(brands, brand) || isSubmitting}
             />
-            <div style={{cardContainerClass}}>
+            <div style={{ cardContainerClass }}>
               {showButtonTop && (
                 <>
                   <Button click={() => sendToBackend(state)} submitting={isSubmitting} cta="Enviar todos produtos" type="button" />
                 </>
               )}
 
-              {showButtonBot && pictures === oldPictures && (<div style={{ display: 'flex' }}>
-  <div style={{ flex: '1 1 auto' , height: '100vh'}}>
-                  {/* <List
+              {showButtonBot && pictures === oldPictures && (
+                <div style={{ display: 'flex' }}>
+                  <div style={{ flex: '1 1 auto', height: '100vh' }}>
+                    {/* <List
                     itemCount={pictures.length}
                     itemData={{ sendDefaultValueToState, pictures, states, filesList, dispatch, defaultQuantityValue, device, isSubmitting, setFiles, setPictures, thumbPhoto, setThumbPhoto }}
                     itemSize={() => 1200}
@@ -232,46 +233,52 @@ const UploadImages = params => {
                   >
                     {WindowedCard}
                   </List> */}
-                  <AutoSizer  defaultHeight={1200} defaultWidth={800}>
-                    {({ width, height }) => {
-                        console.log(width,height)
-                      return (
-                        <Virtuoso
-                          style={{ height, width }}
-                          data={filesList}
-                          itemContent={(index, data) => {
-                            console.log('dataForList inside virtuoso', data);
-                            //const { sendDefaultValueToState, pictures, states, filesList, dispatch, defaultQuantityValue, device, isSubmitting, setFiles, setPictures, thumbPhoto, setThumbPhoto } = dataForList;
-                            //console.log('style', style);
-                            //picture, states, filesList, setFiles, index, dispatch, defaultQuantityValue, device, isSubmitting, pictures, setPictures, thumbPhoto, setThumbPhoto
-                            //sendDefaultValueToState({value:defaultQuantityValue,color:pictures[index].color,size:pictures[index].size,states,identifierOfPicture:pictures[index].identifier,dispatch})
-                            return (
-                              <Card
-                                key={pictures[index].identifier}
-                                test={pictures[index].identifier}
-                                identifierOfPicture={pictures[index].identifier}
-                                states={states}
-                                filesList={filesList}
-                                setFiles={setFiles}
-                                index={index}
-                                picture={pictures[index].urlImage}
-                                removeImage={removeImage}
-                                duplicateImage={duplicateImage}
-                                arrayOfInputs={inputs(states, pictures[index].identifier, dispatch, defaultQuantityValue, device, isSubmitting)}
-                                pictures={pictures}
-                                setPictures={setPictures}
-                                dispatch={dispatch}
-                                uuid={uuid}
-                                thumbPhoto={thumbPhoto}
-                                setThumbPhoto={setThumbPhoto}
-                              />
-                            );
-                          }}
-                        />
-                      );
-                    }}
-                  </AutoSizer>
-                  </div></div>
+                    <AutoSizer defaultHeight={1200} defaultWidth={800}>
+                      {({ width, height }) => {
+                        console.log(width, height);
+                        return (
+                          <Virtuoso
+                            style={{ height, width }}
+                            data={filesList}
+                            itemContent={(index, data) => {
+                              console.log('dataForList inside virtuoso', data);
+                              //const { sendDefaultValueToState, pictures, states, filesList, dispatch, defaultQuantityValue, device, isSubmitting, setFiles, setPictures, thumbPhoto, setThumbPhoto } = dataForList;
+                              //console.log('style', style);
+                              //picture, states, filesList, setFiles, index, dispatch, defaultQuantityValue, device, isSubmitting, pictures, setPictures, thumbPhoto, setThumbPhoto
+                              //sendDefaultValueToState({value:defaultQuantityValue,color:pictures[index].color,size:pictures[index].size,states,identifierOfPicture:pictures[index].identifier,dispatch})
+                              return (
+                                <Card
+                                  key={pictures[index].identifier}
+                                  test={pictures[index].identifier}
+                                  identifierOfPicture={pictures[index].identifier}
+                                  states={states}
+                                  filesList={filesList}
+                                  setFiles={setFiles}
+                                  index={index}
+                                  picture={pictures[index].urlImage}
+                                  removeImage={removeImage}
+                                  duplicateImage={duplicateImage}
+                                  arrayOfInputs={inputs(states, pictures[index].identifier, dispatch, defaultQuantityValue, device, isSubmitting)}
+                                  pictures={pictures}
+                                  setPictures={setPictures}
+                                  dispatch={dispatch}
+                                  uuid={uuid}
+                                  thumbPhoto={thumbPhoto}
+                                  setThumbPhoto={setThumbPhoto}
+                                />
+                              );
+                            }}
+                          />
+                        );
+                      }}
+                    </AutoSizer>
+                  </div>
+                </div>
+              )}
+              {showButtonBot && (
+                <>
+                  <Button click={() => sendToBackend(state)} submitting={isSubmitting} cta="Enviar todos produtos" type="button" />
+                </>
               )}
 
               {/* pictures === oldPictures &&
