@@ -26,6 +26,8 @@ import { apiErrorContainer, box1, box2, consultasContainer, header, saldosLabel,
 import { userContext } from '../appContext';
 import validateDocuments from '../utils/validateDocuments';
 import modals from './modals';
+import getBackgroundRequestsPaid from './utils/getBackgroundRequestsPaid';
+import getBackgroundRequestsFree from './utils/getBackgroundRequestsFree';
 
 const BackgroundCheck = () => {
     const supportNumber = require('./supportNumber');
