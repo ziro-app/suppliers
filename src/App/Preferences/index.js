@@ -66,10 +66,10 @@ const Preferences = () => {
 
   return (
     role === '' &&
-      <div style={container}>
+      <div>
         <div style={{ display: 'grid', gridTemplateColumns: '75% auto', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <label>Forçar seguro em todas as transações</label>
+            <label style={{ fontSize: window.innerWidth < 400 ? '1.4rem' : '1.6rem' }}>Forçar vendas com seguro</label>
             <div style={{ display: 'inline-block', marginLeft: '8px' }}>
               <TooltipHelp
                 body={tooltipSeguro}
@@ -90,7 +90,7 @@ const Preferences = () => {
         
         <div>
           <div style={{ marginTop: '30px' }}>
-            <label>Parcelamento máximo para o cliente</label>
+            <label style={{ fontSize: window.innerWidth < 400 ? '1.4rem' : '1.6rem' }}>Parcelamento máximo por venda</label>
             <div style={{ display: 'inline-block', marginLeft: '8px' }}>
               <TooltipHelp
                 body={tooltipParcelamento}
