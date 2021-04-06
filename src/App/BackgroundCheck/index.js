@@ -338,7 +338,7 @@ const BackgroundCheck = () => {
                                 <InputText
                                     value={document}
                                     onChange={({ target: { value } }) => {
-                                        const mask = isCPF(value) ? '###.###.###-##' : '##.###.###/####-##';
+                                        const mask = isCPF(value.trim()) ? '###.###.###-##' : '##.###.###/####-##';
                                         setDocument(maskInput(value, mask, true));
                                     }}
                                     placeholder="000.000.000-00"
