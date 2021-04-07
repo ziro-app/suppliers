@@ -7,6 +7,7 @@ import SpinnerWithDiv from '@bit/vitorbarbosa19.ziro.spinner-with-div';
 import {userContext} from '../appContext'
 import Empty from './Empty'
 import fetch from './fetch';
+import {useCart} from './cart'
 
 export default ({ cartId }) => {
     const {fantasy} = useContext(userContext)
@@ -20,6 +21,9 @@ export default ({ cartId }) => {
   const [last7Days, setLast7Days] = useState(null);
   const [selectedCart, setSelectedCard] = useState(null);
   const [selectedStoreowner, setSelectedStoreowner] = useState(null);
+  const cartString = localStorage.getItem('cart');
+  const cartObject = JSON.parse(cartString);
+  //const { cartIds, onCartPress } = useCart(cartId, cartObject);
   const state = { newDateForFilter, storeowners, carts, last7Days, selectedCart, selectedStoreowner, setStoreowners, setCarts, setAllCarts, setAllStoreowners };
 
   useEffect(() => {

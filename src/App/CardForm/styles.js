@@ -84,7 +84,7 @@ export const brandName = {
     Display: 'flex',
     AlignItems: 'center',
     justifyContent: 'center',
-    height: 'inherit',
+    //height: 'inherit',
     position: 'relative',
     borderRadius: '5px',
     boxShadow: 'rgba(34, 34, 34, 0.3) 0px 0px 15px -4px',

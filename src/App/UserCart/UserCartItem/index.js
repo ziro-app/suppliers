@@ -14,19 +14,19 @@ import { db, fs } from '../../../Firebase';
 import { brandCart, brandName, buttonDownload } from './styles';
 import { reduceTotal } from './utils';
 
-export default ({state, cart: { productIds, products, ...cart }, storeowner, oldQuery }) => {
-    //console.log('get in cart',cart)
-    //console.log('state in cart',state)
+export default ({ state, cart: { productIds, products, ...cart }, storeowner, oldQuery }) => {
+  //console.log('get in cart',cart)
+  //console.log('state in cart',state)
   const [prices, setPrices] = useState({});
   const [urls, setURLs] = useState({});
   const [location, setLocation] = useLocation();
   const [match, params] = useRoute('/pedidos/:cartId?');
-  const {cartId} = params;
+  const { cartId } = params;
   //console.log('cartId',cartId)
   const [totalItems, totalPrice] = useMemo(() => (productIds && products ? productIds.reduce(reduceTotal(prices, products), [0, 0]) : [0, 0]), [productIds, products, prices]);
   const confirmCartItem = useCallback(async () => {
-      console.log('cart',cart)
-      console.log('totalPrice',totalPrice)
+    console.log('cart', cart);
+    console.log('totalPrice', totalPrice);
     try {
       await db
         .collection('catalog-user-data')
@@ -75,17 +75,17 @@ export default ({state, cart: { productIds, products, ...cart }, storeowner, old
 
   const handleClickUploadProduct = () => {
     localStorage.setItem('voltar', `/pedidos/${cartId}`);
-    localStorage.setItem('cart',JSON.stringify(cart))
-    setLocation(`produtos/${cartId}`)
-      console.log('Teste')
-  }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    setLocation(`produtos/adicionar/${cartId}`);
+    console.log('Teste');
+  };
   return (
     <div style={containerWithPadding}>
       <Header type="icon-link" title={storeowner.razao} navigateTo={`/pedidos${oldQuery || ''}`} icon="back" />
       <div style={brandCart}>
         <label style={brandName}>{cart.brandName}</label>
         <Button type="button" cta="Fazer download fotos" click={downloadAllImages} style={buttonDownload} />
-        {productIds.map((productId,index) => (
+        {productIds.map((productId, index) => (
           /* <CardForm
                                             key={productId}
                                             productId={productId}
@@ -104,10 +104,10 @@ export default ({state, cart: { productIds, products, ...cart }, storeowner, old
             setPrice={price => setPrices(old => ({ ...old, [productId]: price }))}
             setURL={url => setURLs(old => ({ ...old, [productId]: url }))}
             brandName={cart.brandName}
+            exclude={() => excludeProduct(productId)}
             state={state}
             index={index}
             buyerStoreownerId={cart.buyerStoreownerId}
-
           />
         ))}
         <div style={summary}>
@@ -119,12 +119,7 @@ export default ({state, cart: { productIds, products, ...cart }, storeowner, old
             <label style={total}>Quantidade</label>
             <label style={priceTotal}>{totalItems}</label>
           </div>
-          <Button
-            type="button"
-            cta="Upload de Produto"
-            click={handleClickUploadProduct}
-            submitting={false}
-          />
+          {cart.status === 'waitingConfirmation' || cart.status === 'open' && <Button type="button" cta="Upload de Produto" click={handleClickUploadProduct} submitting={false} />}
         </div>
         {cart.status === 'waitingConfirmation' && <Button type="button" cta="Confirmar pedido" click={confirmCartItem} submitting={false} />}
         {cart.status === 'waitingPayment' && <Button type="button" cta="Aguardando pagamento" click={() => {}} submitting />}

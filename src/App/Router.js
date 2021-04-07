@@ -42,7 +42,7 @@ import { userContext } from './appContext';
 
 const Router = ({ isLogged }) => {
   const [matchCart, paramsCart] = useRoute('/pedidos/:cartId?');
-  const [matchUploadForCart, paramsUploadForCart] = useRoute('/produtos/:cartId?');
+  const [matchUploadForCart, paramsUploadForCart] = useRoute('/produtos/adicionar/:cartId?');
   const [match, params] = useRoute('/transacoes/:transactionId?/:receivableId?');
   const [match2, params2] = useRoute('/relatorio/:boletbankId?/:boletId?');
   const [matchReceivable, paramsReceivable] = useRoute('/recebiveis/:receivableId?');
@@ -124,11 +124,19 @@ const Router = ({ isLogged }) => {
       </Menu>
     ),
     '/produtos': (
-      <Menu title="Produtos">
+        <Menu title="Produtos">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <Products withIcon imgExtension={['.jpg', '.gif', '.png', '.gif']} maxFileSize={5242880} />
         </motion.div>
-      </Menu>
+        </Menu>
+    ),
+    '/produtos/adicionar': (
+
+      <HeaderBack type="icon-link" title="Produtos" navigateTo="/produtos" icon="back">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <Products withIcon imgExtension={['.jpg', '.gif', '.png', '.gif']} maxFileSize={5242880} />
+          </motion.div>
+          </HeaderBack>
     ),
     '/login': (
       <Menu title="Minha Conta">
