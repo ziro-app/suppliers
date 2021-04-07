@@ -90,11 +90,13 @@ export default () => {
   }; */
   return (
     <div style={containerWithPadding}>
-        <Button click={() => setLocation('/produtos/adicionar')} cta="Adicionar novos produtos" type="button" />
+      <Button click={() => setLocation('/produtos/adicionar')} cta="Adicionar novos produtos" type="button" />
       <div style={summary}>
         <div style={saleSummary}>
           <label style={total}>Quantidade</label>
-          <label style={priceTotal}>{totalItems}</label>
+          <div style={{ textAlign: 'end' }}>
+            <label style={priceTotal}>{totalItems}</label>
+          </div>
         </div>
         {/* cart.status === 'waitingConfirmation' || cart.status === 'open' && <Button type="button" cta="Upload de Produto" click={handleClickUploadProduct} submitting={false} /> */}
       </div>

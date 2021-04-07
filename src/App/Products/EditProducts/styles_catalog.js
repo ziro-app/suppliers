@@ -132,7 +132,6 @@ export const container = {
   },
   priceTotal = {
     fontFamily: fontTitle,
-    textAlign: 'end'
   },
   card = {
     display: 'grid',
