@@ -10,18 +10,28 @@ import EditCard from './editCard';
 import SummaryCard from './summaryCard';
 import InfoCard from './infoCard';
 
-export default ({cartProduct,index,brandName,productId, setURL, setPrice }) => {
+export default ({cartProduct,index,brandName,productId, productData }) => {
     //console.log('productId',productId)
    //console.log('state,cartProduct,index,brandName,productId, setURL, setPrice',state,cartProduct,index,brandName,productId, setURL, setPrice)
     const [productRef] = useState(db.collection('catalog-images').doc(productId));
-    const [fetchingProduct, setFetchingProduct] = useState(true);
+    const [fetchingProduct, setFetchingProduct] = useState(false);
     const [editing, setEditing] = useState(false);
-    const [product, setProduct] = useState({});
-    const [productCart, setProductCart] = useState({})
-    const [initialStatus, setInitialStatus] = useState();
+    const [product, setProduct] = useState(productData);
+    const [productCart, setProductCart] = useState(productData)
+    const [initialStatus, setInitialStatus] = useState(productData.status);
     const [sizes, setSizes] = useState([]);
     const [colors, setColors] = useState([]);
-    useEffect(
+    useEffect(() =>{
+        if (productData.availableQuantities) {
+            Object.keys(productData.availableQuantities).forEach(key => {
+                const [size, color] = key.split('-');
+                if (size) setSizes(old => (old.includes(size) ? old : [...old, size]));
+                if (color) setColors(old => (old.includes(color) ? old : [...old, color]));
+            });
+        }
+        //setFetchingProduct(false);
+    },[productData])
+    /* useEffect(
         () =>
             productRef.onSnapshot(snap => {
                 const data = snap.data();
@@ -40,7 +50,7 @@ export default ({cartProduct,index,brandName,productId, setURL, setPrice }) => {
                 setFetchingProduct(false);
             }),
         [],
-    );
+    ); */
 
     const update = useCallback(async () => {
         try {
@@ -115,7 +125,7 @@ export default ({cartProduct,index,brandName,productId, setURL, setPrice }) => {
                         sizes={sizes}
                         update={update}
                         cartProduct={cartProduct}index={index}brandName={brandName}
-                        setURL={setURL} setPrice={setPrice}
+                        //setURL={setURL} setPrice={setPrice}
                         initialStatus={initialStatus} setInitialStatus={setInitialStatus}
                     />
                 ) : initialStatus === 'unavailable' && cartProduct.status !== 'closed' ? (

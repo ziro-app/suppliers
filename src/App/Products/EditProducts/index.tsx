@@ -28,7 +28,11 @@ export default () => {
   const [location, setLocation] = useLocation();
   const [match, params] = useRoute('/produtos/editar');
   const { productsData } = useProducts(fantasyFormatted);
-  const totalItems = productsData.length;
+  const totalItems = useMemo(() => {
+    console.log(productsData);
+    return productsData.length;
+  }, [productsData]);
+
   //console.log(productsData);
   //const { cartId } = params;
   //console.log('cartId',cartId)
@@ -117,10 +121,11 @@ export default () => {
                       return (
                         <Card
                           key={productId}
+                          productData={data}
                           productId={productId}
                           cartProduct={productId}
-                          setPrice={price => setPrices(old => ({ ...old, [productId]: price }))}
-                          setURL={url => setURLs(old => ({ ...old, [productId]: url }))}
+                          //setPrice={price => setPrices(old => ({ ...old, [productId]: price }))}
+                          //setURL={url => setURLs(old => ({ ...old, [productId]: url }))}
                           brandName={fantasyFormatted}
                           index={index}
                         />
