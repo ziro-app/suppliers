@@ -113,7 +113,7 @@ export const container = {
   summaryCardContainer = {
     display: 'grid',
     gridTemplateColumns: '100px 1fr',
-    padding: '0 0 20px',
+    padding: '20px 0 20px',
     borderRadius: '5px',
     background: 'white',
     boxShadow: 'rgba(34, 34, 34, 0.3) 0px 5px 10px -1px'

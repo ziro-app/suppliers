@@ -13,11 +13,12 @@ import Form from '@bit/vitorbarbosa19.ziro.form';
 import FormInput from '@bit/vitorbarbosa19.ziro.form-input';
 import InputText from '@bit/vitorbarbosa19.ziro.input-text';
 import DropDown from '@bit/vitorbarbosa19.ziro.dropdown';
-import {useRoute,useLocation} from 'wouter'
+import { useRoute, useLocation } from 'wouter';
 import { v4 as uuid } from 'uuid';
 import _ from 'lodash';
 import RImg from 'react-image';
 import SpinnerWithDiv from '@bit/vitorbarbosa19.ziro.spinner-with-div';
+import { ZiroPromptMessage, ZiroWaitingMessage } from 'ziro-messages';
 import Card from '../../../CardForm';
 //import { cartItemFinder, idReducer, parseTotal, rqReducer, statusReducer } from './utils';
 import { inputStateControl } from '../utils/functionsProductsEdit';
@@ -45,9 +46,26 @@ const INstatus = {
   Indisponível: 'soldOut',
 };
 
-export default ({ productCart, product, setProduct, state, cartProduct, index, brandName, buyerStoreownerId, image, update, productId, setURL, setPrice, initialStatus, setInitialStatus }) => {
+export default ({
+  productCart,
+  product,
+  setProduct,
+  state,
+  cartProduct,
+  setPromiseMessage,
+  setMessage,
+  brandName,
+  buyerStoreownerId,
+  image,
+  update,
+  productId,
+  setURL,
+  setPrice,
+  initialStatus,
+  setInitialStatus,
+}) => {
   // console.log('buyerStoreownerId, image,  update, productId',buyerStoreownerId, image,  update, productId)
-  console.log('productId',productId)
+  console.log('productId', productId);
   //const productCart = product;
   //console.log('productCart', productCart);
   const cardInfo = true;
@@ -65,9 +83,10 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
     identifierOfPicture,
   });
   const [location, setLocation] = useLocation();
-  const cartId = useMemo(()=>{
-      console.log('location')
-    return location.split('/')[2]},[location])
+  const cartId = useMemo(() => {
+    console.log('location');
+    return location.split('/')[2];
+  }, [location]);
   //console.log('location',location.split('/')[2])
   //const [initialStatus, setInitialStatus] = useState('waitingInfo');
   const [sizes, setSizes] = useState([]);
@@ -80,7 +99,53 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
   const { device } = useContext(userContext);
   const defaultQuantityValue = 2;
   const [states, dispatch] = useReducer((state, payload) => inputStateControl(state, payload), {});
-  const updateCart = true;
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const PromptMessage = new ZiroPromptMessage({
+    name: 'promptEditionProduct',
+    type: 'neutral',
+    code: '201',
+    title: 'Modificação no produto',
+    userDescription: isDeleting ? 'Irá apagar o produto' : 'Irá modificar o produto',
+    userResolution: 'Deseja continuar?',
+    internalDescription: 'prompt change of product',
+    illustration: 'onlyVestuary',
+    additionalData: undefined,
+  });
+  const WaitingMessage = new ZiroWaitingMessage({
+    name: 'waitingEditionProduct',
+    type: 'neutral',
+    code: '202',
+    title: isDeleting ? 'Apagando Produto' : 'Editando Produto',
+    userDescription: isDeleting ? 'Apagando o produto, aguarde enquanto finalizamos' : 'Efetuando a mudança. Aguarde enquanto finalizamos.',
+    internalDescription: 'waiting change of product',
+    illustration: 'waiting',
+    additionalData: undefined,
+  });
+
+  const FailureMessage = new ZiroPromptMessage({
+    name: 'failureEditionProduct',
+    type: 'destructive',
+    code: '204',
+    title: 'Falha',
+    userDescription: 'Falha ao atualizar de modificar produto, tente novamente.',
+    userResolution: 'Clique em ok para sair.',
+    internalDescription: 'prompt de falha',
+    illustration: 'errorLoading',
+    additionalData: undefined,
+  });
+
+  const SuccessMessage = new ZiroPromptMessage({
+    name: 'successEditionProduct',
+    type: 'success',
+    code: '203',
+    title: 'Sucesso',
+    userDescription: 'Apagado!',
+    userResolution: 'Clique em ok para sair.',
+    internalDescription: 'prompt de sucesso',
+    illustration: 'paymentSuccess',
+    additionalData: undefined,
+  });
 
   // console.log('products', products);
   /* console.log('sizes', sizes)
@@ -88,82 +153,78 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
     console.log('storeownerId', storeownerId) */
 
   useEffect(() => {
-
     //if (_.isEqual(product, oldProduct)) {
-      const productObserver = productRef.onSnapshot(snap => {
-        const data = snap.data();
+    const productObserver = productRef.onSnapshot(snap => {
+      const data = snap.data();
 
+      const payload = {
+        userValue: '',
+        identifierOfPicture,
+        inputType: 'initial',
+      };
+      dispatch(payload);
+      // console.log('data',data)
+      if (data?.availableQuantities) {
+        Object.keys(data.availableQuantities).forEach(key => {
 
+          const [color, size] = key.split('-');
+
+          if (size) {
+            setSizes(old => (old.includes(size) ? old : [...old, size]));
+            setSizesUpdate(old => (old.includes(size) ? old : [...old, size]));
+          }
+          if (color) {
+            setColors(old => (old.includes(color) ? old : [...old, color]));
+            setColorsUpdate(old => (old.includes(color) ? old : [...old, color]));
+          }
+        });
+        // console.log('data',data)
         const payload = {
-          userValue: '',
+          userValue: {
+            availableQuantities: data.availableQuantities,
+            colors,
+            sizes,
+            discount: data.discount,
+            price: data.price,
+            description: data.description,
+          },
           identifierOfPicture,
-          inputType: 'initial',
+          inputType: 'fetchedItem',
         };
         dispatch(payload);
-        // console.log('data',data)
-        if (data.availableQuantities) {
-          Object.keys(data.availableQuantities).forEach(key => {
-            // console.log('key', key)
 
-            const [color, size] = key.split('-');
-            // console.log('color, size', color, size)
-
-            if (size) {
-              setSizes(old => (old.includes(size) ? old : [...old, size]));
-              setSizesUpdate(old => (old.includes(size) ? old : [...old, size]));
-            }
-            if (color) {
-              setColors(old => (old.includes(color) ? old : [...old, color]));
-              setColorsUpdate(old => (old.includes(color) ? old : [...old, color]));
-            }
-          });
-          // console.log('data',data)
-          const payload = {
-            userValue: {
-              availableQuantities: data.availableQuantities,
-              colors,
-              sizes,
-              discount: data.discount,
-              price: data.price,
-              description: data.description,
-            },
-            identifierOfPicture,
-            inputType: 'fetchedItem',
-          };
-          dispatch(payload);
-
-          //setTypeOfToast('alert');
-          //setMessageToast('Atualizado com sucesso');
-          //setOpenToast(true);
-          /* const payload = {
+        //setTypeOfToast('alert');
+        //setMessageToast('Atualizado com sucesso');
+        //setOpenToast(true);
+        /* const payload = {
                     userValue: data.availableQuantities,
                     identifierOfPicture,
                     inputType: 'availableQuantities',
                   }
                   dispatch(payload) */
+      }
+
+      //console.log('entrou no primeiro');
+      //console.log('at end products[0][productId]', products[0][productId])
+
+      if (products[0] && productId in products[0] && Object.prototype.hasOwnProperty.call(products[0][productId], 'requestedQuantities')) {
+        const { requestedQuantities } = products[0][productId];
+        if (requestedQuantities) {
+          const newData = Object.assign(data, { requestedQuantities });
+          //console.log('newData', newData);
+          setProduct(newData);
         }
+        //console.log('teste', requestedQuantities);
+      } else setProduct(data);
+      //setPrice(data.price);
+      //setURL(data.url);
 
-        //console.log('entrou no primeiro');
-        //console.log('at end products[0][productId]', products[0][productId])
-
-        if (products[0] && productId in products[0] && Object.prototype.hasOwnProperty.call(products[0][productId], 'requestedQuantities')) {
-          const { requestedQuantities } = products[0][productId];
-          if (requestedQuantities) {
-            const newData = Object.assign(data, { requestedQuantities });
-            //console.log('newData', newData);
-            setProduct(newData);
-          }
-          //console.log('teste', requestedQuantities);
-        } else setProduct(data);
-        setPrice(data.price);
-        setURL(data.url);
-
-        // setProduct(data => data, { requestedQuantities })
-        // setProduct(...data, products[0][productId].requestedQuantities)
-        setInitialStatus(data.status);
-        setFetchingProduct(false);
-        setOldProduct(product);
-      });
+      // setProduct(data => data, { requestedQuantities })
+      // setProduct(...data, products[0][productId].requestedQuantities)
+      setInitialStatus(data?.status);
+      setFetchingProduct(false);
+      setOldProduct(product);
+    });
     //}
   }, [products, cart]);
   useEffect(() => {
@@ -180,49 +241,54 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
   //console.log('Object.entries(cart)',Object.entries(cart))
   //const findCartItem = useCallback(cartItemFinder(Object.entries(cart)), [cart]);
   const cartRef = useMemo(() => buyerStoreownerId && db.collection('catalog-user-data').doc(buyerStoreownerId).collection('cart'), [buyerStoreownerId]);
-  const updateRequestedQuantities = useCallback(
-    async (brandName, productId, newRequestedQuantities) => {
-      if (!buyerStoreownerId) return;
+  const updateRequestedQuantities = useCallback(async (brandName, productId, newRequestedQuantities) => {
+    if (!buyerStoreownerId) return;
+    try {
+      console.log('brandName', brandName);
+      //const [id] = findCartItem(brandName);
+      console.log(Object.entries(cart));
+      if (!cartId) throw 'NO_CART_FOUND';
+      await db.runTransaction(async transaction => {
+        const productRef = db.collection('catalog-images').doc(productId);
+        const productSnapshot = await transaction.get(productRef);
+        await updateProductStock(productSnapshot, newRequestedQuantities)(transaction);
+      });
+      console.log('updated');
+
+      setTypeOfToast('alert');
+      setMessageToast('Enviado com sucesso');
+      setOpenToast(true);
+    } catch (error) {
+      setTypeOfToast('warning');
+      setMessageToast('Erro na atualização');
+      setOpenToast(true);
+      console.log({ error });
+    }
+  }, []);
+
+  const excludeProduct = async () => {
+    await setPromiseMessage(PromptMessage);
+    const deleteFromCart = new Promise(async resolve => {
+      console.log('brandName, productId', brandName, productId);
       try {
-          console.log('brandName',brandName)
-        //const [id] = findCartItem(brandName);
-        console.log(Object.entries(cart))
-        if (!cartId) throw 'NO_CART_FOUND';
+        if (!productId) throw 'NO_PRODUCT_FOUND';
         await db.runTransaction(async transaction => {
           const productRef = db.collection('catalog-images').doc(productId);
-          const productSnapshot = await transaction.get(productRef);
-          await updateProductStock(productSnapshot, newRequestedQuantities)(transaction);
+          const productSnapshot = await transaction.delete(productRef);
         });
-        console.log('updated');
-
-        setTypeOfToast('alert');
-        setMessageToast('Enviado com sucesso');
-        setOpenToast(true);
+        resolve('Ok');
       } catch (error) {
-        setTypeOfToast('warning');
-        setMessageToast('Erro na atualização');
-        setOpenToast(true);
         console.log({ error });
+        resolve(null);
       }
-    },
-    [],
-  );
-  const deleteFromCart = useCallback(
-      async (brandName, productId) => {
-          console.log('brandName, productId',brandName, productId)
-          try {
-              if (!productId) throw "NO_PRODUCT_FOUND";
-              await db.runTransaction(async (transaction) => {
-                  const productRef = db.collection("catalog-images").doc(productId);
-                  const productSnapshot = await transaction.delete(productRef);
-              });
-          } catch (error) {
-              console.log({ error });
-          }
-      },
-      [buyerStoreownerId, cartRef],
-  );
-  const excludeProduct = useCallback(async (productId) => deleteFromCart(brandName, productId), [brandName, deleteFromCart]);
+    });
+
+    setIsDeleting(true);
+    setMessage(WaitingMessage.withPromise(deleteFromCart));
+    const result = await deleteFromCart;
+    setMessage(result ? SuccessMessage : FailureMessage);
+    setIsDeleting(false);
+  };
 
   const availabilityInput = useMemo(
     () => (
@@ -264,7 +330,7 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
             <InputText
               value={currencyFormat(product.price || '')}
               onChange={({ target: { value } }) => {
-                  console.log('entrou com value:',value,' e tem o atual valor como:', product.price)
+                console.log('entrou com value:', value, ' e tem o atual valor como:', product.price);
                 const toInteger = parseInt(value.replace(/[R$\.,]/g, ''), 10);
                 setProduct(old => ({ ...old, price: maskInput(toInteger, '#######', true) }));
               }}
@@ -340,7 +406,7 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
       ),
     [product.status, colors],
   );
-          console.log('product',product)
+  console.log('product', product);
   const quantitiesInput = useMemo(
     () =>
       product.status === 'available' &&
@@ -408,10 +474,10 @@ export default ({ productCart, product, setProduct, state, cartProduct, index, b
     ],
     [product],
   );
-    console.log('cardInfo',cardInfo)
+  console.log('cardInfo', cardInfo);
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '1fr', boxShadow: card.boxShadow }}>
-    <TrashButton onClick={() => excludeProduct(productId)} />
+      <TrashButton onClick={() => excludeProduct(productId)} />
       {image}
       <ToastNotification openToastRoot={openToast} setOpenToastRoot={setOpenToast} messageToastRoot={messageToast} type={typeOfToast} />
       <div style={{ padding: '10px 10px 30px' }}>
