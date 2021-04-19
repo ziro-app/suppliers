@@ -15,7 +15,7 @@ const config = {
     }
 };
 
-const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days, receivables, fantasy, { setIsLoading, setErrorLoading, setReceivables, setData, setLocation, setFinalDate, setHasMore, setLoadingMore, setTotalAmount, setDays, setTotalTransactions }) => {
+const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days, receivables, { setIsLoading, setErrorLoading, setReceivables, setData, setLocation, setFinalDate, setHasMore, setLoadingMore, setTotalAmount, setDays, setTotalTransactions }) => {
     const source = axios.CancelToken.source();
     const fnDate = getFinalDate(initDate, 34);
     setFinalDate(fnDate);
@@ -28,7 +28,7 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
             let offset = 0;
             let arrayItems = {};
             while (hasMore) {
-                let url = `${process.env.PAY_URL}sellers-future-releases?seller_id=${zoopId}&expected_on_range[gte]=${parsedToday}&expected_on_range[lte]=${parsedFnDay}&offset=${offset}`;
+                const url = `${process.env.PAY_URL}sellers-future-releases?seller_id=${zoopId}&expected_on_range[gte]=${parsedToday}&expected_on_range[lte]=${parsedFnDay}&offset=${offset}`;
                 const { data } = await post(url, {}, config);
                 const { items, has_more } = data;
                 const keys = Object.keys(items);
@@ -49,19 +49,19 @@ const fetch = (zoopId, initDate, totalAmount, totalTransactions, dataTable, days
             const rowsClicks = [];
             const keys = Object.keys(arrayItems);
             await Promise.all(keys.map(async (key, index) => {
-                let [ano, mes, dia] = key.split('-');
-                let date = [dia, mes, ano.substring(2)].join('/');
-                let id = md5(date).substring(10);
+                const [ano, mes, dia] = key.split('-');
+                const date = [dia, mes, ano.substring(2)].join('/');
+                const id = md5(date).substring(10);
                 let total;
                 // Array com tratamento para os splits
                 // Todos o valores estão arredondados p/ 2 casas e em centavos
-                let normalizedArray = await splitedArray(arrayItems[key].items, fantasy);
+                const normalizedArray = await splitedArray(arrayItems[key].items, zoopId);
 
-                let vendas = normalizedArray.length;
+                const vendas = normalizedArray.length;
                 // Check to add only days with postings
                 if (vendas > 0) {
                     // Total do recebível -> Soma do valor líquido de todas as transações do dia
-                    let val = (normalizedArray.length > 0) ? parseFloat(normalizedArray.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2) : '0';
+                    const val = (normalizedArray.length > 0) ? parseFloat(normalizedArray.map(it => it.net).reduce((a, b) => reducerTotal(a, b)) / 100).toFixed(2) : '0';
                     totalAmountFetch += parseFloat(val);
                     totalTransactionsFetch += vendas;
 

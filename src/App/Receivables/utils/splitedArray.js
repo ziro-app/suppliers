@@ -1,7 +1,7 @@
 import getDocInfo from './getDocInfo';
 import { round } from '../../Transactions/utils';
 
-const splitedArray = async (array, fantasy) => {
+const splitedArray = async (array, zoopId) => {
     // Remember -> The commissions from Zoop come with the installment_plan field null,
     // so you are not entering the values shown on this screen. These releases come
     // with payment_type === 'commission'
@@ -9,16 +9,16 @@ const splitedArray = async (array, fantasy) => {
     const firebaseObjs = await Promise.all(result.map(async ({ id, installment_plan, fees }) => {
         const data = await getDocInfo(id);
         if (data) {
-            const { seller, buyerRazao, sellerZoopPlan, receivables, splitTransaction, docRef } = data;
+            const { sellerZoopId, buyerRazao, sellerZoopPlan, receivables, splitTransaction, docRef } = data;
             const { number_installments, installment_number } = installment_plan;
             const splits = splitTransaction ?? sellerZoopPlan;
             const antiFraud = splits?.antiFraud ?? null;
             const markup = splits?.markup ?? null;
             const installment = parseInt(installment_number) || 1;
             let antiFraudValue, markupValue, netValue, ziroPayValue;
-            // All postings enter this case, except for the splits that are also posted
-            // to the appropriate EC's, unlike the owner of the sale
-            if (seller.toUpperCase() === fantasy) {
+            // Verifying that the seller's zoopId related to the payment link is the same
+            // as the zoopId that is requesting the resource.
+            if (sellerZoopId === zoopId) {
                 const filteredReceivables = receivables.filter(rec => rec.split_rule && rec.installment == installment);
                 const totalAmount = receivables.filter(rec => rec.installment == installment).map(rec => rec.split_rule ? rec.amount : rec.gross_amount).reduce((a, b) => parseFloat(a) + parseFloat(b));
                 const roundedTotal = round(totalAmount, 2);

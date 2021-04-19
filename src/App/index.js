@@ -1,11 +1,11 @@
-import React, { useState, useEffect,Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { post } from 'axios';
-import { auth, db } from '../Firebase/index';
-import { userContext } from './appContext';
 import InitialLoader from '@bit/vitorbarbosa19.ziro.initial-loader';
 import Error from '@bit/vitorbarbosa19.ziro.error';
 import ErrorBoundary from '@bit/vitorbarbosa19.ziro.error-boundary';
 import MessageModal from "@bit/vitorbarbosa19.ziro.message-modal"
+import { userContext } from './appContext';
+import { auth, db } from '../Firebase/index';
 import Router from './Router';
 
 export const App = () => {
@@ -79,8 +79,7 @@ export const App = () => {
             apiResource: 'values',
             apiMethod: 'get',
             range: 'Colaboradores',
-            spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
-            // spreadsheetId: "1YlNSmVrawtxeKyy-tDdmI9B0bgSIIQswBnl3CEgdRRo"
+            spreadsheetId: process.env.SHEET_SUPPLIERS_ID
         };
         let pos = 0;
         const {
@@ -96,23 +95,23 @@ export const App = () => {
 
     const fillObject = data => {
         const { cnpj, endereco, bairro, cep, cidade, estado, codBanco, titular, tipoConta, numConta, agencia, fantasia, razao, zoopId, maxParcelas, payoutAutomatic, zoopBankAccountId } = data;
-        setCnpj(cnpj ? cnpj : '');
-        setAddress(endereco ? endereco : '');
-        setNeighborhood(bairro ? bairro : '');
-        setCep(cep ? cep : '');
-        setCityState(estado ? estado : '');
-        setCity(cidade ? cidade : '');
-        setCodBank(codBanco ? codBanco : '');
-        setHolderName(titular ? titular : '');
-        setAccountType(tipoConta ? tipoConta : '');
-        setAccountNumber(numConta ? numConta : '');
-        setAgency(agencia ? agencia : '');
-        setFantasy(fantasia ? fantasia : '');
-        setReason(razao ? razao : '');
-        setZoopId(zoopId ? zoopId : '');
-        setMaxInstallments(maxParcelas ? maxParcelas : '10');
+        setCnpj(cnpj || '');
+        setAddress(endereco || '');
+        setNeighborhood(bairro || '');
+        setCep(cep || '');
+        setCityState(estado || '');
+        setCity(cidade || '');
+        setCodBank(codBanco || '');
+        setHolderName(titular || '');
+        setAccountType(tipoConta || '');
+        setAccountNumber(numConta || '');
+        setAgency(agencia || '');
+        setFantasy(fantasia || '');
+        setReason(razao || '');
+        setZoopId(zoopId || '');
+        setMaxInstallments(maxParcelas || '10');
         setPayoutAutomatic(payoutAutomatic !== null ? payoutAutomatic : true);
-        setZoopBankAccountId(zoopBankAccountId ? zoopBankAccountId : '');
+        setZoopBankAccountId(zoopBankAccountId || '');
     };
 
     const clearObject = () => {
@@ -161,13 +160,13 @@ export const App = () => {
         if (desktop.matches) setDevice('desktop')
         // define listeners
         const listenerSmallMobile = ({ matches }) => {
-          if (matches) setDevice('smallMobile')
+            if (matches) setDevice('smallMobile')
         }
         const listenerMobile = ({ matches }) => {
-          if (matches) setDevice('mobile')
+            if (matches) setDevice('mobile')
         }
         const listenerDesktop = ({ matches }) => {
-          if (matches) setDevice('desktop')
+            if (matches) setDevice('desktop')
         }
         // add listeners
         smallMobile.addListener(listenerSmallMobile)
@@ -177,7 +176,7 @@ export const App = () => {
         return () => smallMobile.removeListener(listenerSmallMobile)
         return () => mobile.removeListener(listenerMobile)
         return () => desktop.removeListener(listenerDesktop)
-      }, [])
+    }, [])
 
     useEffect(() => {
         let unsubscribe = () => null;
@@ -193,13 +192,13 @@ export const App = () => {
                             const { nome, sobrenome, cpf, nascimento, telefone, email, tipoCadastro } = snapshot.docs[0].data();
 
                             setDocId(snapshot.docs[0].id);
-                            setFName(nome ? nome : '');
-                            setLName(sobrenome ? sobrenome : '');
-                            setCpf(cpf ? cpf : '');
-                            setBirthdate(nascimento ? nascimento : '');
-                            setPhone(telefone ? telefone : '');
-                            setEmail(email ? email : '');
-                            setTypeRegister(tipoCadastro ? tipoCadastro : '');
+                            setFName(nome || '');
+                            setLName(sobrenome || '');
+                            setCpf(cpf || '');
+                            setBirthdate(nascimento || '');
+                            setPhone(telefone || '');
+                            setEmail(email || '');
+                            setTypeRegister(tipoCadastro || '');
                             setOwnerId('');
                             setRole('');
                             setBrand('');
@@ -215,8 +214,8 @@ export const App = () => {
                                         const supplierInfo = await db.collection('suppliers').doc(ownerId).get();
                                         setDocId(snapshot.docs[0].id);
                                         setBrand(brand);
-                                        setFName(fname ? fname : '');
-                                        setLName(lname ? lname : '');
+                                        setFName(fname || '');
+                                        setLName(lname || '');
                                         setCpf('');
                                         setBirthdate('');
                                         setPhone('');
@@ -239,11 +238,11 @@ export const App = () => {
         const getBgCheck = async () => {
             try {
                 db.collection('utilities').doc(process.env.DOCUMENT_ID_FOR_UTILITIES_MAIN)
-                .onSnapshot(snap => {
-                    if (!snap.empty) {
-                        setBgPrice(snap.data().main.standardValueBackgroundCheck);
-                    }
-                });
+                    .onSnapshot(snap => {
+                        if (!snap.empty) {
+                            setBgPrice(snap.data().main.standardValueBackgroundCheck);
+                        }
+                    });
             } catch (error) {
                 console.log('error', error)
             }
@@ -261,19 +260,19 @@ export const App = () => {
                             const { nome, sobrenome, cpf, cnpj, nascimento, whatsapp, telefone, email, tipoCadastro, backgroundCheckRequestsAvailable, backgroundCheckRequestsAvailablePaid, alwaysInsured } = doc.data();
 
                             setDocId(doc.id);
-                            setFName(nome ? nome : '');
-                            setLName(sobrenome ? sobrenome : '');
-                            setCpf(cpf ? cpf : '');
-                            setBirthdate(nascimento ? nascimento : '');
-                            setWhatsApp(whatsapp ? whatsapp : '');
-                            setPhone(telefone ? telefone : '');
-                            setEmail(email ? email : '');
-                            setTypeRegister(tipoCadastro ? tipoCadastro : '');
+                            setFName(nome || '');
+                            setLName(sobrenome || '');
+                            setCpf(cpf || '');
+                            setBirthdate(nascimento || '');
+                            setWhatsApp(whatsapp || '');
+                            setPhone(telefone || '');
+                            setEmail(email || '');
+                            setTypeRegister(tipoCadastro || '');
                             setOwnerId('');
                             setRole('');
                             setBrand('');
-                            setBackgroundCheckRequests(backgroundCheckRequestsAvailable ? backgroundCheckRequestsAvailable : '');
-                            setBackgroundCheckRequestsPaid(backgroundCheckRequestsAvailablePaid ? backgroundCheckRequestsAvailablePaid : '');
+                            setBackgroundCheckRequests(backgroundCheckRequestsAvailable || '');
+                            setBackgroundCheckRequestsPaid(backgroundCheckRequestsAvailablePaid || '');
                             setPaymentsInsurance(alwaysInsured);
                             fillObject(doc.data());
                             if (userPos === null || userPos === '') setUserPos(await findStoreownerRow(cnpj));
@@ -285,8 +284,8 @@ export const App = () => {
                             const supplierInfo = await db.collection('suppliers').doc(ownerId).get();
                             setDocId(docCollaboratorRef.docs[0].id);
                             setBrand(brand);
-                            setFName(fname ? fname : '');
-                            setLName(lname ? lname : '');
+                            setFName(fname || '');
+                            setLName(lname || '');
                             setCpf('');
                             setBirthdate('');
                             setWhatsApp('');
@@ -351,12 +350,12 @@ export const App = () => {
     if (errorLoading) return <Error />;
     return (
         <ErrorBoundary>
-        <Suspense fallback={<InitialLoader />}>
-            <MessageModal>
-                <userContext.Provider value={userData}>
-                    <Router isLogged={!!uid} />
-                </userContext.Provider>
-            </MessageModal>
+            <Suspense fallback={<InitialLoader />}>
+                <MessageModal>
+                    <userContext.Provider value={userData}>
+                        <Router isLogged={!!uid} />
+                    </userContext.Provider>
+                </MessageModal>
             </Suspense>
         </ErrorBoundary>
     );

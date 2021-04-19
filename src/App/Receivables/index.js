@@ -9,6 +9,7 @@ import Button from '@bit/vitorbarbosa19.ziro.button';
 import Icon from '@bit/vitorbarbosa19.ziro.icon';
 import Illustration from '@bit/vitorbarbosa19.ziro.illustration';
 import currencyFormat from '@ziro/currency-format';
+import { alertColor } from '@ziro/theme';
 import { Menu } from '../Menu/index';
 import { round } from '../Transactions/utils';
 import { userContext } from '../appContext';
@@ -21,7 +22,6 @@ import fetchBalance from './fetchBalance';
 import fetchPaidReceivables from './fetchPaidReceivables';
 import convertCsv from './utils/convertCsv';
 import convertCsv2 from './utils/convertCsv2';
-import { alertColor } from '@ziro/theme';
 
 const Receivables = ({ receivableId }) => {
     const [isError, setIsError] = useState(false);
@@ -60,17 +60,17 @@ const Receivables = ({ receivableId }) => {
 
     const handleClick = () => {
         setLoadingMore(true);
-        let day = new Date(finalDate);
+        const day = new Date(finalDate);
         day.setDate(finalDate.getDate() + 1);
         setInitDate(day);
-        fetch(zoopId, day, totalAmount, totalTransactions, data, days, receivables, fantasy, setState);
+        fetch(zoopId, day, totalAmount, totalTransactions, data, days, receivables, setState);
     };
 
     const moneyFormat = value => value ? currencyFormat(round(value, 2).toFixed(2).replace('.', '')) : 'R$ 0,00';
 
     const mountTable = (tableRows, totalAmount, totalTransactions) => {
-        let rows = [];
-        let rowsClicks = [];
+        const rows = [];
+        const rowsClicks = [];
         tableRows.map(tableRow => {
             const { charge, date, id, items } = tableRow;
             rows.push([date, charge.replace('R$', ''), items.length, <Icon type="chevronRight" size={14} />]);
@@ -109,7 +109,7 @@ const Receivables = ({ receivableId }) => {
         else if (localSnapshot) useSnapshot(localSnapshot);
         else {
             fetchBalance(zoopId, payoutAutomatic, setState);
-            fetch(zoopId, initDate, totalAmount, totalTransactions, data, days, receivables, fantasy, setState);
+            fetch(zoopId, initDate, totalAmount, totalTransactions, data, days, receivables, setState);
         }
     }, []);
 
@@ -137,16 +137,16 @@ const Receivables = ({ receivableId }) => {
                     {payoutAutomatic != undefined && payoutAutomatic != null && payoutAutomatic === false && <Button cta="Resgatar saldo" style={btn} navigate={() => setLocation('recebiveis/resgate')} type="link" />}
 
                     {(receivables.length > 0 && totalAmount > 0 && totalTransactions > 0) && <Button cta="Exportar recebíveis futuros" style={btn} click={() => convertCsv(receivables, totalAmount, totalTransactions, 'Recebiveis Futuros.csv')} type="button" />}
-                    
+
                     <Button cta="Exportar recebíveis pagos" style={btn} click={() => runFetchPaidReceivables()} type="button" />
 
-                    {isError && 
+                    {isError &&
                         <div style={{ textAlign: 'center', marginTop: '20px' }}>
                             <label style={{ color: alertColor }}>Erro ao gerar planilha.</label>
                         </div>
                     }
-                    
-                    <div style={{ marginTop: '10px' }}></div>
+
+                    <div style={{ marginTop: '10px' }} />
                     <div style={info}>
                         <label style={titleStyle}>À RECEBER HOJE</label>
                         <label style={contentStyle}>{moneyFormat(balance)}</label>
