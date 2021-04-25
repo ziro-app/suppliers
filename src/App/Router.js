@@ -25,6 +25,7 @@ import Receipt from './Receipt/index';
 import Receivables from './Receivables/index';
 import Register from './Register/index';
 import Products from './Products/index';
+import ProductsNew from './ProductsNew';
 import RegisterCollaborator from './RegisterCollaborator/index';
 import ResendEmail from './ResendEmail/index';
 import ResetPass from './ResetPass/index';
@@ -123,20 +124,26 @@ const Router = ({ isLogged }) => {
         </motion.div>
       </Menu>
     ),
+    '/produtos-novo': (
+      <Menu title="Novo Produto">
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <ProductsNew />
+        </motion.div>
+      </Menu>
+    ),
     '/produtos': (
-        <Menu title="Produtos">
+      <Menu title="Produtos">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
           <Products withIcon imgExtension={['.jpg', '.gif', '.png', '.gif']} maxFileSize={5242880} />
         </motion.div>
-        </Menu>
+      </Menu>
     ),
     '/produtos/adicionar': (
-
       <HeaderBack type="icon-link" title="Produtos" navigateTo="/produtos" icon="back">
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Products withIcon imgExtension={['.jpg', '.gif', '.png', '.gif']} maxFileSize={5242880} />
-          </motion.div>
-          </HeaderBack>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <Products withIcon imgExtension={['.jpg', '.gif', '.png', '.gif']} maxFileSize={5242880} />
+        </motion.div>
+      </HeaderBack>
     ),
     '/login': (
       <Menu title="Minha Conta">
