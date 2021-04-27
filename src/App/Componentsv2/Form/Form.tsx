@@ -56,7 +56,7 @@ const Form = ({
         <Modal showModal={showSuccessModal} setShowModal={setShowSuccessModal}>
           <div style={modalContainer}>
             <Illustration name="PaymentSuccess" />
-            <div style={textContainer}>{TextSuccess}</div>
+            <div style={textContainer}>{cloneElement(TextSuccess, { setShowModal: setShowSuccessModal })}</div>
           </div>
         </Modal>
       )}

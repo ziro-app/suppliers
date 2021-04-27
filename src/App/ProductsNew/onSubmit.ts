@@ -1,7 +1,7 @@
 import { fs, db, storage } from "../../Firebase/index"
 
 const onSubmit = async state => {
-  const { description, price, reference, colors, sizes, uid } = state
+  const { description, price, discount, reference, colors, sizes, uid } = state
   const now = fs.FieldValue.serverTimestamp()
   try {
     const docRef = await db.collection("suppliers").doc(uid).collection("products").add({
@@ -9,7 +9,7 @@ const onSubmit = async state => {
       dateUpdated: now,
       information: {
         description,
-        //   discount,
+        discount,
         //   images,
         price,
         reference,

@@ -41,9 +41,9 @@ interface WithoutModal extends CommonProps {
   /** Funcao para controlar o estado de on/off do modal */
   setModalState?: never
   /** Fragment para customizar o modal padrão de sucesso */
-  TextSuccess: React.ReactNode
+  TextSuccess: React.ReactElement
   /** Fragment para customizar o modal padrão de erro */
-  TextError: React.ReactNode
+  TextError: React.ReactElement
 }
 
 export type FormProps = WithModal | WithoutModal
