@@ -1,8 +1,7 @@
 import * as types from "../types"
 
-// const inputsValidation = (validations: types.validations): [boolean, types.errorMessages] => {
 const inputsValidation = (validations: types.validations) => {
-  const validFields: Array<boolean> = []
+  const validFields: boolean[] = []
   const errorMessages: types.errorMessages = {}
 
   validations.map(validation => {

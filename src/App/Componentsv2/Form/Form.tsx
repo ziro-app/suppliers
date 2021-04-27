@@ -1,24 +1,28 @@
-import React, { useState, cloneElement, ReactNode } from "react"
+import React, { useState, cloneElement, ReactNode, ReactElement } from "react"
 
-import * as types from "./types"
+import { Modal } from "../Modal"
+import Button from "../Button"
+import Illustration from "../Illustration"
 
 import inputsValidation from "./utils/inputsValidation"
+import { modalContainer, textContainer } from "./styles"
+import * as types from "./types"
 
-export interface FormProps {
-  /** Validacao das entradas do usuário */
-  validations: types.validations
-  /** Funcao executada ao submeter o form o retorno dever ser do tipo Promise<[React.ReactNode, boolean, React.Dispatch<React.SetStateAction<{ userInput: boolean }>>]> */
-  // onSubmit: () => Promise<[React.ReactNode, boolean, React.Dispatch<React.SetStateAction<{ userInput: boolean }>>]>
-  onSubmit: () => any
-  /** Campos do form (inputs e button) */
-  children: React.ReactElement
-}
-
-const Form = ({ validations, onSubmit, children }: FormProps) => {
+const Form = ({
+  validations,
+  onSubmit,
+  ModalSuccess,
+  ModalError,
+  setModalState,
+  TextSuccess,
+  TextError,
+  children,
+}: types.FormProps) => {
   const [isLoading, setIsLoading] = useState(false)
-  // const [inputError, setInputError] = useState<types.errorMessages>({})
-  const [inputError, setInputError] = useState({})
+  const [inputError, setInputError] = useState<types.errorMessages>({})
   const [modal, setModal] = useState<ReactNode>()
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
 
   const submitForm = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -29,23 +33,51 @@ const Form = ({ validations, onSubmit, children }: FormProps) => {
       setInputError({})
       setIsLoading(true)
 
-      const [sfModal, stateModal, setStateModal] = await onSubmit()
+      try {
+        await onSubmit()
 
-      setModal(sfModal)
-      setStateModal({ userInput: true })
-
+        if (ModalSuccess) setModal(ModalSuccess)
+        else setShowSuccessModal(true)
+      } catch (error) {
+        if (ModalError) setModal(cloneElement(ModalError, { error, setModalState }))
+        else setShowErrorModal(true)
+      }
+      /** chamada para abrir o modal apos o submit, seja para mostrar sucesso ou erro */
+      if (setModalState) setModalState({ userInput: true })
       setIsLoading(false)
     } else {
-      setInputError(errorMessages)
+      setInputError(errorMessages as types.errorMessages)
     }
   }
 
   return (
     <>
+      {TextSuccess && (
+        <Modal showModal={showSuccessModal} setShowModal={setShowSuccessModal}>
+          <div style={modalContainer}>
+            <Illustration name="PaymentSuccess" />
+            <div style={textContainer}>{TextSuccess}</div>
+          </div>
+        </Modal>
+      )}
+
+      {TextError && (
+        <Modal showModal={showErrorModal} setShowModal={setShowErrorModal}>
+          <div style={modalContainer}>
+            <Illustration name="BugFixRed" />
+            <div style={textContainer}>{TextError}</div>
+            <Button onClick={() => setShowErrorModal(false)}>Tentar novamente</Button>
+          </div>
+        </Modal>
+      )}
+
       {modal}
+
       <form onSubmit={submitForm}>
-        {children.props.children.map((element: any, i: any) => {
-          return cloneElement(element, { key: i, isLoading, inputError: inputError[element.props.inputName] })
+        {children.map((element: ReactElement, i: number) => {
+          if (element.props.inputName)
+            return cloneElement(element, { key: i, isLoading, inputError: inputError[element.props.inputName] })
+          return element
         })}
       </form>
     </>
