@@ -2,8 +2,8 @@ import React from "react"
 
 export type validations = {
   inputName: string
-  validation: (value: string | number) => boolean
-  value: string | number
+  validation: (value: string | number | File | File[]) => boolean
+  value: string | number | File | File[]
   message: string
 }[]
 

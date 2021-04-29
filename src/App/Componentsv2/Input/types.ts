@@ -1,12 +1,12 @@
 import React from "react"
 
-export interface InputCommonProps extends React.HTMLAttributes<HTMLInputElement> {
+export interface InputCommonProps<T> extends React.HTMLAttributes<HTMLInputElement> {
   /** Nome para referenciar o campo de input */
   inputName: string
   /** Variavel a qual o valor e exibido no input (nao precisa ser passado quando usar factory) */
-  value?: string
+  value?: T
   /** Funcao do setState para setar uma variavel com o valor do input (nao precisa ser passado quando usar factory) */
-  setValue?: React.Dispatch<React.SetStateAction<string>>
+  setValue?: React.Dispatch<React.SetStateAction<T>>
   /** Quando este parametro é true o input assume seu estado disabled */
   isLoading?: boolean
   /** Quando este parametro é true o input assume seu estado disabled */
@@ -21,11 +21,11 @@ export interface InputCommonProps extends React.HTMLAttributes<HTMLInputElement>
   style?: React.CSSProperties
 }
 
-export interface InputMoneyProps extends InputCommonProps {
+export interface InputMoneyProps extends InputCommonProps<string> {
   monetarySymbol?: string
 }
 
-export interface InputTextProps extends InputCommonProps {
+export interface InputTextProps extends InputCommonProps<string> {
   /** Tipo HTML do input */
   inputType?: "email" | "number" | "password" | "search" | "text" | "url"
   /** Placeholder mostrado antes de ser inserido algum valor no input */

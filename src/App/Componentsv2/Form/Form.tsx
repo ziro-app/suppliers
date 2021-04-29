@@ -23,6 +23,7 @@ const Form = ({
   const [modal, setModal] = useState<ReactNode>()
   const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false)
   const [showErrorModal, setShowErrorModal] = useState<boolean>(false)
+  const [error, setError] = useState<Error>()
 
   const submitForm = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,7 +41,10 @@ const Form = ({
         else setShowSuccessModal(true)
       } catch (error) {
         if (ModalError) setModal(cloneElement(ModalError, { error, setModalState }))
-        else setShowErrorModal(true)
+        else {
+          setShowErrorModal(true)
+          setError(error)
+        }
       }
       /** chamada para abrir o modal apos o submit, seja para mostrar sucesso ou erro */
       if (setModalState) setModalState({ userInput: true })
@@ -65,7 +69,7 @@ const Form = ({
         <Modal showModal={showErrorModal} setShowModal={setShowErrorModal}>
           <div style={modalContainer}>
             <Illustration name="BugFixRed" />
-            <div style={textContainer}>{TextError}</div>
+            <div style={textContainer}>{cloneElement(TextError, { error })}</div>
             <Button onClick={() => setShowErrorModal(false)}>Tentar novamente</Button>
           </div>
         </Modal>
