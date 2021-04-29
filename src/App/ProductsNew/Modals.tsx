@@ -17,9 +17,9 @@ export const TextSuccess = ({ setShowModal }: TextSuccessProps) => (
   </>
 )
 
-export const TextError = () => (
+export const TextError = ({ error }: { error?: Error }) => (
   <>
     <Title>Ocorreu um erro</Title>
-    <Text>Tente novamente ou contate suporte.</Text>
+    <Text>{(error && error.message) || "Tente novamente ou contate suporte."}</Text>
   </>
 )

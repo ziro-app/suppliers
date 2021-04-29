@@ -1,9 +1,14 @@
-type params = string | number
-
 type validationParams = {
-  description: params
+  images: File[]
 }
 
-const validations = ({ description }: validationParams) => []
+const validations = ({ images }: validationParams) => [
+  {
+    inputName: "images",
+    validation: (value: File[]) => value && value.length > 0,
+    value: images,
+    message: "Escolha imagens para o produto",
+  },
+]
 
 export default validations
