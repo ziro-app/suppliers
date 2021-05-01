@@ -1,4 +1,4 @@
-import React, { useContext, useState, Suspense } from "react"
+import React, { useContext, useState, Suspense, useRef } from "react"
 import { useLocation, useRoute } from "wouter"
 
 import ConfirmEmail from "@bit/vitorbarbosa19.ziro.confirm-email"
@@ -39,6 +39,7 @@ import BankInfo from "./BankInfo"
 import Preferences from "./Preferences"
 import CheckoutBackgroundCheck from "./CheckoutBackgroundCheck"
 import AboutCredits from "./AboutCredits"
+import Productsv2 from "./Productsv2"
 import { userContext } from "./appContext"
 
 const Router = ({ isLogged }) => {
@@ -54,6 +55,7 @@ const Router = ({ isLogged }) => {
   const [location] = useLocation()
   const { role } = useContext(userContext)
   const currentBackRoute = localStorage.getItem("voltar")
+  const containerRef = useRef(null)
 
   const publicRoutes = {
     "/": <Login />,
@@ -129,26 +131,10 @@ const Router = ({ isLogged }) => {
         </motion.div>
       </Menu>
     ),
-    "/produtos-novo": (
-      <Menu title="Novo Produto">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <ProductsNew />
-        </motion.div>
-      </Menu>
-    ),
     "/produtos": (
-      <Menu title="Produtos">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <Products withIcon imgExtension={[".jpg", ".gif", ".png", ".gif"]} maxFileSize={5242880} />
-        </motion.div>
-      </Menu>
-    ),
-    "/produtos/adicionar": (
-      <HeaderBack type="icon-link" title="Produtos" navigateTo="/produtos" icon="back">
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <Products withIcon imgExtension={[".jpg", ".gif", ".png", ".gif"]} maxFileSize={5242880} />
-        </motion.div>
-      </HeaderBack>
+      <div style={{ height: "100vh" }} ref={containerRef}>
+        <Productsv2 containerRef={containerRef} />
+      </div>
     ),
     "/login": (
       <Menu title="Minha Conta">

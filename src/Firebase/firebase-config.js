@@ -5,5 +5,5 @@ export const firebaseConfig = {
   projectId: "ziro-app-data",
   storageBucket: "ziro-app-data.appspot.com",
   messagingSenderId: "128486864666",
-  appId: "1:128486864666:web:dcb315a4d5aca2e2"
+  appId: "1:128486864666:web:dcb315a4d5aca2e2",
 }
