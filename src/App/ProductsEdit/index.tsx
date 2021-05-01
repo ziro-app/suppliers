@@ -10,8 +10,10 @@ import ProductImages from "../Componentsv2/ProductGallery/ProductImages"
 import { userContext } from "../appContext"
 import validations from "./validations"
 import onSubmit from "./onSubmit"
-import { useProduct } from "./useProduct"
-import { TextSuccess, TextError } from "./Modals"
+import useProduct from "./useProduct"
+import deleteProduct from "./deleteProduct"
+import { TextSuccess, TextError, TextSuccessDelete, TextErrorDelete } from "./Modals"
+import { buttonDelete, buttonSubmit } from "./styles"
 
 const ProductsEdit = () => {
   const [, params] = useRoute("/produtos/:productId/editar")
@@ -80,8 +82,18 @@ const ProductsEdit = () => {
         <InputText inputName="colors" value={colors} setValue={setColors} placeholder="Amarelo,azul" />
         <Title size="smallMedium">Tamanhos</Title>
         <InputText inputName="sizes" value={sizes} setValue={setSizes} placeholder="P,M,G" />
-        <Button type="submit" isLoading={isSubmitting} style={{ marginTop: "5px" }}>
+        <Button type="submit" isLoading={isSubmitting} style={buttonSubmit}>
           Enviar produto
+        </Button>
+      </Form>
+      <Form
+        validations={[]}
+        onSubmit={() => deleteProduct(uid, productId, setIsSubmitting)}
+        TextSuccess={<TextSuccessDelete />}
+        TextError={<TextErrorDelete />}
+      >
+        <Button type="submit" isLoading={isSubmitting} style={buttonDelete}>
+          Excluir produto
         </Button>
       </Form>
     </>

@@ -2,7 +2,7 @@ import { useFirestore, useFirestoreDocData } from "reactfire"
 import { CardType } from "../Componentsv2/ProductGallery"
 import { setStateType } from "./types"
 
-export const useProduct = (supplierUid: string, productId: string, setState: setStateType, isLoading: boolean) => {
+const useProduct = (supplierUid: string, productId: string, setState: setStateType, isLoading: boolean) => {
   const query = useFirestore().collection("suppliers").doc(supplierUid).collection("products").doc(productId)
   const { data } = useFirestoreDocData<CardType>(query)
   if (data && isLoading) {
@@ -29,3 +29,5 @@ export const useProduct = (supplierUid: string, productId: string, setState: set
     setSizes(sizes)
   }
 }
+
+export default useProduct

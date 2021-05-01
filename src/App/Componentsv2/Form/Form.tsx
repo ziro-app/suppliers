@@ -78,11 +78,13 @@ const Form = ({
       {modal}
 
       <form onSubmit={submitForm}>
-        {children.map((element: ReactElement, i: number) => {
-          if (element.props.inputName)
-            return cloneElement(element, { key: i, isLoading, inputError: inputError[element.props.inputName] })
-          return element
-        })}
+        {Array.isArray(children)
+          ? children.map((element: ReactElement, i: number) => {
+              if (element.props.inputName)
+                return cloneElement(element, { key: i, isLoading, inputError: inputError[element.props.inputName] })
+              return element
+            })
+          : children}
       </form>
     </>
   )

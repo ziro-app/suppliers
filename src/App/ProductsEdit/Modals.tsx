@@ -23,3 +23,20 @@ export const TextError = ({ error }: { error?: Error }) => (
     <Text>{(error && error.message) || "Tente novamente ou contate suporte."}</Text>
   </>
 )
+
+export const TextSuccessDelete = ({ setShowModal }: TextSuccessProps) => (
+  <>
+    <Title>Sucesso!</Title>
+    <Text>Seu produto foi excluido.</Text>
+    <Link isButton href="/produtos" style={{ marginTop: "15px" }}>
+      Ok
+    </Link>
+  </>
+)
+
+export const TextErrorDelete = ({ error }: { error?: Error }) => (
+  <>
+    <Title>Ocorreu um erro</Title>
+    <Text>{(error && error.message) || "Tente novamente ou contate suporte."}</Text>
+  </>
+)

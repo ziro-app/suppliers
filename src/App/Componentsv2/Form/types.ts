@@ -17,7 +17,7 @@ interface CommonProps {
   /** Funcao executada ao submeter o form */
   onSubmit: () => any
   /** Campos do form (inputs e button) */
-  children: React.ReactElement[]
+  children: React.ReactElement | React.ReactElement[]
 }
 
 interface WithModal extends CommonProps {
