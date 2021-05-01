@@ -1,11 +1,21 @@
-import React from 'react';
-import themes from '../themes';
+import React from "react"
+import themes from "../themes"
 
 export const StarHalf = ({ ...props }) => (
-  <svg viewBox="0 0 16 16" width="24px" height="24px" stroke={themes.colors.primary} strokeWidth={0.5} fill={themes.colors.primary} strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    viewBox="0 0 16 16"
+    width="24px"
+    height="24px"
+    stroke={themes.colors.primary}
+    strokeWidth={0.5}
+    fill={themes.colors.primary}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path d="M5.354 5.119L7.538.792A.516.516 0 0 1 8 .5c.183 0 .366.097.465.292l2.184 4.327 4.898.696A.537.537 0 0 1 16 6.32a.55.55 0 0 1-.17.445l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256a.519.519 0 0 1-.146.05c-.341.06-.668-.254-.6-.642l.83-4.73L.173 6.765a.55.55 0 0 1-.171-.403.59.59 0 0 1 .084-.302.513.513 0 0 1 .37-.245l4.898-.696zM8 12.027c.08 0 .16.018.232.056l3.686 1.894-.694-3.957a.564.564 0 0 1 .163-.505l2.906-2.77-4.052-.576a.525.525 0 0 1-.393-.288L8.002 2.223 8 2.226v9.8z" />
   </svg>
-);
+)
 
 export const Ziro = ({ ...props }) => (
   <svg viewBox="0 0 30 30" width={24} height={24} {...props}>
@@ -15,7 +25,7 @@ export const Ziro = ({ ...props }) => (
       fill="#FFE401"
     />
   </svg>
-);
+)
 
 export const Amex = ({ color, ...props }: { color?: string }) => (
   <svg viewBox="0 0 24 24" width={24} height={24} {...props}>
@@ -24,7 +34,7 @@ export const Amex = ({ color, ...props }: { color?: string }) => (
       fill={color || themes.colors.primary}
     />
   </svg>
-);
+)
 
 export const Visa = ({ color, ...props }: { color?: string }) => (
   <svg viewBox="0 0 24 24" width="24" height="24" {...props}>
@@ -33,7 +43,7 @@ export const Visa = ({ color, ...props }: { color?: string }) => (
       fill={color || themes.colors.primary}
     />
   </svg>
-);
+)
 
 export const MasterCard = ({ color, ...props }: { color?: string }) => (
   <svg viewBox="0 0 24 24" width={24} height={24} {...props}>
@@ -42,7 +52,7 @@ export const MasterCard = ({ color, ...props }: { color?: string }) => (
       fill={color || themes.colors.primary}
     />
   </svg>
-);
+)
 
 export const Elo = ({ color, ...props }: { color?: string }) => (
   <svg viewBox="80 0 620 480" width={24} height={24} {...props}>
@@ -51,7 +61,7 @@ export const Elo = ({ color, ...props }: { color?: string }) => (
       fill={color || themes.colors.primary}
     />
   </svg>
-);
+)
 
 export const Hiper = ({ color, ...props }: { color?: string }) => (
   <svg viewBox="80 0 620 480" width={44} height={24} {...props}>
@@ -80,13 +90,23 @@ export const Hiper = ({ color, ...props }: { color?: string }) => (
       fill={color || themes.colors.primary}
     />
   </svg>
-);
+)
 
 export const Facebook = ({ ...props }) => (
-  <svg viewBox="0 0 24 24" width="24px" height="24px" stroke="none" strokeWidth="none" fill={themes.colors.primary} strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    viewBox="0 0 24 24"
+    width="24px"
+    height="24px"
+    stroke="none"
+    strokeWidth="none"
+    fill={themes.colors.primary}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path d="M23.9981 11.9991C23.9981 5.37216 18.626 0 11.9991 0C5.37216 0 0 5.37216 0 11.9991C0 17.9882 4.38789 22.9522 10.1242 23.8524V15.4676H7.07758V11.9991H10.1242V9.35553C10.1242 6.34826 11.9156 4.68714 14.6564 4.68714C15.9692 4.68714 17.3424 4.92149 17.3424 4.92149V7.87439H15.8294C14.3388 7.87439 13.8739 8.79933 13.8739 9.74824V11.9991H17.2018L16.6698 15.4676H13.8739V23.8524C19.6103 22.9522 23.9981 17.9882 23.9981 11.9991Z" />
   </svg>
-);
+)
 
 export const NoAccessories = ({ color, ...props }: { color?: string }) => (
   <svg viewBox="0 0 104 104" width="24px" height="24px" stroke="none" strokeWidth="none" fill="none" {...props}>
@@ -95,10 +115,26 @@ export const NoAccessories = ({ color, ...props }: { color?: string }) => (
       fill={color || themes.colors.primary}
     />
     <g filter="url(#filter0_d)">
-      <line x1="5.41421" y1="1.58579" x2="98.4142" y2="94.5858" stroke={color || themes.colors.primary} strokeWidth="4" strokeLinejoin="round" />
+      <line
+        x1="5.41421"
+        y1="1.58579"
+        x2="98.4142"
+        y2="94.5858"
+        stroke={color || themes.colors.primary}
+        strokeWidth="4"
+        strokeLinejoin="round"
+      />
     </g>
     <defs>
-      <filter id="filter0_d" x="0" y="0.17157" width="103.828" height="103.828" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+      <filter
+        id="filter0_d"
+        x="0"
+        y="0.17157"
+        width="103.828"
+        height="103.828"
+        filterUnits="userSpaceOnUse"
+        colorInterpolationFilters="sRGB"
+      >
         <feFlood floodOpacity="0" result="BackgroundImageFix" />
         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
         <feOffset dy="4" />
@@ -109,10 +145,20 @@ export const NoAccessories = ({ color, ...props }: { color?: string }) => (
       </filter>
     </defs>
   </svg>
-);
+)
 
 export const Document = ({ color, ...props }: { color?: string }) => (
-  <svg viewBox="0 0 100 100" width="24px" height="24px" stroke={color || themes.colors.primary} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    viewBox="0 0 100 100"
+    width="24px"
+    height="24px"
+    stroke={color || themes.colors.primary}
+    strokeWidth={2}
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path
       d="M99.1381 24.2922L75.7078 0.861914C75.4367 0.590039 75.1119 0.374414 74.7516 0.225391C74.3936 0.0773438 74.0141 0 73.6328 0H38.4766C36.8572 0 35.5469 1.31035 35.5469 2.92969V11.7188H2.92969C1.31035 11.7188 0 13.0291 0 14.6484V97.0703C0 98.6897 1.31035 100 2.92969 100H61.9141C63.5334 100 64.8438 98.6897 64.8438 97.0703V87.8906H97.0703C98.6897 87.8906 100 86.5803 100 84.9609V26.3672C100 25.9859 99.9227 25.6064 99.7746 25.2484C99.6256 24.8881 99.41 24.5633 99.1381 24.2922ZM76.5625 10.0021L89.9978 23.4375H76.5625V10.0021ZM58.9844 94.1406H5.85938V17.5781H35.5469V84.9609C35.5469 86.5803 36.8572 87.8906 38.4766 87.8906H58.9844V94.1406ZM94.1406 82.0312H41.4062V5.85938H70.7031V26.3672C70.7031 27.9865 72.0135 29.2969 73.6328 29.2969H94.1406V82.0312Z"
       fill={color || themes.colors.primary}
@@ -130,20 +176,44 @@ export const Document = ({ color, ...props }: { color?: string }) => (
         <stop stopColor={color || themes.colors.primary} />
         <stop offset="0.0001" />
       </linearGradient>
-      <linearGradient id="paint1_linear" x1="67.7734" y1="46.875" x2="67.7734" y2="41.0156" gradientUnits="userSpaceOnUse">
+      <linearGradient
+        id="paint1_linear"
+        x1="67.7734"
+        y1="46.875"
+        x2="67.7734"
+        y2="41.0156"
+        gradientUnits="userSpaceOnUse"
+      >
         <stop stopColor={color || themes.colors.primary} />
         <stop offset="0.0001" />
       </linearGradient>
-      <linearGradient id="paint2_linear" x1="67.7734" y1="64.4531" x2="67.7734" y2="58.5938" gradientUnits="userSpaceOnUse">
+      <linearGradient
+        id="paint2_linear"
+        x1="67.7734"
+        y1="64.4531"
+        x2="67.7734"
+        y2="58.5938"
+        gradientUnits="userSpaceOnUse"
+      >
         <stop stopColor={color || themes.colors.primary} />
         <stop offset="0.0001" />
       </linearGradient>
     </defs>
   </svg>
-);
+)
 
 export const DocumentTwo = ({ color, ...props }: { color?: string }) => (
-  <svg viewBox="0 0 100 88" width="24px" height="24px" stroke={color || themes.colors.primary} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    viewBox="0 0 100 88"
+    width="24px"
+    height="24px"
+    stroke={color || themes.colors.primary}
+    strokeWidth={2}
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path
       d="M32.4219 46.9297H55.8594C57.4787 46.9297 58.7891 45.6193 58.7891 44V20.5625C58.7891 18.9432 57.4787 17.6328 55.8594 17.6328H32.4219C30.8025 17.6328 29.4922 18.9432 29.4922 20.5625V44C29.4922 45.6193 30.8025 46.9297 32.4219 46.9297ZM35.3516 23.4922H52.9297V41.0703H35.3516V23.4922ZM97.0703 0.0546875H20.5078C18.8885 0.0546875 17.5781 1.36504 17.5781 2.98438V58.6484H2.92969C1.31035 58.6484 0 59.9588 0 61.5781V76.2266C0 82.6897 5.25566 87.9453 11.7188 87.9453H85.3516C93.4283 87.9453 100 81.3736 100 73.2969V2.98438C100 1.36504 98.6897 0.0546875 97.0703 0.0546875ZM17.5781 76.2266C17.5781 79.4566 14.9488 82.0859 11.7188 82.0859C8.48867 82.0859 5.85938 79.4566 5.85938 76.2266V64.5078H17.5781V76.2266ZM94.1406 73.2969C94.1406 78.1434 90.198 82.0859 85.3516 82.0859H21.8078C22.817 80.3555 23.4375 78.3705 23.4375 76.2266V5.91406H94.1406V73.2969ZM67.7734 23.4922H85.3516C86.9709 23.4922 88.2812 22.1818 88.2812 20.5625C88.2812 18.9432 86.9709 17.6328 85.3516 17.6328H67.7734C66.1541 17.6328 64.8438 18.9432 64.8438 20.5625C64.8438 22.1818 66.1541 23.4922 67.7734 23.4922ZM67.7734 35.2109H85.3516C86.9709 35.2109 88.2812 33.9006 88.2812 32.2812C88.2812 30.6619 86.9709 29.3516 85.3516 29.3516H67.7734C66.1541 29.3516 64.8438 30.6619 64.8438 32.2812C64.8438 33.9006 66.1541 35.2109 67.7734 35.2109ZM67.7734 46.9297H85.3516C86.9709 46.9297 88.2812 45.6193 88.2812 44C88.2812 42.3807 86.9709 41.0703 85.3516 41.0703H67.7734C66.1541 41.0703 64.8438 42.3807 64.8438 44C64.8438 45.6193 66.1541 46.9297 67.7734 46.9297ZM32.4219 58.6484H85.3516C86.9709 58.6484 88.2812 57.3381 88.2812 55.7188C88.2812 54.0994 86.9709 52.7891 85.3516 52.7891H32.4219C30.8025 52.7891 29.4922 54.0994 29.4922 55.7188C29.4922 57.3381 30.8025 58.6484 32.4219 58.6484ZM32.4219 70.3672H85.3516C86.9709 70.3672 88.2812 69.0568 88.2812 67.4375C88.2812 65.8182 86.9709 64.5078 85.3516 64.5078H32.4219C30.8025 64.5078 29.4922 65.8182 29.4922 67.4375C29.4922 69.0568 30.8025 70.3672 32.4219 70.3672Z"
       fill={color || themes.colors.primary}
@@ -155,10 +225,20 @@ export const DocumentTwo = ({ color, ...props }: { color?: string }) => (
       </linearGradient>
     </defs>
   </svg>
-);
+)
 
 export const HappyEmoji = ({ color, ...props }: { color?: string }) => (
-  <svg viewBox="0 0 100 100" width="24px" height="24px" stroke={color || themes.colors.primary} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    viewBox="0 0 100 100"
+    width="24px"
+    height="24px"
+    stroke={color || themes.colors.primary}
+    strokeWidth={2}
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path
       d="M32.4219 47.0703C37.2682 47.0703 41.2109 43.1275 41.2109 38.2812C41.2109 33.435 37.2682 29.4922 32.4219 29.4922C27.5756 29.4922 23.6328 33.435 23.6328 38.2812C23.6328 43.1275 27.5756 47.0703 32.4219 47.0703ZM32.4219 35.3516C34.0373 35.3516 35.3516 36.6658 35.3516 38.2812C35.3516 39.8967 34.0373 41.2109 32.4219 41.2109C30.8064 41.2109 29.4922 39.8967 29.4922 38.2812C29.4922 36.6658 30.8064 35.3516 32.4219 35.3516ZM50 0C22.4707 0 0 22.4689 0 50C0 77.5293 22.4689 100 50 100C77.5295 100 100 77.5311 100 50C100 22.4705 77.5311 0 50 0ZM50 94.1406C25.6607 94.1406 5.85938 74.3393 5.85938 50C5.85938 25.6607 25.6607 5.85938 50 5.85938C74.3393 5.85938 94.1406 25.6607 94.1406 50C94.1406 74.3393 74.3393 94.1406 50 94.1406ZM67.5781 29.4922C62.7318 29.4922 58.7891 33.435 58.7891 38.2812C58.7891 43.1275 62.7318 47.0703 67.5781 47.0703C72.4244 47.0703 76.3672 43.1275 76.3672 38.2812C76.3672 33.435 72.4244 29.4922 67.5781 29.4922ZM67.5781 41.2109C65.9627 41.2109 64.6484 39.8967 64.6484 38.2812C64.6484 36.6658 65.9627 35.3516 67.5781 35.3516C69.1936 35.3516 70.5078 36.6658 70.5078 38.2812C70.5078 39.8967 69.1936 41.2109 67.5781 41.2109ZM73.4375 52.9297H26.5625C24.9445 52.9297 23.6328 54.2414 23.6328 55.8594C23.6328 70.3982 35.4611 82.2266 50 82.2266C64.5389 82.2266 76.3672 70.3982 76.3672 55.8594C76.3672 54.2414 75.0555 52.9297 73.4375 52.9297ZM50 76.3672C39.6865 76.3672 31.1268 68.7143 29.7008 58.7891H70.299C68.8732 68.7143 60.3135 76.3672 50 76.3672Z"
       fill={color || themes.colors.primary}
@@ -170,10 +250,20 @@ export const HappyEmoji = ({ color, ...props }: { color?: string }) => (
       </linearGradient>
     </defs>
   </svg>
-);
+)
 
 export const Magnifier = ({ color, ...props }: { color?: string }) => (
-  <svg viewBox="0 0 101 101" width="24px" height="24px" stroke={color || themes.colors.primary} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    viewBox="0 0 101 101"
+    width="24px"
+    height="24px"
+    stroke={color || themes.colors.primary}
+    strokeWidth={2}
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -181,34 +271,78 @@ export const Magnifier = ({ color, ...props }: { color?: string }) => (
       fill={color || themes.colors.primary}
     />
   </svg>
-);
+)
 
 export const NoBackground = ({ color, ...props }: { color?: string }) => (
-  <svg viewBox="0 0 167 167" width="24px" height="24px" stroke={color || themes.colors.primary} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <path d="M24.5588 140.476H53.0471V160.615C39.9563 154.802 33.4662 150.905 24.5588 141.95V140.476Z" fill={color || themes.colors.primary} />
+  <svg
+    viewBox="0 0 167 167"
+    width="24px"
+    height="24px"
+    stroke={color || themes.colors.primary}
+    strokeWidth={2}
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path
+      d="M24.5588 140.476H53.0471V160.615C39.9563 154.802 33.4662 150.905 24.5588 141.95V140.476Z"
+      fill={color || themes.colors.primary}
+    />
     <path d="M138.512 140.476H143.915L140.476 143.424L138.512 145.879V140.476Z" fill={themes.colors.primary} />
-    <path d="M81.5352 140.476H110.023V162.088C98.6264 165.652 92.4037 166.518 81.5352 166.509V140.476Z" fill={color || themes.colors.primary} />
+    <path
+      d="M81.5352 140.476H110.023V162.088C98.6264 165.652 92.4037 166.518 81.5352 166.509V140.476Z"
+      fill={color || themes.colors.primary}
+    />
     <rect x="24.5588" y="28.4883" width="28.4882" height="28.4882" fill={color || themes.colors.primary} />
     <rect x="81.5352" y="28.4883" width="28.4882" height="28.4882" fill={color || themes.colors.primary} />
-    <path d="M138.512 28.4883H145.388C145.388 28.4883 158.159 44.2059 162.579 56.9765H138.512V28.4883Z" fill={color || themes.colors.primary} />
+    <path
+      d="M138.512 28.4883H145.388C145.388 28.4883 158.159 44.2059 162.579 56.9765H138.512V28.4883Z"
+      fill={color || themes.colors.primary}
+    />
     <rect x="53.0471" y="113.953" width="28.4882" height="28.4882" fill={color || themes.colors.primary} />
-    <path d="M6.5 113.953H24.5588V142.441L23.5765 140.968C14.9686 130.504 11.709 125.33 6.5 113.953Z" fill={color || themes.colors.primary} />
+    <path
+      d="M6.5 113.953H24.5588V142.441L23.5765 140.968C14.9686 130.504 11.709 125.33 6.5 113.953Z"
+      fill={color || themes.colors.primary}
+    />
     <rect x="110.024" y="113.953" width="28.4882" height="28.4882" fill={color || themes.colors.primary} />
     <rect x="53.0471" y="56.9765" width="28.4882" height="28.4882" fill={color || themes.colors.primary} />
-    <path d="M4.42059 56.9765H24.5588V85.4647H0C0.155828 74.2714 1.07252 68.0316 4.42059 56.9765Z" fill={color || themes.colors.primary} />
+    <path
+      d="M4.42059 56.9765H24.5588V85.4647H0C0.155828 74.2714 1.07252 68.0316 4.42059 56.9765Z"
+      fill={color || themes.colors.primary}
+    />
     <rect x="110.024" y="56.9765" width="28.4882" height="28.4882" fill={color || themes.colors.primary} />
-    <path d="M53.0471 5.89412C63.4189 2.54345 69.7111 1.32865 81.5353 0V28.4882H53.0471V5.89412Z" fill={color || themes.colors.primary} />
+    <path
+      d="M53.0471 5.89412C63.4189 2.54345 69.7111 1.32865 81.5353 0V28.4882H53.0471V5.89412Z"
+      fill={color || themes.colors.primary}
+    />
     <path d="M24.5588 25.05V28.4883H20.6294L24.5588 25.05Z" fill={color || themes.colors.primary} />
-    <path d="M110.024 4.91174C123.415 10.7168 128.449 12.8725 138.512 21.1206V28.4882H110.024V4.91174Z" fill={color || themes.colors.primary} />
+    <path
+      d="M110.024 4.91174C123.415 10.7168 128.449 12.8725 138.512 21.1206V28.4882H110.024V4.91174Z"
+      fill={color || themes.colors.primary}
+    />
     <rect x="24.5588" y="85.4648" width="28.4882" height="28.4882" fill={color || themes.colors.primary} />
     <rect x="81.5352" y="85.4648" width="28.4882" height="28.4882" fill={color || themes.colors.primary} />
-    <path d="M138.512 85.4648H166.509C165.658 97.0552 164.487 103.288 161.106 113.953H138.512V85.4648Z" fill={color || themes.colors.primary} />
+    <path
+      d="M138.512 85.4648H166.509C165.658 97.0552 164.487 103.288 161.106 113.953H138.512V85.4648Z"
+      fill={color || themes.colors.primary}
+    />
     <circle cx="83.5" cy="83.5" r="83" stroke={color || themes.colors.primary} />
   </svg>
-);
+)
 
 export const PersonalDocument = ({ color, ...props }: { color?: string }) => (
-  <svg viewBox="0 0 100 88" width="24px" height="24px" stroke={color || themes.colors.primary} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    viewBox="0 0 100 88"
+    width="24px"
+    height="24px"
+    stroke={color || themes.colors.primary}
+    strokeWidth={2}
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path
       d="M97.0703 17.6328H76.3672V14.7031C76.3672 13.0852 75.0555 11.7734 73.4375 11.7734H64.3541C62.9928 5.09551 57.074 0.0546875 50 0.0546875C42.926 0.0546875 37.0072 5.09551 35.6459 11.7734H26.5625C24.9445 11.7734 23.6328 13.0852 23.6328 14.7031V17.6328H2.92969C1.31172 17.6328 0 18.9445 0 20.5625V85.0156C0 86.6336 1.31172 87.9453 2.92969 87.9453H97.0703C98.6883 87.9453 100 86.6336 100 85.0156V20.5625C100 18.9445 98.6883 17.6328 97.0703 17.6328ZM29.4922 17.6328H38.2812C39.8992 17.6328 41.2109 16.3211 41.2109 14.7031C41.2109 9.85684 45.1537 5.91406 50 5.91406C54.8463 5.91406 58.7891 9.85684 58.7891 14.7031C58.7891 16.3211 60.1008 17.6328 61.7188 17.6328H70.5078V23.4922H29.4922V17.6328ZM94.1406 82.0859H5.85938V23.4922H23.6328V26.4219C23.6328 28.0398 24.9445 29.3516 26.5625 29.3516H73.4375C75.0555 29.3516 76.3672 28.0398 76.3672 26.4219V23.4922H94.1406V82.0859ZM79.2969 52.7891H55.8594C54.2414 52.7891 52.9297 54.1008 52.9297 55.7188C52.9297 57.3367 54.2414 58.6484 55.8594 58.6484H79.2969C80.9148 58.6484 82.2266 57.3367 82.2266 55.7188C82.2266 54.1008 80.9148 52.7891 79.2969 52.7891ZM79.2969 64.5078H55.8594C54.2414 64.5078 52.9297 65.8195 52.9297 67.4375C52.9297 69.0555 54.2414 70.3672 55.8594 70.3672H79.2969C80.9148 70.3672 82.2266 69.0555 82.2266 67.4375C82.2266 65.8195 80.9148 64.5078 79.2969 64.5078ZM50 11.7734C48.382 11.7734 47.0703 13.0852 47.0703 14.7031C47.0703 16.3211 48.382 17.6328 50 17.6328C51.618 17.6328 52.9297 16.3211 52.9297 14.7031C52.9297 13.0852 51.618 11.7734 50 11.7734ZM41.2109 44C41.2109 39.1537 37.2682 35.2109 32.4219 35.2109C27.5756 35.2109 23.6328 39.1537 23.6328 44C23.6328 48.8463 27.5756 52.7891 32.4219 52.7891C37.2682 52.7891 41.2109 48.8463 41.2109 44ZM32.4219 46.9297C30.8064 46.9297 29.4922 45.6154 29.4922 44C29.4922 42.3846 30.8064 41.0703 32.4219 41.0703C34.0373 41.0703 35.3516 42.3846 35.3516 44C35.3516 45.6154 34.0373 46.9297 32.4219 46.9297ZM32.4219 52.7891C24.3447 52.7891 17.7734 59.3604 17.7734 67.4375V73.2969C17.7734 74.9148 19.0852 76.2266 20.7031 76.2266H44.1406C45.7586 76.2266 47.0703 74.9148 47.0703 73.2969V67.4375C47.0703 59.3604 40.499 52.7891 32.4219 52.7891ZM41.2109 70.3672H23.6328V67.4375C23.6328 62.5912 27.5756 58.6484 32.4219 58.6484C37.2682 58.6484 41.2109 62.5912 41.2109 67.4375V70.3672ZM55.8594 46.9297C57.4773 46.9297 58.7891 45.618 58.7891 44C58.7891 42.382 57.4773 41.0703 55.8594 41.0703C54.2414 41.0703 52.9297 42.382 52.9297 44C52.9297 45.618 54.2414 46.9297 55.8594 46.9297ZM67.5781 46.9297C69.1961 46.9297 70.5078 45.618 70.5078 44C70.5078 42.382 69.1961 41.0703 67.5781 41.0703C65.9602 41.0703 64.6484 42.382 64.6484 44C64.6484 45.618 65.9602 46.9297 67.5781 46.9297ZM79.2969 46.9297C80.9148 46.9297 82.2266 45.618 82.2266 44C82.2266 42.382 80.9148 41.0703 79.2969 41.0703C77.6789 41.0703 76.3672 42.382 76.3672 44C76.3672 45.618 77.6789 46.9297 79.2969 46.9297Z"
       fill={color || themes.colors.primary}
@@ -220,10 +354,20 @@ export const PersonalDocument = ({ color, ...props }: { color?: string }) => (
       </linearGradient>
     </defs>
   </svg>
-);
+)
 
 export const Rocket = ({ color, ...props }: { color?: string }) => (
-  <svg viewBox="0 0 15 15" width="24px" height="24px" stroke="none" strokeWidth="none" fill={color || themes.colors.primary} strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    viewBox="0 0 15 15"
+    width="24px"
+    height="24px"
+    stroke="none"
+    strokeWidth="none"
+    fill={color || themes.colors.primary}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -231,10 +375,20 @@ export const Rocket = ({ color, ...props }: { color?: string }) => (
       fill={color || themes.colors.primary}
     />
   </svg>
-);
+)
 
 export const ShadowFace = ({ ...props }) => (
-  <svg viewBox="0 0 100 100" width="24px" height="24px" stroke={themes.colors.primary} strokeWidth={2} fill="none" strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    viewBox="0 0 100 100"
+    width="24px"
+    height="24px"
+    stroke={themes.colors.primary}
+    strokeWidth={2}
+    fill="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path
       d="M86.794 24.0924C83.0946 18.8385 78.3129 14.4378 72.7706 11.1864C67.2284 7.9349 61.054 5.90808 54.663 5.24224C48.2719 4.57641 41.8124 5.28701 35.7189 7.32623C29.6254 9.36545 24.0394 12.686 19.3364 17.0645C14.6335 21.443 10.9228 26.7779 8.45402 32.7104C5.9852 38.6428 4.8155 45.0352 5.02361 51.4574C5.23172 57.8797 6.81281 64.1829 9.66052 69.9431C12.5082 75.7032 16.5565 80.7867 21.533 84.8516L50 50L86.794 24.0924Z"
       fill="url(#shadow)"
@@ -253,11 +407,37 @@ export const ShadowFace = ({ ...props }) => (
       </linearGradient>
     </defs>
   </svg>
-);
+)
 
 export const Whats = ({ ...props }) => (
-  <svg viewBox="-2 -2 24 24" width="24px" height="24px" stroke="none" strokeWidth="none" fill={themes.colors.primary} strokeLinecap="round" strokeLinejoin="round" {...props}>
+  <svg
+    viewBox="-2 -2 24 24"
+    width="24px"
+    height="24px"
+    stroke="none"
+    strokeWidth="none"
+    fill={themes.colors.primary}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
     <path d="M9.516.012C4.206.262.017 4.652.033 9.929a9.798 9.798 0 0 0 1.085 4.465L.06 19.495a.387.387 0 0 0 .47.453l5.034-1.184a9.981 9.981 0 0 0 4.284 1.032c5.427.083 9.951-4.195 10.12-9.58C20.15 4.441 15.351-.265 9.516.011zm6.007 15.367a7.784 7.784 0 0 1-5.52 2.27 7.77 7.77 0 0 1-3.474-.808l-.701-.347-3.087.726.65-3.131-.346-.672A7.62 7.62 0 0 1 2.197 9.9c0-2.07.812-4.017 2.286-5.48a7.85 7.85 0 0 1 5.52-2.271c2.086 0 4.046.806 5.52 2.27a7.672 7.672 0 0 1 2.287 5.48c0 2.052-.825 4.03-2.287 5.481z" />
     <path d="M14.842 12.045l-1.931-.55a.723.723 0 0 0-.713.186l-.472.478a.707.707 0 0 1-.765.16c-.913-.367-2.835-2.063-3.326-2.912a.694.694 0 0 1 .056-.774l.412-.53a.71.71 0 0 0 .089-.726L7.38 5.553a.723.723 0 0 0-1.125-.256c-.539.453-1.179 1.14-1.256 1.903-.137 1.343.443 3.036 2.637 5.07 2.535 2.349 4.566 2.66 5.887 2.341.75-.18 1.35-.903 1.727-1.494a.713.713 0 0 0-.408-1.072z" />
   </svg>
-);
+)
+
+export const Carousel = ({ ...props }) => (
+  <svg
+    viewBox="0 0 48 48"
+    width="24px"
+    height="24px"
+    stroke="none"
+    strokeWidth="none"
+    fill={themes.colors.primary}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+  >
+    <path d="M34.8 29.7V11c0-2.9-2.3-5.2-5.2-5.2H11c-2.9 0-5.2 2.3-5.2 5.2v18.7c0 2.9 2.3 5.2 5.2 5.2h18.7c2.8-.1 5.1-2.4 5.1-5.2zM39.2 15v16.1c0 4.5-3.7 8.2-8.2 8.2H14.9c-.6 0-.9.7-.5 1.1 1 1.1 2.4 1.8 4.1 1.8h13.4c5.7 0 10.3-4.6 10.3-10.3V18.5c0-1.6-.7-3.1-1.8-4.1-.5-.4-1.2 0-1.2.6z" />
+  </svg>
+)
