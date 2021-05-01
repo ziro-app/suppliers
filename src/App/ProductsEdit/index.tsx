@@ -6,19 +6,21 @@ import { InputFile, InputText, InputMoney, InputPercentage } from "../Components
 import Button from "../Componentsv2/Button"
 import DotsLoader from "../Componentsv2/DotsLoader"
 import Slider from "../Componentsv2/Slider"
+import { Modal } from "../Componentsv2/Modal"
 import ProductImages from "../Componentsv2/ProductGallery/ProductImages"
 import { userContext } from "../appContext"
 import validations from "./validations"
 import onSubmit from "./onSubmit"
 import useProduct from "./useProduct"
 import deleteProduct from "./deleteProduct"
-import { TextSuccess, TextError, TextSuccessDelete, TextErrorDelete } from "./Modals"
-import { buttonDelete, buttonSubmit } from "./styles"
+import { TextSuccess, TextError, TextSuccessDelete, TextErrorDelete, TextConfirmDelete } from "./Modals"
+import { buttonDelete, buttonSubmit, confirmDeleteModal, confirmDeleteButtons } from "./styles"
 
 const ProductsEdit = () => {
   const [, params] = useRoute("/produtos/:productId/editar")
   const [isLoading, setIsLoading] = useState(true)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const [fetchedImages, setFetchedImages] = useState<string[]>()
   const [images, setImages] = useState<File[]>()
   const [description, setDescription] = useState("")
@@ -92,7 +94,20 @@ const ProductsEdit = () => {
         TextSuccess={<TextSuccessDelete />}
         TextError={<TextErrorDelete />}
       >
-        <Button type="submit" isLoading={isSubmitting} style={buttonDelete}>
+        <Modal showModal={confirmDelete} setShowModal={setConfirmDelete}>
+          <div style={confirmDeleteModal}>
+            <TextConfirmDelete />
+            <div style={confirmDeleteButtons}>
+              <Button type="submit" onClick={() => setConfirmDelete(false)} isLoading={isSubmitting}>
+                Excluir
+              </Button>
+              <Button type="button" onClick={() => setConfirmDelete(false)} buttonStyle="light">
+                Sair
+              </Button>
+            </div>
+          </div>
+        </Modal>
+        <Button type="button" onClick={() => setConfirmDelete(true)} buttonStyle="destructive" style={buttonDelete}>
           Excluir produto
         </Button>
       </Form>

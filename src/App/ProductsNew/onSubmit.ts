@@ -22,7 +22,6 @@ const onSubmit = async (state: stateType, setState: setStateType) => {
         }
       }),
     )
-    console.log(imagesUrls)
     const docRef = await db
       .collection("suppliers")
       .doc(uid)
@@ -42,7 +41,6 @@ const onSubmit = async (state: stateType, setState: setStateType) => {
           sizes,
         },
       })
-    console.log(docRef)
     clearForm(setState)
   } catch (error) {
     if (error.response) console.log(error.response)

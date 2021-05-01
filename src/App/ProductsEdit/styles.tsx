@@ -1,10 +1,19 @@
 import { CSSProperties } from "react"
-import theme from "../Componentsv2/themes"
 
 export const buttonDelete: CSSProperties = {
   marginTop: "10px",
-  background: theme.colors.alert,
 }
 export const buttonSubmit: CSSProperties = {
   marginTop: "5px",
+}
+export const confirmDeleteModal: CSSProperties = {
+  display: "grid",
+  justifyItems: "center",
+  gridRowGap: "10px",
+  textAlign: "center",
+}
+export const confirmDeleteButtons: CSSProperties = {
+  display: "grid",
+  gridRowGap: "5px",
+  width: "100%",
 }

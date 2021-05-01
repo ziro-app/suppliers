@@ -26,13 +26,13 @@ const ProductCard = ({ card, onClick }: CardProps) => {
           </Slider>
         </BadgeWrapper>
         <Text onClick={onClick} size="small" style={textStyle}>
-          {description}
+          {description}&nbsp; {/** &nbsp; maintains the height of the line if field is empty */}
         </Text>
         <Title onClick={onClick} size="small">
-          {integerToCurrency(price)}
+          {integerToCurrency(price)}&nbsp; {/** &nbsp; maintains the height of the line if field is empty */}
         </Title>
         <Text onClick={onClick} size="small">
-          {reference}
+          {reference}&nbsp; {/** &nbsp; maintains the height of the line if field is empty */}
         </Text>
       </div>
     )
