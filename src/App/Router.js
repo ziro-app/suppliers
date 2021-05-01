@@ -44,18 +44,20 @@ import { userContext } from "./appContext"
 
 const Router = ({ isLogged }) => {
   const [matchCart, paramsCart] = useRoute("/pedidos/:cartId?")
-  const [matchUploadForCart, paramsUploadForCart] = useRoute("/produtos/adicionar/:cartId?")
+  // const [matchUploadForCart, paramsUploadForCart] = useRoute("/produtos/adicionar/:cartId?")
   const [match, params] = useRoute("/transacoes/:transactionId?/:receivableId?")
   const [match2, params2] = useRoute("/relatorio/:boletbankId?/:boletId?")
   const [matchReceivable, paramsReceivable] = useRoute("/recebiveis/:receivableId?")
   const [matchMyReceipt, paramsMyReceipt] = useRoute("/comprovante/:transactionId?/:receiptId?")
   const [matchBuyCreditBackgroundCheck, paramsBuyCreditBackgroundCheck] = useRoute("/comprar-consulta/cartao/:quantity")
+  const [matchProductsRoot] = useRoute("/produtos")
+  const [matchProductsNew] = useRoute("/produtos/novo")
+  const [matchProductsEdit, paramsProductsEdit] = useRoute("/produtos/:productId/editar")
   const [receipt, setReceipt] = useState("")
   const [transactionId, setTransactionId] = useState("")
   const [location] = useLocation()
   const { role } = useContext(userContext)
   const currentBackRoute = localStorage.getItem("voltar")
-  const containerRef = useRef(null)
 
   const publicRoutes = {
     "/": <Login />,
@@ -103,20 +105,20 @@ const Router = ({ isLogged }) => {
         <UserCart {...paramsCart} />
       </Suspense>
     ),
-    [matchUploadForCart ? location : null]: (
-      <Suspense fallback={<SpinnerWithDiv />}>
-        <HeaderBack title="Produtos" navigateTo={currentBackRoute || "/pedidos"}>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Products
-              withIcon
-              imgExtension={[".jpg", ".gif", ".png", ".gif"]}
-              maxFileSize={5242880}
-              {...paramsUploadForCart}
-            />
-          </motion.div>
-        </HeaderBack>
-      </Suspense>
-    ),
+    // [matchUploadForCart ? location : null]: (
+    //   <Suspense fallback={<SpinnerWithDiv />}>
+    //     <HeaderBack title="Produtos" navigateTo={currentBackRoute || "/pedidos"}>
+    //       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+    //         <Products
+    //           withIcon
+    //           imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+    //           maxFileSize={5242880}
+    //           {...paramsUploadForCart}
+    //         />
+    //       </motion.div>
+    //     </HeaderBack>
+    //   </Suspense>
+    // ),
     "/upgrade": (
       <Menu title="Fazer Upgrade">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -131,10 +133,16 @@ const Router = ({ isLogged }) => {
         </motion.div>
       </Menu>
     ),
-    "/produtos": (
-      <div style={{ height: "100vh" }} ref={containerRef}>
-        <Productsv2 containerRef={containerRef} />
-      </div>
+    [matchProductsRoot || matchProductsNew || matchProductsEdit ? location : null]: (
+      <Menu
+        // eslint-disable-next-line no-nested-ternary
+        title={matchProductsEdit ? "Editar produto" : matchProductsNew ? "Novo produto" : "Produtos"}
+        back={matchProductsEdit || matchProductsNew ? "/produtos" : null}
+      >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <Productsv2 />
+        </motion.div>
+      </Menu>
     ),
     "/login": (
       <Menu title="Minha Conta">

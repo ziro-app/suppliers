@@ -8,7 +8,7 @@ import validations from "./validations"
 import onSubmit from "./onSubmit"
 import { TextSuccess, TextError } from "./Modals"
 
-const Products = () => {
+const ProductsNew = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [images, setImages] = useState<File[]>()
   const [description, setDescription] = useState("")
@@ -48,4 +48,4 @@ const Products = () => {
   )
 }
 
-export default Products
+export default ProductsNew

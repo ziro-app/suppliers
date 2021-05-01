@@ -1,56 +1,57 @@
 /* eslint-disable import/extensions */
 /* eslint-disable import/no-unresolved */
-import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types';
-import Header from '@bit/vitorbarbosa19.ziro.header';
-import Drawer from '@bit/vitorbarbosa19.ziro.drawer';
-import DrawerPanel from '@bit/vitorbarbosa19.ziro.drawer-panel';
-import Icon from '@bit/vitorbarbosa19.ziro.icon';
-import { containerWithPadding } from '@ziro/theme';
-import { auth } from '../../Firebase/index';
-import { userContext } from '../appContext';
-import {ImageIcon} from './ImageIcon'
+import React, { useState, useContext } from "react"
+import PropTypes from "prop-types"
+import Header from "@bit/vitorbarbosa19.ziro.header"
+import Drawer from "@bit/vitorbarbosa19.ziro.drawer"
+import DrawerPanel from "@bit/vitorbarbosa19.ziro.drawer-panel"
+import Icon from "@bit/vitorbarbosa19.ziro.icon"
+import { containerWithPadding } from "@ziro/theme"
+import { HeaderBack } from "../HeaderBack"
+import { auth } from "../../Firebase/index"
+import { userContext } from "../appContext"
+import { ImageIcon } from "./ImageIcon"
 
-export const Menu = ({ title, children }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const { fname, cnpj, role, typeRegister } = useContext(userContext);
+export const Menu = ({ title, children, back }) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const { fname, cnpj, role, typeRegister } = useContext(userContext)
 
   const mountDrawerpanel = () => {
     if (role) {
       return (
         <DrawerPanel
-          username={fname || 'Usuário'}
-          userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
+          username={fname || "Usuário"}
+          userdata={cnpj ? `CNPJ: ${cnpj}` : ""}
           options={[
             {
-              path: '/inicio',
+              path: "/inicio",
               onClick: () => setIsOpen(false),
               icon: <Icon type="home" size={15} strokeWidth={2} />,
-              text: 'Início',
+              text: "Início",
             },
             {
-              path: '/produtos',
+              path: "/produtos",
               onClick: () => setIsOpen(false),
-              icon: <ImageIcon/>,
-              text: 'Produtos',
+              icon: <ImageIcon />,
+              text: "Produtos",
             },
             {
-              path: '/pedidos',
+              path: "/pedidos",
               onClick: () => setIsOpen(false),
               icon: <Icon type="cart" size={15} strokeWidth={2} />,
-              text: 'Pedidos',
+              text: "Pedidos",
             },
             {
-              path: '/transacoes',
+              path: "/transacoes",
               onClick: () => setIsOpen(false),
               icon: <Icon type="trending" size={15} strokeWidth={2} />,
-              text: 'Vendas',
+              text: "Vendas",
             },
             {
-              path: '/criar-cobranca',
+              path: "/criar-cobranca",
               onClick: () => setIsOpen(false),
               icon: <Icon type="link" size={15} strokeWidth={2} />,
-              text: 'Criar Cobrança',
+              text: "Criar Cobrança",
             },
             // {
             //     path: '/recebiveis',
@@ -59,81 +60,81 @@ export const Menu = ({ title, children }) => {
             //     text: 'Recebíveis'
             // },
             {
-              path: '/tarifas',
+              path: "/tarifas",
               onClick: () => setIsOpen(false),
               icon: <Icon type="percent" size={15} strokeWidth={2} />,
-              text: 'Tarifas',
+              text: "Tarifas",
             },
             {
-              path: '/consulta',
+              path: "/consulta",
               onClick: () => setIsOpen(false),
               icon: <Icon type="search" size={15} strokeWidth={2} />,
-              text: 'Consultar CPF/CNPJ',
+              text: "Consultar CPF/CNPJ",
             },
             {
-              path: '/minha-conta',
+              path: "/minha-conta",
               onClick: () => setIsOpen(false),
               icon: <Icon type="gear" size={15} strokeWidth={2} />,
-              text: 'Minha Conta',
+              text: "Minha Conta",
             },
             {
-              path: '/login',
+              path: "/login",
               onClick: () => auth.signOut(),
               icon: <Icon type="logout" size={15} strokeWidth={3} />,
-              text: 'Sair',
+              text: "Sair",
             },
           ]}
         />
-      );
+      )
     }
     return (
       <>
-        {typeRegister && typeRegister === 'Simplificado' ? (
+        {typeRegister && typeRegister === "Simplificado" ? (
           <DrawerPanel
-            username={fname || 'Usuário'}
-            userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
+            username={fname || "Usuário"}
+            userdata={cnpj ? `CNPJ: ${cnpj}` : ""}
             options={[
               {
-                path: '/upgrade',
+                path: "/upgrade",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="rocket" size={15} strokeWidth={2} />,
-                text: 'Fazer Upgrade',
+                text: "Fazer Upgrade",
               },
               {
-                path: '/inicio',
+                path: "/inicio",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="home" size={15} strokeWidth={2} />,
-                text: 'Início',
+                text: "Início",
               },
               {
-                path: '/produtos',
+                path: "/produtos",
                 onClick: () => setIsOpen(false),
-                icon: <ImageIcon/>,
-                text: 'Produtos',
+                icon: <ImageIcon />,
+                text: "Produtos",
               },
               {
-                path: '/pedidos',
+                path: "/pedidos",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="cart" size={15} strokeWidth={2} />,
-                text: 'Pedidos',
+                text: "Pedidos",
               },
               {
-                path: '/transacoes',
+                path: "/transacoes",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="trending" size={15} strokeWidth={2} />,
-                text: 'Vendas',
+                text: "Vendas",
               },
               {
-                path: '/criar-cobranca',
+                path: "/criar-cobranca",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="link" size={15} strokeWidth={2} />,
-                text: 'Criar Cobrança',
+                text: "Criar Cobrança",
               },
               {
-                path: '/recebiveis',
+                path: "/recebiveis",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="money" size={15} strokeWidth={2} />,
-                text: 'Recebíveis',
+                text: "Recebíveis",
               },
               // {
               //     path: '/tarifas',
@@ -142,121 +143,132 @@ export const Menu = ({ title, children }) => {
               //     text: 'Tarifas'
               // },
               {
-                path: '/consulta',
+                path: "/consulta",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="search" size={15} strokeWidth={2} />,
-                text: 'Consultar CPF/CNPJ',
+                text: "Consultar CPF/CNPJ",
               },
               {
-                path: '/colaboradores',
+                path: "/colaboradores",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="user" size={15} strokeWidth={2} />,
-                text: 'Vendedores',
+                text: "Vendedores",
               },
               {
-                path: '/minha-conta',
+                path: "/minha-conta",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="gear" size={15} strokeWidth={2} />,
-                text: 'Minha Conta',
+                text: "Minha Conta",
               },
               {
-                path: '/login',
+                path: "/login",
                 onClick: () => auth.signOut(),
                 icon: <Icon type="logout" size={15} strokeWidth={3} />,
-                text: 'Sair',
+                text: "Sair",
               },
             ]}
           />
         ) : (
           <DrawerPanel
-            username={fname || 'Usuário'}
-            userdata={cnpj ? `CNPJ: ${cnpj}` : ''}
+            username={fname || "Usuário"}
+            userdata={cnpj ? `CNPJ: ${cnpj}` : ""}
             options={[
               {
-                path: '/inicio',
+                path: "/inicio",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="home" size={15} strokeWidth={2} />,
-                text: 'Início',
+                text: "Início",
               },
               {
-                path: '/produtos',
+                path: "/produtos",
                 onClick: () => setIsOpen(false),
-                icon: <ImageIcon/>,
-                text: 'Produtos',
+                icon: <ImageIcon />,
+                text: "Produtos",
               },
               {
-                path: '/pedidos',
+                path: "/pedidos",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="cart" size={15} strokeWidth={2} />,
-                text: 'Pedidos',
+                text: "Pedidos",
               },
               {
-                path: '/transacoes',
+                path: "/transacoes",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="trending" size={15} strokeWidth={2} />,
-                text: 'Vendas',
+                text: "Vendas",
               },
               {
-                path: '/criar-cobranca',
+                path: "/criar-cobranca",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="link" size={15} strokeWidth={2} />,
-                text: 'Criar Cobrança',
+                text: "Criar Cobrança",
               },
               {
-                path: '/recebiveis',
+                path: "/recebiveis",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="money" size={15} strokeWidth={2} />,
-                text: 'Recebíveis',
+                text: "Recebíveis",
               },
               {
-                path: '/consulta',
+                path: "/consulta",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="search" size={15} strokeWidth={2} />,
-                text: 'Consultar CPF/CNPJ',
+                text: "Consultar CPF/CNPJ",
               },
               {
-                path: '/colaboradores',
+                path: "/colaboradores",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="user" size={15} strokeWidth={2} />,
-                text: 'Vendedores',
+                text: "Vendedores",
               },
               {
-                path: '/tarifas',
+                path: "/tarifas",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="percent" size={15} strokeWidth={2} />,
-                text: 'Tarifas',
+                text: "Tarifas",
               },
               {
-                path: '/minha-conta',
+                path: "/minha-conta",
                 onClick: () => setIsOpen(false),
                 icon: <Icon type="gear" size={15} strokeWidth={2} />,
-                text: 'Minha Conta',
+                text: "Minha Conta",
               },
               {
-                path: '/login',
+                path: "/login",
                 onClick: () => auth.signOut(),
                 icon: <Icon type="logout" size={15} strokeWidth={3} />,
-                text: 'Sair',
+                text: "Sair",
               },
             ]}
           />
         )}
       </>
-    );
-  };
-
+    )
+  }
+  if (back) {
+    return (
+      <div style={{ ...containerWithPadding, padding: "20px 12px 60px" }}>
+        <HeaderBack title={title} navigateTo={back} withoutContainer>
+          <Drawer isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
+            {mountDrawerpanel()}
+          </Drawer>
+          {children}
+        </HeaderBack>
+      </div>
+    )
+  }
   return (
-    <div style={{ ...containerWithPadding, padding: '20px 12px 60px' }}>
+    <div style={{ ...containerWithPadding, padding: "20px 12px 60px" }}>
       <Header type="icon" title={title} icon="menu" setIsOpen={() => setIsOpen(true)} />
       <Drawer isOpen={isOpen} setIsOpen={() => setIsOpen(false)}>
         {mountDrawerpanel()}
       </Drawer>
       {children}
     </div>
-  );
-};
+  )
+}
 
 Menu.propTypes = {
   title: PropTypes.string.isRequired,
   children: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.element)]).isRequired,
-};
+}
