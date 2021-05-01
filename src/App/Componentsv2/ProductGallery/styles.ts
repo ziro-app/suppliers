@@ -27,11 +27,11 @@ export const imgStyle: CSSProperties = {
   maxHeight: "200px",
   objectFit: "cover",
 }
-export const imagesContainer: CSSProperties = {
+export const imagesContainer = (numberOfImages: number): CSSProperties => ({
   display: "grid",
-  gridTemplateColumns: "1fr 1fr",
+  gridTemplateColumns: `repeat(${numberOfImages},1fr)`,
   gridColumnGap: "6px",
-}
+})
 export const imgStyleSlider: CSSProperties = {
   ...imgStyle,
   width: "auto",

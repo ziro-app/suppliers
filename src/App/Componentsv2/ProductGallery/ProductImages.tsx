@@ -10,7 +10,7 @@ interface ProductImagesProps {
 
 const ProductImages = ({ images, onDragStart, handleClick, onClick }: ProductImagesProps) => {
   return (
-    <div onDragStart={onDragStart} style={imagesContainer} role="link">
+    <div onDragStart={onDragStart} style={imagesContainer(images.length)} role="link">
       {images.map(image => (
         <img
           src={image}

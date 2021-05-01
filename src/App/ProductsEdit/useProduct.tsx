@@ -1,11 +1,10 @@
-import { useFirestore, useFirestoreDocDataOnce } from "reactfire"
+import { useFirestore, useFirestoreDocData } from "reactfire"
 import { CardType } from "../Componentsv2/ProductGallery"
 import { setStateType } from "./types"
 
 export const useProduct = (supplierUid: string, productId: string, setState: setStateType, isLoading: boolean) => {
   const query = useFirestore().collection("suppliers").doc(supplierUid).collection("products").doc(productId)
-  const { status, data } = useFirestoreDocDataOnce<CardType>(query)
-  console.log(data)
+  const { data } = useFirestoreDocData<CardType>(query)
   if (data && isLoading) {
     const {
       setIsLoading,
@@ -29,5 +28,4 @@ export const useProduct = (supplierUid: string, productId: string, setState: set
     setColors(colors)
     setSizes(sizes)
   }
-  return { status }
 }

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { useRoute } from "wouter"
 import Form from "../Componentsv2/Form"
 import Title from "../Componentsv2/Title"
@@ -26,7 +26,20 @@ const ProductsEdit = () => {
   const [colors, setColors] = useState("")
   const [sizes, setSizes] = useState("")
   const { uid, fantasy } = useContext(userContext)
-  const state = { images, description, price, discount, reference, colors, sizes, uid, fantasy }
+  const productId = params && params.productId
+  const state = {
+    fetchedImages,
+    images,
+    description,
+    price,
+    discount,
+    reference,
+    colors,
+    sizes,
+    uid,
+    fantasy,
+    productId,
+  }
   const setState = {
     setIsLoading,
     setIsSubmitting,
@@ -39,7 +52,7 @@ const ProductsEdit = () => {
     setColors,
     setSizes,
   }
-  const { status } = useProduct(uid, params && params.productId, setState, isLoading)
+  useProduct(uid, productId, setState, isLoading)
   if (isLoading) return <DotsLoader />
   return (
     <>

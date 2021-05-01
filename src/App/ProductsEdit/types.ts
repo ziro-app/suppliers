@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react"
 
 export type stateType = {
+  fetchedImages: string[]
   images: File[]
   description: string
   price: string
@@ -10,6 +11,7 @@ export type stateType = {
   sizes: string
   uid: string
   fantasy: string
+  productId: string
 }
 
 export type setStateType = {
