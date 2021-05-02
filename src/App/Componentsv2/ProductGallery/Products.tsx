@@ -5,7 +5,7 @@ import ProductCard from "./ProductCard"
 import { skeletonContainer } from "./styles"
 import { ProductGalleryProps, CardType } from "./types"
 
-const Products = ({ isLoading, cards, skeletonCount }: ProductGalleryProps) => {
+const Products = ({ isLoading, cards, baseUrl, skeletonCount }: ProductGalleryProps) => {
   if (isLoading)
     return (
       <SkeletonMultiple count={skeletonCount} styleContainer={skeletonContainer}>
@@ -17,7 +17,7 @@ const Products = ({ isLoading, cards, skeletonCount }: ProductGalleryProps) => {
   return (
     <>
       {cards.map((card: CardType) => (
-        <Link href={`/produtos/${card.NO_ID_FIELD}/editar`} key={card.NO_ID_FIELD}>
+        <Link href={`${baseUrl}/${card.NO_ID_FIELD}/editar`} key={card.NO_ID_FIELD}>
           <ProductCard card={card} />
         </Link>
       ))}

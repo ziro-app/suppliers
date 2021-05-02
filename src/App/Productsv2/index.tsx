@@ -47,7 +47,7 @@ const Productsv2 = () => {
         </Link>
         <ProductGallery cards={productList} isLoading={isLoading} skeletonCount={maxItems} />
         {!isLoading && infiniteScroll && lastProduct !== null ? <DotsLoader /> : null}
-        {!isLoading && !hasScrollBar && !lastProduct && (
+        {!isLoading && !hasScrollBar && !lastProduct && productList.length === maxItems && (
           <Button
             onClick={() =>
               setLastProduct(

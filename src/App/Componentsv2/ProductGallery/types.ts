@@ -35,6 +35,8 @@ export interface ProductGalleryProps {
   isLoading: boolean
   /** array com as informacoes dos cards de produto */
   cards: CardType[]
+  /** URL base para navegação dos produtos quando estes sao clicados */
+  baseUrl: string
   /** the maximum number of cards that will de displayed on screen before pagination starts */
   skeletonCount: number
 }

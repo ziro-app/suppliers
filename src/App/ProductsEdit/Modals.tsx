@@ -1,15 +1,10 @@
-import React, { Dispatch, SetStateAction } from "react"
+import React from "react"
 import Title from "../Componentsv2/Title"
 import Text from "../Componentsv2/Text"
 import Link from "../Componentsv2/Link"
 import Illustration from "../Componentsv2/Illustration"
-import Button from "../Componentsv2/Button"
 
-type TextSuccessProps = {
-  setShowModal?: Dispatch<SetStateAction<boolean>>
-}
-
-export const TextSuccess = ({ setShowModal }: TextSuccessProps) => (
+export const TextSuccess = () => (
   <>
     <Title>Sucesso!</Title>
     <Text>Seu produto foi cadastrado e estará exposto na sua galeria.</Text>
@@ -26,7 +21,7 @@ export const TextError = ({ error }: { error?: Error }) => (
   </>
 )
 
-export const TextSuccessDelete = ({ setShowModal }: TextSuccessProps) => (
+export const TextSuccessDelete = () => (
   <>
     <Title>Sucesso!</Title>
     <Text>Seu produto foi excluido.</Text>
@@ -43,7 +38,7 @@ export const TextErrorDelete = ({ error }: { error?: Error }) => (
   </>
 )
 
-export const TextConfirmDelete = ({ error }: { error?: Error }) => (
+export const TextConfirmDelete = () => (
   <div>
     <Illustration name="PaymentError" height={110} />
     <Title>Confirmar exclusão</Title>

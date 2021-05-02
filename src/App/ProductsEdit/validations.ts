@@ -1,7 +1,3 @@
-type validationParams = {
-  images: File[]
-}
-
-const validations = ({ images }: validationParams) => []
+const validations = () => []
 
 export default validations
