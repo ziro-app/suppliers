@@ -21,6 +21,6 @@ export const useProducts = (
     .startAfter(lastProduct)
     .limit(maxItems)
   const { status, data } = useFirestoreCollectionData(query)
-  const products = (data as unknown) as CardType[]
+  const products = data ? ((data as unknown) as CardType[]) : []
   return { status, products }
 }
