@@ -65,7 +65,7 @@ const ProductsEdit = () => {
       </Slider>
       <br />
       <Form
-        validations={validations(state)}
+        validations={validations()}
         onSubmit={() => onSubmit(state, setState)}
         TextSuccess={<TextSuccess />}
         TextError={<TextError />}

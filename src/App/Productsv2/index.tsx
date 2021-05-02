@@ -45,7 +45,7 @@ const Productsv2 = () => {
         <Link isButton href="/produtos/novo" style={{ marginBottom: "20px" }}>
           Adicionar novo
         </Link>
-        <ProductGallery cards={productList} isLoading={isLoading} skeletonCount={maxItems} />
+        <ProductGallery cards={productList} isLoading={isLoading} baseUrl="/produtos" skeletonCount={maxItems} />
         {!isLoading && infiniteScroll && lastProduct !== null ? <DotsLoader /> : null}
         {!isLoading && !hasScrollBar && !lastProduct && productList.length === maxItems && (
           <Button

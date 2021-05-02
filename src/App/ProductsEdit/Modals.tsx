@@ -7,7 +7,7 @@ import Illustration from "../Componentsv2/Illustration"
 export const TextSuccess = () => (
   <>
     <Title>Sucesso!</Title>
-    <Text>Seu produto foi cadastrado e estará exposto na sua galeria.</Text>
+    <Text>Seu produto foi editado.</Text>
     <Link isButton href="/produtos" style={{ marginTop: "15px" }}>
       Ok
     </Link>

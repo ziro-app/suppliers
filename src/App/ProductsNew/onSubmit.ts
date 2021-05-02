@@ -22,7 +22,7 @@ const onSubmit = async (state: stateType, setState: setStateType) => {
         }
       }),
     )
-    const docRef = await db
+    await db
       .collection("suppliers")
       .doc(uid)
       .collection("products")
