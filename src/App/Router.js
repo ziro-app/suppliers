@@ -1,4 +1,4 @@
-import React, { useContext, useState, Suspense, useRef } from "react"
+import React, { useContext, useState, Suspense } from "react"
 import { useLocation, useRoute } from "wouter"
 
 import ConfirmEmail from "@bit/vitorbarbosa19.ziro.confirm-email"
@@ -24,8 +24,6 @@ import { Menu } from "./Menu"
 import Receipt from "./Receipt"
 import Receivables from "./Receivables"
 import Register from "./Register"
-import Products from "./Products"
-import ProductsNew from "./ProductsNew"
 import RegisterCollaborator from "./RegisterCollaborator"
 import ResendEmail from "./ResendEmail"
 import ResetPass from "./ResetPass"
@@ -52,7 +50,7 @@ const Router = ({ isLogged }) => {
   const [matchBuyCreditBackgroundCheck, paramsBuyCreditBackgroundCheck] = useRoute("/comprar-consulta/cartao/:quantity")
   const [matchProductsRoot] = useRoute("/produtos")
   const [matchProductsNew] = useRoute("/produtos/novo")
-  const [matchProductsEdit, paramsProductsEdit] = useRoute("/produtos/:productId/editar")
+  const [matchProductsEdit] = useRoute("/produtos/:productId/editar")
   const [receipt, setReceipt] = useState("")
   const [transactionId, setTransactionId] = useState("")
   const [location] = useLocation()
