@@ -1,18 +1,20 @@
 import { useFirestore, useFirestoreCollectionData } from "reactfire"
 import { CardType } from "../Componentsv2/ProductGallery"
 
-type statusType = "loading" | "error" | "success"
+type StatusType = "loading" | "error" | "success"
 
-type timestamp = {
+type Timestamp = {
   seconds: number
   nanoseconds: number
 }
 
+type ProductsType = CardType[] | []
+
 export const useProducts = (
   supplierUid: string,
   maxItems: number,
-  lastProduct: string | null | timestamp,
-): { status: statusType; products: CardType[] } => {
+  lastProduct: string | null | Timestamp,
+): { status: StatusType; products: ProductsType } => {
   const query = useFirestore()
     .collection("suppliers")
     .doc(supplierUid)
@@ -21,6 +23,6 @@ export const useProducts = (
     .startAfter(lastProduct)
     .limit(maxItems)
   const { status, data } = useFirestoreCollectionData(query)
-  const products = data ? ((data as unknown) as CardType[]) : []
+  const products = (data as ProductsType) || []
   return { status, products }
 }
