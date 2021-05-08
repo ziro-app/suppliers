@@ -3,11 +3,11 @@ import { CSSProperties } from "react"
 export const modalContainer: CSSProperties = {
   display: "grid",
   justifyItems: "center",
-  gridGap: "15px",
+  gridGap: "12px",
 }
 
 export const textContainer: CSSProperties = {
   display: "grid",
-  gridRowGap: "4px",
+  gridRowGap: "2px",
   textAlign: "center",
 }

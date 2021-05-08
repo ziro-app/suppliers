@@ -16,7 +16,6 @@ export type stateType = {
 
 export type setStateType = {
   setIsLoading: Dispatch<SetStateAction<boolean>>
-  setIsSubmitting: Dispatch<SetStateAction<boolean>>
   setFetchedImages: Dispatch<SetStateAction<string[]>>
   setImages: Dispatch<SetStateAction<File[]>>
   setDescription: Dispatch<SetStateAction<string>>

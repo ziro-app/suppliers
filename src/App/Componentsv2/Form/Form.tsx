@@ -39,11 +39,11 @@ const Form = ({
 
         if (ModalSuccess) setModal(ModalSuccess)
         else setShowSuccessModal(true)
-      } catch (error) {
-        if (ModalError) setModal(cloneElement(ModalError, { error, setModalState }))
+      } catch (err) {
+        if (ModalError) setModal(cloneElement(ModalError, { err, setModalState }))
         else {
           setShowErrorModal(true)
-          setError(error)
+          setError(err)
         }
       }
       /** chamada para abrir o modal apos o submit, seja para mostrar sucesso ou erro */
@@ -70,7 +70,9 @@ const Form = ({
           <div style={modalContainer}>
             <Illustration name="BugFixRed" />
             <div style={textContainer}>{cloneElement(TextError, { error })}</div>
-            <Button onClick={() => setShowErrorModal(false)}>Tentar novamente</Button>
+            <Button type="button" onClick={() => setShowErrorModal(false)}>
+              Tentar novamente
+            </Button>
           </div>
         </Modal>
       )}
@@ -80,8 +82,11 @@ const Form = ({
       <form onSubmit={submitForm}>
         {Array.isArray(children)
           ? children.map((element: ReactElement, i: number) => {
-              if (element.props.inputName)
+              if (element.props.inputName) {
                 return cloneElement(element, { key: i, isLoading, inputError: inputError[element.props.inputName] })
+              }
+              if (element.props.type === "submit" || element.props.type === "button")
+                return cloneElement(element, { key: i, isLoading })
               return element
             })
           : children}

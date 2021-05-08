@@ -3,7 +3,6 @@ import validateImages from "./validateImages"
 import { stateType, setStateType } from "./types"
 
 const onSubmit = async (state: stateType, setState: setStateType) => {
-  const { setIsSubmitting } = setState
   const {
     fetchedImages,
     images,
@@ -18,7 +17,6 @@ const onSubmit = async (state: stateType, setState: setStateType) => {
     productId,
   } = state
   try {
-    setIsSubmitting(true)
     let _images
     if (images) {
       validateImages(images)
@@ -55,12 +53,14 @@ const onSubmit = async (state: stateType, setState: setStateType) => {
           sizes,
         },
       })
+    /** update suppliers collection with the timestamp of the updated gallery */
+    await db.collection("suppliers").doc(uid).update({
+      lastGalleryUpdate: now,
+    })
   } catch (error) {
     if (error.response) console.log(error.response)
     console.log(error)
     throw error
-  } finally {
-    setIsSubmitting(false)
   }
 }
 

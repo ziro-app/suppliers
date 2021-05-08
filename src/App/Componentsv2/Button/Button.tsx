@@ -6,8 +6,8 @@ import DotsLoader from "../DotsLoader"
 import { regular, light, destructive, disabled } from "./styles"
 
 interface ButtonProps extends MotionProps {
-  /** Tipo HTML do botao */
-  type?: "button" | "submit" | "reset"
+  /** Tipo HTML do botao (exceto type="reset") */
+  type: "button" | "submit"
   /** Funcao onClick  */
   onClick?: () => void
   /** Quando isLoading = true, e mostrado o loading dentro do botao */

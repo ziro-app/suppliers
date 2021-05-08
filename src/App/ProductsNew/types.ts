@@ -13,7 +13,6 @@ export type stateType = {
 }
 
 export type setStateType = {
-  setIsLoading: Dispatch<SetStateAction<boolean>>
   setImages: Dispatch<SetStateAction<File[]>>
   setDescription: Dispatch<SetStateAction<string>>
   setPrice: Dispatch<SetStateAction<string>>

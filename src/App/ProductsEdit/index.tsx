@@ -19,7 +19,6 @@ import { buttonDelete, buttonSubmit, confirmDeleteModal, confirmDeleteButtons } 
 const ProductsEdit = () => {
   const [, params] = useRoute("/produtos/:productId/editar")
   const [isLoading, setIsLoading] = useState(true)
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [fetchedImages, setFetchedImages] = useState<string[]>()
   const [images, setImages] = useState<File[]>()
@@ -46,7 +45,6 @@ const ProductsEdit = () => {
   }
   const setState = {
     setIsLoading,
-    setIsSubmitting,
     setFetchedImages,
     setImages,
     setDescription,
@@ -84,13 +82,13 @@ const ProductsEdit = () => {
         <InputText inputName="colors" value={colors} setValue={setColors} placeholder="Amarelo,azul" />
         <Title size="smallMedium">Tamanhos</Title>
         <InputText inputName="sizes" value={sizes} setValue={setSizes} placeholder="P,M,G" />
-        <Button type="submit" isLoading={isSubmitting} style={buttonSubmit}>
+        <Button type="submit" style={buttonSubmit}>
           Enviar produto
         </Button>
       </Form>
       <Form
         validations={[]}
-        onSubmit={() => deleteProduct(uid, productId, setIsSubmitting)}
+        onSubmit={() => deleteProduct(uid, productId)}
         TextSuccess={<TextSuccessDelete />}
         TextError={<TextErrorDelete />}
       >
@@ -98,7 +96,7 @@ const ProductsEdit = () => {
           <div style={confirmDeleteModal}>
             <TextConfirmDelete />
             <div style={confirmDeleteButtons}>
-              <Button type="submit" onClick={() => setConfirmDelete(false)} isLoading={isSubmitting}>
+              <Button type="submit" onClick={() => setConfirmDelete(false)}>
                 Excluir
               </Button>
               <Button type="button" onClick={() => setConfirmDelete(false)} buttonStyle="light">

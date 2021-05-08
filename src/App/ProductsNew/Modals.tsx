@@ -11,7 +11,7 @@ export const TextSuccess = ({ setShowModal }: TextSuccessProps) => (
   <>
     <Title>Sucesso!</Title>
     <Text>Seu produto foi cadastrado e estará exposto na sua galeria.</Text>
-    <Button onClick={() => setShowModal(false)} style={{ marginTop: "15px" }}>
+    <Button type="button" onClick={() => setShowModal(false)} style={{ marginTop: "15px" }}>
       Ok
     </Button>
   </>

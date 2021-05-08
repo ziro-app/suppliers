@@ -9,7 +9,6 @@ import onSubmit from "./onSubmit"
 import { TextSuccess, TextError } from "./Modals"
 
 const ProductsNew = () => {
-  const [isLoading, setIsLoading] = useState(false)
   const [images, setImages] = useState<File[]>()
   const [description, setDescription] = useState("")
   const [price, setPrice] = useState("")
@@ -19,7 +18,7 @@ const ProductsNew = () => {
   const [sizes, setSizes] = useState("")
   const { uid, fantasy } = useContext(userContext)
   const state = { images, description, price, discount, reference, colors, sizes, uid, fantasy }
-  const setState = { setIsLoading, setImages, setDescription, setPrice, setDiscount, setReference, setColors, setSizes }
+  const setState = { setImages, setDescription, setPrice, setDiscount, setReference, setColors, setSizes }
   return (
     <Form
       validations={validations(state)}
@@ -41,7 +40,7 @@ const ProductsNew = () => {
       <InputText inputName="colors" value={colors} setValue={setColors} placeholder="Amarelo,azul" />
       <Title size="smallMedium">Tamanhos</Title>
       <InputText inputName="sizes" value={sizes} setValue={setSizes} placeholder="P,M,G" />
-      <Button type="submit" isLoading={isLoading} style={{ marginTop: "5px" }}>
+      <Button type="submit" style={{ marginTop: "5px" }}>
         Enviar produto
       </Button>
     </Form>
