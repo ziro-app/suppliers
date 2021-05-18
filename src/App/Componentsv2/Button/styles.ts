@@ -1,4 +1,4 @@
-import themes from "../Themes"
+import themes from "../themes"
 import React from "react"
 
 export const regular: React.CSSProperties = {
