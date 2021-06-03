@@ -1,3 +1,6 @@
+/* eslint no-throw-literal: "off" */
+/* eslint no-async-promise-executor: "off" */
+/* eslint prefer-promise-reject-errors: "off" */
 import { post } from "axios"
 import { db } from "../../Firebase/index"
 
@@ -7,19 +10,15 @@ const mountLink = uid => {
 }
 
 const checkEmail = async email => {
-  try {
-    const url = `${process.env.FIREBASE_AUTH_URL}checkEmailExistence`
-    const body = { email }
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: process.env.FIREBASE_AUTH_TOKEN,
-      },
-    }
-    return await post(url, body, config)
-  } catch (error) {
-    throw error
+  const url = `${process.env.FIREBASE_AUTH_URL}checkEmailExistence`
+  const body = { email }
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: process.env.FIREBASE_AUTH_TOKEN,
+    },
   }
+  return post(url, body, config)
 }
 
 const sendToBackend = state => () => {
@@ -48,11 +47,24 @@ const sendToBackend = state => () => {
     },
   }
   return new Promise(async (resolve, reject) => {
+    let exists = true
     try {
       if (uid && email) {
-        const {
-          data: { ok: exists },
-        } = await checkEmail(email)
+        try {
+          const {
+            data: { ok },
+          } = await checkEmail(email)
+          exists = ok
+        } catch (error) {
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.erro &&
+            error.response.data.erro === "Usuário não encontrado"
+          )
+            exists = false
+          else throw error
+        }
         if (!exists) {
           const userDb = await db.collection("collaborators").add({
             fname: fname ? fname.trim() : "",
@@ -86,9 +98,11 @@ const sendToBackend = state => () => {
     } catch (error) {
       console.log(error)
       if (error.customError) reject(error)
-      else if (error.response && error.response.data.error.msg)
-        reject({ msg: "Ocorreu um erro, contate o suporte.", customError: true })
-      else reject(error)
+      else if (error.response) {
+        console.log(error.response)
+        const errorMsg = (error.response.data && error.response.data.erro) || ""
+        reject({ msg: errorMsg || "Ocorreu um erro, contate o suporte.", customError: true })
+      } else reject(error)
     }
   })
 }
