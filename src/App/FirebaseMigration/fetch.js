@@ -1,49 +1,51 @@
-import { db } from '../../Firebase/index'
-import axios from 'axios'
+import axios from "axios"
+import { db } from "../../Firebase/index"
 
 const matchStatus = {
-    'cancelada': 'Cancelado',
-    'aprovada': 'Pago',
-    'falhada': 'Falhado'
+  cancelada: "Cancelado",
+  aprovada: "Pago",
+  falhada: "Falhado",
 }
 
 const fetch = (setIsLoading, setIsError, setResult) => {
-    const source = axios.CancelToken.source()
-    const storeowners = []
-    const cnpjInCollection = []
-    const run = async () => {
-        const config = {
-            method: 'POST',
-            url: process.env.SHEET_URL,
-            data: {
-                apiResource: 'values',
-                apiMethod: 'get',
-                spreadsheetId: '1FxCECEMVa66vpHsmucgFow6DVPpCGHgOiIfthEzJwPc',
-                range: 'Transacoes'
-            },
-            headers: {
-                'Authorization': process.env.SHEET_TOKEN,
-                'Content-Type': 'application/json'
-            },
-            cancelToken: source.token
-        }
-        try {
-            /*const documents = await db.collection('storeowners').get()
+  const source = axios.CancelToken.source()
+  const storeowners = []
+  const cnpjInCollection = []
+  const run = async () => {
+    const config = {
+      method: "POST",
+      url: "https://ziro-sheets.netlify.app/.netlify/functions/api",
+      data: {
+        apiResource: "values",
+        apiMethod: "get",
+        spreadsheetId: "1FxCECEMVa66vpHsmucgFow6DVPpCGHgOiIfthEzJwPc",
+        range: "Transacoes",
+      },
+      headers: {
+        Authorization: process.env.SHEET_TOKEN,
+        "Content-Type": "application/json",
+      },
+      cancelToken: source.token,
+    }
+    try {
+      /* const documents = await db.collection('storeowners').get()
             documents.forEach(document => {
                 if (document.data().cnpj !== '')
                     cnpjInCollection.push(document.data().cnpj)
-            })*/
+            }) */
 
-            const dataTransactions = await axios(config)
-            const [, ...listTransactions] = dataTransactions.data.values
+      const dataTransactions = await axios(config)
+      const [, ...listTransactions] = dataTransactions.data.values
 
-            /* const docRef =  */
+      /* const docRef =  */
 
-            listTransactions.map(async transaction => {
-                let charge = transaction[7].replace(/[\.\,]/g, '')
-                let fees = transaction[10].replace(/[\.\,]/g, '')
-                let date = new Date(`${transaction[1].split('/')[1]}/${transaction[1].split('/')[0]}/${transaction[1].split('/')[2]}`)
-                /*await db.collection('suppliers').doc('RzKSwlBDS8DlBE1vwzix')
+      listTransactions.map(async transaction => {
+        const charge = transaction[7].replace(/[\.\,]/g, "")
+        const fees = transaction[10].replace(/[\.\,]/g, "")
+        const date = new Date(
+          `${transaction[1].split("/")[1]}/${transaction[1].split("/")[0]}/${transaction[1].split("/")[2]}`,
+        )
+        /* await db.collection('suppliers').doc('RzKSwlBDS8DlBE1vwzix')
                     .collection('payments').add({
                         date,
                         charge,
@@ -56,9 +58,9 @@ const fetch = (setIsLoading, setIsError, setResult) => {
                         cardNumber: transaction[14],
                         fees,
 
-                    })*/
-            })
-            /*listTransactions.map(storeowner => { //cnpj -> storeowner[8]
+                    }) */
+      })
+      /* listTransactions.map(storeowner => { //cnpj -> storeowner[8]
                 if (!cnpjInCollection.includes(storeowner[8])) {
                     await db.collection('storeowners').add({
                         cadastro: new Date(),
@@ -114,20 +116,20 @@ const fetch = (setIsLoading, setIsError, setResult) => {
                 email: storeowner[3] ? storeowner[3].toLowerCase() : '',
                 assessor: storeowner[20] ? storeowner[20] : '',
                 vendedor: storeowner[21] ? storeowner[21] : ''
-            })*/
+            }) */
 
-            setResult(`Um total de X usuários adicionados ao Firebase com sucesso.`)
-        } catch (error) {
-            if (error.response) console.log(error.response)
-            else console.log(error)
-            setIsError(true)
-            setResult(`Erro ao adicionar usuários ao Firebase.`)
-        } finally {
-            setIsLoading(false)
-        }
+      setResult(`Um total de X usuários adicionados ao Firebase com sucesso.`)
+    } catch (error) {
+      if (error.response) console.log(error.response)
+      else console.log(error)
+      setIsError(true)
+      setResult(`Erro ao adicionar usuários ao Firebase.`)
+    } finally {
+      setIsLoading(false)
     }
-    run()
-    return () => source.cancel('Canceled fetch request. Component unmounted')
+  }
+  run()
+  return () => source.cancel("Canceled fetch request. Component unmounted")
 }
 
 export default fetch

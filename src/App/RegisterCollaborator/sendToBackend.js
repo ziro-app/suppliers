@@ -7,7 +7,7 @@ const sendToBackend = state => () => {
   const { fname, lname, email, pass, docId, supplierId, role } = state
   const nomeCompleto = fname && lname ? `${fname.trim()} ${lname.trim()}` : ""
   const today = new Date()
-  const url = process.env.SHEET_URL
+  const url = 'https://ziro-sheets.netlify.app/.netlify/functions/api'
   const config = {
     headers: {
       "Content-type": "application/json",

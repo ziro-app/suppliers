@@ -5,7 +5,7 @@ import { post } from "axios"
 import { db } from "../../Firebase/index"
 
 const mountLink = uid => {
-  if (uid) return `https://fabricantes.ziro.app/cadastrar-colaborador?dc=${btoa(uid)}`
+  if (uid) return `https://ziro-fabricantes.netlify.app/cadastrar-colaborador?dc=${btoa(uid)}`
   return ""
 }
 
@@ -39,7 +39,7 @@ const sendToBackend = state => () => {
     setBrand,
   } = state
   const nome = fname && lname ? `${fname.trim()} ${lname.trim()}` : ""
-  const url = process.env.API_EMAIL
+  const url = "https://ziro-email.netlify.app/.netlify/functions/send-email"
   const config = {
     headers: {
       "Content-type": "application/json",

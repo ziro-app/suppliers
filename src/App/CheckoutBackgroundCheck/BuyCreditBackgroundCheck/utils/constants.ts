@@ -1,9 +1,9 @@
 export const instanceConfig: import("axios").AxiosRequestConfig = {
-    baseURL: process.env.PAY_URL,
+    baseURL: "https://ziro-pay.netlify.app/.netlify/functions",
     headers: { Authorization: `${process.env.PAY_TOKEN}` },
     timeout: 40000,
-},
-URLs = {
+  },
+  URLs = {
     getCard: "/card-read",
     getReceivables: "/payments-read-receivables",
     deleteCard: "/card-delete",
@@ -12,4 +12,4 @@ URLs = {
     createBuyer: "/buyer-create",
     createPayment: "/payments-create",
     voidPayment: "/payments-void",
-};
+  }

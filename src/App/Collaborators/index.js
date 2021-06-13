@@ -60,7 +60,7 @@ const Collaborators = () => {
     ...setState,
   }
   const [, setLocation] = useLocation()
-  const sheetUrl = process.env.SHEET_URL
+  const sheetUrl = 'https://ziro-sheets.netlify.app/.netlify/functions/api'
   const sheetConfig = {
     headers: {
       "Content-type": "application/json",

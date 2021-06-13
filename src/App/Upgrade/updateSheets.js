@@ -1,46 +1,48 @@
-import axios from 'axios';
+import axios from "axios"
 
 const updateSheets = async (userPos, cpf, nascimento, categoria, tipoConta, codBanco, titular, agencia, numConta) => {
-  
   const update = async () => {
-    const url = process.env.SHEET_URL;
+    const url = "https://ziro-sheets.netlify.app/.netlify/functions/api"
     const config = {
       url,
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': process.env.SHEET_TOKEN,
-        'Content-Type': 'application/json'
-      }
-    };
-    
+        Authorization: process.env.SHEET_TOKEN,
+        "Content-Type": "application/json",
+      },
+    }
+
     await axios({
-      ...config, data: {
-        'apiResource': 'values',
-        'apiMethod': 'batchUpdate',
-        'spreadsheetId': process.env.SHEET_SUPPLIERS_ID,
-        'resource': {
-          'data': [
+      ...config,
+      data: {
+        apiResource: "values",
+        apiMethod: "batchUpdate",
+        spreadsheetId: process.env.SHEET_SUPPLIERS_ID,
+        resource: {
+          data: [
             {
-              'range': `Base!N${userPos}:U${userPos}`,
-              'values': [[
-                `${cpf}`,
-                `${nascimento}`,
-                `${categoria}`,
-                `${tipoConta}`,
-                codBanco.startsWith('0') ? `'${codBanco}` : codBanco,
-                `${titular}`,
-                agencia.startsWith('0') ? `'${agencia}` : agencia,
-                numConta.startsWith('0') ? `'${numConta}` : numConta,
-              ]]
+              range: `Base!N${userPos}:U${userPos}`,
+              values: [
+                [
+                  `${cpf}`,
+                  `${nascimento}`,
+                  `${categoria}`,
+                  `${tipoConta}`,
+                  codBanco.startsWith("0") ? `'${codBanco}` : codBanco,
+                  `${titular}`,
+                  agencia.startsWith("0") ? `'${agencia}` : agencia,
+                  numConta.startsWith("0") ? `'${numConta}` : numConta,
+                ],
+              ],
             },
-          ]
+          ],
         },
-        'valueInputOption': 'user_entered'
-      }
-    });
-  };
+        valueInputOption: "user_entered",
+      },
+    })
+  }
 
-  await update();
-};
+  await update()
+}
 
-export default updateSheets;
+export default updateSheets
