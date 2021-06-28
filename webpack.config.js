@@ -3,6 +3,7 @@ const CompressionPlugin = require("compression-webpack-plugin")
 const CopyWebpackPlugin = require("copy-webpack-plugin")
 const WebpackPwaManifest = require("webpack-pwa-manifest")
 const webpack = require("webpack")
+const path = require("path")
 
 module.exports = (env, { mode }) => {
   const config = {
@@ -32,6 +33,33 @@ module.exports = (env, { mode }) => {
     },
     resolve: {
       extensions: [".ts", ".tsx", ".js", ".jsx"],
+      alias: {
+        config: path.resolve("./config"),
+        "@bit/ziro.firebase.account-management": path.resolve("./src/App/Firebase/accountManagement"),
+        "@bit/ziro.firebase.init": path.resolve("./src/App/Firebase/init"),
+        "@bit/ziro.utils.history": path.resolve("./src/App/componentsv2/history"),
+        "@bit/ziro.utils.strip-non-firebase-values": path.resolve(
+          "./src/App/componentsv2/utils/stripNonFirebaseValues",
+        ),
+        "@bit/ziro.utils.themes": path.resolve("./src/App/componentsv2/themes"),
+        "@bit/ziro.utils.types": path.resolve("./src/App/componentsv2/types"),
+        "@bit/ziro.utils.use-http": path.resolve("./src/App/componentsv2/useHttp"),
+        "@bit/ziro.views.badge": path.resolve("./src/App/componentsv2/Badge"),
+        "@bit/ziro.views.button": path.resolve("./src/App/componentsv2/Button"),
+        "@bit/ziro.views.container": path.resolve("./src/App/componentsv2/Container"),
+        "@bit/ziro.views.error": path.resolve("./src/App/componentsv2/Error"),
+        "@bit/ziro.views.fixed-bar": path.resolve("./src/App/componentsv2/FixedBar"),
+        "@bit/ziro.views.form": path.resolve("./src/App/componentsv2/Form"),
+        "@bit/ziro.views.header": path.resolve("./src/App/componentsv2/Header"),
+        "@bit/ziro.views.icon2": path.resolve("./src/App/componentsv2/Icon2"),
+        "@bit/ziro.views.illustration": path.resolve("./src/App/componentsv2/Illustration"),
+        "@bit/ziro.views.input": path.resolve("./src/App/componentsv2/Input"),
+        "@bit/ziro.views.link": path.resolve("./src/App/componentsv2/Link"),
+        "@bit/ziro.views.modal": path.resolve("./src/App/componentsv2/Modal"),
+        "@bit/ziro.views.router": path.resolve("./src/App/componentsv2/Router"),
+        "@bit/ziro.views.text": path.resolve("./src/App/componentsv2/Text"),
+        "@bit/ziro.views.title": path.resolve("./src/App/componentsv2/Title"),
+      },
     },
     plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
   }

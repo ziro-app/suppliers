@@ -1,31 +1,41 @@
 {
-    "compilerOptions": {
-      "target": "es6",
-      "lib": [
-        "es2019",
-        "es2017",
-        "es7",
-        "es6",
-        "dom",
-        "dom.iterable",
-        "esnext"
-      ],
-      "esModuleInterop": true,
-      "module": "esnext",
-      "moduleResolution": "node",
-      "jsx": "react",
-      "rootDir": "src",
-      "baseUrl": "src",
-      "paths": {
-        "@/*": ["*"]
-      },
-      "allowJs": true,
-      "resolveJsonModule": true
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es2019", "es2017", "es7", "es6", "dom", "dom.iterable", "esnext"],
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "rootDir": "src",
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"],
+      "config": ["./config"],
+      "@bit/ziro.firebase.account-management": ["./src/App/Firebase/accountManagement"],
+      "@bit/ziro.firebase.init": ["./src/App/Firebase/init"],
+      "@bit/ziro.utils.history": ["./src/App/componentsv2/history"],
+      "@bit/ziro.utils.strip-non-firebase-values": ["./src/App/componentsv2/utils/stripNonFirebaseValues"],
+      "@bit/ziro.utils.themes": ["./src/App/componentsv2/themes"],
+      "@bit/ziro.utils.types": ["./src/App/componentsv2/types"],
+      "@bit/ziro.utils.use-http": ["./src/App/componentsv2/useHttp"],
+      "@bit/ziro.views.button": ["./src/App/componentsv2/Button"],
+      "@bit/ziro.views.container": ["./src/App/componentsv2/Container"],
+      "@bit/ziro.views.error": ["./src/App/componentsv2/Error"],
+      "@bit/ziro.views.fixed-bar": ["./src/App/componentsv2/FixedBar"],
+      "@bit/ziro.views.form": ["./src/App/componentsv2/Form"],
+      "@bit/ziro.views.header": ["./src/App/componentsv2/Header"],
+      "@bit/ziro.views.icon2": ["./src/App/componentsv2/Icon2"],
+      "@bit/ziro.views.illustration": ["./src/App/componentsv2/Illustration"],
+      "@bit/ziro.views.input": ["./src/App/componentsv2/Input"],
+      "@bit/ziro.views.link": ["./src/App/componentsv2/Link"],
+      "@bit/ziro.views.modal": ["./src/App/componentsv2/Modal"],
+      "@bit/ziro.views.router": ["./src/App/componentsv2/Router"],
+      "@bit/ziro.views.text": ["./src/App/componentsv2/Text"],
+      "@bit/ziro.views.title": ["./src/App/componentsv2/Title"]
     },
-    "include": [
-      "src"
-    ],
-    "exclude": [
-      "src/main/test/cypress"
-    ]
-  }
+    "allowJs": true,
+    "resolveJsonModule": true
+  },
+  "include": ["src"],
+  "exclude": ["src/main/test/cypress"]
+}
