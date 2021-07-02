@@ -25,7 +25,22 @@ import { allCategories } from "../utils/allCategories"
 const supportNumber = require("./supportNumber")
 
 function Upgrade() {
-  const { zoopId, docId, cnpj, reason, userPos, typeRegister, fantasy } = useContext(userContext)
+  const {
+    zoopId,
+    docId,
+    cnpj,
+    reason,
+    userPos,
+    typeRegister,
+    fantasy,
+    address,
+    neighborhood,
+    cep,
+    city,
+    cityState,
+  } = useContext(userContext)
+  // HELPERS
+  const [street, number, complement] = address && address.split(", ") ? address.split(", ") : ["", "", ""]
 
   // STATE - Categoria
   const [categoryName, setCategoryName] = useState("")
@@ -88,6 +103,16 @@ function Upgrade() {
     idRes,
     idCnpj,
     fantasia: fantasy,
+    businessAddress: {
+      line1: street,
+      line2: number,
+      line3: complement || "",
+      neighborhood,
+      city,
+      state: cityState,
+      postal_code: cep.replace(".", "").replace("-", ""),
+      country_code: "BR",
+    },
   }
 
   const setState = {
