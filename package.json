@@ -111,7 +111,7 @@
     "@ziro/object-array": "^1.0.2",
     "@ziro/router": "^3.0.0",
     "@ziro/theme": "^1.0.3",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "browser-image-resizer": "^2.1.3",
     "credit-card-type": "^9.1.0",
     "date-fns": "^2.21.1",
