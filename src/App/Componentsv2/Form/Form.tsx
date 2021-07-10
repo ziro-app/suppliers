@@ -1,11 +1,11 @@
 import React, { useState, cloneElement, ReactNode, ReactElement } from "react"
 
-import { Modal } from "../Modal"
-import Button from "../Button"
-import Illustration from "../Illustration"
+import { Modal } from "@bit/ziro.views.modal"
+import Button from "@bit/ziro.views.button"
+import Illustration from "@bit/ziro.views.illustration"
 
 import inputsValidation from "./utils/inputsValidation"
-import { modalContainer, textContainer } from "./styles"
+import { modalContainer, textContainer, btn } from "./styles"
 import * as types from "./types"
 
 const Form = ({
@@ -17,6 +17,7 @@ const Form = ({
   TextSuccess,
   TextError,
   children,
+  hideModalSuccess = false,
 }: types.FormProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [inputError, setInputError] = useState<types.errorMessages>({})
@@ -36,22 +37,24 @@ const Form = ({
 
       try {
         await onSubmit()
-
-        if (ModalSuccess) setModal(ModalSuccess)
-        else setShowSuccessModal(true)
+        if (!hideModalSuccess) {
+          if (ModalSuccess) setModal(ModalSuccess)
+          else setShowSuccessModal(true)
+        }
       } catch (err) {
         if (ModalError) setModal(cloneElement(ModalError, { err, setModalState }))
         else {
           setShowErrorModal(true)
           setError(err)
+          setIsLoading(false)
         }
       }
-      /** chamada para abrir o modal apos o submit, seja para mostrar sucesso ou erro */
-      if (setModalState) setModalState({ userInput: true })
-      setIsLoading(false)
-    } else {
-      setInputError(errorMessages as types.errorMessages)
-    }
+      if (!hideModalSuccess) {
+        /** chamada para abrir o modal apos o submit, seja para mostrar sucesso ou erro */
+        if (setModalState) setModalState({ userInput: true })
+        setIsLoading(false)
+      }
+    } else setInputError(errorMessages as types.errorMessages)
   }
 
   return (
@@ -70,7 +73,7 @@ const Form = ({
           <div style={modalContainer}>
             <Illustration name="BugFixRed" />
             <div style={textContainer}>{cloneElement(TextError, { error })}</div>
-            <Button type="button" onClick={() => setShowErrorModal(false)}>
+            <Button type="button" onClick={() => setShowErrorModal(false)} style={btn}>
               Tentar novamente
             </Button>
           </div>
@@ -80,15 +83,21 @@ const Form = ({
       {modal}
 
       <form onSubmit={submitForm}>
+        {/* eslint-disable-next-line no-nested-ternary */}
         {Array.isArray(children)
           ? children.map((element: ReactElement, i: number) => {
-              if (element.props.inputName) {
-                return cloneElement(element, { key: i, isLoading, inputError: inputError[element.props.inputName] })
-              }
-              if (element.props.type === "submit" || element.props.type === "button")
+              const {
+                props: { inputName, type },
+              } = element
+              /** if element is an input, clone it and pass isLoading and inputError (the validation error message) */
+              if (inputName) return cloneElement(element, { key: i, isLoading, inputError: inputError[inputName] })
+              /** if element is a button, clone it and pass isLoading */
+              if (type === "submit" || type === "button" || type === "fixedBar")
                 return cloneElement(element, { key: i, isLoading })
               return element
             })
+          : children.props.type === "submit" || children.props.type === "button" || children.props.type === "fixedBar"
+          ? cloneElement(children, { isLoading })
           : children}
       </form>
     </>

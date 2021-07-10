@@ -1,4 +1,4 @@
-import themes from "../themes"
+import themes from "@bit/ziro.utils.themes"
 
 type textStyleProps = {
   size?: keyof typeof themes.fontSize

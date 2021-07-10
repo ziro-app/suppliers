@@ -1,8 +1,8 @@
 import React from "react"
 
-import IconText from "../../IconText"
-import { createFactory } from "../../componentState"
-import { integerToPercentage, percentageToInteger } from "../../stringFormatter"
+import IconText from "@bit/ziro.views.icon-text"
+import { createFactory } from "@bit/ziro.utils.component-state"
+import { integerToPercentage, percentageToInteger } from "@bit/ziro.utils.string-formatter"
 
 import { InputCommonProps } from "../types"
 import { container, defaultInputStyle, styleTag, errorContainer, errorIcon, errorText } from "../utils/styles"
@@ -51,15 +51,13 @@ const _InputPercentage = (globalState?: { useState: () => any }) => {
 
         <div style={errorContainer}>
           {inputError && (
-            <>
-              <IconText
-                featherName="AlertCircle"
-                styleIcon={{ ...errorIcon, ...styleErrorIcon }}
-                styleText={{ ...errorText, ...styleErrorText }}
-              >
-                {inputError}
-              </IconText>
-            </>
+            <IconText
+              featherName="AlertCircle"
+              styleIcon={{ ...errorIcon, ...styleErrorIcon }}
+              styleText={{ ...errorText, ...styleErrorText }}
+            >
+              {inputError}
+            </IconText>
           )}
         </div>
       </div>

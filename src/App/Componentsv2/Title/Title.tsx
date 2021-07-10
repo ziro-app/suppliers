@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react"
-import themes from "../themes"
+import themes from "@bit/ziro.utils.themes"
 import titleStyle from "./styles"
 
 interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
@@ -11,6 +11,9 @@ interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
   style?: React.CSSProperties
 }
 
+/** any usado pois o react 16.12 não possui a exportação do 'ForwardedRef'
+ * -> React.ForwardedRef<HTMLHeadingElement>
+ */
 type RefType = any
 
 const Title = forwardRef(({ size, children, style, ...props }: TitleProps, ref: RefType) => {

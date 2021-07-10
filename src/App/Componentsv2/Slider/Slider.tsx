@@ -1,5 +1,5 @@
 import React, { useState, useRef, cloneElement } from "react"
-import useSize from "../useSize"
+import useSize from "@bit/ziro.utils.use-size"
 import { motion } from "framer-motion"
 import { container, slider } from "./styles"
 import { onDrag, handleClickChildren as handleClick, onDragStartChildren as onDragStart } from "./utils"

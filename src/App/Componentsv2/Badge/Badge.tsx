@@ -1,5 +1,5 @@
 import React, { useRef } from "react"
-import useSize from "../useSize"
+import useSize from "@bit/ziro.utils.use-size"
 import { content } from "./styles"
 
 interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {

@@ -1,0 +1,15 @@
+import { customAxios } from "@bit/ziro.utils.use-http"
+
+export async function emailExistence(email: string) {
+  const {
+    data: { ok },
+  } = await customAxios.request({
+    url: "https://us-east1-ziro-app-data.cloudfunctions.net/checkEmailExistence",
+    method: "POST",
+    headers: {
+      Authorization: `${process.env.FIREBASE_AUTH_TOKEN}`,
+    },
+    data: { email },
+  })
+  return ok
+}

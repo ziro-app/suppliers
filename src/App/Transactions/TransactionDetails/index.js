@@ -17,7 +17,7 @@ import { createBrowserHistory } from "history"
 import currencyFormat from "@ziro/currency-format"
 import { motion } from "framer-motion"
 import { useLocation } from "wouter"
-import { db, fs } from "../../../Firebase/index"
+import { db, fs } from "@bit/ziro.firebase.init"
 import fetch from "./fetch"
 import { dateFormat, parcelFormat, round, stringToFloat } from "../utils"
 import {
@@ -54,7 +54,7 @@ const TransactionDetails = ({
   const [cancelModal, setCancelModal] = useState(false)
   const [backRoute, setBackRoute] = useState("")
   const [snapshotMemo, setSnapshotMemo] = useState({})
-  const { role, fantasy, docId } = useContext(userContext)
+  const { role, fantasia, docId } = useContext(userContext)
   const textAreaRef = useRef(null)
   const history = createBrowserHistory()
   const [olderTransaction, setOlderTransaction] = useState(false)
@@ -169,9 +169,9 @@ const TransactionDetails = ({
   function handleMarkup(transaction) {
     return markupTransaction
       ? `- ${parseFloat(markupTransaction.receivable_amount).toLocaleString("pt-br", {
-          style: "currency",
-          currency: "BRL",
-        })}`
+        style: "currency",
+        currency: "BRL",
+      })}`
       : "-"
   }
 
@@ -194,53 +194,52 @@ const TransactionDetails = ({
         let dataTable
         let feesFormatted =
           transaction.status !== "Cancelado" && transaction.fees
-            ? ` ${
-                (Object.prototype.hasOwnProperty.call(transaction, "sellerZoopPlan") &&
-                Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, "activePlan") &&
-                transaction.splitTransaction
-                  ? transaction.splitTransaction
-                  : transaction.sellerZoopPlan) && markupTransaction?.amount
-                  ? "- ".concat(
-                      parseFloat(parseFloat(markupTransaction.receivable_gross_amount) + parseFloat(transaction.fees))
-                        .toLocaleString("pt-br", {
-                          style: "currency",
-                          currency: "BRL",
-                        })
-                        .replace(/\s/g, ""),
-                    )
-                  : "- ".concat(
-                      parseFloat(transaction.fees)
-                        .toLocaleString("pt-br", {
-                          style: "currency",
-                          currency: "BRL",
-                        })
-                        .replace(/\s/g, ""),
-                    )
-              }`
+            ? ` ${(Object.prototype.hasOwnProperty.call(transaction, "sellerZoopPlan") &&
+              Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, "activePlan") &&
+              transaction.splitTransaction
+              ? transaction.splitTransaction
+              : transaction.sellerZoopPlan) && markupTransaction?.amount
+              ? "- ".concat(
+                parseFloat(parseFloat(markupTransaction.receivable_gross_amount) + parseFloat(transaction.fees))
+                  .toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })
+                  .replace(/\s/g, ""),
+              )
+              : "- ".concat(
+                parseFloat(transaction.fees)
+                  .toLocaleString("pt-br", {
+                    style: "currency",
+                    currency: "BRL",
+                  })
+                  .replace(/\s/g, ""),
+              )
+            }`
             : "-"
         let insuranceValueFormatted =
           transaction.status !== "Cancelado" &&
-          transaction.insurance === true &&
-          Object.prototype.hasOwnProperty.call(transaction, "receivables") &&
-          Object.prototype.hasOwnProperty.call(transaction, "splitTransaction") &&
-          Object.prototype.hasOwnProperty.call(transaction, "sellerZoopPlan") &&
-          Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, "activePlan") &&
-          Object.prototype.hasOwnProperty.call(
-            Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, "activePlan")
-              ? transaction.splitTransaction
-              : transaction.sellerZoopPlan,
-            "antiFraud",
-          ) &&
-          feesFormatted !== "-" &&
-          (antiFraudTransaction.amount || antiFraudTransaction.percentage)
+            transaction.insurance === true &&
+            Object.prototype.hasOwnProperty.call(transaction, "receivables") &&
+            Object.prototype.hasOwnProperty.call(transaction, "splitTransaction") &&
+            Object.prototype.hasOwnProperty.call(transaction, "sellerZoopPlan") &&
+            Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, "activePlan") &&
+            Object.prototype.hasOwnProperty.call(
+              Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, "activePlan")
+                ? transaction.splitTransaction
+                : transaction.sellerZoopPlan,
+              "antiFraud",
+            ) &&
+            feesFormatted !== "-" &&
+            (antiFraudTransaction.amount || antiFraudTransaction.percentage)
             ? handleInsurance(transaction)
             : "-"
         markupValueFormatted =
           Object.prototype.hasOwnProperty.call(transaction, "receivables") &&
-          feesFormatted !== "-" &&
-          (Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, "activePlan")
-            ? transaction.splitTransaction
-            : transaction.sellerZoopPlan)
+            feesFormatted !== "-" &&
+            (Object.prototype.hasOwnProperty.call(transaction.sellerZoopPlan, "activePlan")
+              ? transaction.splitTransaction
+              : transaction.sellerZoopPlan)
             ? handleMarkup(transaction)
             : "-"
         let sumOfFees = 0
@@ -251,14 +250,14 @@ const TransactionDetails = ({
         }
         let liquidFormatted =
           transaction.status !== "Cancelado" &&
-          transaction.status !== "Pré Autorizado" &&
-          transaction.status !== "Atualizando" &&
-          transaction.totalFees !== "-"
+            transaction.status !== "Pré Autorizado" &&
+            transaction.status !== "Atualizando" &&
+            transaction.totalFees !== "-"
             ? parseFloat(`${stringToFloat(transaction.charge) - parseFloat(transaction.totalFees)}`)
-                .toLocaleString("pt-br", { style: "currency", currency: "BRL" })
-                .replace(/\s/g, "")
+              .toLocaleString("pt-br", { style: "currency", currency: "BRL" })
+              .replace(/\s/g, "")
             : transaction.fees
-            ? currencyFormat(
+              ? currencyFormat(
                 parseFloat(
                   `${(
                     stringToFloat(transaction.charge) -
@@ -267,7 +266,7 @@ const TransactionDetails = ({
                   ).toFixed(2)}`.replace(/[R$\.,]/g, ""),
                 ),
               )
-            : "-"
+              : "-"
 
         const { state } = history.location
         const backRouteEffect = state && state.backRoute ? state.backRoute : ""
@@ -359,14 +358,14 @@ const TransactionDetails = ({
         if (Object.prototype.hasOwnProperty.call(transaction, "receivables") && transaction.receivables.length > 0) {
           const sortedTransactions = Object.prototype.hasOwnProperty.call(transaction.receivables[0], "split_rule")
             ? transaction.receivables
-                .sort((a, b) => b.installment - a.installment)
-                .filter(item => item.split_rule === null)
+              .sort((a, b) => b.installment - a.installment)
+              .filter(item => item.split_rule === null)
             : transaction.receivables.sort((a, b) => b.installment - a.installment)
           const sortedSplitAmount = Object.prototype.hasOwnProperty.call(transaction.receivables[0], "split_rule")
             ? transaction.receivables
-                .sort((a, b) => b.installment - a.installment)
-                .filter(item => item.split_rule !== null)
-                .reverse()
+              .sort((a, b) => b.installment - a.installment)
+              .filter(item => item.split_rule !== null)
+              .reverse()
             : []
           /* const sumReceivablesSplitZoop =
                                                     sortedSplitAmount.length > 0
@@ -388,10 +387,10 @@ const TransactionDetails = ({
             const sumSplit =
               sortedSplitAmount.length > 0
                 ? sortedSplitAmount
-                    .filter(item => item.installment === transaction.installment)
-                    .reduce((acc, val) => {
-                      return parseFloat(acc) + parseFloat(val.gross_amount)
-                    }, 0)
+                  .filter(item => item.installment === transaction.installment)
+                  .reduce((acc, val) => {
+                    return parseFloat(acc) + parseFloat(val.gross_amount)
+                  }, 0)
                 : 0
             if (!transaction.paid_at) {
               let upAm = round(parseFloat(transaction.gross_amount) + (sortedSplitAmount.length > 0 ? sumSplit : 0), 2)
@@ -573,14 +572,14 @@ const TransactionDetails = ({
               click={
                 backRoute
                   ? () =>
-                      history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, {
-                        backRoute,
-                        snapshot: snapshotMemo,
-                      })
+                    history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, {
+                      backRoute,
+                      snapshot: snapshotMemo,
+                    })
                   : () =>
-                      history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, {
-                        transactionsMemo: { ...transactionsMemo },
-                      })
+                    history.push(`/comprovante/${transaction.transactionId}/${receipt_id}`, {
+                      transactionsMemo: { ...transactionsMemo },
+                    })
               }
             />
           </div>

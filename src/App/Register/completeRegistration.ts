@@ -1,4 +1,4 @@
-import { auth, db } from "../../Firebase/index"
+import { auth, db } from "@bit/ziro.firebase.init"
 import axios from "axios"
 import capitalize from "@ziro/capitalize"
 //import IRollbackData,{IZoopData} from '../utils/useRollback/IRollbackData'

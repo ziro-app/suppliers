@@ -1,7 +1,7 @@
 import React, { useRef } from "react"
 import Text from "../Text"
 import Title from "../Title"
-import useSize from "../useSize"
+import useSize from "@bit/ziro.utils.use-size"
 import Icon, { IconProps } from "../Icon2"
 
 type IconTextProps = {

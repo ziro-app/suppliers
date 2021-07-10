@@ -11,3 +11,7 @@ export const textContainer: CSSProperties = {
   gridRowGap: "2px",
   textAlign: "center",
 }
+
+export const btn: CSSProperties = {
+  padding: "10px",
+}

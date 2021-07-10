@@ -1,6 +1,7 @@
-import { Dispatch, SetStateAction, DragEvent, FormEvent } from "react"
+import { DragEvent, FormEvent } from "react"
+import { SetStateType } from "@bit/ziro.utils.types"
 
-type setEnterType = Dispatch<SetStateAction<boolean>>
+type setEnterType = SetStateType<boolean>
 type dragEventType = DragEvent<HTMLLabelElement>
 type changeEventType = FormEvent<HTMLLabelElement>
 

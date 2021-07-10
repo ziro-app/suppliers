@@ -1,6 +1,6 @@
 import { useState } from "react"
 import axios from "axios"
-import { fbauth, auth, db } from "../../../Firebase/index"
+import { fauth, auth, db } from "@bit/ziro.firebase.init"
 
 const url = "https://ziro-sheets.netlify.app/.netlify/functions/api"
 const config = {
@@ -90,7 +90,7 @@ const useRollback = () => {
           } else if (origin === "auth") {
             const { pass } = (item[1] as unknown) as IUserData
             const user = auth.currentUser
-            const credential = fbauth.EmailAuthProvider.credential(user.email, pass)
+            const credential = fauth.EmailAuthProvider.credential(user.email, pass)
             await user.reauthenticateWithCredential(credential)
             await user.delete()
             await auth.signOut()

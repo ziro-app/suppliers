@@ -1,10 +1,10 @@
 import axios, { post } from "axios"
 import arrayToObject from "@ziro/array-object"
 
+import { db } from "@bit/ziro.firebase.init"
 import dataPostBatch from "./GetCnpj/utils/dataPostBatch"
 import getSheet from "./GetCnpj/utils/getSheet"
 import postSheet from "./GetCnpj/utils/postSheet"
-import { db } from "../../Firebase"
 
 const sendToBackend = (backendParams, zoopParams) => () => {
   const {

@@ -1,146 +1,200 @@
-import React, { useEffect, useRef, useState } from "react"
-import { createFactory } from "../../componentState"
-import DayPickerInput from "react-day-picker/DayPickerInput"
-import { DayModifiers } from "react-day-picker/types/Modifiers"
-import { DateUtils } from "react-day-picker"
-
+import React, { useEffect, useState } from "react"
+import DayPicker from "react-day-picker"
 import "react-day-picker/lib/style.css"
 
-import dateFnsFormat from "date-fns/format"
-import dateFnsParse from "date-fns/parse"
+import IconText from "@bit/ziro.views.icon-text"
+import { motion } from "framer-motion"
+import { createFactory } from "@bit/ziro.utils.component-state"
+import Button from "@bit/ziro.views.button"
+import Icon from "@bit/ziro.views.icon2"
+import { dateObjectToTimestamp, dateStringToDateObject, stringToDateMask } from "@bit/ziro.utils.string-formatter"
 
-import { popUpStyle, clearBtn } from "../utils/stylesInputCalendar"
+import { InputCalendarProps } from "../types"
+import {
+  timestampToDateString,
+  dateRegex,
+  WEEKDAYS_SHORT,
+  WEEKDAYS_LONG,
+  MONTHS,
+  PREV_MONTH,
+  NEXT_MONTH,
+} from "../utils/calendar"
+import {
+  container,
+  defaultInputStyle,
+  styleTag,
+  errorContainer,
+  errorIcon,
+  errorText,
+  calendarStyle,
+  buttonClearInputCalendar,
+  calendarContainer,
+} from "../utils/styles"
+import { initialCalendar, animateCalendar, transition } from "../utils/animations"
 
-interface InputCalendarProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Aqui pode-se passar estilos customizados */
-  style?: React.CSSProperties
-  value?: any
-  setValue?: any
-}
-
-const _inputCalendar = (globalState?: any) => {
-  const InputCalendar = ({ value, setValue, style, ...props }: InputCalendarProps) => {
+const _InputCalendar = (globalState?: any) => {
+  const InputCalendar = ({
+    inputName,
+    value,
+    setValue,
+    isLoading = false,
+    inputError,
+    isDisabled = false,
+    styleErrorIcon,
+    styleErrorText,
+    style,
+    dayPickerProps,
+    ...props
+  }: InputCalendarProps) => {
     if (globalState) {
       const { useState: gState } = globalState
       var [globalValue, setGlobalValue] = gState()
     }
 
-    const dayPickerInputRef = useRef(null)
-    const [inputValue, setInputValue] = useState(
-      dayPickerInputRef.current !== null ? dayPickerInputRef.current.input.value : "",
-    )
+    const [showCalendar, setShowCalendar] = useState<boolean>(false)
+    const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined)
+    const [isInvalidDate, setIsInvalidDate] = useState<boolean>(false)
 
-    const WEEKDAYS_SHORT = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
-    const WEEKDAYS_LONG = [
-      "Domingo",
-      "Segunda-Feira",
-      "Terça-Feira",
-      "Quarta-Feira",
-      "Quinta-Feira",
-      "Sexta-Feira",
-      "Sábado",
-    ]
-    const MONTHS = [
-      "Janeiro / ",
-      "Fevereiro / ",
-      "Março / ",
-      "Abril / ",
-      "Maio / ",
-      "Junho / ",
-      "Julho / ",
-      "Agosto / ",
-      "Setembro / ",
-      "Outubro / ",
-      "Novembro / ",
-      "Dezembro / ",
-    ]
-    const PREV_MONTH = "Mês anterior"
-    const NEXT_MONTH = "Próximo mês"
-    const FORMAT = "dd/MM/yyyy"
+    /** This useEffect is necessary, due to the delay of useState.
+      On day selection via DayPicker or via typing, set the globalValue | value with a timestamp.
+      Day picker sets the date as Date Object, the function dateObjectToTimestamp converts it to timestamp. */
+    useEffect(() => {
+      if (selectedDay) {
+        if (globalState) {
+          setGlobalValue({ userInput: dateObjectToTimestamp(selectedDay) })
+        } else if (setValue) {
+          setValue(`${dateObjectToTimestamp(selectedDay)}`)
+        }
+      }
+    }, [selectedDay, setGlobalValue, setValue])
 
-    const handleDayClick = (day: Date, { selected, disabled }: DayModifiers, dayPickerInput: any) => {
-      const dayPickerInputValue = dayPickerInput.input.value
+    /** This useEffect is necessary to allow clearForm functions */
+    useEffect(() => {
+      if (globalValue?.userInput === "") {
+        handleClearDate()
+      } else if (value === "") {
+        handleClearDate()
+      }
+    }, [value, globalValue?.userInput])
 
-      if (disabled) return
-      if (selected) return globalState ? setGlobalValue({ userInput: undefined }) : setValue(undefined)
-      if (globalState) {
-        setGlobalValue({ userInput: dayPickerInputValue })
-        setInputValue(dayPickerInputValue)
+    const handleTypingDate = (typedValue: string) => {
+      const _typedValue = stringToDateMask(typedValue) // Necessary to copy/paste functionality
+      setIsInvalidDate(false)
+      setShowCalendar(true)
+
+      /** Verify if value is a date string (i.e 30/04/2021) */
+      if (_typedValue.length === 10) {
+        /** Verify if received date is valid */
+        if (dateRegex.exec(_typedValue)) {
+          setSelectedDay(dateStringToDateObject(_typedValue)) // Convert dateString to DateObject and set the selected day
+        } else {
+          setIsInvalidDate(true)
+          setSelectedDay(undefined)
+        }
       } else {
-        setValue(dayPickerInputValue)
-        setInputValue(dayPickerInputValue)
+        setSelectedDay(undefined)
+
+        /** Set the value to value placed by user */
+        if (globalState) {
+          setGlobalValue({ userInput: _typedValue })
+        } else if (setValue) {
+          setValue(_typedValue)
+        }
       }
     }
 
-    const handleClear = () => {
+    const handleSelectDay = (day: Date) => {
+      setSelectedDay(day)
+      setIsInvalidDate(false)
+      setShowCalendar(false)
+    }
+
+    const handleClearDate = () => {
+      setSelectedDay(undefined)
+      setIsInvalidDate(false)
+      setShowCalendar(false)
       if (globalState) {
-        setGlobalValue({ userInput: undefined })
-        setInputValue((dayPickerInputRef.current.input.value = ""))
-      } else {
-        setValue((dayPickerInputRef.current.input.value = ""))
-        setInputValue((dayPickerInputRef.current.input.value = ""))
+        setGlobalValue({ userInput: "" })
+      } else if (setValue) {
+        setValue("")
       }
-    }
-
-    const parseDate = (str: string, format: string, locale: any) => {
-      const parsed = dateFnsParse(str, format, new Date(), { locale })
-      if (DateUtils.isDate(parsed)) {
-        return parsed
-      }
-      return undefined
-    }
-
-    const formatDate = (date: number | Date, format: string, locale: any) => {
-      return dateFnsFormat(date, format, { locale })
     }
 
     return (
-      <div {...props} style={{ ...style }}>
-        <style>{popUpStyle}</style>
-        <div style={{ position: "relative" }}>
-          {globalState &&
-            globalValue.userInput !== undefined &&
-            globalValue.userInput !== "" &&
-            inputValue !== undefined &&
-            inputValue !== "" && (
-              <button style={clearBtn as React.CSSProperties} type="button" onClick={handleClear}>
-                X
-              </button>
+      <div
+        style={{ ...container, position: "relative" }}
+        onBlur={e => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+            setShowCalendar(false)
+          }
+        }}
+      >
+        <style>
+          {styleTag}
+          {calendarStyle}
+        </style>
+
+        {(selectedDay || globalValue?.userInput || value) && !isLoading && (
+          <Button type="button" style={buttonClearInputCalendar} onClick={() => handleClearDate()}>
+            <Icon featherName="X" width="12px" height="12px" strokeWidth="3px" />
+          </Button>
+        )}
+
+        <input
+          type="text"
+          name={inputName}
+          placeholder="Selecione ou digite a data"
+          inputMode="numeric"
+          value={globalState ? timestampToDateString(globalValue.userInput) : timestampToDateString(value)}
+          onChange={e => handleTypingDate(e.target.value)}
+          disabled={isLoading || isDisabled}
+          style={{ ...defaultInputStyle, ...style }}
+          maxLength={10}
+          onFocus={() => setShowCalendar(true)}
+          {...props}
+        />
+
+        {showCalendar && (
+          <motion.div
+            style={calendarContainer}
+            initial={initialCalendar}
+            animate={animateCalendar}
+            transition={transition}
+          >
+            {isInvalidDate && (
+              <IconText
+                featherName="AlertCircle"
+                styleIcon={{ ...errorIcon, ...styleErrorIcon }}
+                styleText={{ ...errorText, ...styleErrorText }}
+              >
+                A data digitada não é válida
+              </IconText>
             )}
-          {!globalState && value !== undefined && value !== "" && inputValue !== undefined && inputValue !== "" && (
-            <button style={clearBtn as React.CSSProperties} type="button" onClick={handleClear}>
-              X
-            </button>
+
+            <DayPicker
+              selectedDays={selectedDay}
+              onDayClick={day => handleSelectDay(day)}
+              month={selectedDay}
+              months={MONTHS}
+              weekdaysShort={WEEKDAYS_SHORT}
+              weekdaysLong={WEEKDAYS_LONG}
+              labels={{ previousMonth: PREV_MONTH, nextMonth: NEXT_MONTH }}
+              {...dayPickerProps}
+            />
+          </motion.div>
+        )}
+
+        <div style={errorContainer}>
+          {inputError && (
+            <IconText
+              featherName="AlertCircle"
+              styleIcon={{ ...errorIcon, ...styleErrorIcon }}
+              styleText={{ ...errorText, ...styleErrorText }}
+            >
+              {inputError}
+            </IconText>
           )}
         </div>
-        {/* @ts-ignore*/}
-        <DayPickerInput
-          {...props}
-          ref={dayPickerInputRef}
-          value={
-            globalState
-              ? globalValue === undefined
-                ? ""
-                : dayPickerInputRef.current !== null && dayPickerInputRef.current.input.value
-              : value === undefined
-              ? ""
-              : dayPickerInputRef.current !== null && dayPickerInputRef.current.input.value
-          }
-          onDayChange={handleDayClick}
-          placeholder="Selecione ou digite a data"
-          format={FORMAT}
-          formatDate={formatDate}
-          parseDate={parseDate}
-          dayPickerProps={{
-            months: MONTHS,
-            weekdaysShort: WEEKDAYS_SHORT,
-            weekdaysLong: WEEKDAYS_LONG,
-            labels: {
-              previousMonth: PREV_MONTH,
-              nextMonth: NEXT_MONTH,
-            },
-          }}
-        />
       </div>
     )
   }
@@ -148,8 +202,8 @@ const _inputCalendar = (globalState?: any) => {
   return InputCalendar
 }
 
-const InputCalendarFactory = createFactory(_inputCalendar)
-const InputCalendarConfig = { name: "InputCalendar", initialState: { userInput: undefined } }
-const InputCalendar = _inputCalendar()
+const InputCalendarFactory = createFactory(_InputCalendar)
+const InputCalendarConfig = { name: "InputCalendar", initialState: { userInput: "" } }
+const InputCalendar = _InputCalendar()
 
 export { InputCalendarFactory, InputCalendarConfig, InputCalendar }

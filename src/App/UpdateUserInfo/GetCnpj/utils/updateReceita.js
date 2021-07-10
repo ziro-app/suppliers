@@ -1,9 +1,10 @@
+import { db } from "@bit/ziro.firebase.init"
+
 const axios = require("axios")
 const arrayObject = require("@ziro/array-object")
 const getSheet = require("./getSheet")
 const postSheet = require("./postSheet")
 const dataPostBatch = require("./dataPostBatch")
-const { db } = require("../../../../Firebase")
 
 const updateReceita = async (cnpj, obj, setErrorMsg, setState, zoopId) => {
   const {

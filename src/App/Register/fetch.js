@@ -1,5 +1,5 @@
 import axios from "axios"
-import { db } from "../../Firebase"
+import { db } from "@bit/ziro.firebase.init"
 
 const fetch = (setIsLoading, setIsError, setSuppliers) => {
   const source = axios.CancelToken.source()

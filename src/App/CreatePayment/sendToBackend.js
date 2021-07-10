@@ -1,5 +1,5 @@
 import currencyFormat from "@ziro/currency-format"
-import { db, fs } from "../../Firebase/index"
+import { db, fs } from "@bit/ziro.firebase.init"
 import linkMessage from "./utils/linkMessage"
 
 const checkCollaborator = async docId => {

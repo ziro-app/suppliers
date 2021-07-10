@@ -1,5 +1,5 @@
 import React, { forwardRef } from "react"
-import themes from "../themes"
+import themes from "@bit/ziro.utils.themes"
 import textStyle from "./styles"
 
 interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
@@ -13,6 +13,9 @@ interface TextProps extends React.HTMLAttributes<HTMLParagraphElement> {
   style?: React.CSSProperties
 }
 
+/** any usado pois o react 16.12 não possui a exportação do 'ForwardedRef'
+ * -> React.ForwardedRef<HTMLHeadingElement>
+ */
 type RefType = any
 
 const Text = forwardRef(({ size, weight, children, style, ...props }: TextProps, ref: RefType) => {

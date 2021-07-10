@@ -1,4 +1,4 @@
-import themes from "../themes"
+import themes from "@bit/ziro.utils.themes"
 import React from "react"
 
 export const regular: React.CSSProperties = {

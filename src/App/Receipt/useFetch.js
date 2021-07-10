@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { createBrowserHistory } from "history"
-import { db } from "../../Firebase/index"
+import { db } from "@bit/ziro.firebase.init"
 
 export default (
   receipt_id,

@@ -1,7 +1,9 @@
 import Account from "./Account"
+import BlankCanvas from "./BlankCanvas"
 import BugFixRed from "./BugFixRed"
 import Chatting from "./Chatting"
 import CnhPhoto from "./CnhPhoto"
+import EmptyCart from "./EmptyCart"
 import ErrorLoading from "./ErrorLoading"
 import NoData from "./NoData"
 import CardAnalysis from "./CardAnalysis"
@@ -12,6 +14,7 @@ import OnlinePosts from "./OnlinePosts"
 import OnlyVestuary from "./OnlyVestuary"
 import PaymentError from "./PaymentError"
 import PaymentSuccess from "./PaymentSuccess"
+import Photos from "./Photos"
 import Receipt from "./Receipt"
 import RegisterSuccess from "./RegisterSuccess"
 import Security from "./Security"
@@ -26,9 +29,11 @@ import WithoutFavorites from "./WithoutFavorites"
 
 export {
   Account,
+  BlankCanvas,
   BugFixRed,
   Chatting,
   CnhPhoto,
+  EmptyCart,
   ErrorLoading,
   NoData,
   CardAnalysis,
@@ -39,6 +44,7 @@ export {
   OnlyVestuary,
   PaymentError,
   PaymentSuccess,
+  Photos,
   Receipt,
   RegisterSuccess,
   Security,

@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import { motion } from "framer-motion"
 
-import Text from "../../Text"
-import IconText from "../../IconText"
-import { createFactory } from "../../componentState"
+import Text from "@bit/ziro.views.text"
+import IconText from "@bit/ziro.views.icon-text"
+import { createFactory } from "@bit/ziro.utils.component-state"
 
 import { InputCommonProps } from "../types"
 import { container, styleTag, errorContainer, errorIcon, errorText } from "../utils/styles"
@@ -22,7 +22,7 @@ const _InputFile = (globalState?: { useState: () => any }) => {
     styleErrorText,
     style,
     ...props
-  }: InputCommonProps<File[]>) => {
+  }: InputCommonProps<FileList>) => {
     if (globalState) {
       const { useState: gState } = globalState
       var [globalValue, setGlobalValue] = gState()

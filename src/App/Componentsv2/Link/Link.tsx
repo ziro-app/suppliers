@@ -1,24 +1,26 @@
-import React from "react"
+import React, { HTMLAttributes, ReactNode, CSSProperties } from "react"
 import { Link as Anchor } from "wouter"
 import { motion } from "framer-motion"
 import { link, linkDisabled, button, buttonDisabled } from "./styles"
 
-interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
+interface LinkProps extends HTMLAttributes<HTMLAnchorElement> {
   /** path para onde navegar */
   href: string
   /** se é visualmente um botão (mudança de style e acessibilidade) */
   isButton?: boolean
+  /** para abrir links externos. Determina se as propriedades de âncora target="_blank" e rel="noreferrer" estarão presentes */
+  isExternal?: boolean
   /** ativo ou inativo (mudança de style) */
   isDisabled?: boolean
   /** Conteudo do link */
-  children: React.ReactNode
+  children: ReactNode
   /** style do componente quando está desabilitado */
-  disabledStyle?: React.CSSProperties
+  disabledStyle?: CSSProperties
   /** Aqui pode-se passar estilos customizados */
-  style?: React.CSSProperties
+  style?: CSSProperties
 }
 
-const Link = ({ href, isButton, isDisabled, children, disabledStyle, style, ...props }: LinkProps) => {
+const Link = ({ href, isButton, isExternal, isDisabled, children, disabledStyle, style, ...props }: LinkProps) => {
   const anchorStyle = isDisabled ? { ...linkDisabled, ...disabledStyle } : { ...link, ...style }
   const buttonStyle = isDisabled ? { ...buttonDisabled, ...disabledStyle } : { ...button, ...style }
   const styles = isButton ? buttonStyle : anchorStyle
@@ -27,6 +29,12 @@ const Link = ({ href, isButton, isDisabled, children, disabledStyle, style, ...p
       <span aria-label={`Link para ${href} desativado`} style={styles} {...props}>
         {children}
       </span>
+    )
+  if (isExternal)
+    return (
+      <a href={href} target="_blank" rel="noreferrer" style={styles} {...props}>
+        {children}
+      </a>
     )
   if (isButton)
     return (

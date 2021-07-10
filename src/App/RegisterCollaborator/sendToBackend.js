@@ -1,5 +1,5 @@
 import axios, { post } from "axios"
-import { auth, db } from "../../Firebase/index"
+import { auth, db } from "@bit/ziro.firebase.init"
 
 const { formatDateUTC3 } = require("@ziro/format-date-utc3")
 
@@ -7,7 +7,7 @@ const sendToBackend = state => () => {
   const { fname, lname, email, pass, docId, supplierId, role } = state
   const nomeCompleto = fname && lname ? `${fname.trim()} ${lname.trim()}` : ""
   const today = new Date()
-  const url = 'https://ziro-sheets.netlify.app/.netlify/functions/api'
+  const url = "https://ziro-sheets.netlify.app/.netlify/functions/api"
   const config = {
     headers: {
       "Content-type": "application/json",

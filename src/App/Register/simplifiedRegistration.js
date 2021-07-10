@@ -1,5 +1,5 @@
 import { post } from "axios"
-import { auth, db } from "../../Firebase/index"
+import { auth, db } from "@bit/ziro.firebase.init"
 
 const { formatDateUTC3 } = require("@ziro/format-date-utc3")
 

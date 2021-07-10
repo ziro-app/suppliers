@@ -1,5 +1,5 @@
 import { post } from "axios"
-import { fbauth, auth, db } from "../../Firebase/index"
+import { fauth, auth, db } from "@bit/ziro.firebase.init"
 
 const sendToBackend = state => () => {
   const { isCollaborator, zoopId, row, pass, newEmail } = state
@@ -26,7 +26,7 @@ const sendToBackend = state => () => {
       if (row) await post(url, body, config)
       try {
         const user = auth.currentUser
-        const credential = fbauth.EmailAuthProvider.credential(user.email, pass)
+        const credential = fauth.EmailAuthProvider.credential(user.email, pass)
         await user.reauthenticateWithCredential(credential)
         try {
           let snapCollection

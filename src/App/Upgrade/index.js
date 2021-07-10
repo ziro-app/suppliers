@@ -32,7 +32,7 @@ function Upgrade() {
     reason,
     userPos,
     typeRegister,
-    fantasy,
+    fantasia,
     address,
     neighborhood,
     cep,
@@ -102,7 +102,7 @@ function Upgrade() {
     idAtv,
     idRes,
     idCnpj,
-    fantasia: fantasy,
+    fantasia,
     businessAddress: {
       line1: street,
       line2: number,

@@ -9,7 +9,7 @@ interface SkeletonMultipleProps {
   styleContainer?: CSSProperties
 }
 
-const SkeletonMultiple = ({ count, children, styleContainer }: SkeletonMultipleProps) => {
+export const SkeletonMultiple = ({ count, children, styleContainer }: SkeletonMultipleProps) => {
   /** to display skeletons correctly, we must map over a fake array while component is loading */
   const iterator = Array.from(Array(count).keys())
   return (
@@ -22,5 +22,3 @@ const SkeletonMultiple = ({ count, children, styleContainer }: SkeletonMultipleP
     </>
   )
 }
-
-export default SkeletonMultiple

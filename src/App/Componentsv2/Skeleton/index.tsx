@@ -1,5 +1,2 @@
-import SkeletonMultiple from "./SkeletonMultiple"
-
 export { default } from "./Skeleton"
-
-export { SkeletonMultiple }
+export { SkeletonMultiple } from "./SkeletonMultiple"

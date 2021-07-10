@@ -1,25 +1,23 @@
-import { centerInline, checkbox, gapBetweenFlexItems, quantitiesStyle } from '../../Products/styles'
-
-import DropDown from '@bit/vitorbarbosa19.ziro.dropdown'
-import FormInput from '@bit/vitorbarbosa19.ziro.form-input'
-import Icon from '@bit/vitorbarbosa19.ziro.icon'
-import InputText from '@bit/vitorbarbosa19.ziro.input-text'
-import React from 'react'
-import currencyFormat from '@ziro/currency-format'
-import maskInput from '@ziro/mask-input'
-import { radioButtonContainer } from './styles'
+import DropDown from "@bit/vitorbarbosa19.ziro.dropdown"
+import FormInput from "@bit/vitorbarbosa19.ziro.form-input"
+import Icon from "@bit/vitorbarbosa19.ziro.icon"
+import InputText from "@bit/vitorbarbosa19.ziro.input-text"
+import React from "react"
+import currencyFormat from "@ziro/currency-format"
+import maskInput from "@ziro/mask-input"
+import { radioButtonContainer, centerInline, checkbox, gapBetweenFlexItems, quantitiesStyle } from "./styles"
 
 const PTstatus = {
-  available: 'Disponível',
-  unavailable: 'Indisponível',
-  closed: 'Disponível',
-  waitingInfo: '',
-  soldOut: 'Indisponível',
+  available: "Disponível",
+  unavailable: "Indisponível",
+  closed: "Disponível",
+  waitingInfo: "",
+  soldOut: "Indisponível",
 }
 
 const INstatus = {
-  Disponível: 'available',
-  Indisponível: 'soldOut',
+  Disponível: "available",
+  Indisponível: "soldOut",
 }
 
 export default (
@@ -37,10 +35,10 @@ export default (
   identifierOfPicture,
   updateCart,
 ) => {
-  /*console.log(states, '-', identifierOfPicture, '-', states[`colors${identifierOfPicture}`]);*/
-  //console.log('entrou states', states)
-  console.log('entrou identifierOfPicture', identifierOfPicture)
-  console.log('entrou states[`colors${identifierOfPicture}`]', states[`colors${identifierOfPicture}`])
+  /* console.log(states, '-', identifierOfPicture, '-', states[`colors${identifierOfPicture}`]); */
+  // console.log('entrou states', states)
+  console.log("entrou identifierOfPicture", identifierOfPicture)
+  console.log("entrou states[`colors${identifierOfPicture}`]", states[`colors${identifierOfPicture}`])
   const descriptionInput = (
     <FormInput
       name="description"
@@ -48,9 +46,9 @@ export default (
       input={
         <InputText
           // disabled={isSubmitting}
-          value={'' || states[`description${identifierOfPicture}`]}
+          value={"" || states[`description${identifierOfPicture}`]}
           onChange={({ target: { value } }) => {
-            const payload = { userValue: value, identifierOfPicture, inputType: 'description' }
+            const payload = { userValue: value, identifierOfPicture, inputType: "description" }
             dispatch(payload)
           }}
           placeholder="Descrição"
@@ -65,13 +63,13 @@ export default (
       input={
         <InputText
           // disabled={isSubmitting}
-          value={'' || currencyFormat(states[`price${identifierOfPicture}`])}
+          value={"" || currencyFormat(states[`price${identifierOfPicture}`])}
           onChange={({ target: { value } }) => {
-            const toInteger = parseInt(value.replace(/[R$\.,]/g, ''), 10)
+            const toInteger = parseInt(value.replace(/[R$\.,]/g, ""), 10)
             const payload = {
-              userValue: maskInput(toInteger, '#######', true),
+              userValue: maskInput(toInteger, "#######", true),
               identifierOfPicture,
-              inputType: 'price',
+              inputType: "price",
             }
             dispatch(payload)
           }}
@@ -90,15 +88,17 @@ export default (
         <InputText
           // disabled={isSubmitting}
           value={
-            !states[`discount${identifierOfPicture}`] ? '' : `% ${currencyFormat(states[`discount${identifierOfPicture}`]).replace(/[R$]/g, '')}`
+            !states[`discount${identifierOfPicture}`]
+              ? ""
+              : `% ${currencyFormat(states[`discount${identifierOfPicture}`]).replace(/[R$]/g, "")}`
           }
           onChange={({ target: { value } }) => {
-            const toInteger = parseInt(value.replace(/[\.,\s%]/g, ''), 10)
+            const toInteger = parseInt(value.replace(/[\.,\s%]/g, ""), 10)
 
             const payload = {
-              userValue: toInteger <= 10000 ? maskInput(toInteger, '#######', true) : maskInput(10000, '#######', true),
+              userValue: toInteger <= 10000 ? maskInput(toInteger, "#######", true) : maskInput(10000, "#######", true),
               identifierOfPicture,
-              inputType: 'discount',
+              inputType: "discount",
             }
             dispatch(payload)
           }}
@@ -117,16 +117,16 @@ export default (
           // disabled={isSubmitting}
           value={
             !states[`discountCart${identifierOfPicture}`]
-              ? ''
-              : `% ${currencyFormat(states[`discountCart${identifierOfPicture}`]).replace(/[R$]/g, '')}`
+              ? ""
+              : `% ${currencyFormat(states[`discountCart${identifierOfPicture}`]).replace(/[R$]/g, "")}`
           }
           onChange={({ target: { value } }) => {
-            const toInteger = parseInt(value.replace(/[\.,\s%]/g, ''), 10)
+            const toInteger = parseInt(value.replace(/[\.,\s%]/g, ""), 10)
 
             const payload = {
-              userValue: toInteger <= 10000 ? maskInput(toInteger, '#######', true) : maskInput(10000, '#######', true),
+              userValue: toInteger <= 10000 ? maskInput(toInteger, "#######", true) : maskInput(10000, "#######", true),
               identifierOfPicture,
-              inputType: 'discountCart',
+              inputType: "discountCart",
             }
             dispatch(payload)
           }}
@@ -143,7 +143,7 @@ export default (
       input={
         <div style={radioButtonContainer}>
           <div style={centerInline}>
-            {states[`typeSize${identifierOfPicture}`] === 'number' ? (
+            {states[`typeSize${identifierOfPicture}`] === "number" ? (
               <Icon
                 style={checkbox}
                 type="circleChecked"
@@ -151,21 +151,21 @@ export default (
                 strokeWidth={2}
                 onClick={() => {
                   let payload = {
-                    userValue: 'number',
+                    userValue: "number",
                     identifierOfPicture,
-                    inputType: 'typeSize',
+                    inputType: "typeSize",
                   }
                   dispatch(payload)
                   payload = {
                     userValue: states[`colors${identifierOfPicture}`],
                     identifierOfPicture,
-                    inputType: 'colors',
+                    inputType: "colors",
                   }
                   dispatch(payload)
                   payload = {
-                    userValue: '36,38,40,42,44'.split(','),
+                    userValue: "36,38,40,42,44".split(","),
                     identifierOfPicture,
-                    inputType: 'sizes',
+                    inputType: "sizes",
                   }
                   dispatch(payload)
                 }}
@@ -178,21 +178,21 @@ export default (
                 strokeWidth={2}
                 onClick={() => {
                   let payload = {
-                    userValue: 'number',
+                    userValue: "number",
                     identifierOfPicture,
-                    inputType: 'typeSize',
+                    inputType: "typeSize",
                   }
                   dispatch(payload)
                   payload = {
                     userValue: states[`colors${identifierOfPicture}`],
                     identifierOfPicture,
-                    inputType: 'colors',
+                    inputType: "colors",
                   }
                   dispatch(payload)
                   payload = {
-                    userValue: '36,38,40,42,44'.split(','),
+                    userValue: "36,38,40,42,44".split(","),
                     identifierOfPicture,
-                    inputType: 'sizes',
+                    inputType: "sizes",
                   }
                   dispatch(payload)
                 }}
@@ -201,7 +201,7 @@ export default (
             <label style={gapBetweenFlexItems}>Numero</label>
           </div>
           <div style={centerInline}>
-            {states[`typeSize${identifierOfPicture}`] === 'letter' ? (
+            {states[`typeSize${identifierOfPicture}`] === "letter" ? (
               <Icon
                 style={checkbox}
                 type="circleChecked"
@@ -209,21 +209,21 @@ export default (
                 strokeWidth={2}
                 onClick={() => {
                   let payload = {
-                    userValue: 'letter',
+                    userValue: "letter",
                     identifierOfPicture,
-                    inputType: 'typeSize',
+                    inputType: "typeSize",
                   }
                   dispatch(payload)
                   payload = {
                     userValue: states[`colors${identifierOfPicture}`],
                     identifierOfPicture,
-                    inputType: 'colors',
+                    inputType: "colors",
                   }
                   dispatch(payload)
                   payload = {
-                    userValue: 'P,M,G'.split(','),
+                    userValue: "P,M,G".split(","),
                     identifierOfPicture,
-                    inputType: 'sizes',
+                    inputType: "sizes",
                   }
                   dispatch(payload)
                 }}
@@ -236,21 +236,21 @@ export default (
                 strokeWidth={2}
                 onClick={() => {
                   let payload = {
-                    userValue: 'letter',
+                    userValue: "letter",
                     identifierOfPicture,
-                    inputType: 'typeSize',
+                    inputType: "typeSize",
                   }
                   dispatch(payload)
                   payload = {
                     userValue: states[`colors${identifierOfPicture}`],
                     identifierOfPicture,
-                    inputType: 'colors',
+                    inputType: "colors",
                   }
                   dispatch(payload)
                   payload = {
-                    userValue: 'P,M,G'.split(','),
+                    userValue: "P,M,G".split(","),
                     identifierOfPicture,
-                    inputType: 'sizes',
+                    inputType: "sizes",
                   }
                   dispatch(payload)
                 }}
@@ -271,12 +271,12 @@ export default (
         <InputText
           // disabled={isSubmitting}
           placeholder="P,M,G"
-          value={'' || (states[`sizes${identifierOfPicture}`] && states[`sizes${identifierOfPicture}`].join(','))}
+          value={"" || (states[`sizes${identifierOfPicture}`] && states[`sizes${identifierOfPicture}`].join(","))}
           onChange={({ target: { value } }) => {
             const payload = {
-              userValue: value ? value.split(',') : '',
+              userValue: value ? value.split(",") : "",
               identifierOfPicture,
-              inputType: 'sizes',
+              inputType: "sizes",
             }
             dispatch(payload)
           }}
@@ -294,16 +294,16 @@ export default (
           // disabled={isSubmitting}
           placeholder="Azul,Amarelo"
           value={
-            '' ||
-            (states[`colors${identifierOfPicture}`] && states[`colors${identifierOfPicture}`].join(',') ||
-            (states[`colors${identifierOfPicture}`] && states[`colors${identifierOfPicture}`].join('')))
+            "" ||
+            (states[`colors${identifierOfPicture}`] && states[`colors${identifierOfPicture}`].join(",")) ||
+            (states[`colors${identifierOfPicture}`] && states[`colors${identifierOfPicture}`].join(""))
           }
           onChange={({ target: { value } }) => {
-            const newColors = value ? value.split(',') : ['']
+            const newColors = value ? value.split(",") : [""]
             const payload = {
               userValue: newColors,
               identifierOfPicture,
-              inputType: 'colors',
+              inputType: "colors",
             }
             dispatch(payload)
           }}
@@ -318,12 +318,12 @@ export default (
       label="Referência"
       input={
         <InputText
-          value={'' || states[`referenceId${identifierOfPicture}`]}
+          value={"" || states[`referenceId${identifierOfPicture}`]}
           onChange={({ target: { value } }) => {
             const payload = {
               userValue: value.toUpperCase(),
               identifierOfPicture,
-              inputType: 'referenceId',
+              inputType: "referenceId",
             }
             dispatch(payload)
           }}
@@ -333,84 +333,87 @@ export default (
     />
   )
 
-  const quantitiesInput = (states[`sizes${identifierOfPicture}`] !== '' || states[`colors${identifierOfPicture}`][0] !== '') && (
-    <FormInput
-      name="quantities"
-      label="Quantidades"
-      input={
-        <div style={quantitiesStyle}>
-          {states[`colors${identifierOfPicture}`] && states[`colors${identifierOfPicture}`].map(color =>
-            (states[`sizes${identifierOfPicture}`]
-              ? states[`sizes${identifierOfPicture}`].length
-                ? states[`sizes${identifierOfPicture}`]
-                : ['']
-              : ['']
-            ).map(size => (
-              <div
-                key={`${color}-${size}`}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: device === 'smallMobile' ? '2fr 1fr 2fr' : '2fr 1fr 1fr',
-                  alignItems: 'center',
-                }}
-              >
-                <label>{color}</label>
-                <label>{size}</label>
-                <InputText
-                  // disabled={isSubmitting}
-                  placeholder="1"
-                  defaultValue={defaultQuantityValue}
-                  value={
-                    '' ||
-                    (states[`availableQuantities${identifierOfPicture}`] && states[`availableQuantities${identifierOfPicture}`][`${color}-${size}`])
-                  }
-                  onChange={({ target: { value } }) => {
-                    if (/^[0-9]*$/gm.test(value)) {
-                      const result = old => {
-                        const newQuantities = { ...(states[`availableQuantities${identifierOfPicture}`] || {}) }
-                        newQuantities[`${color}-${size}`] = maskInput(value, '##', true)
-                        return { ...old, availableQuantities: newQuantities }
+  const quantitiesInput = (states[`sizes${identifierOfPicture}`] !== "" ||
+    states[`colors${identifierOfPicture}`][0] !== "") && (
+      <FormInput
+        name="quantities"
+        label="Quantidades"
+        input={
+          <div style={quantitiesStyle}>
+            {states[`colors${identifierOfPicture}`] &&
+              states[`colors${identifierOfPicture}`].map(color =>
+                (states[`sizes${identifierOfPicture}`]
+                  ? states[`sizes${identifierOfPicture}`].length
+                    ? states[`sizes${identifierOfPicture}`]
+                    : [""]
+                  : [""]
+                ).map(size => (
+                  <div
+                    key={`${color}-${size}`}
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: device === "smallMobile" ? "2fr 1fr 2fr" : "2fr 1fr 1fr",
+                      alignItems: "center",
+                    }}
+                  >
+                    <label>{color}</label>
+                    <label>{size}</label>
+                    <InputText
+                      // disabled={isSubmitting}
+                      placeholder="1"
+                      defaultValue={defaultQuantityValue}
+                      value={
+                        "" ||
+                        (states[`availableQuantities${identifierOfPicture}`] &&
+                          states[`availableQuantities${identifierOfPicture}`][`${color}-${size}`])
                       }
-                      const payload = {
-                        userValue: result().availableQuantities,
-                        identifierOfPicture,
-                        inputType: 'availableQuantities',
-                      }
-                      dispatch(payload)
-                    }
-                  }}
-                  inputMode="numeric"
-                />
-              </div>
-            )),
-          )}
-        </div>
-      }
-    />
-  )
+                      onChange={({ target: { value } }) => {
+                        if (/^[0-9]*$/gm.test(value)) {
+                          const result = old => {
+                            const newQuantities = { ...(states[`availableQuantities${identifierOfPicture}`] || {}) }
+                            newQuantities[`${color}-${size}`] = maskInput(value, "##", true)
+                            return { ...old, availableQuantities: newQuantities }
+                          }
+                          const payload = {
+                            userValue: result().availableQuantities,
+                            identifierOfPicture,
+                            inputType: "availableQuantities",
+                          }
+                          dispatch(payload)
+                        }
+                      }}
+                      inputMode="numeric"
+                    />
+                  </div>
+                )),
+              )}
+          </div>
+        }
+      />
+    )
   const availabilityInput = (
     <FormInput
       name="availability"
       label="Disponibilidade"
       input={
         <DropDown
-          list={['Disponível', 'Indisponível']}
-          value={PTstatus[product.status] || ''}
+          list={["Disponível", "Indisponível"]}
+          value={PTstatus[product.status] || ""}
           onChange={({ target: { value } }) => {
-            const status = INstatus[value] || 'waitingInfo'
+            const status = INstatus[value] || "waitingInfo"
             const payload = {
               userValue: status,
               identifierOfPicture,
-              inputType: 'availability',
+              inputType: "availability",
             }
             dispatch(payload)
           }}
           onChangeKeyboard={() => element => {
-            const status = INstatus[element.value] || 'waitingInfo'
+            const status = INstatus[element.value] || "waitingInfo"
             const payload = {
               userValue: status,
               identifierOfPicture,
-              inputType: 'availability',
+              inputType: "availability",
             }
             dispatch(payload)
           }}
@@ -666,27 +669,27 @@ export default (
       ) */
   const arrayInputs = !updateCart
     ? [
-        availabilityInput,
-        descriptionInput,
-        referenceIdInput,
-        priceInput,
-        discountPercentage,
-        colorsInput,
-        sizesInput,
-        // typeSizeRadio,
-        quantitiesInput,
-      ]
+      availabilityInput,
+      descriptionInput,
+      referenceIdInput,
+      priceInput,
+      discountPercentage,
+      colorsInput,
+      sizesInput,
+      // typeSizeRadio,
+      quantitiesInput,
+    ]
     : [
-        availabilityInput,
-        descriptionInput,
-        referenceIdInput,
-        priceInput,
-        discountPercentageCart,
-        colorsInput,
-        sizesInput,
-        // typeSizeRadio,
-        quantitiesInput,
-      ]
+      availabilityInput,
+      descriptionInput,
+      referenceIdInput,
+      priceInput,
+      discountPercentageCart,
+      colorsInput,
+      sizesInput,
+      // typeSizeRadio,
+      quantitiesInput,
+    ]
 
   return arrayInputs
 }

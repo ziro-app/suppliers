@@ -1,7 +1,7 @@
 import React from "react"
 
-import IconText from "../../IconText"
-import { createFactory } from "../../componentState"
+import IconText from "@bit/ziro.views.icon-text"
+import { createFactory } from "@bit/ziro.utils.component-state"
 
 import { InputCommonProps } from "../types"
 import { container, defaultInputStyle, styleTag, errorContainer, errorIcon, errorText } from "../utils/styles"
@@ -50,15 +50,13 @@ const _InputEmail = (globalState?: { useState: () => any }) => {
 
         <div style={errorContainer}>
           {inputError && (
-            <>
-              <IconText
-                featherName="AlertCircle"
-                styleIcon={{ ...errorIcon, ...styleErrorIcon }}
-                styleText={{ ...errorText, ...styleErrorText }}
-              >
-                {inputError}
-              </IconText>
-            </>
+            <IconText
+              featherName="AlertCircle"
+              styleIcon={{ ...errorIcon, ...styleErrorIcon }}
+              styleText={{ ...errorText, ...styleErrorText }}
+            >
+              {inputError}
+            </IconText>
           )}
         </div>
       </div>

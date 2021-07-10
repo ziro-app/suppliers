@@ -1,4 +1,4 @@
-import { db } from '../../Firebase/index';
+import { db } from '@bit/ziro.firebase.init';
 import mountBlocks from './utils/mountBlocks';
 import { post } from 'axios';
 

@@ -37,7 +37,7 @@ import BankInfo from "./BankInfo"
 import Preferences from "./Preferences"
 import CheckoutBackgroundCheck from "./CheckoutBackgroundCheck"
 import AboutCredits from "./AboutCredits"
-import Productsv2 from "./Productsv2"
+import Gallery from "./Gallery"
 import { userContext } from "./appContext"
 
 const Router = ({ isLogged }) => {
@@ -48,9 +48,7 @@ const Router = ({ isLogged }) => {
   const [matchReceivable, paramsReceivable] = useRoute("/recebiveis/:receivableId?")
   const [matchMyReceipt, paramsMyReceipt] = useRoute("/comprovante/:transactionId?/:receiptId?")
   const [matchBuyCreditBackgroundCheck, paramsBuyCreditBackgroundCheck] = useRoute("/comprar-consulta/cartao/:quantity")
-  const [matchProductsRoot] = useRoute("/produtos")
-  const [matchProductsNew] = useRoute("/produtos/novo")
-  const [matchProductsEdit] = useRoute("/produtos/:productId/editar")
+  const [matchGallery] = useRoute("/produtos/:action?/:productId?")
   const [receipt, setReceipt] = useState("")
   const [transactionId, setTransactionId] = useState("")
   const [location] = useLocation()
@@ -131,16 +129,10 @@ const Router = ({ isLogged }) => {
         </motion.div>
       </Menu>
     ),
-    [matchProductsRoot || matchProductsNew || matchProductsEdit ? location : null]: (
-      <Menu
-        // eslint-disable-next-line no-nested-ternary
-        title={matchProductsEdit ? "Editar produto" : matchProductsNew ? "Novo produto" : "Produtos"}
-        back={matchProductsEdit || matchProductsNew ? "/produtos" : null}
-      >
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <Productsv2 />
-        </motion.div>
-      </Menu>
+    [matchGallery ? location : null]: (
+      <div style={{ marginTop: "55px" }}>
+        <Gallery />
+      </div>
     ),
     "/login": (
       <Menu title="Minha Conta">

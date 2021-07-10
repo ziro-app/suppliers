@@ -1,5 +1,5 @@
 import { post } from "axios"
-import { db } from "../../Firebase/index"
+import { db } from "@bit/ziro.firebase.init"
 
 const simplifiedUpdate = (fname, lname, docId, userPos, zoopId, setIsLoading, setError) => () => {
   const nome = fname ? fname.trim() : ""

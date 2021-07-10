@@ -1,7 +1,7 @@
 import React from "react"
 import { motion, MotionProps } from "framer-motion"
 
-import DotsLoader from "../DotsLoader"
+import DotsLoader from "@bit/ziro.views.dots-loader"
 
 import { regular, light, destructive, disabled } from "./styles"
 

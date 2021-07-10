@@ -1,5 +1,5 @@
 import axios from "axios"
-import { db } from "../../Firebase/index"
+import { db } from "@bit/ziro.firebase.init"
 
 const matchStatus = {
   cancelada: "Cancelado",

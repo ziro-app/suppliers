@@ -1,6 +1,6 @@
 import currencyFormat from "@ziro/currency-format"
+import { db } from "@bit/ziro.firebase.init"
 import { dateFormat } from "../utils"
-import { db } from "../../../Firebase/index"
 import matchStatusColor from "../matchStatusColor"
 
 const verifyArray = (array, transactionId) => {

@@ -1,4 +1,4 @@
-import { db } from "../../Firebase/index"
+import { db } from "@bit/ziro.firebase.init"
 
 const fetch = (setIsLoading, setErrorLoading, docId, isCollaborator, ownerId, { setFreeRequests }) => {
   const run = async () => {

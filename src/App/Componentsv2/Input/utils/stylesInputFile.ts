@@ -1,5 +1,5 @@
 import { CSSProperties } from "react"
-import themes from "../../themes"
+import themes from "@bit/ziro.utils.themes"
 
 export const dropzone = (enter: boolean, disabled: boolean): CSSProperties => ({
   display: "grid",
@@ -14,7 +14,7 @@ export const dropzone = (enter: boolean, disabled: boolean): CSSProperties => ({
 })
 
 export const text: CSSProperties = {
-  width: "75%",
+  width: "80%",
   textAlign: "center",
   pointerEvents: "none",
   overflow: "hidden",

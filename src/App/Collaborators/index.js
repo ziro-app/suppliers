@@ -7,8 +7,8 @@ import Table from "@bit/vitorbarbosa19.ziro.table"
 import Error from "@bit/vitorbarbosa19.ziro.error"
 import Spinner from "@bit/vitorbarbosa19.ziro.spinner"
 import Modal from "@bit/vitorbarbosa19.ziro.modal"
+import { db } from "@bit/ziro.firebase.init"
 import { userContext } from "../appContext"
-import { db } from "../../Firebase/index"
 import fetch from "./fetch"
 import {
   modalContainer,
@@ -60,7 +60,7 @@ const Collaborators = () => {
     ...setState,
   }
   const [, setLocation] = useLocation()
-  const sheetUrl = 'https://ziro-sheets.netlify.app/.netlify/functions/api'
+  const sheetUrl = "https://ziro-sheets.netlify.app/.netlify/functions/api"
   const sheetConfig = {
     headers: {
       "Content-type": "application/json",

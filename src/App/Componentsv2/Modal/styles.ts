@@ -1,7 +1,7 @@
 import { MotionProps } from "framer-motion"
 
 export const overlay: React.CSSProperties = {
-  zIndex: 1,
+  zIndex: 10000000000,
   position: "fixed",
   top: "0",
   left: "0",

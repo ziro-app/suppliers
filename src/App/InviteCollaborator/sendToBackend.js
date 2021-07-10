@@ -2,7 +2,7 @@
 /* eslint no-async-promise-executor: "off" */
 /* eslint prefer-promise-reject-errors: "off" */
 import { post } from "axios"
-import { db } from "../../Firebase/index"
+import { db } from "@bit/ziro.firebase.init"
 
 const mountLink = uid => {
   if (uid) return `https://ziro-fabricantes.netlify.app/cadastrar-colaborador?dc=${btoa(uid)}`

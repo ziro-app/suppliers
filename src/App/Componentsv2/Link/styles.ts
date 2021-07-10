@@ -1,4 +1,4 @@
-import themes from "../themes"
+import themes from "@bit/ziro.utils.themes"
 
 const { fontFamily, fontWeight, fontSize, colors, gradient, shadow } = themes
 
@@ -21,6 +21,7 @@ export const linkDisabled: React.CSSProperties = {
 }
 
 export const button: React.CSSProperties = {
+  display: "block",
   width: "100%",
   minHeight: "38px",
   padding: "10px 0px",
@@ -41,7 +42,6 @@ export const button: React.CSSProperties = {
 
 export const buttonDisabled: React.CSSProperties = {
   ...button,
-  display: "block",
   cursor: "initial",
   color: colors.primary,
   background: colors.gray4,

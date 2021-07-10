@@ -1,87 +1,90 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { useLocation, useRoute } from 'wouter';
+import React, { useCallback, useMemo, useState } from "react"
+import { useLocation, useRoute } from "wouter"
 
-import Button from '@bit/vitorbarbosa19.ziro.button';
+import Button from "@bit/vitorbarbosa19.ziro.button"
 // import CardForm from '@bit/vitorbarbosa19.ziro.card-form';
-import Header from '@bit/vitorbarbosa19.ziro.header';
-import JSZip from 'jszip';
-import { containerWithPadding } from '@ziro/theme';
-import currencyFormat from '@ziro/currency-format';
-import { get } from 'axios';
-import Card from './card';
-import { priceTotal, saleSummary, summary, total } from './styles_catalog';
-import { db, fs } from '../../../Firebase';
-import { brandCart, brandName, buttonDownload } from './styles';
-import { reduceTotal } from './utils';
+import Header from "@bit/vitorbarbosa19.ziro.header"
+import JSZip from "jszip"
+import { containerWithPadding } from "@ziro/theme"
+import currencyFormat from "@ziro/currency-format"
+import { get } from "axios"
+import { db, fs } from "@bit/ziro.firebase.init"
+import Card from "./card"
+import { priceTotal, saleSummary, summary, total } from "./styles_catalog"
+import { brandCart, brandName, buttonDownload } from "./styles"
+import { reduceTotal } from "./utils"
 
 export default ({ state, cart: { productIds, products, ...cart }, storeowner, oldQuery }) => {
-  //console.log('get in cart',cart)
-  //console.log('state in cart',state)
-  const [prices, setPrices] = useState({});
-  const [urls, setURLs] = useState({});
-  const [location, setLocation] = useLocation();
-  const [match, params] = useRoute('/pedidos/:cartId?');
-  const { cartId } = params;
-  //console.log('cartId',cartId)
-  const [totalItems, totalPrice] = useMemo(() => (productIds && products ? productIds.reduce(reduceTotal(prices, products), [0, 0]) : [0, 0]), [productIds, products, prices]);
+  // console.log('get in cart',cart)
+  // console.log('state in cart',state)
+  const [prices, setPrices] = useState({})
+  const [urls, setURLs] = useState({})
+  const [location, setLocation] = useLocation()
+  const [match, params] = useRoute("/pedidos/:cartId?")
+  const { cartId } = params
+  // console.log('cartId',cartId)
+  const [totalItems, totalPrice] = useMemo(
+    () => (productIds && products ? productIds.reduce(reduceTotal(prices, products), [0, 0]) : [0, 0]),
+    [productIds, products, prices],
+  )
   const confirmCartItem = useCallback(async () => {
-    console.log('cart', cart);
-    console.log('totalPrice', totalPrice);
+    console.log("cart", cart)
+    console.log("totalPrice", totalPrice)
     try {
       await db
-        .collection('catalog-user-data')
+        .collection("catalog-user-data")
         .doc(cart.buyerStoreownerId)
-        .collection('cart')
+        .collection("cart")
         .doc(cart.id)
         .set(
           {
-            status: 'waitingPayment',
+            status: "waitingPayment",
             lastUpdate: fs.FieldValue.serverTimestamp(),
-            updatedBy: 'seller',
+            updatedBy: "seller",
             total: `${totalPrice}`,
           },
           { merge: true },
-        );
+        )
     } catch (error) {
-      console.log({ error });
-      throw error;
+      console.log({ error })
+      throw error
     }
-  }, [cart, totalPrice]);
+  }, [cart, totalPrice])
 
   const downloadAllImages = useCallback(async () => {
     try {
-      const zip = new JSZip();
-      const folder = zip.folder(`${storeowner.razao}`);
+      const zip = new JSZip()
+      const folder = zip.folder(`${storeowner.razao}`)
       await Promise.all(
         Object.entries(urls).map(([productId, url]) => {
-          return get(url, { responseType: 'arraybuffer' }).then(({ data }) => {
-            const filename = `peca_${productIds.indexOf(productId) - 1}.png`;
-            const file = new Blob([Buffer.from(data, 'binary')]);
-            folder.file(filename, file);
-          });
+          return get(url, { responseType: "arraybuffer" }).then(({ data }) => {
+            const filename = `peca_${productIds.indexOf(productId) - 1}.png`
+            const file = new Blob([Buffer.from(data, "binary")])
+            folder.file(filename, file)
+          })
         }),
-      );
-      const content = await zip.generateAsync({ type: 'blob' });
-      const url = window.URL.createObjectURL(content);
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `${storeowner.razao}.zip`);
-      document.body.appendChild(link);
-      link.click();
+      )
+      const content = await zip.generateAsync({ type: "blob" })
+      const url = window.URL.createObjectURL(content)
+      const link = document.createElement("a")
+      link.href = url
+      link.setAttribute("download", `${storeowner.razao}.zip`)
+      document.body.appendChild(link)
+      link.click()
     } catch (error) {
-      console.log({ error });
+      console.log({ error })
     }
-  }, [productIds, urls]);
+  }, [productIds, urls])
 
   const handleClickUploadProduct = () => {
-    localStorage.setItem('voltar', `/pedidos/${cartId}`);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    setLocation(`produtos/adicionar/${cartId}`);
-    console.log('Teste');
-  };
+    localStorage.setItem("voltar", `/pedidos/${cartId}`)
+    localStorage.setItem("cart", JSON.stringify(cart))
+    setLocation(`produtos/adicionar/${cartId}`)
+    console.log("Teste")
+  }
   return (
     <div style={containerWithPadding}>
-      <Header type="icon-link" title={storeowner.razao} navigateTo={`/pedidos${oldQuery || ''}`} icon="back" />
+      <Header type="icon-link" title={storeowner.razao} navigateTo={`/pedidos${oldQuery || ""}`} icon="back" />
       <div style={brandCart}>
         <label style={brandName}>{cart.brandName}</label>
         <Button type="button" cta="Fazer download fotos" click={downloadAllImages} style={buttonDownload} />
@@ -119,11 +122,18 @@ export default ({ state, cart: { productIds, products, ...cart }, storeowner, ol
             <label style={total}>Quantidade</label>
             <label style={priceTotal}>{totalItems}</label>
           </div>
-          {cart.status === 'waitingConfirmation' || cart.status === 'open' && <Button type="button" cta="Upload de Produto" click={handleClickUploadProduct} submitting={false} />}
+          {cart.status === "waitingConfirmation" ||
+            (cart.status === "open" && (
+              <Button type="button" cta="Upload de Produto" click={handleClickUploadProduct} submitting={false} />
+            ))}
         </div>
-        {cart.status === 'waitingConfirmation' && <Button type="button" cta="Confirmar pedido" click={confirmCartItem} submitting={false} />}
-        {cart.status === 'waitingPayment' && <Button type="button" cta="Aguardando pagamento" click={() => {}} submitting />}
+        {cart.status === "waitingConfirmation" && (
+          <Button type="button" cta="Confirmar pedido" click={confirmCartItem} submitting={false} />
+        )}
+        {cart.status === "waitingPayment" && (
+          <Button type="button" cta="Aguardando pagamento" click={() => { }} submitting />
+        )}
       </div>
     </div>
-  );
-};
+  )
+}
