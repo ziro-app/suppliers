@@ -2,7 +2,6 @@ import React from "react"
 
 const Receipt = ({ ...props }: React.SVGAttributes<SVGElement>) => (
   <svg width={100} height={150} viewBox="0 0 427.96506 546.26859" {...props}>
-    <polygon points="257.738 535.649 0 535.649 0 533.543 258.12 533.543 257.738 535.649" fill="#3f3d56" />
     <polygon points="89.053 505.128 74.053 506.128 76.053 349.128 113.053 349.128 89.053 505.128" fill="#a0616a" />
     <polygon points="161.053 505.128 146.053 506.128 148.053 349.128 171.983 349.134 161.053 505.128" fill="#a0616a" />
     <path

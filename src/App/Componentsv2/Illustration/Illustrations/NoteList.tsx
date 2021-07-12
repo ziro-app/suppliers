@@ -155,7 +155,6 @@ const NoteList = ({ ...props }: React.SVGAttributes<SVGElement>) => (
       transform="translate(-205 -99.00391)"
       fill="#e6e6e6"
     />
-    <rect y="699.99219" width="790" height="2" fill="#3f3d56" />
   </svg>
 )
 

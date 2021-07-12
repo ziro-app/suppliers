@@ -570,3 +570,32 @@ export const CreditCard = ({ ...props }) => (
     <path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
   </svg>
 )
+
+export const History = ({ ...props }) => (
+  <svg
+    viewBox="0 0 18 21"
+    width="24px"
+    height="24px"
+    stroke="none"
+    strokeWidth="none"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    fill="none"
+    {...props}
+  >
+    <rect width="18" height="21" fill="#E5E5E5" />
+    <rect width="18" height="21" fill="white" />
+    <circle cx="13" cy="5" r="4.25" stroke="black" strokeWidth="1.5" />
+    <path d="M13.5 3.5V5L11.5 6.5" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path
+      d="M15 9V20H1.10294C0.871323 20 1.10294 16.4 1.10294 2H10"
+      stroke="black"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+    <path d="M4 13H8.5H12" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M4 9H5.6875H7" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M4 17H8.5H12" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
